@@ -353,9 +353,9 @@ page, limit, offset
 - [Burp Parameter Names](https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/burp-parameter-names.txt)
 
 ### Cheatsheets Correlate
-- [Bug Bounty Methodology](../Bug-Bounty-Methodology/README.md)
-- [ffuf](../ffuf/README.md)
-- [Burp Suite](../Burp-Suite/README.md)
+- [Bug Bounty Methodology](../Bug-Bounty-Methodology/translations/README.it.md)
+- [ffuf](../ffuf/translations/README.it.md)
+- [Burp Suite](../Burp-Suite/translations/README.it.md)
 
 ---
 

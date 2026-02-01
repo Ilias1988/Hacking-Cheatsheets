@@ -22,9 +22,9 @@
 
 * [Cos'è Amass](#-cosè-amass)
 * [Installazione](#-installazione)
-* [Modalità Enumerazione (Enum)](#-modalità-enumerazione)
-* [Modalità Intel](#-modalità-intel)
-* [Modalità DNS](#-modalità-dns)
+* [Enumeration Mode](#-enumeration-mode)
+* [Intel Mode](#-intel-mode)
+* [DNS Mode](#-dns-mode)
 * [Configurazione](#️-configurazione)
 * [Riferimento Rapido](#-riferimento-rapido)
 
@@ -68,7 +68,7 @@ amass -version
 
 ---
 
-## 🔍 Modalità Enumerazione
+## 🔍 Enumeration Mode
 
 ### Enumerazione Sottodomini Base
 
@@ -134,7 +134,7 @@ amass enum -passive -d example.com -max-depth 3
 
 ---
 
-## 🏢 Modalità Intel
+## 🏢 Intel Mode
 
 > La modalità Intel scopre domini radice, ASN e range CIDR associati alle organizzazioni.
 
@@ -182,7 +182,7 @@ amass intel -active -ip 192.168.1.1-254
 
 ---
 
-## 📡 Modalità DNS
+## 📡 DNS Mode
 
 ### Query DNS
 
@@ -324,9 +324,9 @@ cat all_subdomains.txt | httpx -silent > live_hosts.txt
 - [Amass User Guide](https://github.com/owasp-amass/amass/blob/master/doc/user_guide.md)
 
 ### Cheatsheets Collegate
-- [Bug Bounty Methodology](../Bug-Bounty-Methodology/README.md)
-- [Subfinder](../Subfinder/README.md)
-- [httpx](../httpx/README.md)
+- [Bug Bounty Methodology](../Bug-Bounty-Methodology/translations/README.it.md)
+- [Subfinder](../Subfinder/translations/README.it.md)
+- [httpx](../httpx/translations/README.it.md)
 
 ---
 

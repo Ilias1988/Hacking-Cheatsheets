@@ -94,7 +94,7 @@ sudo make install
 
 ---
 
-## 📡 Modalità Monitor
+## 📡 Monitor Mode
 
 ### Controlla l'Interfaccia Wireless
 
@@ -156,7 +156,7 @@ sudo airmon-ng start wlan0 6
 
 ---
 
-## 🔍 Ricognizione (airodump-ng)
+## 🔍 Reconnaissance (airodump-ng)
 
 ### Scansione di Base
 
@@ -233,9 +233,9 @@ sudo airodump-ng --essid "TargetNetwork" wlan0mon
 
 ---
 
-## 💥 Deautenticazione (aireplay-ng)
+## 💥 Deauthentication (aireplay-ng)
 
-### Perché la Deautenticazione?
+### Perché la Deauthentication?
 
 La deautenticazione forza i client a riconnettersi, permettendoci di catturare il "4-way handshake" necessario per il cracking WPA/WPA2.
 
@@ -245,7 +245,7 @@ La deautenticazione forza i client a riconnettersi, permettendoci di catturare i
 # Deautentica un client specifico
 sudo aireplay-ng -0 5 -a AA:BB:CC:DD:EE:FF -c 11:22:33:44:55:66 wlan0mon
 
-# -0 : Attacco di deautenticazione
+# -0 : Attacco deauthentication
 # 5  : Numero di deauth (0 = infiniti)
 # -a : BSSID dell'AP
 # -c : MAC del Client
@@ -384,10 +384,10 @@ sudo aircrack-ng wep_capture-01.cap
 
 | Modalità | Descrizione |
 | --- | --- |
-| `-0` | Deautenticazione |
-| `-1` | Autenticazione falsata |
+| `-0` | Deauthentication |
+| `-1` | Fake authentication |
 | `-2` | Interactive packet replay |
-| `-3` | Ripetizione richiesta ARP |
+| `-3` | ARP request repetition |
 | `-4` | KoreK chopchop attack |
 | `-5` | Fragmentation attack |
 | `-9` | Test di iniezione |
@@ -504,7 +504,7 @@ sudo airodump-ng wlan0mon
 # Terminale 1: Target e cattura
 sudo airodump-ng -c <CANALE> --bssid <BSSID_TARGET> -w handshake wlan0mon
 
-# Terminale 2: Attacco deautenticazione
+# Terminale 2: Attacco deauthentication
 sudo aireplay-ng -0 5 -a <BSSID_TARGET> -c <MAC_CLIENT> wlan0mon
 
 # Attendi "WPA handshake: XX:XX:XX:XX:XX:XX" nel Terminale 1
@@ -544,7 +544,7 @@ rm -f handshake-*.cap handshake-*.csv handshake-*.kismet.csv
 | Uccidi processi che interferiscono | `airmon-ng check kill` |
 | Scansione reti | `airodump-ng wlan0mon` |
 | Prendi di mira una rete specifica | `airodump-ng -c CH --bssid BSSID -w file wlan0mon` |
-| Deautenticazione | `aireplay-ng -0 5 -a BSSID -c CLIENT wlan0mon` |
+| Deauthentication | `aireplay-ng -0 5 -a BSSID -c CLIENT wlan0mon` |
 | Crack WPA | `aircrack-ng -w wordlist.txt capture.cap` |
 
 ### Riepilogo Attacchi
@@ -614,9 +614,9 @@ Non usare mai per:
 
 ### Cheatsheets Collegate
 
-- [Hashcat](../Hashcat/README.md)
-- [Wireshark](../Wireshark/README.md)
-- [Linux Commands](../Linux-Commands/README.md)
+- [Hashcat](../Hashcat/translations/README.it.md)
+- [Wireshark](../Wireshark/translations/README.it.md)
+- [Linux Commands](../Linux-Commands/translations/README.it.md)
 
 ---
 

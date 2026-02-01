@@ -27,16 +27,16 @@
 │                    METODOLOGIA DI ATTACCO AD                            │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│   FASE 1: Enumerazione      FASE 2: Accesso Iniziale   FASE 3: PrivEsc  │
-│   ├── Scansione di Rete     ├── Password Spray         ├── Kerberoast   │
-│   ├── Enum LDAP             ├── LLMNR Poisoning        ├── AS-REP       │
-│   ├── Enum Utenti           └── NTLM Relay             └── ACL Abuse    │
+│   PHASE 1: Enumeration     PHASE 2: Initial Access    PHASE 3: PrivEsc │
+│   ├── Network Scan         ├── Password Spray         ├── Kerberoast   │
+│   ├── LDAP Enum            ├── LLMNR Poison           ├── AS-REP       │
+│   ├── User Enum            └── NTLM Relay             └── ACL Abuse    │
 │   └── BloodHound                                                        │
 │                                                                         │
-│   FASE 4: Movimento Lat.    FASE 5: Persistenza        FASE 6: Dominio  │
-│   ├── Pass-the-Hash         ├── Golden Ticket          ├── DCSync       │
-│   ├── WinRM/PSExec          ├── Silver Ticket          ├── NTDS.dit     │
-│   └── WMI Exec              └── Skeleton Key           └── Full Pwn!    │
+│   PHASE 4: Lateral Move    PHASE 5: Persistence      PHASE 6: Domain   │
+│   ├── Pass-the-Hash        ├── Golden Ticket         ├── DCSync        │
+│   ├── WinRM/PSExec         ├── Silver Ticket         ├── NTDS.dit      │
+│   └── WMI Exec             └── Skeleton Key          └── Full Pwn!     │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
@@ -480,14 +480,14 @@ GetUserSPNs.py domain.local/user:pass -dc-ip 10.10.10.10 -request
 
 ## 📚 Cheatsheets Collegate
 
-- [BloodHound](../BloodHound/README.md)
-- [Impacket](../Impacket/README.md)
-- [CrackMapExec](../CrackMapExec/README.md)
-- [Rubeus](../Rubeus/README.md)
-- [PowerView](../PowerView/README.md)
-- [Responder](../Responder/README.md)
-- [Evil-WinRM](../Evil-WinRM/README.md)
-- [Mimikatz](../Mimikatz/README.md)
+- [BloodHound](../BloodHound/translations/README.it.md)
+- [Impacket](../Impacket/translations/README.it.md)
+- [CrackMapExec](../CrackMapExec/translations/README.it.md)
+- [Rubeus](../Rubeus/translations/README.it.md)
+- [PowerView](../PowerView/translations/README.it.md)
+- [Responder](../Responder/translations/README.it.md)
+- [Evil-WinRM](../Evil-WinRM/translations/README.it.md)
+- [Mimikatz](../Mimikatz/translations/README.it.md)
 
 ---
 
