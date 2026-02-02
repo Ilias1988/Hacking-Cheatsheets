@@ -22,9 +22,9 @@
 
 * [Cos'è Amass](#-cosè-amass)
 * [Installazione](#-installazione)
-* [Modalità Enumerazione (Enum)](#-modalità-enumerazione)
-* [Modalità Intel](#-modalità-intel)
-* [Modalità DNS](#-modalità-dns)
+* [Enumeration Mode](#-enumeration-mode)
+* [Intel Mode](#-intel-mode)
+* [DNS Mode](#-dns-mode)
 * [Configurazione](#️-configurazione)
 * [Riferimento Rapido](#-riferimento-rapido)
 
@@ -34,7 +34,7 @@
 
 **Amass** è un progetto OWASP per la mappatura della rete e il discovery di asset esterni:
 
-* 🔍 **Enumerazione Sottodomini** - Lo strumento più completo disponibile
+* 🔍 **Enumeration Sottodomini** - Lo strumento più completo disponibile
 * 🏢 **ASN Discovery** - Trova i range IP di un'organizzazione
 * 📡 **DNS Intelligence** - Ricognizione attiva e passiva
 * 🗺️ **Attack Surface Mapping** - Visualizza l'infrastruttura
@@ -68,15 +68,15 @@ amass -version
 
 ---
 
-## 🔍 Modalità Enumerazione
+## 🔍 Enumeration Mode
 
-### Enumerazione Sottodomini Base
+### Enumeration Sottodomini Base
 
 ```bash
-# Enumerazione passiva (nessun contatto diretto con il target)
+# Enumeration passiva (nessun contatto diretto con il target)
 amass enum -passive -d example.com
 
-# Enumerazione attiva (DNS brute forcing)
+# Enumeration attiva (DNS brute forcing)
 amass enum -active -d example.com
 
 # Brute force con wordlist
@@ -106,7 +106,7 @@ amass enum -passive -d example.com -d target.com
 amass enum -passive -df domains.txt -o results.txt
 ```
 
-### Enumerazione Avanzata
+### Enumeration Avanzata
 
 ```bash
 # Imposta timeout (minuti)
@@ -122,7 +122,7 @@ amass enum -passive -d example.com -exclude Google,Bing
 amass enum -passive -d example.com -src
 ```
 
-### Enumerazione Ricorsiva
+### Enumeration Ricorsiva
 
 ```bash
 # Abilita la ricerca ricorsiva
@@ -134,9 +134,9 @@ amass enum -passive -d example.com -max-depth 3
 
 ---
 
-## 🏢 Modalità Intel
+## 🏢 Intel Mode
 
-> La modalità Intel scopre domini radice, ASN e range CIDR associati alle organizzazioni.
+> La intel mode scopre domini radice, ASN e range CIDR associati alle organizzazioni.
 
 ### Trovare Asset di un'Organizzazione
 
@@ -155,7 +155,7 @@ amass intel -whois -d example.com
 # Trova l'ASN per un dominio
 amass intel -d example.com
 
-# Enumerazione per ASN
+# Enumeration per ASN
 amass intel -asn 13335
 amass intel -active -asn 13335
 
@@ -182,7 +182,7 @@ amass intel -active -ip 192.168.1.1-254
 
 ---
 
-## 📡 Modalità DNS
+## 📡 DNS Mode
 
 ### Query DNS
 
@@ -263,7 +263,7 @@ data_sources:
 
 ## 📊 Riferimento Rapido
 
-### Comandi Enumerazione
+### Comandi Enumeration
 
 | Comando | Descrizione |
 | --- | --- |
@@ -278,8 +278,8 @@ data_sources:
 | Comando | Descrizione |
 | --- | --- |
 | `amass intel -org "Azienda"` | Trova asset per nome org |
-| `amass intel -asn 12345` | Enumerazione per ASN |
-| `amass intel -cidr 10.0.0.0/8` | Enumerazione range CIDR |
+| `amass intel -asn 12345` | Enumeration per ASN |
+| `amass intel -cidr 10.0.0.0/8` | Enumeration range CIDR |
 | `amass intel -whois -d domain.com` | WHOIS inverso |
 
 ### Flag Essenziali
@@ -300,7 +300,7 @@ data_sources:
 ## 🎯 Workflow Bug Bounty
 
 ```bash
-# 1. Enumerazione passiva (sicura)
+# 1. Enumeration passiva (sicura)
 amass enum -passive -d target.com -o passive_subs.txt
 
 # 2. Attiva con brute force
@@ -324,9 +324,9 @@ cat all_subdomains.txt | httpx -silent > live_hosts.txt
 - [Amass User Guide](https://github.com/owasp-amass/amass/blob/master/doc/user_guide.md)
 
 ### Cheatsheets Collegate
-- [Bug Bounty Methodology](../Bug-Bounty-Methodology/README.md)
-- [Subfinder](../Subfinder/README.md)
-- [httpx](../httpx/README.md)
+- [Bug Bounty Methodology](../Bug-Bounty-Methodology/translations/README.it.md)
+- [Subfinder](../Subfinder/translations/README.it.md)
+- [httpx](../httpx/translations/README.it.md)
 
 ---
 

@@ -23,7 +23,7 @@
 * [Cos'è Arjun](#-cosè-arjun)
 * [Installazione](#-installazione)
 * [Utilizzo di Base](#-utilizzo-di-base)
-* [Modalità di Discovery](#-modalità-di-discovery)
+* [Discovery Mode](#-discovery-mode)
 * [Opzioni Avanzate](#️-opzioni-avanzate)
 * [Opzioni di Output](#-opzioni-di-output)
 * [Riferimento Rapido](#-riferimento-rapido)
@@ -104,7 +104,7 @@ arjun -u https://example.com/api -m JSON
 
 ---
 
-## 🔎 Modalità di Discovery
+## 🔎 Discovery Mode
 
 ### Parametri GET
 
@@ -353,9 +353,9 @@ page, limit, offset
 - [Burp Parameter Names](https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/burp-parameter-names.txt)
 
 ### Cheatsheets Correlate
-- [Bug Bounty Methodology](../Bug-Bounty-Methodology/README.md)
-- [ffuf](../ffuf/README.md)
-- [Burp Suite](../Burp-Suite/README.md)
+- [Bug Bounty Methodology](../Bug-Bounty-Methodology/translations/README.it.md)
+- [ffuf](../ffuf/translations/README.it.md)
+- [Burp Suite](../Burp-Suite/translations/README.it.md)
 
 ---
 
