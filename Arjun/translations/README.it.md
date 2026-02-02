@@ -23,7 +23,7 @@
 * [Cos'è Arjun](#-cosè-arjun)
 * [Installazione](#-installazione)
 * [Utilizzo di Base](#-utilizzo-di-base)
-* [Modalità di Discovery](#-modalità-di-discovery)
+* [Discovery Mode](#-discovery-mode)
 * [Opzioni Avanzate](#️-opzioni-avanzate)
 * [Opzioni di Output](#-opzioni-di-output)
 * [Riferimento Rapido](#-riferimento-rapido)
@@ -104,7 +104,7 @@ arjun -u https://example.com/api -m JSON
 
 ---
 
-## 🔎 Modalità di Discovery
+## 🔎 Discovery Mode
 
 ### Parametri GET
 

@@ -22,9 +22,9 @@
 
 * [Cos'è Aircrack-ng](#-cosè-aircrack-ng)
 * [Installazione](#-installazione)
-* [Modalità Monitor](#-modalità-monitor)
-* [Ricognizione (airodump-ng)](#-ricognizione-airodump-ng)
-* [Deautenticazione (aireplay-ng)](#-deautenticazione-aireplay-ng)
+* [Monitor Mode](#-monitor-mode)
+* [Reconnaissance (airodump-ng)](#-reconnaissance-airodump-ng)
+* [Deauthentication (aireplay-ng)](#-deauthentication-aireplay-ng)
 * [Cracking WPA/WPA2](#-cracking-wpawpa2)
 * [Cracking WEP](#-cracking-wep)
 * [Attacchi WPS](#-attacchi-wps)
@@ -41,14 +41,14 @@
 * 📡 **airodump-ng** - Cattura pacchetti e rilevamento reti
 * 💥 **aireplay-ng** - Iniezione di pacchetti e attacchi deauth
 * 🔓 **aircrack-ng** - Cracker per chiavi WEP e WPA/WPA2
-* 🔧 **airmon-ng** - Abilita/disabilita la modalità monitor
+* 🔧 **airmon-ng** - Abilita/disabilita la monitor mode
 * 📝 **airodecap-ng** - Decifra il traffico catturato
 
 ### Requisiti
 
 | Requisito | Descrizione |
 | --- | --- |
-| **Adattatore Wireless** | Deve supportare modalità monitor e packet injection |
+| **Adattatore Wireless** | Deve supportare monitor mode e packet injection |
 | **Chipset Supportati** | Atheros, Ralink, Realtek (alcuni) |
 | **Sistema Operativo** | Linux raccomandato (Kali) |
 
@@ -109,7 +109,7 @@ iw dev
 airmon-ng
 ```
 
-### Abilita Modalità Monitor
+### Abilita Monitor Mode
 
 ```bash
 # Metodo 1: airmon-ng (raccomandato)
@@ -134,7 +134,7 @@ sudo systemctl stop NetworkManager
 sudo killall wpa_supplicant
 ```
 
-### Disabilita Modalità Monitor
+### Disabilita Monitor Mode
 
 ```bash
 # Ferma la monitor mode
@@ -539,8 +539,8 @@ rm -f handshake-*.cap handshake-*.csv handshake-*.kismet.csv
 
 | Scopo | Comando |
 | --- | --- |
-| Avvia modalità monitor | `airmon-ng start wlan0` |
-| Ferma modalità monitor | `airmon-ng stop wlan0mon` |
+| Avvia monitor mode | `airmon-ng start wlan0` |
+| Ferma monitor mode | `airmon-ng stop wlan0mon` |
 | Uccidi processi che interferiscono | `airmon-ng check kill` |
 | Scansione reti | `airodump-ng wlan0mon` |
 | Prendi di mira una rete specifica | `airodump-ng -c CH --bssid BSSID -w file wlan0mon` |
