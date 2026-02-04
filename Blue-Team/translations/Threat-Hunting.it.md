@@ -11,82 +11,82 @@
 
 ---
 
-## 🎯 Threat Hunting Process
+## 🎯 Processo di Threat Hunting
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│ 1. HYPOTHESIS│────▶│ 2. COLLECT  │────▶│ 3. ANALYZE  │────▶│ 4. RESPOND  │
-│   (Theory)   │     │   (Data)    │     │   (Hunt)    │     │   (Action)  │
+│ 1. IPOTESI  │────▶│ 2. RACCOLTA │────▶│ 3. ANALISI  │────▶│ 4. RISPOSTA │
+│ (Teoria)    │     │ (Dati)      │     │ (Hunt)      │     │ (Azione)    │
 └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
                                                                     │
                           ┌─────────────┐                          │
-                          │ 5. DOCUMENT │◀─────────────────────────┘
-                          │   (Learn)   │
+                          │ 5. DOCUMENTA│◀─────────────────────────┘
+                          │ (Apprendi)  │
                           └─────────────┘
 ```
 
 ---
 
-## 📋 Hypothesis Examples
+## 📋 Esempi di Ipotesi
 
-| Category | Hypothesis |
-|----------|------------|
-| **Initial Access** | Attackers may use phishing to deliver malware |
-| **Persistence** | Attackers may create scheduled tasks for persistence |
-| **Credential** | Attackers may dump LSASS to harvest credentials |
-| **Lateral** | Attackers may use RDP to move laterally |
-| **Exfiltration** | Attackers may use DNS tunneling to exfil data |
+| Categoria | Ipotesi |
+|-----------|---------|
+| **Initial Access** | Gli attaccanti potrebbero usare phishing per introdurre un malware |
+| **Persistence** | Gli attaccanti potrebbero creare attività pianificate per la persistenza |
+| **Credential** | Gli attaccanti potrebbero effettuare il dump di LSASS per raccogliere credenziali |
+| **Lateral** | Gli attaccanti potrebbero usare RDP per compiere un Lateral Movement |
+| **Exfiltration** | Gli attaccanti potrebbero usare DNS tunneling per rubare dati |
 
 ---
 
-## 🔍 Hunting Techniques
+## 🔍 Tecniche di Hunting
 
-### Hunt for Persistence
+### Ricerca di Persistence
 
-#### Windows Registry Run Keys
+#### Chiavi Run del Registro di Windows
 ```powershell
-# Query all Run keys
+# Query di tutte le chiavi Run
 Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" -ErrorAction SilentlyContinue
 Get-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" -ErrorAction SilentlyContinue
 Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" -ErrorAction SilentlyContinue
 ```
 
-#### Scheduled Tasks
+#### Attività Pianificate
 ```powershell
-# List all scheduled tasks
+# Elenca tutte le attività pianificate
 Get-ScheduledTask | Where-Object {$_.State -ne "Disabled"} | 
     Select-Object TaskName, TaskPath, State | Format-Table
 
-# Look for suspicious tasks (non-Microsoft)
+# Cerca attività sospette (non Microsoft)
 Get-ScheduledTask | Where-Object {$_.Author -notlike "*Microsoft*"} | 
     Select-Object TaskName, Author, State
 ```
 
-#### Services
+#### Servizi
 ```powershell
-# Non-signed services
+# Servizi non firmati
 Get-WmiObject Win32_Service | Where-Object {$_.PathName -notlike "*Windows*"} | 
     Select-Object Name, PathName, StartMode, State
 ```
 
-### Hunt for Lateral Movement
+### Ricerca di Lateral Movement
 
-#### RDP Connections
+#### Connessioni RDP
 ```powershell
-# RDP sessions (Event 4624 Type 10)
+# Sessioni RDP (Evento 4624 Tipo 10)
 Get-WinEvent -FilterHashtable @{LogName='Security';ID=4624} | 
     Where-Object {$_.Properties[8].Value -eq 10} |
     Select-Object TimeCreated, @{N='User';E={$_.Properties[5].Value}}, @{N='Source';E={$_.Properties[18].Value}}
 ```
 
-#### Network Connections
+#### Connessioni di Rete
 ```powershell
-# Current connections
+# Connessioni attuali
 Get-NetTCPConnection -State Established | 
     Select-Object LocalAddress, LocalPort, RemoteAddress, RemotePort, OwningProcess | 
     Format-Table
 
-# With process names
+# Con nomi dei processi
 Get-NetTCPConnection | ForEach-Object {
     $proc = Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue
     [PSCustomObject]@{
@@ -98,29 +98,29 @@ Get-NetTCPConnection | ForEach-Object {
 } | Format-Table
 ```
 
-### Hunt for Credential Access
+### Ricerca di Accesso alle Credenziali
 
-#### LSASS Access
+#### Accesso a LSASS
 ```powershell
-# Sysmon Event 10 - LSASS access
+# Evento Sysmon 10 - accesso a LSASS
 Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-Sysmon/Operational';ID=10} |
     Where-Object {$_.Properties[8].Value -like "*lsass.exe"} |
     Select-Object TimeCreated, @{N='Source';E={$_.Properties[4].Value}}
 ```
 
-### Hunt for Execution
+### Ricerca di Esecuzione
 
-#### Encoded PowerShell
+#### PowerShell codificato
 ```powershell
-# PowerShell with encoding
+# PowerShell con encoding
 Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-PowerShell/Operational';ID=4104} |
     Where-Object {$_.Message -match "FromBase64" -or $_.Message -match "-enc"} |
     Select-Object TimeCreated, Message
 ```
 
-#### Suspicious Parent-Child
+#### Parent-Child sospetti
 ```powershell
-# Office spawning cmd/powershell
+# Office che genera cmd/powershell
 Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-Sysmon/Operational';ID=1} |
     Where-Object {
         ($_.Properties[20].Value -match "WINWORD|EXCEL|OUTLOOK") -and
@@ -130,7 +130,7 @@ Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-Sysmon/Operational';I
 
 ---
 
-## 🐧 Linux Threat Hunting
+## 🐧 Threat Hunting su Linux
 
 ### Persistence
 ```bash
@@ -138,107 +138,107 @@ Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-Sysmon/Operational';I
 cat /etc/crontab
 for user in $(cut -f1 -d: /etc/passwd); do crontab -l -u $user 2>/dev/null; done
 
-# SSH authorized keys
+# Chiavi SSH autorizzate
 find / -name "authorized_keys" 2>/dev/null
 
-# Startup scripts
+# Script di avvio
 ls -la /etc/init.d/
 systemctl list-unit-files --type=service | grep enabled
 
-# SUID binaries
+# Ricerca di binari con bit SUID impostato (potenziale PrivEsc)
 find / -perm -4000 -type f 2>/dev/null
 ```
 
-### Network
+### Rete
 ```bash
-# Listening ports
+# Porte in ascolto
 ss -tulnp
 netstat -tulnp
 
-# Established connections
+# Connessioni stabilite
 ss -tnp state established
 lsof -i -P -n | grep ESTABLISHED
 
-# Unusual DNS
+# DNS insoliti
 tcpdump -i any port 53 -w dns.pcap
 ```
 
-### Processes
+### Processi
 ```bash
-# All processes with full command
+# Tutti i processi con comando completo
 ps auxwww
 
-# Process tree
+# Albero dei processi
 pstree -p
 
-# Hidden processes
+# Processi nascosti
 ps aux | awk '{print $2}' | xargs -I{} ls -la /proc/{}/exe 2>/dev/null
 
-# Recently modified binaries
+# Binari modificati di recente
 find /usr/bin /usr/sbin -mtime -7 2>/dev/null
 ```
 
 ---
 
-## 📊 IOC Hunting
+## 📊 Ricerca IOC
 
-### Hash Hunting
+### Ricerca Hash
 ```powershell
-# Calculate hashes
-Get-FileHash -Algorithm SHA256 C:\suspicious.exe
+# Calcola hash
+Get-FileHash -Algorithm SHA256 C:\sospetto.exe
 
-# Search for known bad hash
+# Cerca hash noto malevolo
 $badHash = "abc123..."
 Get-ChildItem -Path C:\ -Recurse -File | Get-FileHash -Algorithm SHA256 |
     Where-Object {$_.Hash -eq $badHash}
 ```
 
-### IP/Domain Hunting
+### Ricerca IP/Dominio
 ```powershell
-# DNS cache
-Get-DnsClientCache | Where-Object {$_.Name -like "*suspicious*"}
+# Cache DNS
+Get-DnsClientCache | Where-Object {$_.Name -like "*sospetto*"}
 
-# Connection to known bad IP
+# Connessione a IP noto malevolo
 Get-NetTCPConnection | Where-Object {$_.RemoteAddress -eq "1.2.3.4"}
 ```
 
 ---
 
-## 🛠️ Tools
+## 🛠️ Strumenti
 
-| Tool | Purpose |
-|------|---------|
-| **Velociraptor** | Endpoint hunting at scale |
-| **OSQuery** | SQL-based endpoint queries |
-| **KAPE** | Triage collection |
-| **Chainsaw** | Fast Windows log analysis |
-| **DeepBlueCLI** | PowerShell threat hunting |
+| Strumento | Scopo |
+|-----------|-------|
+| **Velociraptor** | Endpoint hunting su larga scala |
+| **OSQuery** | Query SQL sugli endpoint |
+| **KAPE** | Raccolta triage |
+| **Chainsaw** | Analisi rapida dei log Windows |
+| **DeepBlueCLI** | Threat hunting su PowerShell |
 
 ---
 
-## 📋 Quick Hunt Checklist
+## 📋 Checklist Rapida di Hunting
 
 ```markdown
-□ Check autorun locations (registry, services, tasks)
-□ Review recent process creation (Event 4688, Sysmon 1)
-□ Analyze network connections
-□ Look for encoded commands
-□ Search for LSASS access
-□ Check for unusual parent-child process relationships
-□ Review PowerShell logs
-□ Look for lateral movement indicators
+□ Controlla le location di autorun (registro, servizi, attività)
+□ Rivedi la creazione recente di processi (Evento 4688, Sysmon 1)
+□ Analizza le connessioni di rete
+□ Cerca comandi codificati
+□ Cerca accesso a LSASS
+□ Controlla relazioni parent-child di processi insolite
+□ Rivedi i log di PowerShell
+□ Cerca indicatori di lateral movement
 ```
 
 ---
 
-## 🔗 Related Cheatsheets
+## 🔗 Cheatsheet Correlate
 
-- [Log Analysis](./Log-Analysis.md)
-- [SIEM Detection](./SIEM-Detection.md)
-- [Sigma Rules](./Sigma-Rules.md)
+- [Analisi Log](./Log-Analysis.it.md)
+- [Rilevamento SIEM](./SIEM-Detection.it.md)
+- [Regole Sigma](./Sigma-Rules.it.md)
 
 ---
 
-**Previous:** [← SIEM Detection](./SIEM-Detection.md)
+**Precedente:** [← SIEM Detection](./SIEM-Detection.it.md)
 
-**Next:** [Sigma Rules →](./Sigma-Rules.md)
+**Successivo:** [Sigma Rules →](./Sigma-Rules.it.md)
