@@ -241,4 +241,4 @@ Get-NetTCPConnection | Where-Object {$_.RemoteAddress -eq "1.2.3.4"}
 
 **Previous:** [← SIEM Detection](./SIEM-Detection.md)
 
-**Next:** [Malware Analysis →](./Malware-Analysis.md)
+**Next:** [Sigma Rules →](./Sigma-Rules.md)
