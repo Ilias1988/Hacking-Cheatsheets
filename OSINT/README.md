@@ -52,7 +52,7 @@
 ### Search Engines
 | Tool | URL | Purpose |
 |------|-----|---------|
-| **Google** | google.com | General search |
+| **Google** | https://google.com | General search |
 | **Bing** | bing.com | Alternative search |
 | **DuckDuckGo** | duckduckgo.com | Privacy-focused |
 | **Yandex** | yandex.com | Russian search (good for images) |
@@ -83,6 +83,7 @@
 | **Social Searcher** | social-searcher.com | Social media search |
 | **Namechk** | namechk.com | Username availability |
 | **KnowEm** | knowem.com | Username check |
+| **Xquik** | https://github.com/Xquik-dev/x-twitter-scraper | Independent X (Twitter) data API for search, follower export, monitors, and MCP. |
 
 ### Domain/IP Tools
 | Tool | URL | Purpose |
