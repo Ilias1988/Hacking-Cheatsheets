@@ -32,11 +32,11 @@ exiftool -all= image.jpg
 ```
 
 ### Online Tools
-```
-- Jeffrey's EXIF Viewer: exif.regex.info
-- Pic2Map: pic2map.com
-- FotoForensics: fotoforensics.com
-```
+- [Pic2Map](https://www.pic2map.com/)
+- [FotoForensics](https://fotoforensics.com/)
+- [Metadata Remover Viewer](https://metadataremover.ai/metadata-viewer) — Browser-local EXIF/IPTC/XMP inspection.
+
+> Metadata can be edited or removed; corroborate it with other evidence.
 
 ---
 
