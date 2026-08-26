@@ -34,7 +34,7 @@ exiftool -all= image.jpg
 ### Online Tools
 - [Pic2Map](https://www.pic2map.com/)
 - [FotoForensics](https://fotoforensics.com/)
-- [Metadata Remover Viewer](https://metadataremover.ai/metadata-viewer) — Browser-local EXIF/IPTC/XMP inspection.
+- [Metadata Remover Viewer](https://metadataremover.ai/metadata-viewer) — Third-party browser-based EXIF/IPTC/XMP inspection tool. Test with non-sensitive files.
 
 > Metadata can be edited or removed; corroborate it with other evidence.
 
