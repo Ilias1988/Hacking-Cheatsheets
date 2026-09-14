@@ -11,6 +11,7 @@
 | **TinEye** | tineye.com | Exact matches |
 | **Bing Images** | bing.com/images | Alternative |
 | **PimEyes** | pimeyes.com | Face recognition |
+| **Face2social** | face2social.com | Social profiles |
 
 ---
 
