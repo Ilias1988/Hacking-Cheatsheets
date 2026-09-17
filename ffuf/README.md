@@ -1,260 +1,616 @@
-# ffuf — Web Fuzzing Guide
+# 🚀 ffuf - Complete Cheatsheet
 
-> **Last verified:** 2026-09-17  
-> **Tested version:** ffuf 2.3.0  
-> **Evidence:** Official source checked + CLI smoke-tested  
-> **Test method:** Official Windows release, SHA-256 verified; `-V`, `-h`, and 51 documented flags checked  
-> **Lab status:** Examples below are syntax-validated, not target-behaviour tests
-
-[ffuf](https://github.com/ffuf/ffuf) places wordlist values wherever a
-keyword such as `FUZZ` appears in an HTTP request. It is useful for authorized
-content discovery, virtual-host discovery, parameter testing, and request-body
-fuzzing.
-
-Use it only on systems you own or have explicit permission to test. Start with
-conservative concurrency and rate limits; fuzzing can create substantial load.
-
-## Install and Verify
-
-Prefer the official release page or a package route listed by the maintainer:
-
-```bash
-# Go
-go install github.com/ffuf/ffuf/v2@latest
-
-# Windows
-winget install ffuf.ffuf
-scoop install ffuf
-
-# macOS
-brew install ffuf
+```
+   __  __        __ 
+  / _|/ _|_   _ / _|
+ | |_| |_| | | | |_ 
+ |  _|  _| |_| |  _|
+ |_| |_|  \__,_|_|  
+                    
+   Fuzz Faster U Fool
 ```
 
-Verify the installed build before relying on this guide:
+<p align="center">
+  <img src="https://img.shields.io/badge/ffuf-Web_Fuzzer-red?style=for-the-badge" alt="ffuf">
+  <img src="https://img.shields.io/badge/Fast-Fuzzing-orange?style=for-the-badge" alt="Fast">
+  <img src="https://img.shields.io/badge/Bug-Bounty-blue?style=for-the-badge" alt="Bug Bounty">
+  <img src="https://img.shields.io/badge/Go-Language-green?style=for-the-badge" alt="Go">
+</p>
 
+<p align="center">
+  <b>⚡ The fastest web fuzzer written in Go</b>
+</p>
+
+---
+
+## 📋 Table of Contents
+
+- [Introduction](#-introduction)
+- [Installation](#-installation)
+- [Basic Syntax](#-basic-syntax)
+- [Directory Fuzzing](#-directory-fuzzing)
+- [Subdomain Fuzzing](#-subdomain-fuzzing)
+- [Parameter Fuzzing](#-parameter-fuzzing)
+- [POST Data Fuzzing](#-post-data-fuzzing)
+- [Filtering & Matching](#-filtering--matching)
+- [Advanced Features](#-advanced-features)
+- [Real-World Examples](#-real-world-examples)
+- [Quick Reference](#-quick-reference)
+- [Tips & Best Practices](#-tips--best-practices)
+- [Resources](#-resources)
+
+---
+
+## 🎯 Introduction
+
+**ffuf** (Fuzz Faster U Fool) is a fast web fuzzer written in Go. It's the go-to tool for directory brute-forcing, virtual host discovery, and parameter fuzzing in bug bounty hunting.
+
+### Key Features
+
+| Feature | Description |
+|---------|-------------|
+| **Speed** | Extremely fast (Go-based) |
+| **Flexible** | Fuzz any part of HTTP request |
+| **Filtering** | Multiple filter/match options |
+| **Recursion** | Recursive scanning support |
+| **Output** | Multiple output formats |
+| **Easy** | Simple and intuitive syntax |
+
+### ffuf vs Other Tools
+
+| Feature | ffuf | Gobuster | dirb |
+|---------|------|----------|------|
+| **Speed** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ |
+| **Flexibility** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
+| **POST fuzzing** | ✅ Yes | ❌ No | ❌ No |
+| **Recursion** | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Filters** | Many | Limited | Limited |
+
+---
+
+## 📥 Installation
+
+### Using Go
+```bash
+go install github.com/ffuf/ffuf/v2@latest
+```
+
+### Kali Linux
+```bash
+sudo apt install ffuf
+```
+
+### Binary Download
+```bash
+# Download from releases
+https://github.com/ffuf/ffuf/releases
+
+# Linux
+wget https://github.com/ffuf/ffuf/releases/download/v2.x.x/ffuf_2.x.x_linux_amd64.tar.gz
+tar xzf ffuf_2.x.x_linux_amd64.tar.gz
+sudo mv ffuf /usr/local/bin/
+```
+
+### Verify Installation
 ```bash
 ffuf -V
 ffuf -h
 ```
 
-For manually downloaded releases, verify the archive against the matching
-`checksums.txt` file on the [official release](https://github.com/ffuf/ffuf/releases).
+---
 
-## Core Model
+## ⌨️ Basic Syntax
 
-The minimal form is:
-
+### General Syntax
 ```bash
-ffuf -w wordlist.txt -u https://example.test/FUZZ
+ffuf [options] -u <URL/FUZZ> -w <wordlist>
 ```
 
-`FUZZ` may be placed in the URL, a header, or request data. Custom keywords let
-multiple wordlists target different positions:
+### The FUZZ Keyword
+
+The **FUZZ** keyword tells ffuf where to inject words from the wordlist.
 
 ```bash
-ffuf -w users.txt:USER -w values.txt:VALUE \
-  -u 'https://example.test/profile?user=USER&view=VALUE' \
-  -mode clusterbomb
+# In URL path
+ffuf -u https://target.com/FUZZ -w wordlist.txt
+
+# In subdomain
+ffuf -u https://FUZZ.target.com -w wordlist.txt
+
+# In parameter value
+ffuf -u https://target.com/page?id=FUZZ -w wordlist.txt
+
+# In POST data
+ffuf -u https://target.com/login -X POST -d "user=FUZZ&pass=test" -w wordlist.txt
 ```
 
-The main multi-wordlist modes are `clusterbomb`, `pitchfork`, and `sniper`.
-Choose the mode deliberately because it changes the number and pairing of
-requests.
+### Essential Options
 
-## Safe Baseline
-
-This baseline enables auto-calibration, limits request rate and concurrency,
-and records reproducible JSON output:
-
-```bash
-ffuf -w wordlist.txt \
-  -u https://example.test/FUZZ \
-  -ac -rate 20 -t 10 -timeout 10 \
-  -o ffuf-results.json -of json
-```
-
-`-t` controls concurrent workers, while `-rate` caps requests per second.
-`-p 0.2` adds a fixed delay; a range such as `-p 0.2-0.8` adds jitter. Respect
-the written rules of engagement rather than treating these values as universal.
-
-## Content Discovery
-
-```bash
-# Paths
-ffuf -w content.txt -u https://example.test/FUZZ -ac
-
-# Append selected extensions to each word
-ffuf -w content.txt -u https://example.test/FUZZ \
-  -e .php,.html,.txt -ac
-
-# Match selected status codes
-ffuf -w content.txt -u https://example.test/FUZZ \
-  -mc 200,204,301,302,307,401,403
-```
-
-A `403` can be a useful discovery result; it is not proof that access controls
-are bypassable. Validate each result manually and record the exact request.
-
-## Virtual-Host Discovery
-
-```bash
-ffuf -w vhosts.txt \
-  -u https://example.test/ \
-  -H 'Host: FUZZ.example.test' \
-  -ac -ach
-```
-
-`-ach` performs auto-calibration per host. This tests HTTP virtual-host routing;
-it is not DNS enumeration. Putting `FUZZ` directly in the hostname works only
-when those names already resolve, for example through wildcard DNS or an
-authorized lab configuration.
-
-## Parameters and Request Bodies
-
-```bash
-# Parameter value
-ffuf -w ids.txt -u 'https://example.test/item?id=FUZZ' -ac
-
-# Parameter name
-ffuf -w parameters.txt -u 'https://example.test/search?FUZZ=test' -ac
-
-# Form body
-ffuf -w values.txt -u https://example.test/profile \
-  -X POST -H 'Content-Type: application/x-www-form-urlencoded' \
-  -d 'display_name=FUZZ'
-
-# JSON body
-ffuf -w values.txt -u https://example.test/api/profile \
-  -X POST -H 'Content-Type: application/json' \
-  -d '{"display_name":"FUZZ"}'
-```
-
-Do not use authentication, password, or account-lockout examples unless that
-activity is explicitly authorized and the safety controls are agreed in
-advance.
-
-## Raw Requests
-
-Export a request from an intercepting proxy, replace the intended value with
-`FUZZ`, then run:
-
-```bash
-ffuf -request request.txt -request-proto https \
-  -w values.txt -ac -rate 10
-```
-
-Keep real session tokens and customer data out of the repository. Store raw
-requests and results in an engagement-specific encrypted workspace.
-
-## Matchers and Filters
-
-Matchers select responses to display. Filters remove known noise.
-
-| Signal | Match | Filter |
-|---|---|---|
-| HTTP status | `-mc` | `-fc` |
-| Response size | `-ms` | `-fs` |
-| Word count | `-mw` | `-fw` |
-| Line count | `-ml` | `-fl` |
-| Time to first byte | `-mt` | `-ft` |
-| Regular expression | `-mr` | `-fr` |
-
-Examples:
-
-```bash
-# Remove a uniform not-found response after measuring it
-ffuf -w content.txt -u https://example.test/FUZZ -fs 1234
-
-# Match a stable marker in the response body
-ffuf -w values.txt -u 'https://example.test/item?id=FUZZ' \
-  -mr 'Item details'
-
-# Let ffuf derive baseline filters
-ffuf -w content.txt -u https://example.test/FUZZ -ac
-```
-
-Avoid copying a filter size from another target. First send random nonexistent
-paths, compare several responses, and confirm that the chosen filter does not
-hide valid results.
-
-## Recursion
-
-Recursion is supported only when the URL ends in `FUZZ`:
-
-```bash
-ffuf -w content.txt -u https://example.test/FUZZ \
-  -recursion -recursion-depth 2 \
-  -recursion-strategy default \
-  -maxtime 600 -maxtime-job 120 \
-  -rate 20 -t 10
-```
-
-`default` follows discovered redirects; `greedy` recurses into all matches.
-Bound depth and runtime to prevent accidental request explosions.
-
-## Proxy and Replay
-
-```bash
-# Send every request through a proxy
-ffuf -w content.txt -u https://example.test/FUZZ \
-  -x http://127.0.0.1:8080
-
-# Replay only matched requests through a proxy
-ffuf -w content.txt -u https://example.test/FUZZ \
-  -replay-proxy http://127.0.0.1:8080
-```
-
-`-x` is the proxy option in ffuf. It has a different meaning in some other
-tools, so do not transfer flags between commands without checking `ffuf -h`.
-
-## Output and Evidence
-
-```bash
-# JSON
-ffuf -w content.txt -u https://example.test/FUZZ \
-  -o results.json -of json
-
-# HTML report
-ffuf -w content.txt -u https://example.test/FUZZ \
-  -o results.html -of html
-
-# Do not create an empty result file
-ffuf -w content.txt -u https://example.test/FUZZ \
-  -o results.json -of json -or
-
-# Diagnostic log
-ffuf -w content.txt -u https://example.test/FUZZ \
-  -debug-log ffuf-debug.log
-```
-
-For reproducibility, record the exact ffuf version, wordlist name and hash,
-command, UTC time, authorized scope, filters, and representative raw requests.
-
-## Troubleshooting
-
-| Symptom | Check |
-|---|---|
-| Every word matches | Compare random nonexistent paths; use `-ac` or a measured filter |
-| Nothing matches | Remove filters and inspect a known request manually |
-| HTTPS virtual hosts fail | Confirm DNS/IP routing, TLS certificate, and intended Host header |
-| Too many requests | Lower `-rate` and `-t`; set `-maxtime` and `-maxtime-job` |
-| Redirect target is missing | Add `-r` only if following redirects is in scope |
-| Encoded path behaves unexpectedly | Compare normal encoding with `-raw`; do not assume they are equivalent |
-
-## Verification Notes
-
-The repository smoke test downloads the official ffuf 2.3.0 release for the
-runner platform, verifies a pinned SHA-256 digest, checks all flags referenced
-by this guide, and deletes both the archive and extracted binary. It does not
-send requests to a target and therefore does not claim behavioural lab
-validation.
-
-## Official References
-
-- [ffuf repository and maintained usage](https://github.com/ffuf/ffuf)
-- [Official releases and checksums](https://github.com/ffuf/ffuf/releases)
-- [Configuration documentation](https://github.com/ffuf/ffuf/wiki/Configuration)
+| Option | Description |
+|--------|-------------|
+| `-u` | Target URL with FUZZ keyword |
+| `-w` | Wordlist path |
+| `-o` | Output file |
+| `-of` | Output format (json, csv, html) |
+| `-t` | Number of threads (default: 40) |
+| `-p` | Delay between requests |
+| `-r` | Follow redirects |
+| `-v` | Verbose output |
+| `-s` | Silent mode |
 
 ---
 
-[← Main index](../README.md) · [Tool testing policy](../docs/TOOL-TESTING.md) · [Safe use](../docs/SAFE_USE.md)
+## 📁 Directory Fuzzing
+
+### Basic Directory Brute Force
+
+```bash
+# Basic directory fuzzing
+ffuf -u https://target.com/FUZZ -w /usr/share/wordlists/dirb/common.txt
+
+# With file extensions
+ffuf -u https://target.com/FUZZ -w wordlist.txt -e .php,.html,.txt,.bak
+
+# Multiple extensions
+ffuf -u https://target.com/FUZZ -w wordlist.txt -e .php,.asp,.aspx,.jsp,.html
+```
+
+### Recursive Scanning
+
+```bash
+# Enable recursion
+ffuf -u https://target.com/FUZZ -w wordlist.txt -recursion
+
+# Recursion depth
+ffuf -u https://target.com/FUZZ -w wordlist.txt -recursion -recursion-depth 2
+
+# Recursion with strategy
+ffuf -u https://target.com/FUZZ -w wordlist.txt -recursion -recursion-strategy greedy
+```
+
+### Filter by Status Code
+
+```bash
+# Match only 200 responses
+ffuf -u https://target.com/FUZZ -w wordlist.txt -mc 200
+
+# Match multiple codes
+ffuf -u https://target.com/FUZZ -w wordlist.txt -mc 200,301,302,403
+
+# Filter out 404s (default behavior change)
+ffuf -u https://target.com/FUZZ -w wordlist.txt -fc 404
+
+# Match all, filter 404
+ffuf -u https://target.com/FUZZ -w wordlist.txt -mc all -fc 404
+```
+
+### Popular Wordlists
+
+```bash
+# SecLists
+/usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
+/usr/share/seclists/Discovery/Web-Content/common.txt
+/usr/share/seclists/Discovery/Web-Content/raft-large-directories.txt
+
+# Dirb
+/usr/share/wordlists/dirb/common.txt
+/usr/share/wordlists/dirb/big.txt
+```
+
+---
+
+## 🌐 Subdomain Fuzzing
+
+### Virtual Host Discovery
+
+```bash
+# Basic subdomain fuzzing
+ffuf -u https://target.com -H "Host: FUZZ.target.com" -w subdomains.txt
+
+# Filter by response size (remove default page)
+ffuf -u https://target.com -H "Host: FUZZ.target.com" -w subdomains.txt -fs 1234
+
+# With specific wordlist
+ffuf -u https://target.com -H "Host: FUZZ.target.com" \
+    -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
+```
+
+### DNS Subdomain Fuzzing
+
+```bash
+# Subdomain in URL
+ffuf -u https://FUZZ.target.com -w subdomains.txt
+
+# With resolver
+ffuf -u https://FUZZ.target.com -w subdomains.txt -r
+```
+
+### Common Subdomain Wordlists
+
+```bash
+# SecLists DNS
+/usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
+/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt
+/usr/share/seclists/Discovery/DNS/namelist.txt
+```
+
+---
+
+## 🔍 Parameter Fuzzing
+
+### GET Parameter Fuzzing
+
+```bash
+# Fuzz parameter name
+ffuf -u "https://target.com/page?FUZZ=test" -w params.txt
+
+# Fuzz parameter value
+ffuf -u "https://target.com/page?id=FUZZ" -w values.txt
+
+# Multiple parameters
+ffuf -u "https://target.com/page?W1=test&W2=test" -w params.txt:W1 -w values.txt:W2
+```
+
+### Parameter Discovery
+
+```bash
+# Find hidden parameters
+ffuf -u "https://target.com/page?FUZZ=test" \
+    -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt \
+    -fs 1234
+```
+
+---
+
+## 📝 POST Data Fuzzing
+
+### Basic POST Fuzzing
+
+```bash
+# POST with form data
+ffuf -u https://target.com/login -X POST \
+    -d "username=FUZZ&password=test" \
+    -w usernames.txt
+
+# POST with content type
+ffuf -u https://target.com/login -X POST \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -d "username=FUZZ&password=test" \
+    -w usernames.txt
+```
+
+### JSON POST Fuzzing
+
+```bash
+# JSON POST data
+ffuf -u https://target.com/api/login -X POST \
+    -H "Content-Type: application/json" \
+    -d '{"username":"FUZZ","password":"test"}' \
+    -w usernames.txt
+```
+
+### Multiple Wordlists (Credential Stuffing)
+
+```bash
+# Username and password fuzzing
+ffuf -u https://target.com/login -X POST \
+    -d "username=USER&password=PASS" \
+    -w users.txt:USER \
+    -w passwords.txt:PASS \
+    -fc 401
+
+# Mode: clusterbomb (all combinations)
+ffuf -u https://target.com/login -X POST \
+    -d "user=USER&pass=PASS" \
+    -w users.txt:USER \
+    -w passes.txt:PASS \
+    -mode clusterbomb
+```
+
+---
+
+## 🎯 Filtering & Matching
+
+### Filter Options
+
+| Option | Description | Example |
+|--------|-------------|---------|
+| `-fc` | Filter by status code | `-fc 404,403` |
+| `-fs` | Filter by response size | `-fs 1234` |
+| `-fw` | Filter by word count | `-fw 100` |
+| `-fl` | Filter by line count | `-fl 50` |
+| `-ft` | Filter by time (ms) | `-ft 5000` |
+| `-fr` | Filter by regex | `-fr "error"` |
+
+### Match Options
+
+| Option | Description | Example |
+|--------|-------------|---------|
+| `-mc` | Match status codes | `-mc 200,301` |
+| `-ms` | Match response size | `-ms 1234` |
+| `-mw` | Match word count | `-mw 100` |
+| `-ml` | Match line count | `-ml 50` |
+| `-mt` | Match time (ms) | `-mt 5000` |
+| `-mr` | Match by regex | `-mr "success"` |
+
+### Filter Examples
+
+```bash
+# Filter 404 and 403
+ffuf -u https://target.com/FUZZ -w wordlist.txt -fc 404,403
+
+# Filter by size (remove default page)
+ffuf -u https://target.com/FUZZ -w wordlist.txt -fs 0,1234
+
+# Filter by words
+ffuf -u https://target.com/FUZZ -w wordlist.txt -fw 10
+
+# Match all, filter specific
+ffuf -u https://target.com/FUZZ -w wordlist.txt -mc all -fc 404
+```
+
+### Auto-Calibration
+
+```bash
+# Auto-calibrate filters
+ffuf -u https://target.com/FUZZ -w wordlist.txt -ac
+
+# Calibration with specific keyword
+ffuf -u https://target.com/FUZZ -w wordlist.txt -acc "randomstring123"
+```
+
+---
+
+## ⚡ Advanced Features
+
+### Rate Limiting
+
+```bash
+# Requests per second
+ffuf -u https://target.com/FUZZ -w wordlist.txt -rate 100
+
+# Delay between requests
+ffuf -u https://target.com/FUZZ -w wordlist.txt -p 0.5
+
+# Random delay (jitter)
+ffuf -u https://target.com/FUZZ -w wordlist.txt -p 0.1-1.0
+```
+
+### Threads
+
+```bash
+# Set threads (default: 40)
+ffuf -u https://target.com/FUZZ -w wordlist.txt -t 100
+
+# Reduce for stealth
+ffuf -u https://target.com/FUZZ -w wordlist.txt -t 10 -p 1
+```
+
+### Headers
+
+```bash
+# Custom header
+ffuf -u https://target.com/FUZZ -w wordlist.txt -H "X-Custom: value"
+
+# Multiple headers
+ffuf -u https://target.com/FUZZ -w wordlist.txt \
+    -H "Authorization: Bearer token" \
+    -H "X-Forwarded-For: 127.0.0.1"
+
+# Cookie
+ffuf -u https://target.com/FUZZ -w wordlist.txt -b "session=abc123"
+```
+
+### Proxy
+
+```bash
+# HTTP proxy
+ffuf -u https://target.com/FUZZ -w wordlist.txt -x http://127.0.0.1:8080
+
+# Burp Suite
+ffuf -u https://target.com/FUZZ -w wordlist.txt -x http://127.0.0.1:8080
+```
+
+### Output
+
+```bash
+# JSON output
+ffuf -u https://target.com/FUZZ -w wordlist.txt -o results.json -of json
+
+# CSV output
+ffuf -u https://target.com/FUZZ -w wordlist.txt -o results.csv -of csv
+
+# HTML output
+ffuf -u https://target.com/FUZZ -w wordlist.txt -o results.html -of html
+
+# All formats
+ffuf -u https://target.com/FUZZ -w wordlist.txt -o results -of all
+```
+
+### Timeout & Retries
+
+```bash
+# Request timeout
+ffuf -u https://target.com/FUZZ -w wordlist.txt -timeout 10
+
+# Stop on 403
+ffuf -u https://target.com/FUZZ -w wordlist.txt -se
+
+# Ignore SSL errors
+ffuf -u https://target.com/FUZZ -w wordlist.txt -k
+```
+
+---
+
+## 🎬 Real-World Examples
+
+### Example 1: Basic Directory Scan
+```bash
+ffuf -u https://target.com/FUZZ -w /usr/share/seclists/Discovery/Web-Content/common.txt -mc 200,301,302
+```
+
+### Example 2: Find PHP Files
+```bash
+ffuf -u https://target.com/FUZZ -w wordlist.txt -e .php,.php.bak,.php~ -mc 200
+```
+
+### Example 3: Subdomain Enumeration
+```bash
+ffuf -u https://target.com -H "Host: FUZZ.target.com" \
+    -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt \
+    -fs 1234 -t 100
+```
+
+### Example 4: API Endpoint Discovery
+```bash
+ffuf -u https://api.target.com/FUZZ \
+    -w /usr/share/seclists/Discovery/Web-Content/api/api-endpoints.txt \
+    -mc 200,401,403
+```
+
+### Example 5: Parameter Discovery
+```bash
+ffuf -u "https://target.com/page?FUZZ=test" \
+    -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt \
+    -fs 1234
+```
+
+### Example 6: Login Brute Force
+```bash
+ffuf -u https://target.com/login -X POST \
+    -d "user=admin&pass=FUZZ" \
+    -w /usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt \
+    -fc 401 -t 10
+```
+
+### Example 7: With Proxy (Burp)
+```bash
+ffuf -u https://target.com/FUZZ -w wordlist.txt -x http://127.0.0.1:8080 -k
+```
+
+### Example 8: Recursive Scan
+```bash
+ffuf -u https://target.com/FUZZ -w wordlist.txt -recursion -recursion-depth 2 -mc 200,301
+```
+
+### Example 9: Rate Limited Scan
+```bash
+ffuf -u https://target.com/FUZZ -w wordlist.txt -rate 10 -t 5
+```
+
+### Example 10: Complete Bug Bounty Scan
+```bash
+ffuf -u https://target.com/FUZZ \
+    -w /usr/share/seclists/Discovery/Web-Content/raft-large-directories.txt \
+    -e .php,.asp,.aspx,.jsp,.html,.js,.txt,.bak \
+    -mc 200,301,302,403 \
+    -recursion -recursion-depth 2 \
+    -o results.json -of json \
+    -ac
+```
+
+---
+
+## 📊 Quick Reference
+
+### Essential Commands
+
+| Task | Command |
+|------|---------|
+| Directory scan | `ffuf -u URL/FUZZ -w wordlist.txt` |
+| With extensions | `ffuf -u URL/FUZZ -w wordlist.txt -e .php,.html` |
+| Subdomain scan | `ffuf -u URL -H "Host: FUZZ.domain" -w subs.txt` |
+| POST fuzzing | `ffuf -u URL -X POST -d "param=FUZZ" -w wordlist.txt` |
+| Filter 404 | `ffuf -u URL/FUZZ -w wordlist.txt -fc 404` |
+| Filter by size | `ffuf -u URL/FUZZ -w wordlist.txt -fs 1234` |
+| Auto-calibrate | `ffuf -u URL/FUZZ -w wordlist.txt -ac` |
+| Save output | `ffuf -u URL/FUZZ -w wordlist.txt -o out.json -of json` |
+
+### Common Options
+
+| Option | Description |
+|--------|-------------|
+| `-u` | URL with FUZZ |
+| `-w` | Wordlist |
+| `-e` | Extensions |
+| `-t` | Threads |
+| `-mc` | Match codes |
+| `-fc` | Filter codes |
+| `-fs` | Filter size |
+| `-ac` | Auto-calibrate |
+| `-r` | Follow redirects |
+| `-o` | Output file |
+
+---
+
+## 💡 Tips & Best Practices
+
+### Bug Bounty Tips
+
+1. **Always Auto-Calibrate First**
+   ```bash
+   ffuf -u target.com/FUZZ -w wordlist.txt -ac
+   ```
+
+2. **Use Multiple Extensions**
+   ```bash
+   -e .php,.asp,.aspx,.jsp,.html,.js,.txt,.bak,.old,.zip
+   ```
+
+3. **Try Common Backup Extensions**
+   ```bash
+   -e .bak,.old,.orig,.backup,~,.swp
+   ```
+
+4. **Rate Limit for WAF Bypass**
+   ```bash
+   -rate 10 -t 5 -p 0.5
+   ```
+
+### Performance Tips
+
+```bash
+# High speed (no WAF)
+ffuf -u URL/FUZZ -w wordlist.txt -t 200
+
+# Low and slow (stealth)
+ffuf -u URL/FUZZ -w wordlist.txt -t 10 -rate 5 -p 1
+```
+
+---
+
+## ⚠️ Legal Disclaimer
+
+> **WARNING:** ffuf is a powerful fuzzing tool that should only be used for **authorized testing**.
+> 
+> - ✅ Use on programs you have permission to test
+> - ✅ Use in authorized bug bounty programs
+> - ✅ Respect rate limits and scope
+> - ❌ Never fuzz without authorization
+> - ❌ Don't cause denial of service
+> 
+> **Unauthorized scanning is illegal.**
+
+---
+
+## 📚 Resources
+
+### Official Resources
+- [ffuf GitHub](https://github.com/ffuf/ffuf)
+- [ffuf Wiki](https://github.com/ffuf/ffuf/wiki)
+
+### Wordlists
+- [SecLists](https://github.com/danielmiessler/SecLists)
+- [Assetnote Wordlists](https://wordlists.assetnote.io/)
+
+### Related Cheatsheets
+- [Nuclei](../Nuclei/README.md)
+- [Gobuster](../Gobuster/README.md)
+- [Nmap](../Nmap/README.md)
+
+---
+
+<p align="center">
+  <b>🚀 Fuzz Faster, Find More!</b><br>
+  <i>The bug bounty hunter's fuzzer of choice</i>
+</p>

@@ -1,7 +1,5 @@
 # 🔶 Burp Suite - Complete Cheatsheet
 
-> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
-
 ```
     ____                      _____       _ __     
    / __ )__  ___________     / ___/__  __(_) /____

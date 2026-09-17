@@ -163,7 +163,7 @@ Links to official docs and learning resources
 
 ### Markdown Formatting
 
-````markdown
+```markdown
 # H1 - Main Title (only one per file)
 ## H2 - Major Sections
 ### H3 - Subsections
@@ -173,13 +173,13 @@ Links to official docs and learning resources
 `code` for commands and file names
 ```code blocks``` for multi-line commands
 > Blockquotes for notes and warnings
-````
+```
 
 ### Code Blocks
 
 Always specify the language for syntax highlighting:
 
-````markdown
+```bash
 # Good - with language
 ```bash
 msfconsole -q
@@ -189,7 +189,7 @@ msfconsole -q
 ```
 msfconsole -q
 ```
-````
+```
 
 ### Tables
 

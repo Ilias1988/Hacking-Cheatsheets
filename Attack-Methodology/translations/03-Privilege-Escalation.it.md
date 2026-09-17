@@ -11,7 +11,7 @@
 
 **Obiettivo:** Eleva i privilegi da utente standard ad Administrator/SYSTEM (Windows) o root (Linux).
 
-> 📚 **Guide complete:** [Windows PrivEsc](../../Windows-PrivEsc/README.md) | [Linux PrivEsc](../../Linux-PrivEsc/README.md)
+> 📚 **Guide complete:** [Windows PrivEsc](../Windows-PrivEsc/translations/README.it.md) | [Linux PrivEsc](../Linux-PrivEsc/translations/README.it.md)
 
 ---
 
@@ -311,9 +311,9 @@ chmod +s /mnt/bash
 
 ## 🔗 Cheatsheet Correlate
 
-- [Windows PrivEsc (Completo)](../../Windows-PrivEsc/README.md)
-- [Linux PrivEsc (Completo)](../../Linux-PrivEsc/README.md)
-- [Mimikatz](../../Mimikatz/README.md)
+- [Windows PrivEsc (Completo)](../Windows-PrivEsc/translations/README.it.md)
+- [Linux PrivEsc (Completo)](../Linux-PrivEsc/translations/README.it.md)
+- [Mimikatz](../Mimikatz/translations/README.it.md)
 
 ---
 

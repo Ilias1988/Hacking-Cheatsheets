@@ -286,11 +286,11 @@ mimikatz# kerberos::golden /user:Administrator /domain:domain.local /sid:S-1-5-2
 
 ## 🔗 Cheatsheet Correlate
 
-- [Impacket](../../Impacket/README.md)
-- [CrackMapExec](../../CrackMapExec/translations/README.it.md)
-- [Evil-WinRM](../../Evil-WinRM/README.md)
-- [Mimikatz](../../Mimikatz/README.md)
-- [Rubeus](../../Rubeus/README.md)
+- [Impacket](../Impacket/translations/README.it.md)
+- [CrackMapExec](../CrackMapExec/translations/README.it.md)
+- [Evil-WinRM](../Evil-WinRM/translations/README.it.md)
+- [Mimikatz](../Mimikatz/translations/README.it.md)
+- [Rubeus](../Rubeus/translations/README.it.md)
 
 ---
 

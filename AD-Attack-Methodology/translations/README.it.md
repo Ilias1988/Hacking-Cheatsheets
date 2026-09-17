@@ -1,9 +1,5 @@
 # 🏢 Metodologia di Attacco Active Directory
 
-> ⚠️ **Traduzione in revisione:** alcuni esempi usano ancora CrackMapExec. Per i
-> workflow correnti usa [NetExec](../../NetExec/README.md) e la
-> [guida inglese canonica](../README.md).
-
 ```
     █████╗ ██████╗     █████╗ ████████╗████████╗ █████╗  ██████╗██╗  ██╗
    ██╔══██╗██╔══██╗   ██╔══██╗╚══██╔══╝╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝
@@ -484,14 +480,14 @@ GetUserSPNs.py domain.local/user:pass -dc-ip 10.10.10.10 -request
 
 ## 📚 Cheatsheets Correlate
 
-- [BloodHound](../../BloodHound/translations/README.it.md)
-- [Impacket](../../Impacket/README.md)
-- [CrackMapExec](../../CrackMapExec/translations/README.it.md)
-- [Rubeus](../../Rubeus/README.md)
-- [PowerView](../../PowerView/README.md)
-- [Responder](../../Responder/README.md)
-- [Evil-WinRM](../../Evil-WinRM/README.md)
-- [Mimikatz](../../Mimikatz/README.md)
+- [BloodHound](../BloodHound/translations/README.it.md)
+- [Impacket](../Impacket/translations/README.it.md)
+- [CrackMapExec](../CrackMapExec/translations/README.it.md)
+- [Rubeus](../Rubeus/translations/README.it.md)
+- [PowerView](../PowerView/translations/README.it.md)
+- [Responder](../Responder/translations/README.it.md)
+- [Evil-WinRM](../Evil-WinRM/translations/README.it.md)
+- [Mimikatz](../Mimikatz/translations/README.it.md)
 
 ---
 

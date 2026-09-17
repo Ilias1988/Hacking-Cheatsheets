@@ -393,7 +393,7 @@ net user username /logonpasswordchg:yes
 
 - [Analisi Log](./Log-Analysis.it.md)
 - [Rilevamento SIEM](./SIEM-Detection.it.md)
-- [Volatility (Forensics)](../../Volatility/README.md)
+- [Volatility (Forensics)](../Volatility/translations/README.it.md)
 
 ---
 

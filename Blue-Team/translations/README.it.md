@@ -65,8 +65,8 @@
 
 | Argomento | Descrizione | Guida |
 |-----------|-------------|-------|
-| **Malware Analysis** | Tecniche di analisi statica/dinamica | [📄 Visualizza](../Malware-Analysis.md) |
-| **Network Defense** | IDS/IPS, regole firewall, sicurezza rete | [📄 Visualizza](../Network-Defense.md) |
+| **Malware Analysis** | Tecniche di analisi statica/dinamica | [📄 Visualizza](./Malware-Analysis.it.md) |
+| **Network Defense** | IDS/IPS, regole firewall, sicurezza rete | [📄 Visualizza](./Network-Defense.it.md) |
 | **Hardening** | Checklist hardening Windows/Linux | [📄 Visualizza](./Hardening.it.md) |
 
 ### 📝 Detection Rules

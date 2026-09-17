@@ -1,7 +1,5 @@
 # 🔍 Phase 2: Discovery / Enumeration
 
-> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
-
 ```
   ███████╗███╗   ██╗██╗   ██╗███╗   ███╗███████╗██████╗  █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
   ██╔════╝████╗  ██║██║   ██║████╗ ████║██╔════╝██╔══██╗██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
@@ -345,7 +343,7 @@ enum4linux -a 192.168.1.10
 # SMB shares
 smbclient -L //192.168.1.10 -N
 smbmap -H 192.168.1.10
-nxc smb 192.168.1.10 --shares
+crackmapexec smb 192.168.1.10 --shares
 
 # With credentials
 smbclient //192.168.1.10/share -U user
@@ -427,7 +425,7 @@ find / -perm -4000 2>/dev/null
 - [Nmap](../Nmap/README.md)
 - [BloodHound](../BloodHound/README.md)
 - [PowerView](../PowerView/README.md)
-- [NetExec](../NetExec/README.md)
+- [CrackMapExec](../CrackMapExec/README.md)
 
 ---
 

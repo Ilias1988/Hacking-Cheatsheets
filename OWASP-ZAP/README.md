@@ -1,7 +1,5 @@
 # ⚡ OWASP ZAP - Complete Cheatsheet
 
-> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
-
 ```
    ____  _    _  ___   _____ _____    _____   ___  _____  
   / __ \| |  | |/ _ \ / ____|  __ \  |__  /  / _ \|  __ \ 

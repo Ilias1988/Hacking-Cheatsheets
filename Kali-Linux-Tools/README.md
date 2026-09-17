@@ -1,7 +1,5 @@
 # 🐉 Kali Linux Tools - Complete Reference (600+ Tools)
 
-> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
-
 ```
   ██╗  ██╗ █████╗ ██╗     ██╗    ██╗     ██╗███╗   ██╗██╗   ██╗██╗  ██╗
   ██║ ██╔╝██╔══██╗██║     ██║    ██║     ██║████╗  ██║██║   ██║╚██╗██╔╝
@@ -287,7 +285,7 @@
 | **mimikatz** | Windows credential extractor |
 | **pth-toolkit** | Pass-the-hash toolkit |
 | **smbmap** | SMB enumeration |
-| **nxc** | Network pentest tool |
+| **crackmapexec** | Network pentest tool |
 | **evil-winrm** | Windows remote management |
 
 ---
@@ -409,7 +407,7 @@
 |------|-------------|
 | **responder** | LLMNR/NBT-NS poisoner |
 | **impacket** | Network protocol toolkit |
-| **nxc** | Post-exploitation tool |
+| **crackmapexec** | Post-exploitation tool |
 | **evil-winrm** | WinRM shell |
 | **powershell-empire** | Post-exploitation framework |
 
@@ -482,7 +480,7 @@
 | Tool | Description |
 |------|-------------|
 | **mimikatz** | Windows credential dumper |
-| **nxc** | Windows/AD pentesting |
+| **crackmapexec** | Windows/AD pentesting |
 | **evil-winrm** | WinRM shell |
 | **impacket** | Windows protocols |
 | **bloodhound** | Active Directory recon |
@@ -620,7 +618,7 @@
 | 13 | **dirb** | Web | Directory scanning |
 | 14 | **wpscan** | Web | WordPress scanning |
 | 15 | **enum4linux** | Info | SMB enumeration |
-| 16 | **nxc** | Post-Exploit | AD pentesting |
+| 16 | **crackmapexec** | Post-Exploit | AD pentesting |
 | 17 | **mimikatz** | Post-Exploit | Credential dump |
 | 18 | **responder** | Exploitation | LLMNR poisoning |
 | 19 | **impacket** | Exploitation | Protocol tools |

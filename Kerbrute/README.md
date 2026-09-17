@@ -1,7 +1,5 @@
 # 🔑 Kerbrute - Kerberos User Enumeration
 
-> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
-
 ```
   ██╗  ██╗███████╗██████╗ ██████╗ ██████╗ ██╗   ██╗████████╗███████╗
   ██║ ██╔╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██║   ██║╚══██╔══╝██╔════╝
@@ -164,7 +162,7 @@ kerbrute passwordspray -d domain.local --dc 10.10.10.10 users.txt 'Pass123!' -o 
 
 ```bash
 # Check password policy first!
-nxc ldap DC01 -u user -p pass --password-policy
+crackmapexec ldap DC01 -u user -p pass --password-policy
 
 # Low and slow
 kerbrute passwordspray -d domain.local --dc 10.10.10.10 users.txt 'Pass!' -t 5 --delay 500
@@ -293,7 +291,7 @@ kerbrute passwordspray -d domain.local --dc 10.10.10.10 users.txt 'Summer2024!'
 ### Related Cheatsheets
 - [AD Methodology](../AD-Attack-Methodology/README.md)
 - [Rubeus](../Rubeus/README.md)
-- [NetExec](../NetExec/README.md)
+- [CrackMapExec](../CrackMapExec/README.md)
 
 ---
 

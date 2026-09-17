@@ -1,9 +1,5 @@
 # 📦 HTTP Request Smuggling Cheatsheet
 
-> **Review status:** Partial source review. The HTTP/2 update is current; legacy
-> payload and tool sections still require verification.  
-> **Scope:** Isolated labs or explicitly approved production-safe probes
-
 ```
   ██╗  ██╗████████╗████████╗██████╗     ███████╗███╗   ███╗██╗   ██╗ ██████╗  ██████╗ ██╗     ██╗███╗   ██╗ ██████╗ 
   ██║  ██║╚══██╔══╝╚══██╔══╝██╔══██╗    ██╔════╝████╗ ████║██║   ██║██╔════╝ ██╔════╝ ██║     ██║████╗  ██║██╔════╝ 
@@ -220,29 +216,6 @@ X-Foo: bar
 
 ---
 
-## HTTP/2 and Downgrade Cases
-
-Modern front ends may receive HTTP/2 and translate requests to HTTP/1.1 for a back end. Test the protocol boundary, not only classic `Content-Length`/`Transfer-Encoding` conflicts.
-
-| Class | Boundary to review |
-|---|---|
-| H2.CL | HTTP/2 framing versus an injected or trusted `Content-Length` after downgrade |
-| H2.TE | HTTP/2 request carries a prohibited or mishandled `Transfer-Encoding` value |
-| Request tunneling | Front end and back end disagree without reusing the connection in the classic way |
-| HTTP/2 pseudo-headers | Ambiguous `:path`, `:authority`, scheme, or header normalization during translation |
-
-Use single-user lab endpoints or collaboration-safe probes first. A timing anomaly alone is not sufficient: repeat the test, control connection reuse, and confirm the exact front-end/back-end parsing difference without poisoning another user's response.
-
-### Safe Verification Principles
-
-- Send a unique canary to an endpoint you control.
-- Keep timeouts and request counts low.
-- Avoid cacheable paths, authenticated victims, and shared production queues.
-- Stop after proving the parser discrepancy.
-- Record the negotiated protocol, connection reuse, proxy chain, and raw bytes.
-
----
-
 ## 🛠️ Tools
 
 ### Burp Suite Extension
@@ -303,7 +276,6 @@ printf 'POST / HTTP/1.1\r\nHost: target.com\r\nContent-Length: 6\r\nTransfer-Enc
 
 - [PortSwigger HTTP Request Smuggling](https://portswigger.net/web-security/request-smuggling)
 - [HTTP Desync Attacks (Albinowax)](https://portswigger.net/research/http-desync-attacks)
-- [HTTP/2: The Sequel Is Always Worse](https://portswigger.net/research/http2)
 - [Smuggler Tool](https://github.com/defparam/smuggler)
 
 ---

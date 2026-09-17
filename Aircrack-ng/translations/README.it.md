@@ -614,9 +614,9 @@ Non usare mai per:
 
 ### Cheatsheets Collegate
 
-- [Hashcat](../../Hashcat/README.md)
-- [Wireshark](../../Wireshark/README.md)
-- [Linux Commands](../../Linux-Commands/README.md)
+- [Hashcat](../Hashcat/translations/README.it.md)
+- [Wireshark](../Wireshark/translations/README.it.md)
+- [Linux Commands](../Linux-Commands/translations/README.it.md)
 
 ---
 

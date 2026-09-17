@@ -422,10 +422,10 @@ find / -perm -4000 2>/dev/null
 
 ## 🔗 Cheatsheet Correlate
 
-- [Nmap](../../Nmap/README.md)
-- [BloodHound](../../BloodHound/translations/README.it.md)
-- [PowerView](../../PowerView/README.md)
-- [CrackMapExec](../../CrackMapExec/translations/README.it.md)
+- [Nmap](../Nmap/translations/README.it.md)
+- [BloodHound](../BloodHound/translations/README.it.md)
+- [PowerView](../PowerView/translations/README.it.md)
+- [CrackMapExec](../CrackMapExec/translations/README.it.md)
 
 ---
 

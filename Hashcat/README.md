@@ -1,7 +1,5 @@
 # ⚡ Hashcat - Complete Cheatsheet
 
-> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
-
 ```
   _   _           _                _   
  | | | | __ _ ___| |__   ___ __ _| |_ 

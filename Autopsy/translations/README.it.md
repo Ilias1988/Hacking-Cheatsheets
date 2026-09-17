@@ -659,9 +659,9 @@ sha256sum -c image.dd.sha256
 - [DFIR Training](https://www.dfir.training/)
 
 ### Cheatsheet Correlate
-- [Volatility](../../Volatility/README.md)
-- [Linux Commands](../../Linux-Commands/README.md)
-- [Wireshark](../../Wireshark/README.md)
+- [Volatility](../Volatility/translations/README.it.md)
+- [Linux Commands](../Linux-Commands/translations/README.it.md)
+- [Wireshark](../Wireshark/translations/README.it.md)
 
 ---
 

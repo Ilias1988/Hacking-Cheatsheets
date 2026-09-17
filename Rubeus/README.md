@@ -1,7 +1,5 @@
 # 🎫 Rubeus - Kerberos Abuse Toolkit
 
-> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
-
 ```
   ██████╗ ██╗   ██╗██████╗ ███████╗██╗   ██╗███████╗
   ██╔══██╗██║   ██║██╔══██╗██╔════╝██║   ██║██╔════╝

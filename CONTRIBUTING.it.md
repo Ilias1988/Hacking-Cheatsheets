@@ -164,7 +164,7 @@ Link alla documentazione ufficiale e risorse per l'apprendimento
 
 ### Formattazione Markdown
 
-````markdown
+```markdown
 # H1 - Titolo Principale (solo uno per file)
 ## H2 - Sezioni Maggiori
 ### H3 - Sottosezioni
@@ -174,13 +174,13 @@ Link alla documentazione ufficiale e risorse per l'apprendimento
 `code` per comandi e nomi di file
 ```blocchi di codice``` per comandi su più righe
 > Blockquotes per note e avvisi
-````
+```
 
 ### Blocchi di Codice
 
 Specifica sempre il linguaggio per l'evidenziazione della sintassi:
 
-````markdown
+```bash
 # Corretto - con linguaggio
 ```bash
 msfconsole -q
@@ -190,7 +190,7 @@ msfconsole -q
 ```
 msfconsole -q
 ```
-````
+```
 
 ### Tabelle
 

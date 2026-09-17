@@ -296,9 +296,9 @@ sc config wuauserv start= disabled
 
 ## 🔗 Cheatsheet Correlate
 
-- [Mimikatz](../../Mimikatz/README.md)
-- [Linux Commands](../../Linux-Commands/README.md)
-- [PowerShell](../../PowerShell/README.md)
+- [Mimikatz](../Mimikatz/translations/README.it.md)
+- [Linux Commands](../Linux-Commands/translations/README.it.md)
+- [PowerShell](../PowerShell/translations/README.it.md)
 
 ---
 

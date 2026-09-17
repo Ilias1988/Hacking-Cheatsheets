@@ -324,9 +324,9 @@ cat all_subdomains.txt | httpx -silent > live_hosts.txt
 - [Amass User Guide](https://github.com/owasp-amass/amass/blob/master/doc/user_guide.md)
 
 ### Cheatsheets Collegate
-- [Bug Bounty Methodology](../../Bug-Bounty-Methodology/translations/README.it.md)
-- [Subfinder](../../Subfinder/README.md)
-- [httpx](../../httpx/README.md)
+- [Bug Bounty Methodology](../Bug-Bounty-Methodology/translations/README.it.md)
+- [Subfinder](../Subfinder/translations/README.it.md)
+- [httpx](../httpx/translations/README.it.md)
 
 ---
 

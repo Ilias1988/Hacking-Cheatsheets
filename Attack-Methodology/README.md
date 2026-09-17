@@ -1,7 +1,5 @@
 # 🎯 Attack Methodology - Kill Chain
 
-> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
-
 ```
    █████╗ ████████╗████████╗ █████╗  ██████╗██╗  ██╗    ██╗  ██╗██╗██╗     ██╗          ██████╗██╗  ██╗ █████╗ ██╗███╗   ██╗
   ██╔══██╗╚══██╔══╝╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝    ██║ ██╔╝██║██║     ██║         ██╔════╝██║  ██║██╔══██╗██║████╗  ██║
@@ -71,7 +69,7 @@ The **Attack Kill Chain** (also known as **Cyber Kill Chain** or **MITRE ATT&CK*
 | Initial Access | [Metasploit](../Metasploit/README.md), [SQLMap](../SQLMap/README.md), [Hydra](../Hydra/README.md) |
 | Enumeration | [Nmap](../Nmap/README.md), [BloodHound](../BloodHound/README.md), [PowerView](../PowerView/README.md) |
 | Privilege Escalation | [Linux-PrivEsc](../Linux-PrivEsc/README.md), [Windows-PrivEsc](../Windows-PrivEsc/README.md) |
-| Lateral Movement | [Impacket](../Impacket/README.md), [NetExec](../NetExec/README.md), [Evil-WinRM](../Evil-WinRM/README.md) |
+| Lateral Movement | [Impacket](../Impacket/README.md), [CrackMapExec](../CrackMapExec/README.md), [Evil-WinRM](../Evil-WinRM/README.md) |
 | Persistence | [PowerShell](../PowerShell/README.md), [Metasploit](../Metasploit/README.md) |
 | Defense Evasion | [Mimikatz](../Mimikatz/README.md), [PowerShell](../PowerShell/README.md) |
 | Data Exfiltration | [Linux-Commands](../Linux-Commands/README.md) |

