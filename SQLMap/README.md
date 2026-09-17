@@ -3,7 +3,7 @@
 > **Last verified:** 2026-09-17
 > **Tested snapshot:** `1.10.9.12#dev`, commit `fa96906f76301fc7932c9f7a0c5c5277234677a2`
 > **Evidence:** Official source and wiki checked + CLI smoke-tested
-> **Test method:** Official `master` checkout; `--version`, `-hh`, and 74 documented flags checked with Python 3.13
+> **Test method:** Official `master` checkout; `--version`, `-hh`, and 243 documented CLI flags checked with Python 3.13
 > **Lab status:** No target requests were sent; examples require validation in an isolated authorized lab
 
 [SQLMap](https://github.com/sqlmapproject/sqlmap) automates the detection and
@@ -14,6 +14,18 @@ minimal enumeration, reproducible evidence, and data minimization.
 Use it only against systems covered by explicit written authorization. Confirm
 whether automated injection, authenticated testing, time-based payloads, data
 retrieval, and state-changing requests are in scope before starting.
+
+## Guide Map
+
+| Layer | Purpose |
+|---|---|
+| This guide | Conservative setup, detection, evidence, and minimal enumeration |
+| [Option reference](./OPTIONS.md) | Complete categorized map of the current CLI |
+| [Advanced capabilities](./ADVANCED.md) | High-impact features, preconditions, and cleanup |
+| [Lab validation plan](./LAB.md) | Reproducible behavioral tests and evidence requirements |
+
+The split keeps the everyday workflow readable without removing advanced or
+less common capabilities from the repository.
 
 ## Install and Verify
 
@@ -346,4 +358,4 @@ container image pulled by the test. No HTTP target is supplied.
 
 ---
 
-[← Main index](../README.md) · [Tool testing policy](../docs/TOOL-TESTING.md) · [Safe use](../docs/SAFE_USE.md)
+[← Main index](../README.md) · [Option reference](./OPTIONS.md) · [Advanced capabilities](./ADVANCED.md) · [Lab plan](./LAB.md) · [Tool testing policy](../docs/TOOL-TESTING.md) · [Safe use](../docs/SAFE_USE.md)

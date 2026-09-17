@@ -88,4 +88,4 @@ observed version and commit remain part of the evidence.
 
 ---
 
-[← Verification policy](./VERIFICATION.md) · [← Main index](../README.md)
+[← Verification policy](./VERIFICATION.md) · [Tool guide structure](./TOOL-GUIDE-STRUCTURE.md) · [← Main index](../README.md)

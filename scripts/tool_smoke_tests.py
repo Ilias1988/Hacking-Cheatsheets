@@ -24,7 +24,7 @@ from typing import Any
 
 
 ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
-FLAG_RE = re.compile(r"(?<![A-Za-z0-9_-])(--?[A-Za-z0-9][A-Za-z0-9-]*)")
+FLAG_RE = re.compile(r"(?<![A-Za-z0-9_.-])(--?[A-Za-z0-9][A-Za-z0-9.-]*)")
 GROUPED_FLAG_RE = re.compile(
     r"(?<![A-Za-z0-9_-])(-[A-Za-z0-9]+(?:/[A-Za-z0-9]+)+)"
 )
@@ -298,7 +298,7 @@ def test_git_container_tool(
                 f"git clone --quiet --depth 1 --branch {shlex.quote(ref)} {shlex.quote(repository)} /tmp/checkout",
                 "git -C /tmp/checkout rev-parse HEAD",
                 f"python /tmp/checkout/{shlex.quote(str(config['executable']))} {' '.join(shlex.quote(str(arg)) for arg in config['version_args'])}",
-                f"python /tmp/checkout/{shlex.quote(str(config['executable']))} {' '.join(shlex.quote(str(arg)) for arg in config['help_args'])}",
+                f"COLUMNS=200 python /tmp/checkout/{shlex.quote(str(config['executable']))} {' '.join(shlex.quote(str(arg)) for arg in config['help_args'])}",
             ]
         )
         output = clean_output(

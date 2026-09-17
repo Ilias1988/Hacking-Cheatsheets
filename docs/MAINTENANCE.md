@@ -5,6 +5,11 @@
 
 This repository is a field reference. Accuracy and recoverability are more important than the number of commands collected.
 
+Completeness and safety are not opposites. When a complex tool contains useful
+advanced capabilities, preserve them in a layered guide instead of deleting
+them or mixing them into the default workflow. Follow the
+[Tool Guide Structure](./TOOL-GUIDE-STRUCTURE.md).
+
 ## Document metadata
 
 New and substantially revised cheatsheets should begin with:
