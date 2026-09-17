@@ -1,5 +1,7 @@
 # 🎯 Phase 7: Actions on Objectives
 
+> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
+
 ```
    █████╗  ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗     ██████╗ ███╗   ██╗
   ██╔══██╗██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝    ██╔═══██╗████╗  ██║

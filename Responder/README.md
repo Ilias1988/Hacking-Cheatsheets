@@ -1,5 +1,7 @@
 # 🎣 Responder - LLMNR/NBT-NS Poisoning
 
+> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
+
 ```
   ██████╗ ███████╗███████╗██████╗  ██████╗ ███╗   ██╗██████╗ ███████╗██████╗ 
   ██╔══██╗██╔════╝██╔════╝██╔══██╗██╔═══██╗████╗  ██║██╔══██╗██╔════╝██╔══██╗
@@ -412,7 +414,7 @@ impacket-ntlmrelayx -tf relay.txt -smb2support
 
 ### Related Cheatsheets
 - [Impacket](../Impacket/README.md)
-- [CrackMapExec](../CrackMapExec/README.md)
+- [NetExec](../NetExec/README.md)
 - [Hashcat](../Hashcat/README.md)
 
 ---

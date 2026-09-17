@@ -1,0 +1,17 @@
+accept = [200, 204, 206, 301, 302, 303, 307, 308, 403, 429]
+exclude_all_private = true
+exclude_loopback = true
+max_retries = 2
+timeout = 20
+user_agent = "Hacking-Cheatsheets link checker"
+
+exclude = [
+  "^https?://(www\\.)?example\\.(com|org|net)",
+  "^https?://target(\\.com)?",
+  "^https?://attacker(\\.com)?",
+  "^https?://victim(\\.com)?",
+  "^https?://.*\\.local",
+  "^https?://10\\.",
+  "^https?://172\\.(1[6-9]|2[0-9]|3[01])\\.",
+  "^https?://192\\.168\\."
+]

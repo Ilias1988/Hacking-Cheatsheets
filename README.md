@@ -1,539 +1,285 @@
-# 🔴 Hacking Cheatsheets
+# Hacking Cheatsheets
 
-[🇮🇹 Versione Italiana](README.it.md)
+> **Last verified:** 2026-09-17  
+> **Checked against:** Repository structure, automated validators, and the sources named in each verified guide
 
+[![Documentation quality](https://github.com/Ilias1988/Hacking-Cheatsheets/actions/workflows/docs-quality.yml/badge.svg)](https://github.com/Ilias1988/Hacking-Cheatsheets/actions/workflows/docs-quality.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Language: English](https://img.shields.io/badge/Language-English-blue.svg)](README.md)
+[![Italian index](https://img.shields.io/badge/Italian-Index-008C45.svg)](README.it.md)
+
+A verification-first field reference for penetration testing, web application
+security, Active Directory, cloud, networking, OSINT, defensive analysis, CTFs,
+and professional reporting.
+
+This repository is built for fast lookup during authorized labs and security
+assessments. It is not a substitute for scope, judgment, local `--help` output,
+or the official documentation for the exact version in use.
+
+## Trust Model
+
+Every canonical guide has an explicit status:
+
+| Label | Meaning |
+|---|---|
+| ✅ **Verified** | The complete guide was checked on the stated date against named primary or maintained upstream sources. |
+| 🟡 **Review pending** | Historical content is retained, but version-sensitive commands and claims still require source verification. |
+| 🗃️ **Legacy** | The tool or workflow is archived/retired and kept only for older environments. |
+
+Current baseline: **29 verified**, **119 review-pending**, and **0 unclassified**
+canonical documents. Generate fresh figures with:
+
+```bash
+python scripts/content_health.py . --require-status
 ```
-    ██╗  ██╗ █████╗  ██████╗██╗  ██╗██╗███╗   ██╗ ██████╗ 
-    ██║  ██║██╔══██╗██╔════╝██║ ██╔╝██║████╗  ██║██╔════╝ 
-    ███████║███████║██║     █████╔╝ ██║██╔██╗ ██║██║  ███╗
-    ██╔══██║██╔══██║██║     ██╔═██╗ ██║██║╚██╗██║██║   ██║
-    ██║  ██║██║  ██║╚██████╗██║  ██╗██║██║ ╚████║╚██████╔╝
-    ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
-     ██████╗██╗  ██╗███████╗ █████╗ ████████╗███████╗██╗  ██╗███████╗███████╗████████╗███████╗
-    ██╔════╝██║  ██║██╔════╝██╔══██╗╚══██╔══╝██╔════╝██║  ██║██╔════╝██╔════╝╚══██╔══╝██╔════╝
-    ██║     ███████║█████╗  ███████║   ██║   ███████╗███████║█████╗  █████╗     ██║   ███████╗
-    ██║     ██╔══██║██╔══╝  ██╔══██║   ██║   ╚════██║██╔══██║██╔══╝  ██╔══╝     ██║   ╚════██║
-    ╚██████╗██║  ██║███████╗██║  ██║   ██║   ███████║██║  ██║███████╗███████╗   ██║   ███████║
-     ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝   ╚═╝   ╚══════╝
+
+Read the [verification policy](./docs/VERIFICATION.md) before treating a command
+as current. A working link is not proof that a technical claim is correct.
+
+## Start Here
+
+| Goal | Recommended guide | Status |
+|---|---|---|
+| Plan and run an engagement | [Professional Pentesting Workflow](./Professional-Pentesting/README.md) | ✅ |
+| Define safe operating boundaries | [Safe and Authorized Use](./docs/SAFE_USE.md) | ✅ |
+| Test a web application or API | [API Security](./API-Security/README.md) · [Web Authentication](./Web-Authentication/README.md) | ✅ |
+| Assess Active Directory | [AD attack overview](./AD-Attack-Methodology/README.md) | 🟡 |
+| Analyze identity attack paths | [BloodHound CE](./BloodHound/README.md) | ✅ |
+| Build findings and deliverables | [Reporting Guide](./Reporting/README.md) | ✅ |
+| Contribute or refresh content | [Maintenance Guide](./docs/MAINTENANCE.md) | ✅ |
+
+Suggested assessment loop:
+
+```text
+Confirm scope → Map the attack surface → Form a hypothesis
+→ Use the safest validation → Capture reproducible evidence
+→ Explain business impact → Recommend a fix → Clean up → Retest
 ```
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Penetration-Testing-red?style=for-the-badge" alt="Penetration Testing">
-  <img src="https://img.shields.io/badge/Ethical-Hacking-orange?style=for-the-badge" alt="Ethical Hacking">
-  <img src="https://img.shields.io/badge/Cybersecurity-blue?style=for-the-badge" alt="Cybersecurity">
-  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
-</p>
-
-<p align="center">
-  <b>📚 A comprehensive collection of penetration testing cheatsheets for security professionals</b>
-</p>
-
-<p align="center">
-  <a href="#-cheatsheets">Cheatsheets</a> •
-  <a href="#-quick-start">Quick Start</a> •
-  <a href="#-contributing">Contributing</a> •
-  <a href="#-license">License</a>
-</p>
-
----
-
-## 🎯 About
-
-**Hacking Cheatsheets** is a curated collection of quick reference guides for penetration testing and ethical hacking tools. Each cheatsheet provides:
-
-- ✅ **Clear explanations** of tool functionality
-- ✅ **Command syntax** with practical examples
-- ✅ **Real-world scenarios** and use cases
-- ✅ **Quick reference tables** for rapid lookup
-- ✅ **Tips & best practices** from experienced pentesters
-
----
-
-## 🎯 Attack Methodology (Kill Chain)
-
-> **NEW!** Complete step-by-step guide for penetration testing based on MITRE ATT&CK framework.
-
-| Phase | Description | Guide |
-|-------|-------------|-------|
-| **1. Initial Access** | Exploits, phishing, credentials | [📄 View](./Attack-Methodology/01-Initial-Access.md) |
-| **2. Enumeration** | System & network discovery | [📄 View](./Attack-Methodology/02-Enumeration.md) |
-| **3. Privilege Escalation** | Get root/SYSTEM access | [📄 View](./Attack-Methodology/03-Privilege-Escalation.md) |
-| **4. Lateral Movement** | Move across the network | [📄 View](./Attack-Methodology/04-Lateral-Movement.md) |
-| **5. Persistence** | Maintain access | [📄 View](./Attack-Methodology/05-Persistence.md) |
-| **6. Defense Evasion** | Bypass AV/EDR/AMSI | [📄 View](./Attack-Methodology/06-Defense-Evasion.md) |
-| **7. Actions on Objectives** | Data exfiltration & impact | [📄 View](./Attack-Methodology/07-Actions-Objectives.md) |
-
-👉 **[Full Kill Chain Overview](./Attack-Methodology/README.md)**
-
----
-
-## 🛡️ Blue Team (Defensive Security)
-
-> **NEW!** Complete defensive security guides for SOC analysts and incident responders.
-
-| Topic | Description | Guide |
-|-------|-------------|-------|
-| **Incident Response** | IR lifecycle, containment, procedures | [📄 View](./Blue-Team/Incident-Response.md) |
-| **Log Analysis** | Windows/Linux log analysis & Event IDs | [📄 View](./Blue-Team/Log-Analysis.md) |
-| **SIEM Detection** | Splunk/ELK queries & dashboards | [📄 View](./Blue-Team/SIEM-Detection.md) |
-| **Threat Hunting** | Proactive hunting techniques | [📄 View](./Blue-Team/Threat-Hunting.md) |
-| **Hardening** | Windows/Linux hardening checklists | [📄 View](./Blue-Team/Hardening.md) |
-| **Sigma Rules** | Platform-agnostic detection rules | [📄 View](./Blue-Team/Sigma-Rules.md) |
-| **YARA Rules** | Malware & IOC detection patterns | [📄 View](./Blue-Team/YARA-Rules.md) |
-
-👉 **[Full Blue Team Overview](./Blue-Team/README.md)**
-
----
-
-## ☁️ Cloud Security
-
-> **NEW!** Cloud pentesting guides for AWS, Azure, and GCP.
-
-| Provider | Description | Guide |
-|----------|-------------|-------|
-| **AWS** | S3, IAM, Lambda, EC2, IMDS | [📄 View](./Cloud-Security/AWS-Pentesting.md) |
-| **Azure** | Azure AD, Blob Storage, VMs, Key Vault | [📄 View](./Cloud-Security/Azure-Pentesting.md) |
-| **GCP** | GCS, IAM, Compute, Cloud Functions | [📄 View](./Cloud-Security/GCP-Pentesting.md) |
-
-👉 **[Full Cloud Security Overview](./Cloud-Security/README.md)**
-
----
-
-## 📱 Mobile Security
-
-> **NEW!** Mobile app pentesting guides for Android and iOS.
-
-| Platform | Description | Guide |
-|----------|-------------|-------|
-| **Android** | APK analysis, Frida, root detection bypass | [📄 View](./Mobile-Security/Android-Pentesting.md) |
-| **iOS** | IPA analysis, jailbreak, Objection, keychain | [📄 View](./Mobile-Security/iOS-Pentesting.md) |
-
-👉 **[Full Mobile Security Overview](./Mobile-Security/README.md)**
-
----
-
-## 🐳 Container Security
-
-> **NEW!** Docker & Kubernetes pentesting guides.
-
-| Platform | Description | Guide |
-|----------|-------------|-------|
-| **Docker** | Container escape, image analysis, daemon exploitation | [📄 View](./Container-Security/Docker-Pentesting.md) |
-| **Kubernetes** | RBAC bypass, pod escape, secrets extraction | [📄 View](./Container-Security/Kubernetes-Pentesting.md) |
-
-👉 **[Full Container Security Overview](./Container-Security/README.md)**
-
----
-
-## 🎭 Social Engineering
-
-> **NEW!** Social engineering techniques, phishing campaigns, and pretexting guides.
-
-| Topic | Description | Guide |
-|-------|-------------|-------|
-| **Phishing** | Email phishing, GoPhish, Evilginx2, vishing, smishing | [📄 View](./Social-Engineering/Phishing.md) |
-| **Pretexting** | Personas, scenarios, psychological manipulation | [📄 View](./Social-Engineering/Pretexting.md) |
-
-👉 **[Full Social Engineering Overview](./Social-Engineering/README.md)**
-
----
-
-## 📝 Reporting Templates
-
-> **NEW!** Professional report templates for pentesters and bug bounty hunters.
-
-| Template | Description | Guide |
-|----------|-------------|-------|
-| **Pentest Report** | Full penetration test report structure | [📄 View](./Reporting/Pentest-Report-Template.md) |
-| **Bug Bounty Report** | HackerOne/Bugcrowd submission template | [📄 View](./Reporting/Bug-Bounty-Report-Template.md) |
-| **Executive Summary** | Non-technical summary for C-level | [📄 View](./Reporting/Executive-Summary-Template.md) |
-
----
-
-## 🔍 OSINT (Open Source Intelligence)
-
-> **NEW!** Complete OSINT methodology and tool guides.
-
-| Topic | Description | Guide |
-|-------|-------------|-------|
-| **People Search** | Find individuals online, phone/address lookup | [📄 View](./OSINT/People-Search.md) |
-| **Email OSINT** | Email discovery, breach checking, verification | [📄 View](./OSINT/Email-OSINT.md) |
-| **Social Media** | Username search, platform-specific OSINT | [📄 View](./OSINT/Social-Media-OSINT.md) |
-| **Domain & IP** | WHOIS, DNS, subdomain, IP reconnaissance | [📄 View](./OSINT/Domain-IP-OSINT.md) |
-| **Image OSINT** | Reverse image search, EXIF metadata | [📄 View](./OSINT/Image-OSINT.md) |
-
-👉 **[Full OSINT Overview](./OSINT/README.md)**
-
----
-
-## 🌐 Network Pentesting
-
-> **NEW!** Complete network penetration testing guides.
-
-| Topic | Description | Guide |
-|-------|-------------|-------|
-| **Port Scanning** | Nmap, Masscan, RustScan | [📄 View](./Network-Pentesting/Port-Scanning.md) |
-| **Network Enumeration** | SMB, SNMP, NFS, LDAP, DNS | [📄 View](./Network-Pentesting/Network-Enumeration.md) |
-| **MITM Attacks** | ARP spoofing, DNS spoofing, SSL strip | [📄 View](./Network-Pentesting/MITM-Attacks.md) |
-| **Service Exploitation** | FTP, SSH, SMB, RDP, databases | [📄 View](./Network-Pentesting/Service-Exploitation.md) |
-
-👉 **[Full Network Pentesting Overview](./Network-Pentesting/README.md)**
-
----
-
-## 🏁 CTF Cheatsheets
-
-> **NEW!** Complete CTF competition guides for HackTheBox, TryHackMe, PicoCTF.
-
-| Category | Description | Guide |
-|----------|-------------|-------|
-| **Web** | SQLi, XSS, SSTI, LFI, Auth bypass | [📄 View](./CTF/Web-CTF.md) |
-| **Crypto** | RSA, AES, hashes, encoding, XOR | [📄 View](./CTF/Crypto-CTF.md) |
-| **Reverse Engineering** | Ghidra, IDA, GDB, patching | [📄 View](./CTF/Reverse-Engineering-CTF.md) |
-| **Forensics** | Steganography, memory, disk, PCAP | [📄 View](./CTF/Forensics-CTF.md) |
-| **Pwn/Binary** | Buffer overflow, ROP, shellcode | [📄 View](./CTF/Pwn-CTF.md) |
-
-👉 **[Full CTF Overview](./CTF/README.md)**
-
----
-
-## 📡 IoT Hacking
-
-> **NEW!** IoT device hacking, firmware analysis, and hardware hacking guides.
-
-| Topic | Description | Guide |
-|-------|-------------|-------|
-| **Firmware Analysis** | Binwalk, extraction, RE, secrets | [📄 View](./IoT-Hacking/Firmware-Analysis.md) |
-| **Hardware Hacking** | UART, JTAG, SPI, I2C, debug ports | [📄 View](./IoT-Hacking/Hardware-Hacking.md) |
-
-👉 **[Full IoT Hacking Overview](./IoT-Hacking/README.md)**
-
----
-
-## 📖 Cheatsheets
-
-### 🔴 Exploitation Framework
-
-| Tool | Description | Cheatsheet |
-|------|-------------|------------|
-| **Metasploit Framework** | The world's most used penetration testing framework | [📄 View](./Metasploit/README.md) |
-| **Meterpreter** | Advanced post-exploitation payload | [📄 View](./Metasploit/Meterpreter.md) |
-| **Mimikatz** | Windows credential extraction tool | [📄 View](./Mimikatz/README.md) |
-| **PowerShell** | Windows scripting for pentesting | [📄 View](./PowerShell/README.md) |
-| **Linux Commands** | Linux & Bash for pentesting | [📄 View](./Linux-Commands/README.md) |
-
-### 🔍 Reconnaissance & Scanning
-
-| Tool | Description | Cheatsheet |
-|------|-------------|------------|
-| **Nmap** | Network discovery and security auditing | [📄 View](./Nmap/README.md) |
-| **Gobuster** | Directory/DNS/VHost brute-forcing | [📄 View](./Gobuster/README.md) |
-| **Nikto** | Web server scanner | [📄 View](./Nikto/README.md) |
-
-### 🌐 Web Application Testing
-
-| Tool | Description | Cheatsheet |
-|------|-------------|------------|
-| **SQLMap** | SQL injection automation tool | [📄 View](./SQLMap/README.md) |
-| **Burp Suite** | Web application security testing platform | [📄 View](./Burp-Suite/README.md) |
-| **OWASP ZAP** | Free web app security scanner | [📄 View](./OWASP-ZAP/README.md) |
-
-### 🔓 Password Cracking
-
-| Tool | Description | Cheatsheet |
-|------|-------------|------------|
-| **Hydra** | Fast network login cracker | [📄 View](./Hydra/README.md) |
-| **John the Ripper** | Legendary password cracker | [📄 View](./John-The-Ripper/README.md) |
-| **Hashcat** | World's fastest GPU password cracker | [📄 View](./Hashcat/README.md) |
-
-### 📡 Network Analysis
-
-| Tool | Description | Cheatsheet |
-|------|-------------|------------|
-| **Wireshark** | Network protocol analyzer | [📄 View](./Wireshark/README.md) |
-| **tcpdump** | Command-line packet analyzer | [📄 View](./tcpdump/README.md) |
-
-### 🐛 Bug Bounty
-
-| Tool | Description | Cheatsheet |
-|------|-------------|------------|
-| **⭐ BB Methodology** | Complete bug bounty hunting guide | [📄 View](./Bug-Bounty-Methodology/README.md) |
-| **Nuclei** | Template-based vulnerability scanner | [📄 View](./Nuclei/README.md) |
-| **ffuf** | Fast web fuzzer | [📄 View](./ffuf/README.md) |
-| **Subfinder** | Subdomain discovery | [📄 View](./Subfinder/README.md) |
-| **httpx** | HTTP probe & toolkit | [📄 View](./httpx/README.md) |
-| **Amass** | In-depth attack surface mapping | [📄 View](./Amass/README.md) |
-| **GAU** | Get All URLs from archives | [📄 View](./GAU/README.md) |
-| **Katana** | Next-gen web crawler | [📄 View](./Katana/README.md) |
-| **Arjun** | Hidden parameter discovery | [📄 View](./Arjun/README.md) |
-| **Dalfox** | XSS vulnerability scanner | [📄 View](./Dalfox/README.md) |
-
-### 💉 Payloads Collection
-
-| Vulnerability | Description | Cheatsheet |
-|---------------|-------------|------------|
-| **XSS** | Cross-Site Scripting payloads | [📄 View](./Payloads/XSS.md) |
-| **SQLi** | SQL Injection payloads | [📄 View](./Payloads/SQLi.md) |
-| **LFI** | Local File Inclusion payloads | [📄 View](./Payloads/LFI.md) |
-| **SSTI** | Server-Side Template Injection | [📄 View](./Payloads/SSTI.md) |
-| **Command Injection** | OS command injection payloads | [📄 View](./Payloads/Command-Injection.md) |
-| **NoSQL Injection** | MongoDB, CouchDB, Redis payloads | [📄 View](./Payloads/NoSQL-Injection.md) |
-| **Deserialization** | Java, PHP, Python, .NET payloads | [📄 View](./Payloads/Deserialization.md) |
-| **WebSocket Attacks** | CSWSH, injection, hijacking | [📄 View](./Payloads/WebSocket-Attacks.md) |
-| **GraphQL Injection** | Introspection, IDOR, injection | [📄 View](./Payloads/GraphQL-Injection.md) |
-
-### 🔴 Web Vulnerabilities
-
-| Vulnerability | Description | Cheatsheet |
-|---------------|-------------|------------|
-| **API Security** | REST/GraphQL/JWT testing guide | [📄 View](./API-Security/README.md) |
-| **IDOR** | Insecure Direct Object Reference | [📄 View](./IDOR/README.md) |
-| **SSRF** | Server-Side Request Forgery | [📄 View](./SSRF/README.md) |
-| **XXE** | XML External Entity Injection | [📄 View](./XXE/README.md) |
-| **Race Conditions** | Timing & concurrency attacks | [📄 View](./Race-Conditions/README.md) |
-| **Auth Bypass** | Authentication bypass techniques | [📄 View](./Auth-Bypass/README.md) |
-| **CORS** | Cross-Origin misconfigurations | [📄 View](./CORS/README.md) |
-| **Open Redirect** | URL redirect vulnerabilities | [📄 View](./Open-Redirect/README.md) |
-
-### 🛡️ Advanced Attack Techniques
-
-| Topic | Description | Cheatsheet |
-|-------|-------------|------------|
-| **WAF Bypass** | Origin IP discovery & WAF evasion | [📄 View](./WAF-Bypass/README.md) |
-| **Cloudflare Bypass** | Find origin IP behind Cloudflare | [📄 View](./Cloudflare-Bypass/README.md) |
-| **Subdomain Takeover** | Dangling CNAME exploitation | [📄 View](./Subdomain-Takeover/README.md) |
-| **Cache Poisoning** | Web cache poisoning & deception | [📄 View](./Cache-Poisoning/README.md) |
-| **HTTP Smuggling** | Request smuggling (CL.TE/TE.CL) | [📄 View](./HTTP-Request-Smuggling/README.md) |
-| **Prototype Pollution** | JavaScript prototype attacks | [📄 View](./Prototype-Pollution/README.md) |
-
-### 🔎 Dorking & OSINT
-
-| Tool | Description | Cheatsheet |
-|------|-------------|------------|
-| **Google Dorking** | Advanced Google search techniques | [📄 View](./Google-Dorking/README.md) |
-| **Shodan** | IoT & device search engine | [📄 View](./Shodan/README.md) |
-| **GitHub Dorking** | Secret hunting in repositories | [📄 View](./GitHub-Dorking/README.md) |
-
-### 🔝 Privilege Escalation
-
-| Topic | Description | Cheatsheet |
-|-------|-------------|------------|
-| **Linux PrivEsc** | Linux privilege escalation techniques | [📄 View](./Linux-PrivEsc/README.md) |
-| **Windows PrivEsc** | Windows privilege escalation techniques | [📄 View](./Windows-PrivEsc/README.md) |
-
-### 🔬 Digital Forensics
-
-| Tool | Description | Cheatsheet |
-|------|-------------|------------|
-| **Volatility** | Memory forensics framework | [📄 View](./Volatility/README.md) |
-| **Autopsy** | Digital forensics platform (GUI) | [📄 View](./Autopsy/README.md) |
-| **ExifTool** | Metadata extraction & analysis | [📄 View](./ExifTool/README.md) |
-| **Binwalk** | Firmware analysis & extraction | [📄 View](./Binwalk/README.md) |
-
-### 🔄 Reverse Engineering
-
-| Tool | Description | Cheatsheet |
-|------|-------------|------------|
-| **Ghidra** | NSA reverse engineering suite | [📄 View](./Ghidra/README.md) |
-| **GDB** | GNU Debugger (Linux debugging) | [📄 View](./GDB/README.md) |
-| **x64dbg** | Windows x64/x32 debugger | [📄 View](./x64dbg/README.md) |
-
-### 📶 WiFi Hacking
-
-| Tool | Description | Cheatsheet |
-|------|-------------|------------|
-| **Aircrack-ng** | WiFi hacking suite (WPA/WPA2) | [📄 View](./Aircrack-ng/README.md) |
-| **Wifite** | Automated WiFi auditor | [📄 View](./Wifite/README.md) |
-| **Bettercap** | Network attack framework (MITM/WiFi) | [📄 View](./Bettercap/README.md) |
-
-### 🏢 Active Directory
-
-| Tool | Description | Cheatsheet |
-|------|-------------|------------|
-| **⭐ AD Methodology** | Step-by-step attack guide | [📄 View](./AD-Attack-Methodology/README.md) |
-| **BloodHound** | AD attack path visualization | [📄 View](./BloodHound/README.md) |
-| **Impacket** | Python AD attack toolkit | [📄 View](./Impacket/README.md) |
-| **CrackMapExec** | AD Swiss Army knife | [📄 View](./CrackMapExec/README.md) |
-| **Rubeus** | Kerberos abuse toolkit | [📄 View](./Rubeus/README.md) |
-| **PowerView** | PowerShell AD enumeration | [📄 View](./PowerView/README.md) |
-| **Responder** | LLMNR/NBT-NS poisoning | [📄 View](./Responder/README.md) |
-| **Evil-WinRM** | WinRM shell for pentesters | [📄 View](./Evil-WinRM/README.md) |
-| **Kerbrute** | Kerberos user enum & spray | [📄 View](./Kerbrute/README.md) |
-
-### 📚 Resources
-
-| Resource | Description | Cheatsheet |
-|----------|-------------|------------|
-| **Wordlists** | Complete wordlist reference guide | [📄 View](./Wordlists/README.md) |
-| **Kali Linux Tools** | 600+ tools by category | [📄 View](./Kali-Linux-Tools/README.md) |
-
----
-
-## 🚀 Quick Start
-
-### Clone the Repository
+## Source-Verified Guides
+
+### Professional Practice and Web Security
+
+| Guide | Coverage |
+|---|---|
+| [Professional Pentesting](./Professional-Pentesting/README.md) | Pre-engagement, evidence, severity, cleanup, and retesting |
+| [API Security](./API-Security/README.md) | REST, GraphQL, authorization, resource limits, gateways, and business flows |
+| [Web Authentication](./Web-Authentication/README.md) | OAuth 2.0, OIDC, SAML, JWT, WebAuthn, and sessions |
+| [File Upload](./File-Upload/README.md) | Validation, storage, processing, access control, and safe proof |
+| [Path Traversal](./Path-Traversal/README.md) | Discovery, controlled verification, evidence, and remediation |
+| [Business Logic](./Business-Logic/README.md) | State transitions, replay, concurrency, roles, and abuse cases |
+| [Payloads Index](./Payloads/README.md) | Safe payload handling and links to focused libraries |
+| [Reporting](./Reporting/README.md) | Finding quality, CVSS v4, remediation, and retest outcomes |
+
+### Active Directory and Privilege Escalation
+
+| Guide | Coverage |
+|---|---|
+| [NetExec](./NetExec/README.md) | Current `nxc` installation, enumeration, evidence, and CME migration |
+| [BloodHound CE](./BloodHound/README.md) | BH-CLI installation, collectors, ingest, analysis, and data handling |
+| [AD CS and Certipy](./AD-Attack-Methodology/AD-CS-Certipy.md) | CA/template review, controlled ESC1 validation, and remediation |
+| [Kerberos Delegation](./AD-Attack-Methodology/Kerberos-Delegation.md) | Unconstrained, constrained, and resource-based delegation |
+| [NTLM Relay and Coercion](./AD-Attack-Methodology/NTLM-Relay-and-Coercion.md) | Preconditions, safe workflow, evidence, and hardening |
+| [LinPEAS](./LinPEAS/README.md) | Controlled Linux enumeration and result triage |
+| [WinPEAS](./WinPEAS/README.md) | Controlled Windows enumeration and result triage |
+
+### Defensive Security and OSINT
+
+| Guide | Coverage |
+|---|---|
+| [Malware Analysis](./Blue-Team/Malware-Analysis.md) | Isolated triage, static/dynamic analysis, behavior, and reporting |
+| [Network Defense](./Blue-Team/Network-Defense.md) | Segmentation, telemetry, detection validation, and response |
+| [Social Media OSINT](./OSINT/Social-Media-OSINT.md) | Current tools, platform limits, evidence, and privacy handling |
+
+### Reconnaissance and Scanning
+
+| Guide | Smoke-tested version | Coverage |
+|---|---|---|
+| [Nuclei](./Nuclei/README.md) | `v3.11.1` | Reviewed templates, output formats, rate controls, and validation |
+| [httpx](./httpx/README.md) | `v1.12.0` | Probes, match/filter, output, screenshots, TLS, and safe concurrency |
+| [Subfinder](./Subfinder/README.md) | `v2.16.0` | Sources, output, active resolution, provider keys, and rate limits |
+| [ffuf](./ffuf/README.md) | `v2.3.0` | Content, vhosts, request data, filters, recursion, rate controls, and evidence |
+| [Nmap](./Nmap/README.md) | `v7.991` | Discovery, TCP/UDP, services, NSE, timing, output, scope, and evidence |
+
+## Complete Catalog
+
+The catalog below includes useful historical material. Open each guide and check
+its status banner before use.
+
+<details>
+<summary><strong>Methodologies, platforms, and defensive security</strong></summary>
+
+| Area | Guides |
+|---|---|
+| Methodology | [Attack Methodology](./Attack-Methodology/README.md) 🟡 · [AD Attack Methodology](./AD-Attack-Methodology/README.md) 🟡 · [Bug Bounty Methodology](./Bug-Bounty-Methodology/README.md) 🟡 |
+| Blue Team | [Overview](./Blue-Team/README.md) 🟡 · [Incident Response](./Blue-Team/Incident-Response.md) 🟡 · [Log Analysis](./Blue-Team/Log-Analysis.md) 🟡 · [SIEM](./Blue-Team/SIEM-Detection.md) 🟡 · [Threat Hunting](./Blue-Team/Threat-Hunting.md) 🟡 · [Hardening](./Blue-Team/Hardening.md) 🟡 · [Sigma](./Blue-Team/Sigma-Rules.md) 🟡 · [YARA](./Blue-Team/YARA-Rules.md) 🟡 |
+| Cloud | [Overview](./Cloud-Security/README.md) 🟡 · [AWS](./Cloud-Security/AWS-Pentesting.md) 🟡 · [Azure/Entra](./Cloud-Security/Azure-Pentesting.md) 🟡 · [GCP](./Cloud-Security/GCP-Pentesting.md) 🟡 |
+| Containers | [Overview](./Container-Security/README.md) 🟡 · [Docker](./Container-Security/Docker-Pentesting.md) 🟡 · [Kubernetes](./Container-Security/Kubernetes-Pentesting.md) 🟡 |
+| Mobile | [Overview](./Mobile-Security/README.md) 🟡 · [Android](./Mobile-Security/Android-Pentesting.md) 🟡 · [iOS](./Mobile-Security/iOS-Pentesting.md) 🟡 |
+| Network | [Overview](./Network-Pentesting/README.md) 🟡 · [Port Scanning](./Network-Pentesting/Port-Scanning.md) 🟡 · [Enumeration](./Network-Pentesting/Network-Enumeration.md) 🟡 · [MITM](./Network-Pentesting/MITM-Attacks.md) 🟡 · [Service Exploitation](./Network-Pentesting/Service-Exploitation.md) 🟡 |
+| OSINT | [Overview](./OSINT/README.md) 🟡 · [People](./OSINT/People-Search.md) 🟡 · [Email](./OSINT/Email-OSINT.md) 🟡 · [Domain/IP](./OSINT/Domain-IP-OSINT.md) 🟡 · [Images](./OSINT/Image-OSINT.md) 🟡 · [Social Media](./OSINT/Social-Media-OSINT.md) ✅ |
+| CTF | [Overview](./CTF/README.md) 🟡 · [Web](./CTF/Web-CTF.md) 🟡 · [Pwn](./CTF/Pwn-CTF.md) 🟡 · [Crypto](./CTF/Crypto-CTF.md) 🟡 · [Forensics](./CTF/Forensics-CTF.md) 🟡 · [Reverse Engineering](./CTF/Reverse-Engineering-CTF.md) 🟡 |
+| IoT | [Overview](./IoT-Hacking/README.md) 🟡 · [Firmware](./IoT-Hacking/Firmware-Analysis.md) 🟡 · [Hardware](./IoT-Hacking/Hardware-Hacking.md) 🟡 |
+| Social Engineering | [Overview](./Social-Engineering/README.md) 🟡 · [Phishing](./Social-Engineering/Phishing.md) 🟡 · [Pretexting](./Social-Engineering/Pretexting.md) 🟡 |
+
+</details>
+
+<details>
+<summary><strong>Web application testing</strong></summary>
+
+| Topic | Status | Topic | Status |
+|---|---|---|---|
+| [API Security](./API-Security/README.md) | ✅ | [Web Authentication](./Web-Authentication/README.md) | ✅ |
+| [File Upload](./File-Upload/README.md) | ✅ | [Path Traversal](./Path-Traversal/README.md) | ✅ |
+| [Business Logic](./Business-Logic/README.md) | ✅ | [Authentication Bypass](./Auth-Bypass/README.md) | 🟡 |
+| [IDOR](./IDOR/README.md) | 🟡 | [CORS](./CORS/README.md) | 🟡 |
+| [SSRF](./SSRF/README.md) | 🟡 | [XXE](./XXE/README.md) | 🟡 |
+| [HTTP Request Smuggling](./HTTP-Request-Smuggling/README.md) | 🟡 | [Cache Poisoning](./Cache-Poisoning/README.md) | 🟡 |
+| [Prototype Pollution](./Prototype-Pollution/README.md) | 🟡 | [Race Conditions](./Race-Conditions/README.md) | 🟡 |
+| [Open Redirect](./Open-Redirect/README.md) | 🟡 | [Subdomain Takeover](./Subdomain-Takeover/README.md) | 🟡 |
+| [WAF Bypass](./WAF-Bypass/README.md) | 🟡 | [Cloudflare Bypass](./Cloudflare-Bypass/README.md) | 🟡 |
+| [Payload Library](./Payloads/README.md) | ✅ | [SQL Injection Payloads](./Payloads/SQLi.md) | 🟡 |
+| [XSS Payloads](./Payloads/XSS.md) | 🟡 | [SSTI Payloads](./Payloads/SSTI.md) | 🟡 |
+| [Command Injection](./Payloads/Command-Injection.md) | 🟡 | [Deserialization](./Payloads/Deserialization.md) | 🟡 |
+| [NoSQL Injection](./Payloads/NoSQL-Injection.md) | 🟡 | [GraphQL Injection](./Payloads/GraphQL-Injection.md) | 🟡 |
+| [LFI](./Payloads/LFI.md) | 🟡 | [WebSocket Attacks](./Payloads/WebSocket-Attacks.md) | 🟡 |
+
+</details>
+
+<details>
+<summary><strong>Reconnaissance and web tooling</strong></summary>
+
+| Recon and discovery | Web testing |
+|---|---|
+| [Amass](./Amass/README.md) 🟡 | [Burp Suite](./Burp-Suite/README.md) 🟡 |
+| [Arjun](./Arjun/README.md) 🟡 | [Dalfox](./Dalfox/README.md) 🟡 |
+| [ffuf](./ffuf/README.md) ✅ | [Nikto](./Nikto/README.md) 🟡 |
+| [GAU](./GAU/README.md) 🟡 | [OWASP ZAP](./OWASP-ZAP/README.md) 🟡 |
+| [Gobuster](./Gobuster/README.md) 🟡 | [SQLMap](./SQLMap/README.md) 🟡 |
+| [Google Dorking](./Google-Dorking/README.md) 🟡 | [Nuclei](./Nuclei/README.md) ✅ |
+| [GitHub Dorking](./GitHub-Dorking/README.md) 🟡 | [Katana](./Katana/README.md) 🟡 |
+| [httpx](./httpx/README.md) ✅ | [Wordlists](./Wordlists/README.md) 🟡 |
+| [Nmap](./Nmap/README.md) ✅ | [Kali Linux Tools](./Kali-Linux-Tools/README.md) 🟡 |
+| [Shodan](./Shodan/README.md) 🟡 | [Subfinder](./Subfinder/README.md) ✅ |
+
+</details>
+
+<details>
+<summary><strong>Active Directory, Windows, Linux, and network tools</strong></summary>
+
+| Area | Guides |
+|---|---|
+| AD and identity | [NetExec](./NetExec/README.md) ✅ · [BloodHound CE](./BloodHound/README.md) ✅ · [Impacket](./Impacket/README.md) 🟡 · [Kerbrute](./Kerbrute/README.md) 🟡 · [PowerView](./PowerView/README.md) 🟡 · [Rubeus](./Rubeus/README.md) 🟡 · [Responder](./Responder/README.md) 🟡 · [CrackMapExec](./CrackMapExec/README.md) 🗃️ |
+| Windows | [Windows PrivEsc](./Windows-PrivEsc/README.md) 🟡 · [WinPEAS](./WinPEAS/README.md) ✅ · [Evil-WinRM](./Evil-WinRM/README.md) 🟡 · [Mimikatz](./Mimikatz/README.md) 🟡 · [PowerShell](./PowerShell/README.md) 🟡 |
+| Linux | [Linux Commands](./Linux-Commands/README.md) 🟡 · [Linux PrivEsc](./Linux-PrivEsc/README.md) 🟡 · [LinPEAS](./LinPEAS/README.md) ✅ |
+| Network and wireless | [Aircrack-ng](./Aircrack-ng/README.md) 🟡 · [Bettercap](./Bettercap/README.md) 🟡 · [Hydra](./Hydra/README.md) 🟡 · [tcpdump](./tcpdump/README.md) 🟡 · [Wireshark](./Wireshark/README.md) 🟡 · [Wifite](./Wifite/README.md) 🟡 |
+| Passwords and exploitation | [Hashcat](./Hashcat/README.md) 🟡 · [John the Ripper](./John-The-Ripper/README.md) 🟡 · [Metasploit](./Metasploit/README.md) 🟡 · [Meterpreter](./Metasploit/Meterpreter.md) 🟡 |
+
+</details>
+
+<details>
+<summary><strong>Forensics, malware, and reverse engineering</strong></summary>
+
+| Guide | Status | Guide | Status |
+|---|---|---|---|
+| [Malware Analysis](./Blue-Team/Malware-Analysis.md) | ✅ | [Autopsy](./Autopsy/README.md) | 🟡 |
+| [Binwalk](./Binwalk/README.md) | 🟡 | [ExifTool](./ExifTool/README.md) | 🟡 |
+| [GDB](./GDB/README.md) | 🟡 | [Ghidra](./Ghidra/README.md) | 🟡 |
+| [Volatility](./Volatility/README.md) | 🟡 | [x64dbg](./x64dbg/README.md) | 🟡 |
+
+</details>
+
+## Reporting and Project Quality
+
+| Resource | Purpose | Status |
+|---|---|---|
+| [Reporting Guide](./Reporting/README.md) | Evidence standard, severity, remediation, and retest | ✅ |
+| [Pentest Report Template](./Reporting/Pentest-Report-Template.md) | Full technical assessment structure | 🟡 |
+| [Bug Bounty Template](./Reporting/Bug-Bounty-Report-Template.md) | Reproducible vulnerability submission | 🟡 |
+| [Executive Summary Template](./Reporting/Executive-Summary-Template.md) | Management-focused summary | 🟡 |
+| [2026 Repository Review](./docs/REVIEW-2026-09-17.md) | Completed work and prioritized review queue | ✅ |
+| [Maintenance Guide](./docs/MAINTENANCE.md) | Source, version, translation, and lifecycle rules | ✅ |
+| [Tool Testing](./docs/TOOL-TESTING.md) | CLI smoke-test levels, automation, and image cleanup | ✅ |
+
+Quality gates run on pull requests and the default branch:
+
+```bash
+python scripts/validate_docs.py .
+python scripts/content_health.py . --require-status
+python -m unittest discover -s tests -v
+npx markdownlint-cli2 "**/*.md"
+```
+
+GitHub Actions also checks external links. CI distinguishes structure and link
+health from technical source verification; both are required for a guide to be
+marked verified.
+
+## Quick Start
 
 ```bash
 git clone https://github.com/Ilias1988/Hacking-Cheatsheets.git
 cd Hacking-Cheatsheets
+python scripts/validate_docs.py .
+python scripts/content_health.py . --require-status
 ```
 
-### Browse Cheatsheets
-
-Navigate to any tool folder and open the README.md file:
+All guides are Markdown and work offline after cloning. Search locally with:
 
 ```bash
-# View Metasploit cheatsheet
-cat Metasploit/README.md
-
-# Or open in your favorite editor
-code Metasploit/
+rg -n "Kerberos|OAuth|file upload|incident response" -g "*.md"
 ```
 
-### Offline Access
+## Repository Layout
 
-All cheatsheets are in Markdown format, making them:
-- 📱 **Mobile-friendly** - Read on any device
-- 🔌 **Offline accessible** - No internet required
-- 🖨️ **Printable** - Create physical copies
-- 🔍 **Searchable** - Use grep or your editor's search
-
----
-
-## 📂 Repository Structure
-
-```
+```text
 Hacking-Cheatsheets/
-│
-├── README.md                # This file - Main index
-├── README.it.md             # Italian translation - Main index
-├── LICENSE                  # MIT License
-├── CONTRIBUTING.md          # Contribution guidelines
-├── CONTRIBUTING.it.md       # Italian contribution guidelines
-├── .gitignore               # Git ignore rules
-│
-├── Metasploit/              # Metasploit Framework
-│   ├── README.md            # Complete msfconsole guide
-│   └── Meterpreter.md       # Meterpreter cheatsheet
-│
-├── Nmap/                    # Network Scanner
-│   └── README.md            # Complete Nmap guide
-│
-├── Gobuster/                # Directory/DNS Enumeration
-│   └── README.md            # Complete Gobuster guide
-│
-├── Nikto/                   # Web Server Scanner
-│   └── README.md            # Complete Nikto guide
-│
-├── SQLMap/                  # SQL Injection Tool
-│   └── README.md            # Complete SQLMap guide
-│
-├── Burp-Suite/              # Web Application Testing
-│   └── README.md            # Complete Burp Suite guide
-│
-├── OWASP-ZAP/               # OWASP Zed Attack Proxy
-│   └── README.md            # Complete ZAP guide
-│
-├── Hydra/                   # Network Login Cracker
-│   └── README.md            # Complete Hydra guide
-│
-├── John-The-Ripper/         # Password Cracker
-│   └── README.md            # Complete John guide
-│
-├── Hashcat/                 # GPU Password Cracker
-│   └── README.md            # Complete Hashcat guide
-│
-├── Wireshark/               # Network Protocol Analyzer
-│   └── README.md            # Complete Wireshark guide
-│
-├── tcpdump/                 # Command-Line Packet Analyzer
-│   └── README.md            # Complete tcpdump guide
-│
-├── Nuclei/                  # Bug Bounty Scanner
-│   └── README.md            # Complete Nuclei guide
-│
-├── ffuf/                    # Web Fuzzer
-│   └── README.md            # Complete ffuf guide
-│
-├── Subfinder/               # Subdomain Discovery
-│   └── README.md            # Complete Subfinder guide
-│
-├── httpx/                   # HTTP Probe & Toolkit
-│   └── README.md            # Complete httpx guide
-│
-├── Google-Dorking/          # Google Search Hacking
-│   └── README.md            # Complete Google Dorking guide
-│
-├── Shodan/                  # IoT Search Engine
-│   └── README.md            # Complete Shodan guide
-│
-├── GitHub-Dorking/          # Secret Hunting
-│   └── README.md            # Complete GitHub Dorking guide
-│
-└── ...
+├── README.md / README.it.md       # Navigation and language indexes
+├── Professional-Pentesting/      # Engagement workflow
+├── Attack-Methodology/           # End-to-end methodology
+├── AD-Attack-Methodology/        # Active Directory paths and controls
+├── Blue-Team/                    # Detection, response, and defense
+├── Cloud-Security/               # AWS, Azure/Entra, and GCP
+├── Payloads/                     # Focused payload references
+├── Reporting/                    # Reporting guidance and templates
+├── <tool-or-topic>/README.md     # Focused cheatsheet
+├── docs/                         # Trust, safety, review, and maintenance
+├── scripts/                      # Dependency-free quality checks
+├── tests/                        # Validator tests
+└── .github/                      # CI and contribution templates
 ```
 
----
+English documents are canonical. Italian navigation and available translations
+start at [README.it.md](./README.it.md); missing translations intentionally fall
+back to the verified or status-labeled English page.
 
-## 🤝 Contributing
+## Contributing
 
-Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting a pull request.
+Contributions are welcome. Before opening a pull request:
 
-### Ways to Contribute
+1. Read [CONTRIBUTING.md](./CONTRIBUTING.md) and the [Maintenance Guide](./docs/MAINTENANCE.md).
+2. Prefer official documentation, standards, release notes, and maintained upstream repositories.
+3. State whether commands were source-checked or actually lab-tested; do not blur the two.
+4. Use placeholders for targets, credentials, tokens, tenants, and customer data.
+5. Run the quality commands shown above.
 
-- 📝 **Add new cheatsheets** for tools not yet covered
-- 🔧 **Improve existing cheatsheets** with better examples
-- 🐛 **Report issues** or suggest improvements
-- 🌐 **Translate** cheatsheets to other languages
-- ⭐ **Star this repo** to show your support!
+Use the issue templates for inaccurate content and new guide proposals. Report a
+repository security vulnerability through [SECURITY.md](./SECURITY.md).
 
----
+## Legal and Ethical Use
 
-## ⚠️ Legal Disclaimer
+Use this material only on systems you own or are explicitly authorized to test.
+Follow the written scope, rate limits, stop conditions, data-handling rules, and
+applicable law. Stop at the minimum evidence needed, avoid unrelated data, and
+clean up every state-changing action.
 
-> **IMPORTANT:** These cheatsheets are intended for **educational purposes** and **authorized security testing only**. 
-> 
-> - ✅ Use on systems you own
-> - ✅ Use with explicit written permission
-> - ✅ Use in legal penetration testing engagements
-> - ❌ Never use for unauthorized access
-> - ❌ Never use for malicious purposes
-> 
-> **Unauthorized access to computer systems is illegal.** The authors are not responsible for any misuse of this information.
+See [Safe and Authorized Use](./docs/SAFE_USE.md) for the operational checklist.
+The authors and contributors are not responsible for unauthorized or malicious use.
 
----
+## License
 
-## 📜 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Released under the [MIT License](./LICENSE).
 
 ---
 
-## 🌟 Show Your Support
-
-If you find these cheatsheets useful, please consider:
-
-- ⭐ **Starring** this repository
-- 🍴 **Forking** to contribute
-- 📢 **Sharing** with fellow security professionals
-- 💬 **Providing feedback** for improvements
-
----
-
-## 📬 Contact
-
-- **GitHub Issues** - For bug reports and feature requests
-- **Pull Requests** - For contributions
-
----
-
-<p align="center">
-  <b>Happy Hacking! 🔴</b><br>
-  <i>Remember: Hack responsibly, hack ethically!</i>
-</p>
-
----
-
-<p align="center">
-  Made with ❤️ for the cybersecurity community
-</p>
+Maintained by [Ilias1988](https://github.com/Ilias1988). Issues and pull requests
+are the preferred channels for corrections, sources, and improvements.

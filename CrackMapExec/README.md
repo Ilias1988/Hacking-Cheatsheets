@@ -1,5 +1,13 @@
 # 🗡️ CrackMapExec - AD Swiss Army Knife
 
+> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
+
+> [!WARNING]
+> **Legacy guide:** CrackMapExec was archived by its owner in December 2023 and is no longer maintained. Use [NetExec](../NetExec/README.md) and the `nxc` command for current assessments. This page remains available for older labs, reports, and environments that still reference `crackmapexec` or `cme`.
+
+> **Last legacy review:** 2026-09-17  
+> **Replacement:** [NetExec documentation](https://www.netexec.wiki/)
+
 ```
    ██████╗███╗   ███╗███████╗
   ██╔════╝████╗ ████║██╔════╝
@@ -511,9 +519,9 @@ cme smb 10.10.10.0/24 -u newuser -H NEWHASH
 
 ## 📚 Resources
 
-- [CrackMapExec GitHub](https://github.com/Porchetta-Industries/CrackMapExec)
-- [CrackMapExec Wiki](https://wiki.porchetta.industries/)
-- [CME Modules](https://github.com/Porchetta-Industries/CrackMapExec/tree/master/cme/modules)
+- [Archived CrackMapExec repository](https://github.com/byt3bl33d3r/CrackMapExec)
+- [NetExec repository](https://github.com/Pennyw0rth/NetExec)
+- [NetExec documentation](https://www.netexec.wiki/)
 
 ### Related Cheatsheets
 - [BloodHound](../BloodHound/README.md)

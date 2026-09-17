@@ -704,9 +704,9 @@ PERMESSO SCRITTO ESPLICITO.
 - [Caplets](https://github.com/bettercap/caplets)
 
 ### Cheatsheet Correlate
-- [Aircrack-ng](../Aircrack-ng/translations/README.it.md)
-- [Wifite](../Wifite/translations/README.it.md)
-- [Wireshark](../Wireshark/translations/README.it.md)
+- [Aircrack-ng](../../Aircrack-ng/translations/README.it.md)
+- [Wifite](../../Wifite/README.md)
+- [Wireshark](../../Wireshark/README.md)
 
 ---
 

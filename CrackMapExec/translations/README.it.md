@@ -1,5 +1,9 @@
 # 🗡️ CrackMapExec - AD Swiss Army Knife
 
+> ⚠️ **Legacy:** CrackMapExec è archiviato. Per nuovi ambienti usa
+> [NetExec](../../NetExec/README.md); questa pagina rimane come riferimento per
+> installazioni storiche.
+
 ```
    ██████╗███╗   ███╗███████╗
   ██╔════╝████╗ ████║██╔════╝
@@ -514,9 +518,9 @@ cme smb 10.10.10.0/24 -u newuser -H NEWHASH
 
 ### Cheatsheet Correlate
 
-* [BloodHound](../BloodHound/translations/README.it.md)
-* [Impacket](../Impacket/translations/README.it.md)
-* [Mimikatz](../Mimikatz/translations/README.it.md)
+* [BloodHound](../../BloodHound/translations/README.it.md)
+* [Impacket](../../Impacket/README.md)
+* [Mimikatz](../../Mimikatz/README.md)
 
 ---
 

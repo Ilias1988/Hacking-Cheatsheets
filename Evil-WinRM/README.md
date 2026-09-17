@@ -1,5 +1,7 @@
 # 😈 Evil-WinRM - Windows Remote Shell
 
+> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
+
 ```
   ███████╗██╗   ██╗██╗██╗      ██╗    ██╗██╗███╗   ██╗██████╗ ███╗   ███╗
   ██╔════╝██║   ██║██║██║      ██║    ██║██║████╗  ██║██╔══██╗████╗ ████║
@@ -312,7 +314,7 @@ evil-winrm -i 10.10.10.10 -u admin -p 'P@ssw0rd'
 - [WinRM Documentation](https://docs.microsoft.com/en-us/windows/win32/winrm/portal)
 
 ### Related Cheatsheets
-- [CrackMapExec](../CrackMapExec/README.md)
+- [NetExec](../NetExec/README.md)
 - [Impacket](../Impacket/README.md)
 - [Mimikatz](../Mimikatz/README.md)
 

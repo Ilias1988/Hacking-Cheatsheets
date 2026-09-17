@@ -305,9 +305,9 @@ if (Request["cmd"] != null) {
 
 ## 🔗 Cheatsheet Correlate
 
-- [PowerShell](../PowerShell/translations/README.it.md)
-- [Linux Commands](../Linux-Commands/translations/README.it.md)
-- [Metasploit](../Metasploit/translations/README.it.md)
+- [PowerShell](../../PowerShell/README.md)
+- [Linux Commands](../../Linux-Commands/README.md)
+- [Metasploit](../../Metasploit/README.md)
 
 ---
 

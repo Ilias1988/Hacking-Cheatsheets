@@ -1,5 +1,10 @@
 # 📱 Social Media OSINT
 
+> **Last verified:** 2026-09-17  
+> **Scope:** Public information, authorized investigations, and applicable platform terms
+
+Social platforms change APIs, markup, rate limits, and access rules frequently. Prefer documented APIs, public search, and manual verification; label archived scrapers as historical rather than presenting them as reliable tooling.
+
 ---
 
 ## 🔍 Username Search Tools
@@ -30,15 +35,15 @@ maigret username --tor --json results.json
 
 ### Twitter/X
 ```bash
-# Twint
-twint -u username
-twint -u username --followers
-twint -s "search term" --since 2024-01-01
-
 # Profile URL
-twitter.com/username
-x.com/username
+https://x.com/username
+
+# Search-engine pivots for public indexed content
+site:x.com/username "search term"
+site:x.com "exact phrase" after:2025-01-01
 ```
+
+For automation, use the current documented X API or an approved data provider. **Twint is archived and has not been maintained since 2023**, so old `twint` commands should be treated as historical notes, not a dependable workflow.
 
 ### Instagram
 ```
@@ -105,6 +110,17 @@ echo "username" | sherlock --print-all
 □ Dating profiles
 □ Gaming profiles
 ```
+
+---
+
+## References and Handling
+
+- [Sherlock](https://github.com/sherlock-project/sherlock)
+- [Maigret](https://github.com/soxoj/maigret)
+- [X developer platform](https://developer.x.com/)
+- [Archived Twint repository](https://github.com/twintproject/twint)
+
+Record source URLs and collection time, distinguish account matches from unverified correlations, and minimize collection of unrelated personal data.
 
 ---
 

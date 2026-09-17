@@ -277,7 +277,7 @@ yarac rules.yar compiled.yarc
 ## 🔗 Cheatsheet Correlate
 
 - [Sigma Rules](./Sigma-Rules.it.md)
-- [Malware Analysis](./Malware-Analysis.it.md)
+- [Malware Analysis](../Malware-Analysis.md)
 - [Threat Hunting](./Threat-Hunting.it.md)
 
 ---

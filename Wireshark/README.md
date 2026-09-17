@@ -1,5 +1,7 @@
 # 🦈 Wireshark - Complete Cheatsheet
 
+> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
+
 ```
  __        ___           ____  _                _    
  \ \      / (_)_ __ ___ / ___|| |__   __ _ _ __| | __

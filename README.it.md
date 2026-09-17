@@ -1,5 +1,9 @@
 # 🔴 Hacking Cheatsheets
 
+[🇬🇧 English canonical version](README.md)
+
+> La traduzione italiana è in corso. Quando una pagina tradotta non è disponibile, il collegamento porta alla versione inglese verificata invece di mostrare una pagina inesistente.
+
 ```
 ██╗  ██╗ █████╗  ██████╗██╗  ██╗██╗███╗   ██╗ ██████╗ 
 ██║  ██║██╔══██╗██╔════╝██║ ██╔╝██║████╗  ██║██╔════╝ 
@@ -33,7 +37,9 @@
   <a href="#-licenza">Licenza</a>
 </p>
 
-> ⚠️ Disclaimer: Molti link ai file all'interno della repo ancora non funzionano, poiché le cheatsheets sono in fase di traduzione. Torna presto per la versione completa!
+> ⚠️ Le traduzioni vengono revisionate progressivamente. Tutti i collegamenti
+> interni sono controllati automaticamente; quando manca una traduzione, il link
+> porta alla guida inglese canonica.
 
 ---
 
@@ -49,9 +55,25 @@
 
 ---
 
+## 🧭 Workflow professionale e test web moderni
+
+> Le nuove guide sono disponibili in inglese mentre procede la revisione italiana.
+
+| Argomento | Descrizione | Guida |
+|---|---|---|
+| **Workflow di pentest** | Scope, regole d'ingaggio, evidenze, cleanup e retest | [📄 Visualizza](./Professional-Pentesting/README.md) |
+| **Uso sicuro** | Rate limit, gestione dei dati e limiti operativi | [📄 Visualizza](./docs/SAFE_USE.md) |
+| **API Security** | REST, GraphQL, autorizzazione e business flow | [📄 Visualizza](./API-Security/README.md) |
+| **Autenticazione web** | OAuth, OIDC, SAML, JWT e sessioni | [📄 Visualizza](./Web-Authentication/README.md) |
+| **File Upload** | Validazione, storage, processing e access control | [📄 Visualizza](./File-Upload/README.md) |
+| **Path Traversal** | Individuazione, verifica sicura e remediation | [📄 Visualizza](./Path-Traversal/README.md) |
+| **Business Logic** | Stati, race condition, replay e autorizzazione | [📄 Visualizza](./Business-Logic/README.md) |
+
+---
+
 ## 🎯 Metodologia d'attacco (Kill Chain)
 
-> **NOVITÀ!** Guida completa passo-passo per il penetration testing basata sul framework MITRE ATT&CK.
+> Guida completa passo-passo per il penetration testing basata sul framework MITRE ATT&CK.
 
 | Fase | Descrizione | Guida |
 |-------|-------------|-------|
@@ -69,7 +91,7 @@
 
 ## 🛡️ Blue Team (Defensive Security)
 
-> **NOVITÀ!** Guide complete sulla sicurezza defensiva per analisti SOC e incident responder.
+> Guide complete sulla sicurezza defensiva per analisti SOC e incident responder.
 
 | Argomento | Descrizione | Guida |
 |-------|-------------|-------|
@@ -87,12 +109,12 @@
 
 ## ☁️ Cloud Security
 
-> **NOVITÀ!** Guide al cloud pentesting per AWS, Azure e GCP.
+> Guide al cloud pentesting per AWS, Azure e GCP.
 
 | Provider | Descrizione | Guida |
 |----------|-------------|-------|
 | **AWS** | S3, IAM, Lambda, EC2, IMDS | [📄 Visualizza](./Cloud-Security/translations/AWS-Pentesting.it.md) |
-| **Azure** | Azure AD, Blob Storage, VM, Key Vault | [📄 Visualizza](./Cloud-Security/translations/Azure-Pentesting.it.md) |
+| **Azure / Entra** | Microsoft Entra ID, Blob Storage, VM, Key Vault | [📄 Visualizza](./Cloud-Security/translations/Azure-Pentesting.it.md) |
 | **GCP** | GCS, IAM, Compute, Cloud Functions | [📄 Visualizza](./Cloud-Security/translations/GCP-Pentesting.it.md) |
 
 👉 **[Panoramica completa sulla Cloud Security](./Cloud-Security/translations/README.it.md)**
@@ -101,20 +123,20 @@
 
 ## 📱 Mobile Security
 
-> **NOVITÀ!** Guide al mobile app pentesting per Android e iOS.
+> Guide al mobile app pentesting per Android e iOS.
 
 | Piattaforma | Descrizione | Guida |
 |----------|-------------|-------|
-| **Android** | Analisi APK, Frida, bypass root detection | [📄 Visualizza](./Mobile-Security/translations/Android-Pentesting.it.md) |
-| **iOS** | Analisi IPA, jailbreak, Objection, keychain | [📄 Visualizza](./Mobile-Security/translations/iOS-Pentesting.it.md) |
+| **Android** | Analisi APK, Frida, bypass root detection | [📄 Visualizza](./Mobile-Security/Android-Pentesting.md) |
+| **iOS** | Analisi IPA, jailbreak, Objection, keychain | [📄 Visualizza](./Mobile-Security/iOS-Pentesting.md) |
 
-👉 **[Panoramica completa sulla Mobile Security](./Mobile-Security/translations/README.it.md)**
+👉 **[Panoramica completa sulla Mobile Security](./Mobile-Security/README.md)**
 
 ---
 
 ## 🐳 Container Security
 
-> **NOVITÀ!** Guide al pentesting di Docker & Kubernetes.
+> Guide al pentesting di Docker & Kubernetes.
 
 | Piattaforma | Descrizione | Guida |
 |----------|-------------|-------|
@@ -127,86 +149,86 @@
 
 ## 🎭 Social Engineering
 
-> **NOVITÀ!** Tecniche di social engineering, campagne di phishing e guide al pretexting.
+> Tecniche di social engineering, campagne di phishing e guide al pretexting.
 
 | Argomento | Descrizione | Guida |
 |-------|-------------|-------|
-| **Phishing** | Email phishing, GoPhish, Evilginx2, vishing, smishing | [📄 Visualizza](./Social-Engineering/translations/Phishing.it.md) |
-| **Pretexting** | Personas, scenari, manipolazione psicologica | [📄 Visualizza](./Social-Engineering/translations/Pretexting.it.md) |
+| **Phishing** | Email phishing, GoPhish, Evilginx2, vishing, smishing | [📄 Visualizza](./Social-Engineering/Phishing.md) |
+| **Pretexting** | Personas, scenari, manipolazione psicologica | [📄 Visualizza](./Social-Engineering/Pretexting.md) |
 
-👉 **[Panoramica completa sulla Social Engineering](./Social-Engineering/translations/README.it.md)**
+👉 **[Panoramica completa sulla Social Engineering](./Social-Engineering/README.md)**
 
 ---
 
 ## 📝 Reporting Templates
 
-> **NOVITÀ!** Template di report professionali per pentester e bug bounty hunter.
+> Template di report professionali per pentester e bug bounty hunter.
 
 | Template | Descrizione | Guida |
 |----------|-------------|-------|
-| **Report di Pentest** | Struttura completa di un report di penetration test | [📄 Visualizza](./Reporting/translations/Pentest-Report-Template.it.md) |
-| **Report di Bug Bounty** | Template per l'invio di report su HackerOne/Bugcrowd | [📄 Visualizza](./Reporting/translations/Bug-Bounty-Report-Template.it.md) |
-| **Executive Summary** | Riassunto non tecnico per il management | [📄 Visualizza](./Reporting/translations/Executive-Summary-Template.it.md) |
+| **Report di Pentest** | Struttura completa di un report di penetration test | [📄 Visualizza](./Reporting/Pentest-Report-Template.md) |
+| **Report di Bug Bounty** | Template per l'invio di report su HackerOne/Bugcrowd | [📄 Visualizza](./Reporting/Bug-Bounty-Report-Template.md) |
+| **Executive Summary** | Riassunto non tecnico per il management | [📄 Visualizza](./Reporting/Executive-Summary-Template.md) |
 
 ---
 
 ## 🔍 OSINT (Open Source Intelligence)
 
-> **NOVITÀ!** Metodologia OSINT completa e guide agli strumenti.
+> Metodologia OSINT completa e guide agli strumenti.
 
 | Argomento | Descrizione | Guida |
 |-------|-------------|-------|
-| **People Search** | Trovare individui online, ricerca telefono/indirizzo | [📄 Visualizza](./OSINT/translations/People-Search.it.md) |
-| **OSINT di Email** | Scoperta email,controllo dei data breach, verifica | [📄 Visualizza](./OSINT/translations/Email-OSINT.it.md) |
-| **Social Media** | Ricerca username, OSINT specifico per piattaforma | [📄 Visualizza](./OSINT/translations/Social-Media-OSINT.it.md) |
-| **Dominio & IP** | WHOIS, DNS, sottodomini, ricognizione IP | [📄 Visualizza](./OSINT/translations/Domain-IP-OSINT.it.md) |
-| **OSINT di Immagini** | Reverse image search, metadati EXIF | [📄 Visualizza](./OSINT/translations/Image-OSINT.it.md) |
+| **People Search** | Trovare individui online, ricerca telefono/indirizzo | [📄 Visualizza](./OSINT/People-Search.md) |
+| **OSINT di Email** | Scoperta email,controllo dei data breach, verifica | [📄 Visualizza](./OSINT/Email-OSINT.md) |
+| **Social Media** | Ricerca username, OSINT specifico per piattaforma | [📄 Visualizza](./OSINT/Social-Media-OSINT.md) |
+| **Dominio & IP** | WHOIS, DNS, sottodomini, ricognizione IP | [📄 Visualizza](./OSINT/Domain-IP-OSINT.md) |
+| **OSINT di Immagini** | Reverse image search, metadati EXIF | [📄 Visualizza](./OSINT/Image-OSINT.md) |
 
-👉 **[Panoramica completa sulla OSINT](./OSINT/translations/README.it.md)**
+👉 **[Panoramica completa sulla OSINT](./OSINT/README.md)**
 
 ---
 
 ## 🌐 Pentesting di rete
 
-> **NOVITÀ!** Guide complete al penetration testing di rete.
+> Guide complete al penetration testing di rete.
 
 | Argomento | Descrizione | Guida |
 |-------|-------------|-------|
-| **Scansione delle porte** | Nmap, Masscan, RustScan | [📄 Visualizza](./Network-Pentesting/translations/Port-Scanning.it.md) |
-| **Enumerazione della rete** | SMB, SNMP, NFS, LDAP, DNS | [📄 Visualizza](./Network-Pentesting/translations/Network-Enumeration.it.md) |
-| **Attacchi MITM** | ARP spoofing, DNS spoofing, SSL strip | [📄 Visualizza](./Network-Pentesting/translations/MITM-Attacks.it.md) |
-| **Exploitation di Servizi** | FTP, SSH, SMB, RDP, database | [📄 Visualizza](./Network-Pentesting/translations/Service-Exploitation.it.md) |
+| **Scansione delle porte** | Nmap, Masscan, RustScan | [📄 Visualizza](./Network-Pentesting/Port-Scanning.md) |
+| **Enumerazione della rete** | SMB, SNMP, NFS, LDAP, DNS | [📄 Visualizza](./Network-Pentesting/Network-Enumeration.md) |
+| **Attacchi MITM** | ARP spoofing, DNS spoofing, SSL strip | [📄 Visualizza](./Network-Pentesting/MITM-Attacks.md) |
+| **Exploitation di Servizi** | FTP, SSH, SMB, RDP, database | [📄 Visualizza](./Network-Pentesting/Service-Exploitation.md) |
 
-👉 **[Panoramica completa sul Pentesting di rete](./Network-Pentesting/translations/README.it.md)**
+👉 **[Panoramica completa sul Pentesting di rete](./Network-Pentesting/README.md)**
 
 ---
 
 ## 🏁 Cheatsheets su CTF
 
-> **NOVITÀ!** Guide complete per competizioni CTF su HackTheBox, TryHackMe, PicoCTF.
+> Guide complete per competizioni CTF su HackTheBox, TryHackMe, PicoCTF.
 
 | Categoria | Descrizione | Guida |
 |----------|-------------|-------|
-| **Web** | SQLi, XSS, SSTI, LFI, Auth bypass | [📄 Visualizza](./CTF/translations/Web-CTF.it.md) |
-| **Crypto** | RSA, AES, hash, encoding, XOR | [📄 Visualizza](./CTF/translations/Crypto-CTF.it.md) |
-| **Ingegneria inversa** | Ghidra, IDA, GDB, patching | [📄 Visualizza](./CTF/translations/Reverse-Engineering-CTF.it.md) |
-| **Forensics** | Steganografia, memoria, disco, PCAP | [📄 Visualizza](./CTF/translations/Forensics-CTF.it.md) |
-| **Pwn/Binary** | Buffer overflow, ROP, shellcode | [📄 Visualizza](./CTF/translations/Pwn-CTF.it.md) |
+| **Web** | SQLi, XSS, SSTI, LFI, Auth bypass | [📄 Visualizza](./CTF/Web-CTF.md) |
+| **Crypto** | RSA, AES, hash, encoding, XOR | [📄 Visualizza](./CTF/Crypto-CTF.md) |
+| **Ingegneria inversa** | Ghidra, IDA, GDB, patching | [📄 Visualizza](./CTF/Reverse-Engineering-CTF.md) |
+| **Forensics** | Steganografia, memoria, disco, PCAP | [📄 Visualizza](./CTF/Forensics-CTF.md) |
+| **Pwn/Binary** | Buffer overflow, ROP, shellcode | [📄 Visualizza](./CTF/Pwn-CTF.md) |
 
-👉 **[Panoramica completa sui CTF](./CTF/translations/README.it.md)**
+👉 **[Panoramica completa sui CTF](./CTF/README.md)**
 
 ---
 
 ## 📡 Hacking di dispositivi IoT
 
-> **NOVITÀ!** Hacking di dispositivi IoT, firmware analysis e guide all'hardware hacking.
+> Hacking di dispositivi IoT, firmware analysis e guide all'hardware hacking.
 
 | Argomento | Descrizione | Guida |
 |-------|-------------|-------|
-| **Analisi del Firmware** | Binwalk, estrazione, RE, secrets | [📄 Visualizza](./IoT-Hacking/translations/Firmware-Analysis.it.md) |
-| **Hardware Hacking** | UART, JTAG, SPI, I2C, porte di debug | [📄 Visualizza](./IoT-Hacking/translations/Hardware-Hacking.it.md) |
+| **Analisi del Firmware** | Binwalk, estrazione, RE, secrets | [📄 Visualizza](./IoT-Hacking/Firmware-Analysis.md) |
+| **Hardware Hacking** | UART, JTAG, SPI, I2C, porte di debug | [📄 Visualizza](./IoT-Hacking/Hardware-Hacking.md) |
 
-👉 **[Panoramica completa sull'IoT Hacking](./IoT-Hacking/translations/README.it.md)**
+👉 **[Panoramica completa sull'IoT Hacking](./IoT-Hacking/README.md)**
 
 ---
 
@@ -216,134 +238,134 @@
 
 | Strumento | Descrizione | Cheatsheet |
 |------|-------------|------------|
-| **Metasploit** | Il framework di penetration testing più usato al mondo | [📄 Visualizza](./Metasploit/translations/README.it.md) |
-| **Meterpreter** | Payload avanzato di post-exploitation | [📄 Visualizza](./Metasploit/translations/Meterpreter.it.md) |
-| **Mimikatz** | Strumento per l'estrazione di credenziali Windows | [📄 Visualizza](./Mimikatz/translations/README.it.md) |
-| **PowerShell** | Scripting Windows per il pentesting | [📄 Visualizza](./PowerShell/translations/README.it.md) |
-| **Comandi di Linux** | Linux & Bash per il pentesting | [📄 Visualizza](./Linux-Commands/translations/README.it.md) |
+| **Metasploit** | Il framework di penetration testing più usato al mondo | [📄 Visualizza](./Metasploit/README.md) |
+| **Meterpreter** | Payload avanzato di post-exploitation | [📄 Visualizza](./Metasploit/Meterpreter.md) |
+| **Mimikatz** | Strumento per l'estrazione di credenziali Windows | [📄 Visualizza](./Mimikatz/README.md) |
+| **PowerShell** | Scripting Windows per il pentesting | [📄 Visualizza](./PowerShell/README.md) |
+| **Comandi di Linux** | Linux & Bash per il pentesting | [📄 Visualizza](./Linux-Commands/README.md) |
 
 ### 🔍 Reconnaissance e scansione
 
 | Strumento | Descrizione | Cheatsheet |
 |------|-------------|------------|
-| **Nmap** | Network discovery e security auditing | [📄 Visualizza](./Nmap/translations/README.it.md) |
-| **Gobuster** | Brute-forcing di Directory/DNS/VHost | [📄 Visualizza](./Gobuster/translations/README.it.md) |
-| **Nikto** | SCanner di web server | [📄 Visualizza](./Nikto/translations/README.it.md) |
+| **Nmap** | Network discovery e security auditing | [📄 Visualizza](./Nmap/README.md) |
+| **Gobuster** | Brute-forcing di Directory/DNS/VHost | [📄 Visualizza](./Gobuster/README.md) |
+| **Nikto** | SCanner di web server | [📄 Visualizza](./Nikto/README.md) |
 
 ### 🌐 Testing delle Applicazioni Web
 
 | Strumento | Descrizione | Cheatsheet |
 |------|-------------|------------|
-| **SQLMap** | Strumento di automazione per la SQL injection | [📄 Visualizza](./SQLMap/translations/README.it.md) |
+| **SQLMap** | Strumento di automazione per la SQL injection | [📄 Visualizza](./SQLMap/README.md) |
 | **Burp Suite** | Piattaforma di test per la sicurezza delle applicazioni web application | [📄 Visualizza](./Burp-Suite/translations/README.it.md) |
-| **OWASP ZAP** | Scanner di sicurezza web app gratuito | [📄 Visualizza](./OWASP-ZAP/translations/README.it.md) |
+| **OWASP ZAP** | Scanner di sicurezza web app gratuito | [📄 Visualizza](./OWASP-ZAP/README.md) |
 
 ### 🔓 Password Cracking
 
 | Strumento | Descrizione | Cheatsheet |
 |------|-------------|------------|
-| **Hydra** | Veloce network login cracker | [📄 Visualizza](./Hydra/translations/README.it.md) |
-| **John the Ripper** | Leggendario password cracker | [📄 Visualizza](./John-The-Ripper/translations/README.it.md) |
-| **Hashcat** | Il GPU password cracker più veloce al mondo | [📄 Visualizza](./Hashcat/translations/README.it.md) |
+| **Hydra** | Veloce network login cracker | [📄 Visualizza](./Hydra/README.md) |
+| **John the Ripper** | Leggendario password cracker | [📄 Visualizza](./John-The-Ripper/README.md) |
+| **Hashcat** | Il GPU password cracker più veloce al mondo | [📄 Visualizza](./Hashcat/README.md) |
 
 ### 📡 Analisi di rete
 
 | Strumento | Descrizione | Cheatsheet |
 |------|-------------|------------|
-| **Wireshark** | Analizzatore di protocolli di rete | [📄 Visualizza](./Wireshark/translations/README.it.md) |
-| **tcpdump** | Analizzatore di pacchetti da riga di comando | [📄 Visualizza](./tcpdump/translations/README.it.md) |
+| **Wireshark** | Analizzatore di protocolli di rete | [📄 Visualizza](./Wireshark/README.md) |
+| **tcpdump** | Analizzatore di pacchetti da riga di comando | [📄 Visualizza](./tcpdump/README.md) |
 
 ### 🐛 Bug Bounty
 
 | Strumento | Descrizione | Cheatsheet |
 |------|-------------|------------|
 | **⭐ BB Methodology** | Guida completa al bug bounty hunting | [📄 Visualizza](./Bug-Bounty-Methodology/translations/README.it.md) |
-| **Nuclei** | Vulnerability scanner basato su template | [📄 Visualizza](./Nuclei/translations/README.it.md) |
-| **ffuf** | Veloce web fuzzer | [📄 Visualizza](./ffuf/translations/README.it.md) |
-| **Subfinder** | Discovery di sottodomini | [📄 Visualizza](./Subfinder/translations/README.it.md) |
-| **httpx** | HTTP probe & toolkit | [📄 Visualizza](./httpx/translations/README.it.md) |
+| **Nuclei** | Vulnerability scanner basato su template | [📄 Visualizza](./Nuclei/README.md) |
+| **ffuf** | Veloce web fuzzer | [📄 Visualizza](./ffuf/README.md) |
+| **Subfinder** | Discovery di sottodomini | [📄 Visualizza](./Subfinder/README.md) |
+| **httpx** | HTTP probe & toolkit | [📄 Visualizza](./httpx/README.md) |
 | **Amass** | Mapping approfondito della superficie di attacco | [📄 Visualizza](./Amass/translations/README.it.md) |
-| **GAU** | Prendi tutti gli URL dagli archivi | [📄 Visualizza](./GAU/translations/README.it.md) |
-| **Katana** | Web crawler di nuova generazione | [📄 Visualizza](./Katana/translations/README.it.md) |
+| **GAU** | Prendi tutti gli URL dagli archivi | [📄 Visualizza](./GAU/README.md) |
+| **Katana** | Web crawler di nuova generazione | [📄 Visualizza](./Katana/README.md) |
 | **Arjun** | Discovery di parametri nascosti | [📄 Visualizza](./Arjun/translations/README.it.md) |
-| **Dalfox** | Scanner di vulnerabilità XSS | [📄 Visualizza](./Dalfox/translations/README.it.md) |
+| **Dalfox** | Scanner di vulnerabilità XSS | [📄 Visualizza](./Dalfox/README.md) |
 
 ### 💉 Collezione di Payloads
 
 | Vulnerabilità | Descrizione | Cheatsheet |
 |---------------|-------------|------------|
-| **XSS** | Payload per Cross-Site Scripting | [📄 Visualizza](./Payloads/translations/XSS.it.md) |
-| **SQLi** | Payload per SQL Injection | [📄 Visualizza](./Payloads/translations/SQLi.it.md) |
-| **LFI** | Payload per Local File Inclusion | [📄 Visualizza](./Payloads/translations/LFI.it.md) |
-| **SSTI** | Server-Side Template Injection | [📄 Visualizza](./Payloads/translations/SSTI.it.md) |
-| **Command Injection** | Payload per OS command injection | [📄 Visualizza](./Payloads/translations/Command-Injection.it.md) |
-| **NoSQL Injection** | Payload per MongoDB, CouchDB, Redis | [📄 Visualizza](./Payloads/translations/NoSQL-Injection.it.md) |
-| **Deserialization** | Payload per Java, PHP, Python, .NET | [📄 Visualizza](./Payloads/translations/Deserialization.it.md) |
-| **Attacchi WebSocket** | CSWSH, injection, hijacking | [📄 Visualizza](./Payloads/translations/WebSocket-Attacks.it.md) |
-| **GraphQL Injection** | Introspection, IDOR, injection | [📄 Visualizza](./Payloads/translations/GraphQL-Injection.it.md) |
+| **XSS** | Payload per Cross-Site Scripting | [📄 Visualizza](./Payloads/XSS.md) |
+| **SQLi** | Payload per SQL Injection | [📄 Visualizza](./Payloads/SQLi.md) |
+| **LFI** | Payload per Local File Inclusion | [📄 Visualizza](./Payloads/LFI.md) |
+| **SSTI** | Server-Side Template Injection | [📄 Visualizza](./Payloads/SSTI.md) |
+| **Command Injection** | Payload per OS command injection | [📄 Visualizza](./Payloads/Command-Injection.md) |
+| **NoSQL Injection** | Payload per MongoDB, CouchDB, Redis | [📄 Visualizza](./Payloads/NoSQL-Injection.md) |
+| **Deserialization** | Payload per Java, PHP, Python, .NET | [📄 Visualizza](./Payloads/Deserialization.md) |
+| **Attacchi WebSocket** | CSWSH, injection, hijacking | [📄 Visualizza](./Payloads/WebSocket-Attacks.md) |
+| **GraphQL Injection** | Introspection, IDOR, injection | [📄 Visualizza](./Payloads/GraphQL-Injection.md) |
 
 ### 🔴 Vulnerabilità Web
 
 | Vulnerabilità | Descrizione | Cheatsheet |
 |---------------|-------------|------------|
 | **Sicurezza delle API** | Guida al testing di REST/GraphQL/JWT | [📄 Visualizza](./API-Security/translations/README.it.md) |
-| **IDOR** | Insecure Direct Object Reference | [📄 Visualizza](./IDOR/translations/README.it.md) |
-| **SSRF** | Server-Side Request Forgery | [📄 Visualizza](./SSRF/translations/README.it.md) |
-| **XXE** | XML External Entity Injection | [📄 Visualizza](./XXE/translations/README.it.md) |
-| **Race Conditions** | Attacchi di timing & concorrenza | [📄 Visualizza](./Race-Conditions/translations/README.it.md) |
+| **IDOR** | Insecure Direct Object Reference | [📄 Visualizza](./IDOR/README.md) |
+| **SSRF** | Server-Side Request Forgery | [📄 Visualizza](./SSRF/README.md) |
+| **XXE** | XML External Entity Injection | [📄 Visualizza](./XXE/README.md) |
+| **Race Conditions** | Attacchi di timing & concorrenza | [📄 Visualizza](./Race-Conditions/README.md) |
 | **Auth Bypass** | Tecniche di bypass dell'autenticazione | [📄 Visualizza](./Auth-Bypass/translations/README.it.md) |
 | **CORS** | Misconfigurazioni Cross-Origin | [📄 Visualizza](./CORS/translations/README.it.md) |
-| **Open Redirect** | Vulnerabilità redirect URL | [📄 Visualizza](./Open-Redirect/translations/README.it.md) |
+| **Open Redirect** | Vulnerabilità redirect URL | [📄 Visualizza](./Open-Redirect/README.md) |
 
 ### 🛡️ Tecniche Avanzate di Attacco
 
 | Argomento | Descrizione | Cheatsheet |
 |-------|-------------|------------|
-| **WAF Bypass** | Discovery IP di origine & evasione WAF | [📄 Visualizza](./WAF-Bypass/translations/README.it.md) |
+| **WAF Bypass** | Discovery IP di origine & evasione WAF | [📄 Visualizza](./WAF-Bypass/README.md) |
 | **Cloudflare Bypass** | Trovare l'IP di origine dietro Cloudflare | [📄 Visualizza](./Cloudflare-Bypass/translations/README.it.md) |
-| **Subdomain Takeover** | Exploitation di CNAME dangling | [📄 Visualizza](./Subdomain-Takeover/translations/README.it.md) |
+| **Subdomain Takeover** | Exploitation di CNAME dangling | [📄 Visualizza](./Subdomain-Takeover/README.md) |
 | **Cache Poisoning** | Web cache poisoning & deception | [📄 Visualizza](./Cache-Poisoning/translations/README.it.md) |
-| **HTTP Smuggling** | Request smuggling (CL.TE/TE.CL) | [📄 Visualizza](./HTTP-Request-Smuggling/translations/README.it.md) |
-| **Prototype Pollution** | Attacchi JavaScript prototype | [📄 Visualizza](./Prototype-Pollution/translations/README.it.md) |
+| **HTTP Smuggling** | Request smuggling (CL.TE/TE.CL) | [📄 Visualizza](./HTTP-Request-Smuggling/README.md) |
+| **Prototype Pollution** | Attacchi JavaScript prototype | [📄 Visualizza](./Prototype-Pollution/README.md) |
 
 ### 🔎 Dorking & OSINT
 
 | Strumento | Descrizione | Cheatsheet |
 |------|-------------|------------|
-| **Google Dorking** | Tecniche di ricerca avanzata su Google | [📄 Visualizza](./Google-Dorking/translations/README.it.md) |
-| **Shodan** | Motore di ricerca per IoT e dispositivi | [📄 Visualizza](./Shodan/translations/README.it.md) |
-| **GitHub Dorking** | Ricerca di informazioni sensibili nei repository | [📄 Visualizza](./GitHub-Dorking/translations/README.it.md) |
+| **Google Dorking** | Tecniche di ricerca avanzata su Google | [📄 Visualizza](./Google-Dorking/README.md) |
+| **Shodan** | Motore di ricerca per IoT e dispositivi | [📄 Visualizza](./Shodan/README.md) |
+| **GitHub Dorking** | Ricerca di informazioni sensibili nei repository | [📄 Visualizza](./GitHub-Dorking/README.md) |
 
 ### 🔝 Privilege Escalation
 
 | Argomento | Descrizione | Cheatsheet |
 |-------|-------------|------------|
-| **Linux PrivEsc** | Tecniche di privilege escalation su Linux | [📄 Visualizza](./Linux-PrivEsc/translations/README.it.md) |
-| **Windows PrivEsc** | Tecniche di privilege escalation su Windows | [📄 Visualizza](./Windows-PrivEsc/translations/README.it.md) |
+| **Linux PrivEsc** | Tecniche di privilege escalation su Linux | [📄 Visualizza](./Linux-PrivEsc/README.md) |
+| **Windows PrivEsc** | Tecniche di privilege escalation su Windows | [📄 Visualizza](./Windows-PrivEsc/README.md) |
 
 ### 🔬 Digital Forensics
 
 | Strumento | Descrizione | Cheatsheet |
 |------|-------------|------------|
-| **Volatility** | Framework di memory forensics | [📄 Visualizza](./Volatility/translations/README.it.md) |
+| **Volatility** | Framework di memory forensics | [📄 Visualizza](./Volatility/README.md) |
 | **Autopsy** | Piattaforma di digital forensics (GUI) | [📄 Visualizza](./Autopsy/translations/README.it.md) |
-| **ExifTool** | Estrazione e analisi di metadati | [📄 Visualizza](./ExifTool/translations/README.it.md) |
+| **ExifTool** | Estrazione e analisi di metadati | [📄 Visualizza](./ExifTool/README.md) |
 | **Binwalk** | Analisi ed estrazione di firmware | [📄 Visualizza](./Binwalk/translations/README.it.md) |
 
 ### 🔄 Ingegneria Inversa
 
 | Strumento | Descrizione | Cheatsheet |
 |------|-------------|------------|
-| **Ghidra** | Suite di reverse engineering della NSA | [📄 Visualizza](./Ghidra/translations/README.it.md) |
-| **GDB** | Debugger GNU (debugging Linux) | [📄 Visualizza](./GDB/translations/README.it.md) |
-| **x64dbg** | Debugger Windows x64/x32 | [📄 Visualizza](./x64dbg/translations/README.it.md) |
+| **Ghidra** | Suite di reverse engineering della NSA | [📄 Visualizza](./Ghidra/README.md) |
+| **GDB** | Debugger GNU (debugging Linux) | [📄 Visualizza](./GDB/README.md) |
+| **x64dbg** | Debugger Windows x64/x32 | [📄 Visualizza](./x64dbg/README.md) |
 
 ### 📶 WiFi Hacking
 
 | Strumento | Descrizione | Cheatsheet |
 |------|-------------|------------|
 | **Aircrack-ng** | Suite per WiFi hacking (WPA/WPA2) | [📄 Visualizza](./Aircrack-ng/translations/README.it.md) |
-| **Wifite** | Auditor WiFi automatizzato | [📄 Visualizza](./Wifite/translations/README.it.md) |
+| **Wifite** | Auditor WiFi automatizzato | [📄 Visualizza](./Wifite/README.md) |
 | **Bettercap** | Framework per attacchi di rete (MITM/WiFi) | [📄 Visualizza](./Bettercap/translations/README.it.md) |
 
 ### 🏢 Active Directory
@@ -352,20 +374,20 @@
 |------|-------------|------------|
 | **⭐ AD Methodology** | Guida all'attacco passo-passo | [📄 Visualizza](./AD-Attack-Methodology/translations/README.it.md) |
 | **BloodHound** | Visualizzazione dei percorsi di attacco AD | [📄 Visualizza](./BloodHound/translations/README.it.md) |
-| **Impacket** | Toolkit di attacco AD in Python | [📄 Visualizza](./Impacket/translations/README.it.md) |
+| **Impacket** | Toolkit di attacco AD in Python | [📄 Visualizza](./Impacket/README.md) |
 | **CrackMapExec** | Il coltellino svizzero per AD | [📄 Visualizza](./CrackMapExec/translations/README.it.md) |
-| **Rubeus** | Toolkit per l'abuso di Kerberos | [📄 Visualizza](./Rubeus/translations/README.it.md) |
-| **PowerView** | Enumerazione AD via PowerShell | [📄 Visualizza](./PowerView/translations/README.it.md) |
-| **Responder** | Avvelenamento LLMNR/NBT-NS | [📄 Visualizza](./Responder/translations/README.it.md) |
-| **Evil-WinRM** | Shell WinRM per pentester | [📄 Visualizza](./Evil-WinRM/translations/README.it.md) |
-| **Kerbrute** | Enum utenti e spraying Kerberos | [📄 Visualizza](./Kerbrute/translations/README.it.md) |
+| **Rubeus** | Toolkit per l'abuso di Kerberos | [📄 Visualizza](./Rubeus/README.md) |
+| **PowerView** | Enumerazione AD via PowerShell | [📄 Visualizza](./PowerView/README.md) |
+| **Responder** | Avvelenamento LLMNR/NBT-NS | [📄 Visualizza](./Responder/README.md) |
+| **Evil-WinRM** | Shell WinRM per pentester | [📄 Visualizza](./Evil-WinRM/README.md) |
+| **Kerbrute** | Enum utenti e spraying Kerberos | [📄 Visualizza](./Kerbrute/README.md) |
 
 ### 📚 Risorse
 
 | Risorsa | Descrizione | Cheatsheet |
 |----------|-------------|------------|
-| **Wordlists** | Guida di riferimento completa alle wordlist | [📄 Visualizza](./Wordlists/translations/README.it.md) |
-| **Kali Linux Tools** | Oltre 600 strumenti divisi per categoria | [📄 Visualizza](./Kali-Linux-Tools/translations/README.it.md) |
+| **Wordlists** | Guida di riferimento completa alle wordlist | [📄 Visualizza](./Wordlists/README.md) |
+| **Kali Linux Tools** | Oltre 600 strumenti divisi per categoria | [📄 Visualizza](./Kali-Linux-Tools/README.md) |
 
 ---
 
@@ -508,7 +530,7 @@ I contributi sono benvenuti! Si prega di leggere le nostre [Linee guida per i co
 
 ## 📜 Licenza
 
-Questo progetto è rilasciato sotto la Licenza MIT - consulta il file [LICENZA](LICENSE.it.md) per i dettagli.
+Questo progetto è rilasciato sotto la Licenza MIT - consulta il file [LICENZA](./LICENSE) per i dettagli.
 
 ---
 

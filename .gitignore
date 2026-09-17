@@ -142,14 +142,12 @@ secrets.txt
 # Tool Generated Files
 # -----------------
 
-# Metasploit
-*.rc
+# Metasploit runtime output
 loot/
-data/
-logs/
+metasploit-data/
+metasploit-logs/
 
 # Nmap
-*.xml
 *.gnmap
 *.nmap
 
@@ -157,9 +155,8 @@ logs/
 *.burp
 *.bak
 
-# SQLMap
-output/
-*.csv
+# SQLMap runtime output
+sqlmap-output/
 
 # -----------------
 # Archives
@@ -191,8 +188,8 @@ drafts/
 # Work in progress files
 WIP-*
 wip-*
-TODO.md
 
-# Test files
-test/
-tests/
+# Test output (the test sources themselves are tracked)
+.pytest_cache/
+.coverage
+htmlcov/

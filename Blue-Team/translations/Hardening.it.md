@@ -299,7 +299,7 @@ systemctl restart auditd
 ## 🔗 Cheatsheet Correlate
 
 - [Incident Response](./Incident-Response.it.md)
-- [Network Defense](./Network-Defense.it.md)
+- [Network Defense](../Network-Defense.md)
 
 ---
 

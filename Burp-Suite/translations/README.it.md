@@ -1033,8 +1033,8 @@ Intruder → Options:
 - [TryHackMe](https://tryhackme.com/)
 
 ### Cheatsheet Correlate
-- [SQLMap](../SQLMap/translations/README.it.md)
-- [Metasploit Framework](../Metasploit/translations/README.it.md)
+- [SQLMap](../../SQLMap/README.md)
+- [Metasploit Framework](../../Metasploit/README.md)
 
 ---
 

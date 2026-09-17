@@ -597,10 +597,10 @@ unsquashfs fs.squashfs
 - [OWASP IoT Firmware Analysis](https://owasp.org/www-project-iot-security/)
 
 ### Cheatsheet Correlati
-- [ExifTool](../ExifTool/translations/README.it.md)
-- [Volatility](../Volatility/translations/README.it.md)
-- [Autopsy](../Autopsy/translations/README.it.md)
-- [Linux Commands](../Linux-Commands/translations/README.it.md)
+- [ExifTool](../../ExifTool/README.md)
+- [Volatility](../../Volatility/README.md)
+- [Autopsy](../../Autopsy/translations/README.it.md)
+- [Linux Commands](../../Linux-Commands/README.md)
 
 ---
 

@@ -1,5 +1,9 @@
 # 🩸 BloodHound - Visualizzazione dei percorsi di attacco Active Directory
 
+> ⚠️ **Guida legacy in revisione:** l'installazione Electron/Neo4j descritta qui
+> non è il workflow consigliato per BloodHound Community Edition. Consulta la
+> [guida inglese aggiornata](../README.md) per l'installazione corrente.
+
 ```
   ██████╗ ██╗      ██████╗  ██████╗ ██████╗ ██╗  ██╗ ██████╗ ██╗   ██╗███╗   ██╗██████╗ 
   ██╔══██╗██║     ██╔═══██╗██╔═══██╗██╔══██╗██║  ██║██╔═══██╗██║   ██║████╗  ██║██╔══██╗
@@ -593,9 +597,9 @@ Output SharpHound:
 - [bloodhound.py](https://github.com/fox-it/BloodHound.py)
 
 ### Cheatsheet correlate
-- [Mimikatz](../Mimikatz/translations/README.it.md)
-- [PowerShell](../PowerShell/translations/README.it.md)
-- [Windows PrivEsc](../Windows-PrivEsc/translations/README.it.md)
+- [Mimikatz](../../Mimikatz/README.md)
+- [PowerShell](../../PowerShell/README.md)
+- [Windows PrivEsc](../../Windows-PrivEsc/README.md)
 
 ---
 

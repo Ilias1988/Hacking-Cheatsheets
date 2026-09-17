@@ -1,5 +1,7 @@
 # 📄 XXE - XML External Entity Injection
 
+> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
+
 ```
   ██╗  ██╗██╗  ██╗███████╗
   ╚██╗██╔╝╚██╗██╔╝██╔════╝

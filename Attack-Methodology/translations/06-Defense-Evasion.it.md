@@ -288,8 +288,8 @@ exec -a "[kworker/0:0]" ./malicious
 
 ## 🔗 Cheatsheet Correlate
 
-- [PowerShell](../PowerShell/translations/README.it.md)
-- [Mimikatz](../Mimikatz/translations/README.it.md)
+- [PowerShell](../../PowerShell/README.md)
+- [Mimikatz](../../Mimikatz/README.md)
 
 ---
 

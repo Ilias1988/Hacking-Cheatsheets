@@ -624,12 +624,12 @@ go install -v github.com/PentestPad/subzy@latest
 
 ## 📚 Cheatsheet Correlate
 
-- [Nuclei](../Nuclei/translations/README.it.md)
-- [ffuf](../ffuf/translations/README.it.md)
-- [Subfinder](../Subfinder/translations/README.it.md)
-- [httpx](../httpx/translations/README.it.md)
-- [Google Dorking](../Google-Dorking/translations/README.it.md)
-- [Burp Suite](../Burp-Suite/translations/README.it.md)
+- [Nuclei](../../Nuclei/README.md)
+- [ffuf](../../ffuf/README.md)
+- [Subfinder](../../Subfinder/README.md)
+- [httpx](../../httpx/README.md)
+- [Google Dorking](../../Google-Dorking/README.md)
+- [Burp Suite](../../Burp-Suite/translations/README.it.md)
 
 ---
 

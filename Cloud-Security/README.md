@@ -1,5 +1,7 @@
 # ☁️ Cloud Security Cheatsheets
 
+> **Review status:** Source verification pending. Confirm version-sensitive commands against the official documentation before use.
+
 ```
  ██████╗██╗      ██████╗ ██╗   ██╗██████╗     ███████╗███████╗ ██████╗██╗   ██╗██████╗ ██╗████████╗██╗   ██╗
 ██╔════╝██║     ██╔═══██╗██║   ██║██╔══██╗    ██╔════╝██╔════╝██╔════╝██║   ██║██╔══██╗██║╚══██╔══╝╚██╗ ██╔╝
@@ -42,7 +44,7 @@ Cloud security testing involves identifying vulnerabilities in cloud infrastruct
 | **Pacu** | AWS exploitation framework | AWS |
 | **CloudBrute** | Cloud enumeration | All |
 | **S3Scanner** | S3 bucket enumeration | AWS |
-| **AzureHound** | Azure AD attack paths | Azure |
+| **AzureHound** | Microsoft Entra ID attack paths | Azure |
 | **gcp_enum** | GCP enumeration | GCP |
 
 ### Quick Tool Install
