@@ -65,13 +65,17 @@ def validate_output(
     help_text: str,
 ) -> list[str]:
     failures: list[str] = []
+    version_pattern = str(config["version_pattern"])
     version_line = next(
-        (line.strip() for line in version.splitlines() if "version" in line.lower()),
-        version.strip().splitlines()[0] if version.strip() else "unknown",
+        (line.strip() for line in version.splitlines() if re.search(version_pattern, line)),
+        next(
+            (line.strip() for line in version.splitlines() if "version" in line.lower()),
+            version.strip().splitlines()[0] if version.strip() else "unknown",
+        ),
     )
     print(f"[{name}] {version_line}")
 
-    if not re.search(str(config["version_pattern"]), version):
+    if not re.search(version_pattern, version):
         failures.append(f"{name}: version output did not match {config['version_pattern']}")
 
     available = extract_flags(help_text)
@@ -227,6 +231,111 @@ def test_rpm_container_tool(
     return failures
 
 
+def test_git_tool(name: str, config: dict[str, Any]) -> list[str]:
+    failures: list[str] = []
+    repository = str(config["repository"])
+    ref = str(config["ref"])
+    print(f"[{name}] official repository={repository} ref={ref}")
+    try:
+        with tempfile.TemporaryDirectory(prefix=f"{name}-smoke-") as temp_name:
+            checkout = Path(temp_name) / "checkout"
+            run(
+                [
+                    "git",
+                    "clone",
+                    "--quiet",
+                    "--depth",
+                    "1",
+                    "--branch",
+                    ref,
+                    repository,
+                    str(checkout),
+                ]
+            )
+            revision = run(
+                ["git", "-C", str(checkout), "rev-parse", "HEAD"]
+            ).stdout.strip()
+            print(f"[{name}] commit={revision}")
+
+            executable = checkout / str(config["executable"])
+            version = clean_output(
+                run([sys.executable, str(executable), *config["version_args"]])
+            )
+            help_text = clean_output(
+                run([sys.executable, str(executable), *config["help_args"]])
+            )
+            failures.extend(validate_output(name, config, version, help_text))
+        print(f"[{name}] removed temporary repository checkout")
+    except subprocess.CalledProcessError as error:
+        failures.append(
+            f"{name}: git checkout test failed ({error.returncode}): "
+            f"{clean_output(error).strip()}"
+        )
+    except OSError as error:
+        failures.append(f"{name}: git checkout test failed: {error}")
+    return failures
+
+
+def test_git_container_tool(
+    name: str, config: dict[str, Any], keep_images: bool
+) -> list[str]:
+    image = str(config["base_image"])
+    existed = image_present(image)
+    repository = str(config["repository"])
+    ref = str(config["ref"])
+    failures: list[str] = []
+    print(f"[{name}] base_image={image} preexisting={str(existed).lower()}")
+    try:
+        if not existed:
+            pull = run(["docker", "pull", image])
+            print(clean_output(pull).strip().splitlines()[-1])
+
+        shell_command = "; ".join(
+            [
+                "set -eu",
+                "apt-get update -qq",
+                "apt-get install -qq -y git ca-certificates >/dev/null",
+                f"git clone --quiet --depth 1 --branch {shlex.quote(ref)} {shlex.quote(repository)} /tmp/checkout",
+                "git -C /tmp/checkout rev-parse HEAD",
+                f"python /tmp/checkout/{shlex.quote(str(config['executable']))} {' '.join(shlex.quote(str(arg)) for arg in config['version_args'])}",
+                f"python /tmp/checkout/{shlex.quote(str(config['executable']))} {' '.join(shlex.quote(str(arg)) for arg in config['help_args'])}",
+            ]
+        )
+        output = clean_output(
+            run(
+                [
+                    "docker",
+                    "run",
+                    "--rm",
+                    "--entrypoint",
+                    "/bin/sh",
+                    image,
+                    "-c",
+                    shell_command,
+                ]
+            )
+        )
+        revision = next(
+            (line for line in output.splitlines() if re.fullmatch(r"[0-9a-f]{40}", line)),
+            "unknown",
+        )
+        print(f"[{name}] commit={revision}")
+        failures.extend(validate_output(name, config, output, output))
+    except subprocess.CalledProcessError as error:
+        failures.append(
+            f"{name}: git container test failed ({error.returncode}): "
+            f"{clean_output(error).strip()}"
+        )
+    finally:
+        if not keep_images and not existed and image_present(image):
+            removal = run(["docker", "image", "rm", image], check=False)
+            if removal.returncode == 0:
+                print(f"[{name}] removed base test image")
+            else:
+                failures.append(f"{name}: could not remove base test image")
+    return failures
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -260,6 +369,18 @@ def main() -> int:
                 failures.append(f"{name}: docker is required")
             else:
                 failures.extend(test_rpm_container_tool(name, config, args.keep_images))
+        elif config.get("source") == "git-checkout":
+            if shutil.which("git") is None:
+                failures.append(f"{name}: git is required")
+            else:
+                failures.extend(test_git_tool(name, config))
+        elif config.get("source") == "git-container":
+            if shutil.which("docker") is None:
+                failures.append(f"{name}: docker is required")
+            else:
+                failures.extend(
+                    test_git_container_tool(name, config, args.keep_images)
+                )
         else:
             failures.append(f"{name}: unsupported source configuration")
 

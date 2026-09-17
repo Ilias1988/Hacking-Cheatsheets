@@ -27,6 +27,7 @@ permissions, side effects, provider responses, or vulnerability detection.
 | Subfinder | `projectdiscovery/subfinder:latest` | `-version`, `-help`, documented flags |
 | ffuf | Official `v2.3.0` release + pinned SHA-256 | `-V`, `-h`, documented flags |
 | Nmap | Official `v7.991` RPM + Nmap.org SHA-256 | `--version`, `--help`, documented flags |
+| SQLMap | Official `master` checkout + recorded commit | `--version`, `-hh`, documented flags |
 
 Run one tool at a time:
 
@@ -36,6 +37,7 @@ python scripts/tool_smoke_tests.py --tool httpx
 python scripts/tool_smoke_tests.py --tool subfinder
 python scripts/tool_smoke_tests.py --tool ffuf
 python scripts/tool_smoke_tests.py --tool nmap
+python scripts/tool_smoke_tests.py --tool sqlmap
 ```
 
 Run the complete manifest:
@@ -53,6 +55,10 @@ against pinned SHA-256 digests and extracted only inside an automatically
 deleted temporary directory. Package-only tests use ephemeral containers and
 remove any base image pulled by the test. Use `--keep-images` only when
 explicitly needed for container debugging.
+
+Git-based tools are shallow-cloned from the configured official repository and
+the tested commit is printed. Checkouts exist only inside a temporary directory
+or ephemeral container and are removed after the test.
 
 ## Adding a Tool
 
@@ -73,11 +79,12 @@ guide before updating metadata.
 
 ## Supply-Chain Boundary
 
-Scheduled tests execute third-party containers or checksum-pinned official
-release binaries only with version/help arguments. They receive no repository
-secrets, target lists, host networking, privileged mode, or mounted customer
-data. Pulling `latest` intentionally detects upstream CLI drift but is not
-reproducible; the observed version remains part of the evidence.
+Scheduled tests execute third-party containers, checksum-pinned official
+release binaries, or official source checkouts only with version/help
+arguments. They receive no repository secrets, target lists, host networking,
+privileged mode, or mounted customer data. Pulling `latest` or testing a moving
+branch intentionally detects upstream CLI drift but is not reproducible; the
+observed version and commit remain part of the evidence.
 
 ---
 

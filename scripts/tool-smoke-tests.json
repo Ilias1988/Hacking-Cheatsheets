@@ -105,5 +105,32 @@
       "-iL", "--exclude", "--excludefile", "-6", "-e", "-S",
       "--source-port", "--traceroute"
     ]
+  },
+  "sqlmap": {
+    "source": "git-container",
+    "base_image": "python:3.13-slim",
+    "repository": "https://github.com/sqlmapproject/sqlmap.git",
+    "ref": "master",
+    "executable": "sqlmap.py",
+    "version_args": ["--version"],
+    "help_args": ["-hh"],
+    "version_pattern": "1\\.10",
+    "expected_flags": [
+      "-h", "-hh", "--version", "-v", "-u", "--url", "-r", "-c",
+      "-X", "--data", "--cookie", "-H", "--headers",
+      "-A", "--force-ssl", "--scope", "-p", "--skip",
+      "--param-exclude", "--param-filter", "--skip-static", "--dbms",
+      "--level", "--risk", "--technique", "--string", "--not-string",
+      "--regexp", "--code", "--text-only", "--titles", "--delay",
+      "--timeout", "--retries", "--threads", "--time-limit", "--safe-url",
+      "--safe-freq", "--batch", "--answers", "-s", "-t", "--output-dir",
+      "--har", "--report-json", "--flush-session", "--fresh-queries",
+      "--save", "--proxy", "--proxy-cred", "--auth-type", "--auth-cred",
+      "--csrf-token", "--csrf-url", "--banner", "--current-user",
+      "--current-db", "--is-dba", "--dbs", "--tables", "--columns",
+      "-D", "-T", "-C", "--schema", "--count", "--dump", "--start",
+      "--stop", "--where", "--offline", "--purge", "--dependencies",
+      "--update"
+    ]
   }
 }

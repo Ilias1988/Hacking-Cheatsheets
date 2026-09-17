@@ -26,7 +26,7 @@ Every canonical guide has an explicit status:
 | 🟡 **Review pending** | Historical content is retained, but version-sensitive commands and claims still require source verification. |
 | 🗃️ **Legacy** | The tool or workflow is archived/retired and kept only for older environments. |
 
-Current baseline: **29 verified**, **119 review-pending**, and **0 unclassified**
+Current baseline: **30 verified**, **118 review-pending**, and **0 unclassified**
 canonical documents. Generate fresh figures with:
 
 ```bash
@@ -100,6 +100,7 @@ Confirm scope → Map the attack surface → Form a hypothesis
 | [Subfinder](./Subfinder/README.md) | `v2.16.0` | Sources, output, active resolution, provider keys, and rate limits |
 | [ffuf](./ffuf/README.md) | `v2.3.0` | Content, vhosts, request data, filters, recursion, rate controls, and evidence |
 | [Nmap](./Nmap/README.md) | `v7.991` | Discovery, TCP/UDP, services, NSE, timing, output, scope, and evidence |
+| [SQLMap](./SQLMap/README.md) | `1.10.9.12#dev` | Controlled detection, request scoping, evidence, minimal enumeration, and data safety |
 
 ## Complete Catalog
 
@@ -155,7 +156,7 @@ its status banner before use.
 | [Arjun](./Arjun/README.md) 🟡 | [Dalfox](./Dalfox/README.md) 🟡 |
 | [ffuf](./ffuf/README.md) ✅ | [Nikto](./Nikto/README.md) 🟡 |
 | [GAU](./GAU/README.md) 🟡 | [OWASP ZAP](./OWASP-ZAP/README.md) 🟡 |
-| [Gobuster](./Gobuster/README.md) 🟡 | [SQLMap](./SQLMap/README.md) 🟡 |
+| [Gobuster](./Gobuster/README.md) 🟡 | [SQLMap](./SQLMap/README.md) ✅ |
 | [Google Dorking](./Google-Dorking/README.md) 🟡 | [Nuclei](./Nuclei/README.md) ✅ |
 | [GitHub Dorking](./GitHub-Dorking/README.md) 🟡 | [Katana](./Katana/README.md) 🟡 |
 | [httpx](./httpx/README.md) ✅ | [Wordlists](./Wordlists/README.md) 🟡 |

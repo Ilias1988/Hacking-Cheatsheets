@@ -37,7 +37,8 @@ class ToolSmokeTests(TestCase):
             self.assertTrue(
                 config.get("image")
                 or config.get("assets")
-                or config.get("base_image"),
+                or config.get("base_image")
+                or config.get("repository"),
                 name,
             )
 
@@ -70,3 +71,17 @@ class ToolSmokeTests(TestCase):
             self.assertEqual(len(asset["sha256"]), 64)
             int(asset["sha256"], 16)
             self.assertTrue(asset["url"].startswith("https://nmap.org/"))
+
+    def test_git_sources_use_official_github_repositories(self) -> None:
+        manifest_path = ROOT / "scripts" / "tool-smoke-tests.json"
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        git_tools = [
+            config
+            for config in manifest.values()
+            if config.get("source") in {"git-checkout", "git-container"}
+        ]
+        self.assertGreaterEqual(len(git_tools), 1)
+        for config in git_tools:
+            self.assertTrue(config["repository"].startswith("https://github.com/"))
+            self.assertTrue(config["ref"])
+            self.assertTrue(config["executable"].endswith(".py"))
