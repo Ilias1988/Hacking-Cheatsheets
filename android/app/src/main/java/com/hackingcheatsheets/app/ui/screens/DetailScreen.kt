@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,7 +33,12 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,17 +47,29 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hackingcheatsheets.app.data.AppLanguage
+import com.hackingcheatsheets.app.ui.components.BuilderTool
+import com.hackingcheatsheets.app.ui.components.FfufBuilder
+import com.hackingcheatsheets.app.ui.components.HashcatBuilder
+import com.hackingcheatsheets.app.ui.components.HydraBuilder
+import com.hackingcheatsheets.app.ui.components.LigoloChiselBuilder
+import com.hackingcheatsheets.app.ui.components.MsfvenomBuilder
+import com.hackingcheatsheets.app.ui.components.NetExecBuilder
+import com.hackingcheatsheets.app.ui.components.NmapBuilder
+import com.hackingcheatsheets.app.ui.components.SqlmapBuilder
 import com.hackingcheatsheets.app.ui.components.MarkdownBlock
 import com.hackingcheatsheets.app.ui.components.MarkdownBlockView
 import com.hackingcheatsheets.app.ui.components.normalizeAnchor
@@ -103,6 +121,20 @@ fun DetailScreen(
     val content = if (language == AppLanguage.TR) tool.contentTr else tool.contentEn
     val blocks = remember(content) { parseMarkdown(content) }
     val hasQuickCommands = !tool.quickCommandsJson.isNullOrBlank()
+
+    val builderToolForId = remember(tool.id) {
+        when (tool.id.lowercase()) {
+            "nmap" -> BuilderTool.NMAP
+            "ffuf", "gobuster", "feroxbuster", "dirsearch" -> BuilderTool.FFUF
+            "netexec", "crackmapexec" -> BuilderTool.NETEXEC
+            "sqlmap" -> BuilderTool.SQLMAP
+            "hashcat", "john-the-ripper" -> BuilderTool.HASHCAT
+            "msfvenom", "metasploit" -> BuilderTool.MSFVENOM
+            "hydra" -> BuilderTool.HYDRA
+            "chisel", "ligolo-ng" -> BuilderTool.LIGOLO_CHISEL
+            else -> null
+        }
+    }
 
     val onLinkClick: (String) -> Unit = { target ->
         when {
@@ -300,6 +332,91 @@ fun DetailScreen(
                             }
                         }
                         Spacer(modifier = Modifier.height(16.dp))
+                    }
+                }
+            }
+
+            // Interactive Command Builder (if supported for this tool)
+            if (builderToolForId != null) {
+                item {
+                    var isBuilderExpanded by remember { mutableStateOf(false) }
+
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp),
+                        colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+                        shape = RoundedCornerShape(12.dp),
+                        border = CardDefaults.outlinedCardBorder().copy(
+                            brush = SolidColor(if (isBuilderExpanded) CyberGreen else BorderDark)
+                        )
+                    ) {
+                        Column(modifier = Modifier.padding(14.dp)) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable { isBuilderExpanded = !isBuilderExpanded },
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(
+                                    modifier = Modifier.weight(1f),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(34.dp)
+                                            .clip(RoundedCornerShape(8.dp))
+                                            .background(CyberGreen.copy(alpha = 0.15f))
+                                            .border(1.dp, CyberGreen.copy(alpha = 0.4f), RoundedCornerShape(8.dp)),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Tune,
+                                            contentDescription = "Builder",
+                                            tint = CyberGreen,
+                                            modifier = Modifier.size(18.dp)
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Column {
+                                        Text(
+                                            text = if (language == AppLanguage.TR) "İNTERAKTİF KOMUT OLUŞTURUCU" else "INTERACTIVE COMMAND BUILDER",
+                                            style = MaterialTheme.typography.titleMedium,
+                                            fontWeight = FontWeight.Bold,
+                                            color = TextPrimary
+                                        )
+                                        Text(
+                                            text = if (language == AppLanguage.TR) "Parametreleri ayarla & canlı komut türet" else "Configure flags & generate live commands",
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = CyberGreen
+                                        )
+                                    }
+                                }
+
+                                Icon(
+                                    imageVector = if (isBuilderExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                    contentDescription = "Expand",
+                                    tint = TextMuted,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+
+                            AnimatedVisibility(visible = isBuilderExpanded) {
+                                Column(modifier = Modifier.padding(top = 14.dp)) {
+                                    when (builderToolForId) {
+                                        BuilderTool.NMAP -> NmapBuilder(language)
+                                        BuilderTool.FFUF -> FfufBuilder(language)
+                                        BuilderTool.NETEXEC -> NetExecBuilder(language)
+                                        BuilderTool.SQLMAP -> SqlmapBuilder(language)
+                                        BuilderTool.HASHCAT -> HashcatBuilder(language)
+                                        BuilderTool.MSFVENOM -> MsfvenomBuilder(language)
+                                        BuilderTool.HYDRA -> HydraBuilder(language)
+                                        BuilderTool.LIGOLO_CHISEL -> LigoloChiselBuilder(language)
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

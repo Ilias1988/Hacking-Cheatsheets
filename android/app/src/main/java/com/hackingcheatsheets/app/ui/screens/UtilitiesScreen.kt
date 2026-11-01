@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hackingcheatsheets.app.data.AppLanguage
 import com.hackingcheatsheets.app.ui.components.CodeBlockView
+import com.hackingcheatsheets.app.ui.components.CommandBuilderView
 import com.hackingcheatsheets.app.ui.theme.BackgroundDark
 import com.hackingcheatsheets.app.ui.theme.BorderDark
 import com.hackingcheatsheets.app.ui.theme.CodeBlockBg
@@ -70,8 +71,8 @@ import com.hackingcheatsheets.app.viewmodel.CheatsheetViewModel
 fun UtilitiesScreen(viewModel: CheatsheetViewModel) {
     val language by viewModel.currentLanguage.collectAsState()
     var selectedTab by remember { mutableIntStateOf(0) }
-    val tabs = if (language == AppLanguage.TR) listOf("Ters Kabuk", "Kodlayıcı", "Hash Tanıma")
-               else listOf("Reverse Shell", "Encoder", "Hash Identifier")
+    val tabs = if (language == AppLanguage.TR) listOf("Komut Üretici", "Ters Kabuk", "Kodlayıcı", "Hash Tanıma")
+               else listOf("Command Builder", "Reverse Shell", "Encoder", "Hash Identifier")
 
     Column(
         modifier = Modifier
@@ -102,7 +103,7 @@ fun UtilitiesScreen(viewModel: CheatsheetViewModel) {
                 Tab(
                     selected = selectedTab == index,
                     onClick = { selectedTab = index },
-                    text = { Text(text = title, fontSize = 12.sp, color = if (selectedTab == index) CyberGreen else TextMuted) }
+                    text = { Text(text = title, fontSize = 11.sp, maxLines = 1, color = if (selectedTab == index) CyberGreen else TextMuted) }
                 )
             }
         }
@@ -110,9 +111,22 @@ fun UtilitiesScreen(viewModel: CheatsheetViewModel) {
         Spacer(modifier = Modifier.height(16.dp))
 
         when (selectedTab) {
-            0 -> ReverseShellGeneratorTab(language)
-            1 -> EncoderDecoderTab(language)
-            2 -> HashIdentifierTab(language)
+            0 -> CommandBuilderTab(language)
+            1 -> ReverseShellGeneratorTab(language)
+            2 -> EncoderDecoderTab(language)
+            3 -> HashIdentifierTab(language)
+        }
+    }
+}
+
+@Composable
+fun CommandBuilderTab(language: AppLanguage) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(bottom = 90.dp)
+    ) {
+        item {
+            CommandBuilderView(language = language)
         }
     }
 }
@@ -209,7 +223,6 @@ fun ReverseShellGeneratorTab(language: AppLanguage) {
 fun EncoderDecoderTab(language: AppLanguage) {
     var input by remember { mutableStateOf("admin' OR 1=1-- -") }
     var output by remember { mutableStateOf("") }
-    val context = LocalContext.current
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
