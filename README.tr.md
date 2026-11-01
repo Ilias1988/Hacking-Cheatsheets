@@ -235,6 +235,7 @@
 | **rlwrap** | Ters bağlantı kabukları için readline sarmalayıcısı | [📄 Görüntüle](./rlwrap/translations/README.tr.md) |
 | **Netcat (nc)** | Ham ağ soketleri, port dinleme ve ters kabuklar için TCP/IP İsviçre çakısı | [📄 Görüntüle](./Netcat/translations/README.tr.md) |
 | **Socat** | Çift yönlü soket rölesi ve tam etkileşimli PTY kabukları | [📄 Görüntüle](./Socat/translations/README.tr.md) |
+| **Searchsploit** | Çevrim dışı Exploit-DB arama motoru ve PoC ayıklayıcısı | [📄 Görüntüle](./Searchsploit/translations/README.tr.md) |
 
 ### 🔍 Keşif & Tarama (Reconnaissance & Scanning)
 
@@ -268,6 +269,7 @@
 | **smuggler** | Hızlı HTTP Request Smuggling (CL.TE/TE.CL) zafiyet tarayıcısı | [📄 Görüntüle](./smuggler/translations/README.tr.md) |
 | **CORSy** | Çapraz Kaynak Paylaşımı (CORS) yapılandırma hatası tarayıcısı | [📄 Görüntüle](./CORSy/translations/README.tr.md) |
 | **InQL** | Gelişmiş GraphQL güvenlik tarayıcısı ve şema analizcisi | [📄 Görüntüle](./InQL/translations/README.tr.md) |
+| **wafw00f** | Web Uygulama Güvenlik Duvarı (WAF) parmak izi çıkarma ve tespiti | [📄 Görüntüle](./wafw00f/translations/README.tr.md) |
 
 ### 🔓 Parola Kırma (Password Cracking)
 
@@ -371,6 +373,7 @@
 | **Linux PrivEsc** | Linux yetki yükseltme teknikleri | [📄 Görüntüle](./Linux-PrivEsc/translations/README.tr.md) |
 | **Windows PrivEsc** | Windows yetki yükseltme teknikleri | [📄 Görüntüle](./Windows-PrivEsc/translations/README.tr.md) |
 | **LaZagne** | Tarayıcılar, Wi-Fi ve sysadmin araçlarından yerel parola ayıklayıcı | [📄 Görüntüle](./LaZagne/translations/README.tr.md) |
+| **pypykatz** | Saf Python ile çevrim dışı Mimikatz ve LSASS döküm analizcisi | [📄 Görüntüle](./pypykatz/translations/README.tr.md) |
 
 ### 🔬 Dijital Adli Bilişim (Digital Forensics)
 
@@ -393,6 +396,7 @@
 | **Ghidra** | NSA tarafından geliştirilen tersine mühendislik paketi | [📄 Görüntüle](./Ghidra/translations/README.tr.md) |
 | **GDB** | GNU Hata Ayıklayıcı (Linux Debugging) | [📄 Görüntüle](./GDB/translations/README.tr.md) |
 | **x64dbg** | Windows x64/x32 hata ayıklayıcısı | [📄 Görüntüle](./x64dbg/translations/README.tr.md) |
+| **pwntools** | Python CTF ve ikili istismar (binary exploitation) kütüphanesi | [📄 Görüntüle](./pwntools/translations/README.tr.md) |
 
 ### 📶 WiFi Güvenliği
 
@@ -433,6 +437,7 @@
 | **Responder** | LLMNR / NBT-NS zehirleme | [📄 Görüntüle](./Responder/translations/README.tr.md) |
 | **Evil-WinRM** | Sızma testleri için WinRM kabuğu | [📄 Görüntüle](./Evil-WinRM/translations/README.tr.md) |
 | **Kerbrute** | Kerberos kullanıcı doğrulama ve püskürtme | [📄 Görüntüle](./Kerbrute/translations/README.tr.md) |
+| **enum4linux-ng** | Yeni nesil Windows ve Samba SMB/RPC bilgi toplama motoru | [📄 Görüntüle](./enum4linux-ng/translations/README.tr.md) |
 
 ### 📚 Ek Kaynaklar
 
@@ -469,7 +474,7 @@ code Metasploit/
 Tüm kılavuzlar Markdown formatındadır ve ayrıca bu depoda doğrudan yer alan **yerel Android uygulaması** ([`android/`](android/)) bulunmaktadır:
 
 - 📱 **Yerel Android Uygulaması:** Jetpack Compose ve koyu tema ile ultra hızlı ve akıcı mobil deneyim.
-- ⚡ **Anında Arama:** 195 rehberin tamamında (TR ve EN) anlık arama desteği.
+- ⚡ **Anında Arama:** 200 rehberin tamamında (TR ve EN) anlık arama desteği.
 - 📋 **Tek Dokunuşla Kopyalama:** Komut sözdizimlerini doğrudan panoya kopyalama.
 - 🛠️ **Entegre Pentest Yardımcıları:** Reverse Shell oluşturucu, kodlayıcı/çözücü (Base64/URL), hash türü tespit aracı.
 - 📦 **APK Derleme:** `cd android && ./gradlew assembleDebug` (Çıktı: `android/app/build/outputs/apk/debug/app-debug.apk`)

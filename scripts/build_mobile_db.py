@@ -166,6 +166,11 @@ CATEGORY_MAPPING = {
     "Reaver": "Wireless & Network",
     "Trivy": "Container Security",
     "kube-bench": "Container Security",
+    "Searchsploit": "Exploitation & Shells",
+    "enum4linux-ng": "Active Directory & Network",
+    "pwntools": "Reverse Engineering",
+    "pypykatz": "Privilege Escalation",
+    "wafw00f": "Web Security & API",
 }
 
 def extract_title(content, fallback):
@@ -303,6 +308,11 @@ def extract_quick_commands(content, tool_name=""):
     elif "reaver" in t_lower: tool_tokens.extend(["reaver", "wash", "bully", "pixiewps"])
     elif "trivy" in t_lower: tool_tokens.extend(["trivy"])
     elif "kube-bench" in t_lower: tool_tokens.extend(["kube-bench"])
+    elif "searchsploit" in t_lower: tool_tokens.extend(["searchsploit", "gcc"])
+    elif "enum4linux-ng" in t_lower or "enum4linux" in t_lower: tool_tokens.extend(["enum4linux-ng", "enum4linux", "enum4linux-ng.py", "python3 enum4linux-ng.py"])
+    elif "pwntools" in t_lower or t_lower == "pwn": tool_tokens.extend(["pwn", "python3", "python"])
+    elif "pypykatz" in t_lower: tool_tokens.extend(["pypykatz"])
+    elif "wafw00f" in t_lower: tool_tokens.extend(["wafw00f"])
 
     primary = []
     secondary = []
@@ -491,6 +501,11 @@ def build_database(repo_root, output_db_path):
                 if "reaver" in slug: tags_list.extend(["wifi", "wps", "pixiedust", "pin", "wpa2", "bully", "wash"])
                 if "trivy" in slug: tags_list.extend(["container", "docker", "k8s", "cve", "vuln", "secret", "sbom", "iac"])
                 if "kube-bench" in slug: tags_list.extend(["kubernetes", "k8s", "cis", "benchmark", "controlplane", "audit", "node"])
+                if "searchsploit" in slug: tags_list.extend(["cve", "exploit", "exploitdb", "edb", "poc", "offline", "search"])
+                if "enum4linux" in slug: tags_list.extend(["smb", "samba", "rpc", "rid", "users", "shares", "netbios", "samr"])
+                if "pwntools" in slug or "pwn" in slug: tags_list.extend(["pwn", "ctf", "bufferoverflow", "rop", "cyclic", "shellcraft", "binary", "elf"])
+                if "pypykatz" in slug: tags_list.extend(["lsass", "minidump", "mimikatz", "sam", "system", "ntlm", "kerberos", "dpapi"])
+                if "wafw00f" in slug: tags_list.extend(["waf", "firewall", "cloudflare", "fingerprint", "modsecurity", "bypass", "web"])
                 tags = ",".join(set(tags_list))
 
                 icon = "security"

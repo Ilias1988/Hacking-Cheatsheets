@@ -233,6 +233,7 @@
 | **rlwrap** | Readline wrapper for reverse shells & dumb terminals | [📄 View](./rlwrap/README.md) |
 | **Netcat (nc)** | The TCP/IP Swiss Army Knife for raw network sockets & reverse shells | [📄 View](./Netcat/README.md) |
 | **Socat** | Bidirectional socket relay & fully interactive TTY shells | [📄 View](./Socat/README.md) |
+| **Searchsploit** | Offline Exploit-DB search engine & PoC extractor | [📄 View](./Searchsploit/README.md) |
 
 ### 🔍 Reconnaissance & Scanning
 
@@ -266,6 +267,7 @@
 | **smuggler** | Fast HTTP request smuggling (CL.TE/TE.CL) scanner | [📄 View](./smuggler/README.md) |
 | **CORSy** | Cross-Origin Resource Sharing (CORS) misconfiguration scanner | [📄 View](./CORSy/README.md) |
 | **InQL** | Advanced GraphQL security scanner & introspection analyzer | [📄 View](./InQL/README.md) |
+| **wafw00f** | Web Application Firewall (WAF) fingerprinting & detection | [📄 View](./wafw00f/README.md) |
 
 ### 🔓 Password Cracking
 
@@ -369,6 +371,7 @@
 | **Linux PrivEsc** | Linux privilege escalation techniques | [📄 View](./Linux-PrivEsc/README.md) |
 | **Windows PrivEsc** | Windows privilege escalation techniques | [📄 View](./Windows-PrivEsc/README.md) |
 | **LaZagne** | Post-exploitation password recovery for browsers, Wi-Fi & sysadmin | [📄 View](./LaZagne/README.md) |
+| **pypykatz** | Pure Python offline Mimikatz & LSASS dump parser | [📄 View](./pypykatz/README.md) |
 
 ### 🔬 Digital Forensics
 
@@ -391,6 +394,7 @@
 | **Ghidra** | NSA reverse engineering suite | [📄 View](./Ghidra/README.md) |
 | **GDB** | GNU Debugger (Linux debugging) | [📄 View](./GDB/README.md) |
 | **x64dbg** | Windows x64/x32 debugger | [📄 View](./x64dbg/README.md) |
+| **pwntools** | Premier Python CTF & binary exploitation framework | [📄 View](./pwntools/README.md) |
 
 ### 📶 WiFi Hacking
 
@@ -431,6 +435,7 @@
 | **Responder** | LLMNR/NBT-NS poisoning | [📄 View](./Responder/README.md) |
 | **Evil-WinRM** | WinRM shell for pentesters | [📄 View](./Evil-WinRM/README.md) |
 | **Kerbrute** | Kerberos user enum & spray | [📄 View](./Kerbrute/README.md) |
+| **enum4linux-ng** | Next-generation Windows & Samba SMB/RPC enumeration | [📄 View](./enum4linux-ng/README.md) |
 
 ### 📚 Resources
 
@@ -467,7 +472,7 @@ code Metasploit/
 All cheatsheets are in Markdown format, and a native **Android application** is included directly in this repository ([`android/`](android/)):
 
 - 📱 **Native Android App:** Fast, offline, dark-themed UI built with Jetpack Compose.
-- ⚡ **Instant Search:** Full-text search across all 195 guides (EN & TR).
+- ⚡ **Instant Search:** Full-text search across all 200 guides (EN & TR).
 - 📋 **1-Tap Copy:** Copy any command syntax instantly to clipboard.
 - 🛠️ **Penetration Testing Utilities:** Reverse shell generator, encoders/decoders, hash identifier.
 - 📦 **Build APK:** `cd android && ./gradlew assembleDebug` (Output: `android/app/build/outputs/apk/debug/app-debug.apk`)
@@ -720,6 +725,21 @@ Hacking-Cheatsheets/
 │
 ├── kube-bench/              # CIS Kubernetes Benchmark Auditor
 │   └── README.md            # Complete kube-bench guide
+│
+├── Searchsploit/            # Offline Exploit-DB Search
+│   └── README.md            # Complete Searchsploit guide
+│
+├── enum4linux-ng/           # Next-Gen SMB & RPC Enumeration
+│   └── README.md            # Complete enum4linux-ng guide
+│
+├── pwntools/                # Python CTF & Binary Exploitation
+│   └── README.md            # Complete pwntools guide
+│
+├── pypykatz/                # Pure Python Offline Mimikatz
+│   └── README.md            # Complete pypykatz guide
+│
+├── wafw00f/                 # WAF Fingerprinting & Detection
+│   └── README.md            # Complete wafw00f guide
 │
 └── ...
 ```
