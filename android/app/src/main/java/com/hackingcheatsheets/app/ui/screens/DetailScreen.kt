@@ -329,8 +329,10 @@ fun DetailScreen(
                 }
             }
 
-            // Interactive Command Builder (supported if tool matches a builder)
-            if (builderToolForId != null) {
+            // Interactive Command Builder (supported if tool matches a builder or has CLI commands)
+            val hasBuilder = builderToolForId != null || (!tool.quickCommandsJson.isNullOrBlank() && tool.quickCommandsJson != "[]")
+
+            if (hasBuilder) {
                 item {
                     var isBuilderExpanded by remember { mutableStateOf(false) }
 
@@ -399,7 +401,8 @@ fun DetailScreen(
                                 Column(modifier = Modifier.padding(top = 14.dp)) {
                                     CommandBuilderView(
                                         language = language,
-                                        initialToolId = builderToolForId
+                                        allCheatsheets = listOf(tool),
+                                        initialToolId = builderToolForId ?: tool.id
                                     )
                                 }
                             }
