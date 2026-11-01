@@ -3,7 +3,6 @@ package com.hackingcheatsheets.app.ui.theme
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
@@ -24,8 +23,8 @@ private fun Context.findActivity(): Activity? {
 private val DarkColorScheme = darkColorScheme(
     primary = CyberGreen,
     onPrimary = BackgroundDark,
-    primaryContainer = CyberGreenDark,
-    onPrimaryContainer = TextPrimary,
+    primaryContainer = SurfaceVariantDark,
+    onPrimaryContainer = CyberGreen,
     secondary = TerminalCyan,
     onSecondary = BackgroundDark,
     background = BackgroundDark,
@@ -34,6 +33,8 @@ private val DarkColorScheme = darkColorScheme(
     onSurface = TextPrimary,
     surfaceVariant = SurfaceVariantDark,
     onSurfaceVariant = TextSecondary,
+    outline = BorderDark,
+    outlineVariant = BorderLight,
     error = ExploitRed,
     onError = TextPrimary
 )
@@ -49,8 +50,9 @@ fun HackingCheatsheetsTheme(
             val window = view.context.findActivity()?.window
             window?.let { win ->
                 win.statusBarColor = BackgroundDark.toArgb()
-                win.navigationBarColor = BackgroundDark.toArgb()
+                win.navigationBarColor = SurfaceDark.toArgb()
                 WindowCompat.getInsetsController(win, view).isAppearanceLightStatusBars = false
+                WindowCompat.getInsetsController(win, view).isAppearanceLightNavigationBars = false
             }
         }
     }

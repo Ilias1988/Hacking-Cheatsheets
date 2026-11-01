@@ -58,12 +58,15 @@ import com.hackingcheatsheets.app.ui.components.normalizeAnchor
 import com.hackingcheatsheets.app.ui.components.parseMarkdown
 import com.hackingcheatsheets.app.ui.theme.BackgroundDark
 import com.hackingcheatsheets.app.ui.theme.BorderDark
+import com.hackingcheatsheets.app.ui.theme.CodeBlockBg
 import com.hackingcheatsheets.app.ui.theme.CyberGreen
 import com.hackingcheatsheets.app.ui.theme.SurfaceDark
 import com.hackingcheatsheets.app.ui.theme.SurfaceVariantDark
+import com.hackingcheatsheets.app.ui.theme.TerminalCyan
 import com.hackingcheatsheets.app.ui.theme.TextMuted
 import com.hackingcheatsheets.app.ui.theme.TextPrimary
 import com.hackingcheatsheets.app.ui.theme.WarningOrange
+import com.hackingcheatsheets.app.ui.theme.getCategoryMeta
 import com.hackingcheatsheets.app.viewmodel.CheatsheetViewModel
 import kotlinx.coroutines.launch
 import org.json.JSONArray
@@ -96,6 +99,7 @@ fun DetailScreen(
     }
 
     val tool = cheatsheet!!
+    val meta = getCategoryMeta(tool.category)
     val content = if (language == AppLanguage.TR) tool.contentTr else tool.contentEn
     val blocks = remember(content) { parseMarkdown(content) }
     val hasQuickCommands = !tool.quickCommandsJson.isNullOrBlank()
@@ -147,7 +151,7 @@ fun DetailScreen(
             .fillMaxSize()
             .background(BackgroundDark)
     ) {
-        // Custom TopAppBar
+        // High-End Custom TopAppBar
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -156,30 +160,41 @@ fun DetailScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { onNavigateBack() }) {
+            Row(
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = onNavigateBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Back",
                         tint = TextPrimary
                     )
                 }
-                Text(
-                    text = if (language == AppLanguage.TR) tool.titleTr else tool.title,
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
-                    color = TextPrimary,
-                    modifier = Modifier.width(180.dp)
-                )
+                Column(modifier = Modifier.padding(end = 6.dp)) {
+                    Text(
+                        text = if (language == AppLanguage.TR) tool.titleTr else tool.title,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        color = TextPrimary
+                    )
+                    Text(
+                        text = (if (language == AppLanguage.TR) meta.titleTr else tool.category).uppercase(),
+                        fontSize = 10.sp,
+                        fontFamily = FontFamily.Monospace,
+                        color = meta.color
+                    )
+                }
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 // Language Switcher Toggle
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(10.dp))
                         .background(SurfaceVariantDark)
-                        .border(1.dp, BorderDark, RoundedCornerShape(12.dp))
+                        .border(1.dp, BorderDark, RoundedCornerShape(10.dp))
                         .clickable { viewModel.toggleLanguage() }
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
@@ -204,7 +219,7 @@ fun DetailScreen(
                 IconButton(onClick = {
                     val shareIntent = Intent().apply {
                         action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT, content.take(1000))
+                        putExtra(Intent.EXTRA_TEXT, content.take(1500))
                         type = "text/plain"
                     }
                     context.startActivity(Intent.createChooser(shareIntent, "Share Cheatsheet"))
@@ -218,13 +233,13 @@ fun DetailScreen(
             }
         }
 
-        // Cheatsheet Body with Anchor Scrolling
+        // Cheatsheet Body
         LazyColumn(
             state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp),
-            contentPadding = PaddingValues(top = 12.dp, bottom = 40.dp)
+            contentPadding = PaddingValues(top = 12.dp, bottom = 60.dp)
         ) {
             // Quick Commands horizontal list if available
             if (hasQuickCommands) {
@@ -257,19 +272,19 @@ fun DetailScreen(
                                 Box(
                                     modifier = Modifier
                                         .clip(RoundedCornerShape(8.dp))
-                                        .background(SurfaceDark)
+                                        .background(CodeBlockBg)
                                         .border(1.dp, BorderDark, RoundedCornerShape(8.dp))
                                         .clickable {
                                             val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                                             clipboard.setPrimaryClip(ClipData.newPlainText("Command", cmd))
-                                            Toast.makeText(context, "Command copied!", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(context, if (language == AppLanguage.TR) "Komut kopyalandı!" else "Command copied!", Toast.LENGTH_SHORT).show()
                                         }
                                         .padding(horizontal = 10.dp, vertical = 6.dp)
-                                 ) {
+                                ) {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Text(
-                                            text = cmd.take(35) + if (cmd.length > 35) "..." else "",
-                                            fontSize = 12.sp,
+                                            text = cmd.take(38) + if (cmd.length > 38) "..." else "",
+                                            fontSize = 11.5.sp,
                                             fontFamily = FontFamily.Monospace,
                                             color = TextPrimary
                                         )

@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hackingcheatsheets.app.data.AppLanguage
+import com.hackingcheatsheets.app.ui.components.CheatsheetCardItem
 import com.hackingcheatsheets.app.ui.theme.BackgroundDark
 import com.hackingcheatsheets.app.ui.theme.CyberGreen
 import com.hackingcheatsheets.app.ui.theme.TextMuted
@@ -49,7 +50,10 @@ fun FavoritesScreen(
             color = CyberGreen
         )
         Text(
-            text = if (language == AppLanguage.TR) "Hızlı erişim için kaydettiğin araçlar" else "Your saved cheatsheets for quick field access",
+            text = if (language == AppLanguage.TR) 
+                "Hızlı saha erişimi için kaydettiğin araçlar (${favorites.size})" 
+            else 
+                "Your saved cheatsheets for quick field access (${favorites.size})",
             style = MaterialTheme.typography.bodyMedium,
             color = TextSecondary
         )
@@ -60,24 +64,29 @@ fun FavoritesScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 80.dp),
+                    .padding(bottom = 90.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = if (language == AppLanguage.TR) "Henüz favori eklenmedi.\nKılavuz sayfasındaki yer imi simgesine basarak ekleyebilirsin." else "No bookmarks yet.\nTap the bookmark icon on any guide to save it.",
+                    text = if (language == AppLanguage.TR) 
+                        "Henüz yer imi eklenmedi.\nKılavuz sayfasındaki yer imi simgesine basarak ekleyebilirsin." 
+                    else 
+                        "No bookmarks yet.\nTap the bookmark icon on any guide to save it.",
                     color = TextMuted,
-                    fontSize = 14.sp
+                    fontSize = 13.sp,
+                    lineHeight = 20.sp
                 )
             }
         } else {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(bottom = 80.dp)
+                contentPadding = PaddingValues(bottom = 90.dp)
             ) {
-                items(favorites) { tool ->
+                items(favorites, key = { it.id }) { tool ->
                     CheatsheetCardItem(
                         tool = tool,
                         language = language,
+                        showQuickCopy = true,
                         onClick = { onNavigateToDetail(tool.id) }
                     )
                     Spacer(modifier = Modifier.height(8.dp))

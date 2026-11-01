@@ -25,6 +25,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
@@ -42,6 +45,7 @@ import com.hackingcheatsheets.app.ui.screens.HomeScreen
 import com.hackingcheatsheets.app.ui.screens.SearchScreen
 import com.hackingcheatsheets.app.ui.screens.UtilitiesScreen
 import com.hackingcheatsheets.app.ui.theme.BackgroundDark
+import com.hackingcheatsheets.app.ui.theme.BorderDark
 import com.hackingcheatsheets.app.ui.theme.CyberGreen
 import com.hackingcheatsheets.app.ui.theme.HackingCheatsheetsTheme
 import com.hackingcheatsheets.app.ui.theme.SurfaceDark
@@ -84,6 +88,14 @@ fun MainAppScaffold(viewModel: CheatsheetViewModel) {
         bottomBar = {
             if (showBottomBar) {
                 NavigationBar(
+                    modifier = Modifier.drawBehind {
+                        drawLine(
+                            color = BorderDark,
+                            start = Offset(0f, 0f),
+                            end = Offset(size.width, 0f),
+                            strokeWidth = 1.dp.toPx()
+                        )
+                    },
                     containerColor = SurfaceDark,
                     contentColor = TextPrimary
                 ) {
@@ -91,12 +103,12 @@ fun MainAppScaffold(viewModel: CheatsheetViewModel) {
                         val selected = currentRoute == item.route
                         NavigationBarItem(
                             icon = { Icon(item.icon, contentDescription = item.title) },
-                            label = { Text(item.title, fontSize = 10.sp) },
+                            label = { Text(item.title, fontSize = 10.sp, fontWeight = if (selected) androidx.compose.ui.text.font.FontWeight.Bold else androidx.compose.ui.text.font.FontWeight.Normal) },
                             selected = selected,
                             colors = NavigationBarItemDefaults.colors(
                                 selectedIconColor = CyberGreen,
                                 selectedTextColor = CyberGreen,
-                                indicatorColor = SurfaceDark,
+                                indicatorColor = CyberGreen.copy(alpha = 0.12f),
                                 unselectedIconColor = TextMuted,
                                 unselectedTextColor = TextMuted
                             ),
