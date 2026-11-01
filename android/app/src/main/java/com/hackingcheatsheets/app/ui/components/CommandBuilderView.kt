@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,15 +20,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -48,12 +52,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hackingcheatsheets.app.data.AppLanguage
+import com.hackingcheatsheets.app.data.Cheatsheet
 import com.hackingcheatsheets.app.ui.theme.AccentBlue
 import com.hackingcheatsheets.app.ui.theme.AccentPink
 import com.hackingcheatsheets.app.ui.theme.AccentPurple
@@ -69,6 +75,8 @@ import com.hackingcheatsheets.app.ui.theme.TextMuted
 import com.hackingcheatsheets.app.ui.theme.TextPrimary
 import com.hackingcheatsheets.app.ui.theme.TextSecondary
 import com.hackingcheatsheets.app.ui.theme.WarningOrange
+import com.hackingcheatsheets.app.ui.theme.getCategoryMeta
+import org.json.JSONArray
 
 enum class BuilderTool(val title: String, val category: String) {
     NMAP("Nmap", "Network Scanner"),
@@ -84,34 +92,91 @@ enum class BuilderTool(val title: String, val category: String) {
 @Composable
 fun CommandBuilderView(
     language: AppLanguage,
+    allCheatsheets: List<Cheatsheet> = emptyList(),
     initialTool: BuilderTool = BuilderTool.NMAP,
     modifier: Modifier = Modifier
 ) {
+    // 0: Deep Interactive Flag Builders, 1: Universal 200-Tool Live Builder
+    var builderMode by remember { mutableIntStateOf(0) }
     var selectedTool by remember { mutableStateOf(initialTool) }
 
     Column(modifier = modifier.fillMaxWidth()) {
-        // Tool Selection Horizontal Carousel
+        // Legal Disclaimer Banner
+        LegalDisclaimerBanner(language = language)
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Mode Selector: Deep Builders vs Universal 200 Tools
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            BuilderTool.values().forEach { tool ->
-                val isSelected = selectedTool == tool
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(if (isSelected) CyberGreen.copy(alpha = 0.2f) else SurfaceDark)
-                        .border(
-                            1.dp,
-                            if (isSelected) CyberGreen else BorderDark,
-                            RoundedCornerShape(10.dp)
-                        )
-                        .clickable { selectedTool = tool }
-                        .padding(horizontal = 12.dp, vertical = 7.dp)
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            val deepLabel = if (language == AppLanguage.TR) "⚡ Gelişmiş Bayraklar" else "⚡ Deep Flag Builders"
+            val allToolsLabel = if (language == AppLanguage.TR) "🌐 Tüm 200 Araç" else "🌐 All 200 Tools"
+
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(if (builderMode == 0) CyberGreen.copy(alpha = 0.15f) else SurfaceDark)
+                    .border(1.dp, if (builderMode == 0) CyberGreen else BorderDark, RoundedCornerShape(8.dp))
+                    .clickable { builderMode = 0 }
+                    .padding(vertical = 8.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = deepLabel,
+                    fontSize = 11.5.sp,
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.Bold,
+                    color = if (builderMode == 0) CyberGreen else TextSecondary
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(if (builderMode == 1) TerminalCyan.copy(alpha = 0.15f) else SurfaceDark)
+                    .border(1.dp, if (builderMode == 1) TerminalCyan else BorderDark, RoundedCornerShape(8.dp))
+                    .clickable { builderMode = 1 }
+                    .padding(vertical = 8.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = allToolsLabel,
+                    fontSize = 11.5.sp,
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.Bold,
+                    color = if (builderMode == 1) TerminalCyan else TextSecondary
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        if (builderMode == 0) {
+            // DEEP BUILDERS
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                BuilderTool.values().forEach { tool ->
+                    val isSelected = selectedTool == tool
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(if (isSelected) CyberGreen.copy(alpha = 0.2f) else SurfaceDark)
+                            .border(
+                                1.dp,
+                                if (isSelected) CyberGreen else BorderDark,
+                                RoundedCornerShape(8.dp)
+                            )
+                            .clickable { selectedTool = tool }
+                            .padding(horizontal = 12.dp, vertical = 7.dp)
+                    ) {
                         Text(
                             text = tool.title,
                             fontSize = 12.sp,
@@ -122,20 +187,379 @@ fun CommandBuilderView(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(14.dp))
+
+            when (selectedTool) {
+                BuilderTool.NMAP -> NmapBuilder(language)
+                BuilderTool.FFUF -> FfufBuilder(language)
+                BuilderTool.NETEXEC -> NetExecBuilder(language)
+                BuilderTool.SQLMAP -> SqlmapBuilder(language)
+                BuilderTool.HASHCAT -> HashcatBuilder(language)
+                BuilderTool.MSFVENOM -> MsfvenomBuilder(language)
+                BuilderTool.HYDRA -> HydraBuilder(language)
+                BuilderTool.LIGOLO_CHISEL -> LigoloChiselBuilder(language)
+            }
+        } else {
+            // UNIVERSAL 200-TOOL LIVE BUILDER
+            UniversalToolCommandBuilder(language = language, cheatsheets = allCheatsheets)
+        }
+    }
+}
+
+// -------------------------------------------------------------
+// LEGAL DISCLAIMER BANNER
+// -------------------------------------------------------------
+@Composable
+fun LegalDisclaimerBanner(language: AppLanguage) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+        shape = RoundedCornerShape(10.dp),
+        border = CardDefaults.outlinedCardBorder().copy(
+            brush = SolidColor(WarningOrange.copy(alpha = 0.4f))
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(30.dp)
+                    .clip(RoundedCornerShape(6.dp))
+                    .background(WarningOrange.copy(alpha = 0.15f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Security,
+                    contentDescription = "Legal Notice",
+                    tint = WarningOrange,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.width(10.dp))
+
+            Column {
+                Text(
+                    text = if (language == AppLanguage.TR) "YASAL UYARI / SORUMLULUK REDDİ" else "LEGAL DISCLAIMER / ETHICAL USE",
+                    fontSize = 10.sp,
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.Bold,
+                    color = WarningOrange
+                )
+                Text(
+                    text = if (language == AppLanguage.TR)
+                        "Bu araçlar ve komut oluşturucular yalnızca yetkili güvenlik testleri, araştırmaları ve eğitim amaçlıdır. İzinsiz taramalar yasalara aykırıdır."
+                    else
+                        "This tool suite is intended strictly for authorized security assessments, defensive audits, and education. Unauthorized use is prohibited.",
+                    fontSize = 10.5.sp,
+                    color = TextSecondary,
+                    lineHeight = 14.sp
+                )
+            }
+        }
+    }
+}
+
+// -------------------------------------------------------------
+// UNIVERSAL 200-TOOL LIVE BUILDER COMPONENT
+// -------------------------------------------------------------
+@Composable
+fun UniversalToolCommandBuilder(
+    language: AppLanguage,
+    cheatsheets: List<Cheatsheet>
+) {
+    var searchQuery by remember { mutableStateOf("") }
+    var selectedToolId by remember { mutableStateOf(if (cheatsheets.isNotEmpty()) cheatsheets[0].id else "nmap") }
+
+    // Live Replacement Target Inputs
+    var targetIp by remember { mutableStateOf("10.10.10.100") }
+    var targetPort by remember { mutableStateOf("443") }
+    var targetUrl by remember { mutableStateOf("http://target.com/") }
+    var targetUser by remember { mutableStateOf("admin") }
+    var targetWordlist by remember { mutableStateOf("/usr/share/wordlists/dirb/common.txt") }
+
+    // Filter tools for selection
+    val filteredTools = if (searchQuery.isBlank()) {
+        cheatsheets
+    } else {
+        val q = searchQuery.lowercase().trim()
+        cheatsheets.filter {
+            it.title.lowercase().contains(q) ||
+            it.titleTr.lowercase().contains(q) ||
+            it.id.lowercase().contains(q) ||
+            it.category.lowercase().contains(q)
+        }
+    }
+
+    val currentTool = cheatsheets.firstOrNull { it.id == selectedToolId } ?: cheatsheets.firstOrNull()
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        // Search & Filter Tool Input
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+                .background(SurfaceDark)
+                .border(1.dp, BorderDark, RoundedCornerShape(10.dp))
+                .padding(horizontal = 10.dp, vertical = 8.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search Tool",
+                    tint = CyberGreen,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                BasicTextField(
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it },
+                    modifier = Modifier.weight(1f),
+                    textStyle = MaterialTheme.typography.bodyMedium.copy(color = TextPrimary),
+                    cursorBrush = SolidColor(CyberGreen),
+                    singleLine = true,
+                    decorationBox = { innerTextField ->
+                        if (searchQuery.isEmpty()) {
+                            Text(
+                                text = if (language == AppLanguage.TR) "200 araç arasından ara (örn. searchsploit, nikto, dirsearch)..." else "Search across 200 tools...",
+                                color = TextMuted,
+                                fontSize = 12.sp
+                            )
+                        }
+                        innerTextField()
+                    }
+                )
+                if (searchQuery.isNotEmpty()) {
+                    IconButton(
+                        onClick = { searchQuery = "" },
+                        modifier = Modifier.size(20.dp)
+                    ) {
+                        Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear", tint = TextMuted, modifier = Modifier.size(14.dp))
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        // Horizontal Quick Tool Badges
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            filteredTools.take(20).forEach { tool ->
+                val isSelected = tool.id == selectedToolId
+                val meta = getCategoryMeta(tool.category)
+
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(if (isSelected) meta.color.copy(alpha = 0.2f) else SurfaceDark)
+                        .border(1.dp, if (isSelected) meta.color else BorderDark, RoundedCornerShape(8.dp))
+                        .clickable { selectedToolId = tool.id }
+                        .padding(horizontal = 10.dp, vertical = 6.dp)
+                ) {
+                    Text(
+                        text = if (language == AppLanguage.TR) tool.titleTr else tool.title,
+                        fontSize = 11.sp,
+                        fontFamily = FontFamily.Monospace,
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                        color = if (isSelected) meta.color else TextSecondary
+                    )
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        // Tool-specific builder content
-        when (selectedTool) {
-            BuilderTool.NMAP -> NmapBuilder(language)
-            BuilderTool.FFUF -> FfufBuilder(language)
-            BuilderTool.NETEXEC -> NetExecBuilder(language)
-            BuilderTool.SQLMAP -> SqlmapBuilder(language)
-            BuilderTool.HASHCAT -> HashcatBuilder(language)
-            BuilderTool.MSFVENOM -> MsfvenomBuilder(language)
-            BuilderTool.HYDRA -> HydraBuilder(language)
-            BuilderTool.LIGOLO_CHISEL -> LigoloChiselBuilder(language)
+        if (currentTool != null) {
+            val meta = getCategoryMeta(currentTool.category)
+
+            // Current Tool Info Card
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+                shape = RoundedCornerShape(10.dp),
+                border = CardDefaults.outlinedCardBorder().copy(brush = SolidColor(meta.color.copy(alpha = 0.5f)))
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(meta.color.copy(alpha = 0.15f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(imageVector = meta.icon, contentDescription = currentTool.title, tint = meta.color, modifier = Modifier.size(20.dp))
+                    }
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = if (language == AppLanguage.TR) currentTool.titleTr else currentTool.title,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = TextPrimary
+                        )
+                        Text(
+                            text = currentTool.category.uppercase(),
+                            fontSize = 10.sp,
+                            fontFamily = FontFamily.Monospace,
+                            color = meta.color
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Param Replacement Controls
+            Text(
+                text = if (language == AppLanguage.TR) "HEDEF & PARAMETRE GİRDİLERİ (CANLI DEĞİŞTİRİCİ)" else "TARGET & PARAMETER INPUTS (LIVE REPLACER)",
+                style = MaterialTheme.typography.bodySmall,
+                color = TerminalCyan
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = targetIp,
+                    onValueChange = { targetIp = it },
+                    label = { Text("Hedef IP / Host") },
+                    modifier = Modifier.weight(1.5f),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = CyberGreen,
+                        unfocusedBorderColor = BorderDark,
+                        focusedTextColor = TextPrimary,
+                        unfocusedTextColor = TextPrimary
+                    ),
+                    singleLine = true
+                )
+
+                OutlinedTextField(
+                    value = targetPort,
+                    onValueChange = { targetPort = it },
+                    label = { Text("Port") },
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = CyberGreen,
+                        unfocusedBorderColor = BorderDark,
+                        focusedTextColor = TextPrimary,
+                        unfocusedTextColor = TextPrimary
+                    ),
+                    singleLine = true
+                )
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = targetUrl,
+                    onValueChange = { targetUrl = it },
+                    label = { Text("Hedef URL") },
+                    modifier = Modifier.weight(1.5f),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = CyberGreen,
+                        unfocusedBorderColor = BorderDark,
+                        focusedTextColor = TextPrimary,
+                        unfocusedTextColor = TextPrimary
+                    ),
+                    singleLine = true
+                )
+
+                OutlinedTextField(
+                    value = targetUser,
+                    onValueChange = { targetUser = it },
+                    label = { Text("Kullanıcı") },
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = CyberGreen,
+                        unfocusedBorderColor = BorderDark,
+                        focusedTextColor = TextPrimary,
+                        unfocusedTextColor = TextPrimary
+                    ),
+                    singleLine = true
+                )
+            }
+
+            Spacer(modifier = Modifier.height(14.dp))
+
+            // Parse Tool's Quick Commands
+            val rawCommands = remember(currentTool.quickCommandsJson) {
+                try {
+                    val arr = JSONArray(currentTool.quickCommandsJson ?: "[]")
+                    val list = mutableListOf<String>()
+                    for (i in 0 until arr.length()) {
+                        list.add(arr.getString(i))
+                    }
+                    list
+                } catch (e: Exception) {
+                    emptyList<String>()
+                }
+            }
+
+            Text(
+                text = "${rawCommands.size} ${if (language == AppLanguage.TR) "Özelleştirilebilir Komut Şablonu" else "Customizable Command Templates"}",
+                style = MaterialTheme.typography.labelLarge,
+                color = CyberGreen
+            )
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            if (rawCommands.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = if (language == AppLanguage.TR) "Bu araç için komut kılavuzu detay sayfasında mevcuttur." else "Detailed commands available in tool guide.",
+                        color = TextMuted,
+                        fontSize = 12.sp
+                    )
+                }
+            } else {
+                rawCommands.forEach { rawCmd ->
+                    // Live dynamic string replacement of generic placeholders
+                    val customizedCmd = rawCmd
+                        .replace("<target>", targetIp.trim())
+                        .replace("<ip>", targetIp.trim())
+                        .replace("<TARGET>", targetIp.trim())
+                        .replace("<TARGET_IP>", targetIp.trim())
+                        .replace("<IP>", targetIp.trim())
+                        .replace("192.168.1.100", targetIp.trim())
+                        .replace("10.10.10.10", targetIp.trim())
+                        .replace("10.10.10.100", targetIp.trim())
+                        .replace("http://example.com", targetUrl.trim().removeSuffix("/"))
+                        .replace("http://target.com", targetUrl.trim().removeSuffix("/"))
+                        .replace("<URL>", targetUrl.trim())
+                        .replace("<url>", targetUrl.trim())
+                        .replace("<user>", targetUser.trim())
+                        .replace("<username>", targetUser.trim())
+                        .replace("<port>", targetPort.trim())
+                        .replace("<PORT>", targetPort.trim())
+                        .replace("/path/to/wordlist", targetWordlist.trim())
+
+                    GeneratedCommandCard(
+                        command = customizedCmd,
+                        language = language
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                }
+            }
         }
     }
 }
@@ -154,7 +578,7 @@ fun GeneratedCommandCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 14.dp, bottom = 6.dp)
+            .padding(top = 10.dp, bottom = 4.dp)
             .background(CodeBlockBg, RoundedCornerShape(10.dp))
             .border(1.dp, CyberGreen.copy(alpha = 0.5f), RoundedCornerShape(10.dp))
     ) {
@@ -175,7 +599,7 @@ fun GeneratedCommandCard(
                 Box(modifier = Modifier.size(9.dp).clip(CircleShape).background(Color(0xFF27C93F)))
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    text = if (language == AppLanguage.TR) "ÜRETİLEN KOMUT" else "GENERATED COMMAND",
+                    text = if (language == AppLanguage.TR) "CANLI KOMUT" else "LIVE COMMAND",
                     fontSize = 11.sp,
                     fontFamily = FontFamily.Monospace,
                     fontWeight = FontWeight.Bold,
@@ -233,9 +657,9 @@ fun GeneratedCommandCard(
             Text(
                 text = command,
                 color = TextPrimary,
-                fontSize = 13.sp,
+                fontSize = 12.5.sp,
                 fontFamily = FontFamily.Monospace,
-                lineHeight = 19.sp
+                lineHeight = 18.sp
             )
         }
     }
@@ -244,24 +668,22 @@ fun GeneratedCommandCard(
 // -------------------------------------------------------------
 // 1. NMAP BUILDER
 // -------------------------------------------------------------
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NmapBuilder(language: AppLanguage) {
     var target by remember { mutableStateOf("10.10.10.100") }
-    var portsOption by remember { mutableStateOf("top1000") } // top1000, all, custom
+    var portsOption by remember { mutableStateOf("top1000") }
     var customPorts by remember { mutableStateOf("80,443,8080,445") }
-    var scanType by remember { mutableStateOf("-sS") } // -sS, -sT, -sU
+    var scanType by remember { mutableStateOf("-sS") }
     var enableVersionDetect by remember { mutableStateOf(true) }
     var enableDefaultScripts by remember { mutableStateOf(true) }
     var enableVulnScripts by remember { mutableStateOf(false) }
-    var noPing by remember { mutableStateOf(true) } // -Pn
+    var noPing by remember { mutableStateOf(true) }
     var timing by remember { mutableStateOf("-T4") }
     var outputFile by remember { mutableStateOf("scan.txt") }
     var enableOutput by remember { mutableStateOf(false) }
     var enableDecoy by remember { mutableStateOf(false) }
     var fragmentPackets by remember { mutableStateOf(false) }
 
-    // Presets
     val presets = if (language == AppLanguage.TR) listOf(
         "Hızlı Keşif" to 0,
         "Tam Port (-p-)" to 1,
@@ -277,7 +699,6 @@ fun NmapBuilder(language: AppLanguage) {
     )
 
     Column {
-        // Presets Chips
         Text(
             text = if (language == AppLanguage.TR) "HAZIR PROFİLLER" else "PRESET PROFILES",
             style = MaterialTheme.typography.bodySmall,
@@ -296,7 +717,7 @@ fun NmapBuilder(language: AppLanguage) {
                         .border(1.dp, BorderDark, RoundedCornerShape(6.dp))
                         .clickable {
                             when (mode) {
-                                0 -> { // Quick
+                                0 -> {
                                     portsOption = "top1000"
                                     scanType = "-sS"
                                     enableVersionDetect = true
@@ -307,7 +728,7 @@ fun NmapBuilder(language: AppLanguage) {
                                     enableDecoy = false
                                     fragmentPackets = false
                                 }
-                                1 -> { // All ports
+                                1 -> {
                                     portsOption = "all"
                                     scanType = "-sS"
                                     enableVersionDetect = true
@@ -316,7 +737,7 @@ fun NmapBuilder(language: AppLanguage) {
                                     noPing = true
                                     timing = "-T4"
                                 }
-                                2 -> { // Vuln
+                                2 -> {
                                     portsOption = "top1000"
                                     scanType = "-sS"
                                     enableVersionDetect = true
@@ -325,7 +746,7 @@ fun NmapBuilder(language: AppLanguage) {
                                     noPing = true
                                     timing = "-T4"
                                 }
-                                3 -> { // Evasion
+                                3 -> {
                                     portsOption = "top1000"
                                     scanType = "-sS"
                                     enableVersionDetect = false
@@ -336,7 +757,7 @@ fun NmapBuilder(language: AppLanguage) {
                                     enableDecoy = true
                                     fragmentPackets = true
                                 }
-                                4 -> { // UDP
+                                4 -> {
                                     portsOption = "top1000"
                                     scanType = "-sU"
                                     enableVersionDetect = true
@@ -356,7 +777,6 @@ fun NmapBuilder(language: AppLanguage) {
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        // Target Input
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
@@ -373,7 +793,6 @@ fun NmapBuilder(language: AppLanguage) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Ports row
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -414,9 +833,7 @@ fun NmapBuilder(language: AppLanguage) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Scan Type & Timing
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            // Scan Type
             listOf("-sS" to "SYN", "-sT" to "Connect", "-sU" to "UDP").forEach { (type, lbl) ->
                 val selected = scanType == type
                 Box(
@@ -436,7 +853,6 @@ fun NmapBuilder(language: AppLanguage) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Switches
         ToggleOption(label = "-sV (Servis / Versiyon Tespiti)", checked = enableVersionDetect, onCheckedChange = { enableVersionDetect = it })
         ToggleOption(label = "-sC (Varsayılan NSE Scriptleri)", checked = enableDefaultScripts, onCheckedChange = { enableDefaultScripts = it })
         ToggleOption(label = "--script=vuln (Bilinen Zafiyet Taraması)", checked = enableVulnScripts, onCheckedChange = { enableVulnScripts = it })
@@ -445,7 +861,6 @@ fun NmapBuilder(language: AppLanguage) {
         ToggleOption(label = "-D RND:5 (Sahte IP Decoy)", checked = enableDecoy, onCheckedChange = { enableDecoy = it })
         ToggleOption(label = "-oN scan.txt (Çıktıyı Dosyaya Kaydet)", checked = enableOutput, onCheckedChange = { enableOutput = it })
 
-        // Assemble Command
         val cmdParts = mutableListOf("nmap")
         cmdParts.add(scanType)
         if (enableVersionDetect) cmdParts.add("-sV")
@@ -459,7 +874,7 @@ fun NmapBuilder(language: AppLanguage) {
         when (portsOption) {
             "all" -> cmdParts.add("-p-")
             "custom" -> cmdParts.add("-p $customPorts")
-            else -> {} // default top 1000
+            else -> {}
         }
 
         cmdParts.add(timing)
@@ -487,7 +902,6 @@ fun FfufBuilder(language: AppLanguage) {
     var followRedirects by remember { mutableStateOf(true) }
     var useBurpProxy by remember { mutableStateOf(false) }
 
-    // Presets
     val presets = if (language == AppLanguage.TR) listOf(
         "Dizin Keşfi" to 0,
         "Dosya Arama (.php,.txt)" to 1,
@@ -604,7 +1018,6 @@ fun FfufBuilder(language: AppLanguage) {
         ToggleOption(label = "-r Yönlendirmeleri Takip Et (Follow Redirects)", checked = followRedirects, onCheckedChange = { followRedirects = it })
         ToggleOption(label = "-x Burp Suite Proxy (http://127.0.0.1:8080)", checked = useBurpProxy, onCheckedChange = { useBurpProxy = it })
 
-        // Assemble ffuf command
         val cmdParts = mutableListOf("ffuf", "-u", url.trim(), "-w", wordlist.trim())
         if (enableExtensions && extensions.isNotBlank()) cmdParts.addAll(listOf("-e", extensions.trim()))
         if (useFilterCodes && filterCodes.isNotBlank()) cmdParts.addAll(listOf("-fc", filterCodes.trim()))
@@ -627,14 +1040,13 @@ fun NetExecBuilder(language: AppLanguage) {
     var protocol by remember { mutableStateOf("smb") }
     var target by remember { mutableStateOf("192.168.1.0/24") }
     var username by remember { mutableStateOf("Administrator") }
-    var authMode by remember { mutableStateOf("pass") } // pass, hash, null
+    var authMode by remember { mutableStateOf("pass") }
     var password by remember { mutableStateOf("Password123!") }
     var ntlmHash by remember { mutableStateOf("aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0") }
     var localAuth by remember { mutableStateOf(false) }
     var selectedAction by remember { mutableStateOf("--shares") }
 
     Column {
-        // Protocols
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("smb", "winrm", "ldap", "mssql", "ssh").forEach { proto ->
                 val selected = protocol == proto
@@ -671,7 +1083,6 @@ fun NetExecBuilder(language: AppLanguage) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Auth mode selector
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("pass" to "Parola (-p)", "hash" to "NTLM Hash (-H)", "null" to "Anonim / Null").forEach { (mode, lbl) ->
                 val selected = authMode == mode
@@ -741,7 +1152,6 @@ fun NetExecBuilder(language: AppLanguage) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Action / Module selection
         Text(
             text = if (language == AppLanguage.TR) "EYLEM & MODÜL" else "ACTION & MODULE",
             style = MaterialTheme.typography.bodySmall,
@@ -775,7 +1185,6 @@ fun NetExecBuilder(language: AppLanguage) {
         Spacer(modifier = Modifier.height(6.dp))
         ToggleOption(label = "--local-auth (Yerel Hesap Denetimi)", checked = localAuth, onCheckedChange = { localAuth = it })
 
-        // Assemble NetExec command
         val cmdParts = mutableListOf("netexec", protocol, target.trim())
         when (authMode) {
             "pass" -> cmdParts.addAll(listOf("-u", "'$username'", "-p", "'$password'"))
@@ -799,7 +1208,7 @@ fun NetExecBuilder(language: AppLanguage) {
 fun SqlmapBuilder(language: AppLanguage) {
     var url by remember { mutableStateOf("http://example.com/vuln.php?id=1") }
     var param by remember { mutableStateOf("id") }
-    var levelRisk by remember { mutableStateOf("default") } // default, high, extreme
+    var levelRisk by remember { mutableStateOf("default") }
     var action by remember { mutableStateOf("--dbs") }
     var batchMode by remember { mutableStateOf(true) }
     var randomAgent by remember { mutableStateOf(true) }
@@ -838,7 +1247,6 @@ fun SqlmapBuilder(language: AppLanguage) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Level & Risk
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("default" to "Varsayılan (1/1)", "high" to "Yüksek (3/3)", "extreme" to "Agresif (5/3)").forEach { (lvl, lbl) ->
                 val selected = levelRisk == lvl
@@ -859,7 +1267,6 @@ fun SqlmapBuilder(language: AppLanguage) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Actions
         Text(
             text = if (language == AppLanguage.TR) "VERİ ÇEKME EYLEMİ" else "EXTRACTION ACTION",
             style = MaterialTheme.typography.bodySmall,
@@ -896,7 +1303,6 @@ fun SqlmapBuilder(language: AppLanguage) {
         ToggleOption(label = "--random-agent (Rastgele User-Agent)", checked = randomAgent, onCheckedChange = { randomAgent = it })
         ToggleOption(label = "--tamper=space2comment (WAF Atlama)", checked = useTamper, onCheckedChange = { useTamper = it })
 
-        // Assemble SQLMap command
         val cmdParts = mutableListOf("sqlmap", "-u", "\"$url\"")
         if (param.isNotBlank()) cmdParts.addAll(listOf("-p", param.trim()))
         when (levelRisk) {
@@ -922,8 +1328,8 @@ fun SqlmapBuilder(language: AppLanguage) {
 @Composable
 fun HashcatBuilder(language: AppLanguage) {
     var hashFile by remember { mutableStateOf("hashes.txt") }
-    var hashType by remember { mutableStateOf("1000") } // 1000: NTLM, 0: MD5, 1800: sha512, 5600: NetNTLMv2
-    var attackMode by remember { mutableStateOf("0") } // 0: Wordlist, 3: Mask
+    var hashType by remember { mutableStateOf("1000") }
+    var attackMode by remember { mutableStateOf("0") }
     var wordlist by remember { mutableStateOf("/usr/share/wordlists/rockyou.txt") }
     var mask by remember { mutableStateOf("?a?a?a?a?a?a?a?a") }
     var useRule by remember { mutableStateOf(false) }
@@ -947,7 +1353,6 @@ fun HashcatBuilder(language: AppLanguage) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Hash Types
         Text(
             text = if (language == AppLanguage.TR) "HASH TİPİ (-m)" else "HASH TYPE (-m)",
             style = MaterialTheme.typography.bodySmall,
@@ -983,7 +1388,6 @@ fun HashcatBuilder(language: AppLanguage) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Attack Mode
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("0" to "-a 0 (Wordlist / Sözlük)", "3" to "-a 3 (Mask / Kaba Kuvvet)").forEach { (mode, lbl) ->
                 val selected = attackMode == mode
@@ -1038,7 +1442,6 @@ fun HashcatBuilder(language: AppLanguage) {
 
         ToggleOption(label = "-O (GPU Optimize Kernel & Hızlandırma)", checked = optimizeKernels, onCheckedChange = { optimizeKernels = it })
 
-        // Assemble Hashcat command
         val cmdParts = mutableListOf("hashcat", "-m", hashType, "-a", attackMode)
         if (optimizeKernels) cmdParts.add("-O")
         cmdParts.add(hashFile.trim())
@@ -1069,7 +1472,6 @@ fun MsfvenomBuilder(language: AppLanguage) {
     var enableEncoder by remember { mutableStateOf(false) }
 
     Column {
-        // Platform Selector
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
                 "windows_x64" to "Windows x64 (.exe)",
@@ -1138,7 +1540,6 @@ fun MsfvenomBuilder(language: AppLanguage) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Full payload name determination
         val fullPayload = when (platform) {
             "windows_x64" -> "windows/x64/meterpreter/reverse_tcp"
             "windows_x86" -> "windows/meterpreter/reverse_tcp"
@@ -1152,7 +1553,6 @@ fun MsfvenomBuilder(language: AppLanguage) {
 
         ToggleOption(label = "Encoder Kullan (-e x86/shikata_ga_nai -i 3)", checked = enableEncoder, onCheckedChange = { enableEncoder = it })
 
-        // Assemble Msfvenom command
         val cmdParts = mutableListOf("msfvenom", "-p", fullPayload, "LHOST=$lhost", "LPORT=$lport", "-f", format)
         if (enableEncoder) cmdParts.addAll(listOf("-e", "x86/shikata_ga_nai", "-i", "3"))
         cmdParts.addAll(listOf("-o", outputFile))
@@ -1171,9 +1571,9 @@ fun MsfvenomBuilder(language: AppLanguage) {
 fun HydraBuilder(language: AppLanguage) {
     var target by remember { mutableStateOf("10.10.10.10") }
     var service by remember { mutableStateOf("ssh") }
-    var userMode by remember { mutableStateOf("single") } // single, list
+    var userMode by remember { mutableStateOf("single") }
     var userValue by remember { mutableStateOf("admin") }
-    var passMode by remember { mutableStateOf("list") } // single, list
+    var passMode by remember { mutableStateOf("list") }
     var passValue by remember { mutableStateOf("/usr/share/wordlists/rockyou.txt") }
     var threads by remember { mutableStateOf("16") }
     var exitOnFirst by remember { mutableStateOf(true) }
@@ -1195,7 +1595,6 @@ fun HydraBuilder(language: AppLanguage) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Services
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("ssh", "ftp", "rdp", "smb", "mysql", "telnet", "http-get").forEach { srv ->
                 val selected = service == srv
@@ -1248,7 +1647,6 @@ fun HydraBuilder(language: AppLanguage) {
 
         ToggleOption(label = "-f (İlk Başarılı Girişte Dur)", checked = exitOnFirst, onCheckedChange = { exitOnFirst = it })
 
-        // Assemble Hydra command
         val cmdParts = mutableListOf("hydra")
         if (userMode == "single") cmdParts.addAll(listOf("-l", userValue.trim())) else cmdParts.addAll(listOf("-L", userValue.trim()))
         if (passMode == "single") cmdParts.addAll(listOf("-p", passValue.trim())) else cmdParts.addAll(listOf("-P", passValue.trim()))

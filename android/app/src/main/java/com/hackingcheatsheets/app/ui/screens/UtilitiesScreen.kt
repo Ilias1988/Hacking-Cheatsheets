@@ -70,6 +70,7 @@ import com.hackingcheatsheets.app.viewmodel.CheatsheetViewModel
 @Composable
 fun UtilitiesScreen(viewModel: CheatsheetViewModel) {
     val language by viewModel.currentLanguage.collectAsState()
+    val allCheatsheets by viewModel.allCheatsheets.collectAsState()
     var selectedTab by remember { mutableIntStateOf(0) }
     val tabs = if (language == AppLanguage.TR) listOf("Komut Üretici", "Ters Kabuk", "Kodlayıcı", "Hash Tanıma")
                else listOf("Command Builder", "Reverse Shell", "Encoder", "Hash Identifier")
@@ -111,7 +112,7 @@ fun UtilitiesScreen(viewModel: CheatsheetViewModel) {
         Spacer(modifier = Modifier.height(16.dp))
 
         when (selectedTab) {
-            0 -> CommandBuilderTab(language)
+            0 -> CommandBuilderTab(language, allCheatsheets)
             1 -> ReverseShellGeneratorTab(language)
             2 -> EncoderDecoderTab(language)
             3 -> HashIdentifierTab(language)
@@ -120,13 +121,16 @@ fun UtilitiesScreen(viewModel: CheatsheetViewModel) {
 }
 
 @Composable
-fun CommandBuilderTab(language: AppLanguage) {
+fun CommandBuilderTab(
+    language: AppLanguage,
+    allCheatsheets: List<com.hackingcheatsheets.app.data.Cheatsheet>
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 90.dp)
     ) {
         item {
-            CommandBuilderView(language = language)
+            CommandBuilderView(language = language, allCheatsheets = allCheatsheets)
         }
     }
 }

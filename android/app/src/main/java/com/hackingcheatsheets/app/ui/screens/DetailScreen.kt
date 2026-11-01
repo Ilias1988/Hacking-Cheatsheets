@@ -70,6 +70,7 @@ import com.hackingcheatsheets.app.ui.components.MsfvenomBuilder
 import com.hackingcheatsheets.app.ui.components.NetExecBuilder
 import com.hackingcheatsheets.app.ui.components.NmapBuilder
 import com.hackingcheatsheets.app.ui.components.SqlmapBuilder
+import com.hackingcheatsheets.app.ui.components.UniversalToolCommandBuilder
 import com.hackingcheatsheets.app.ui.components.MarkdownBlock
 import com.hackingcheatsheets.app.ui.components.MarkdownBlockView
 import com.hackingcheatsheets.app.ui.components.normalizeAnchor
@@ -336,8 +337,10 @@ fun DetailScreen(
                 }
             }
 
-            // Interactive Command Builder (if supported for this tool)
-            if (builderToolForId != null) {
+            // Interactive Command Builder (supported for all tools with commands)
+            val hasBuilder = builderToolForId != null || (!tool.quickCommandsJson.isNullOrBlank() && tool.quickCommandsJson != "[]")
+
+            if (hasBuilder) {
                 item {
                     var isBuilderExpanded by remember { mutableStateOf(false) }
 
@@ -404,15 +407,19 @@ fun DetailScreen(
 
                             AnimatedVisibility(visible = isBuilderExpanded) {
                                 Column(modifier = Modifier.padding(top = 14.dp)) {
-                                    when (builderToolForId) {
-                                        BuilderTool.NMAP -> NmapBuilder(language)
-                                        BuilderTool.FFUF -> FfufBuilder(language)
-                                        BuilderTool.NETEXEC -> NetExecBuilder(language)
-                                        BuilderTool.SQLMAP -> SqlmapBuilder(language)
-                                        BuilderTool.HASHCAT -> HashcatBuilder(language)
-                                        BuilderTool.MSFVENOM -> MsfvenomBuilder(language)
-                                        BuilderTool.HYDRA -> HydraBuilder(language)
-                                        BuilderTool.LIGOLO_CHISEL -> LigoloChiselBuilder(language)
+                                    if (builderToolForId != null) {
+                                        when (builderToolForId) {
+                                            BuilderTool.NMAP -> NmapBuilder(language)
+                                            BuilderTool.FFUF -> FfufBuilder(language)
+                                            BuilderTool.NETEXEC -> NetExecBuilder(language)
+                                            BuilderTool.SQLMAP -> SqlmapBuilder(language)
+                                            BuilderTool.HASHCAT -> HashcatBuilder(language)
+                                            BuilderTool.MSFVENOM -> MsfvenomBuilder(language)
+                                            BuilderTool.HYDRA -> HydraBuilder(language)
+                                            BuilderTool.LIGOLO_CHISEL -> LigoloChiselBuilder(language)
+                                        }
+                                    } else {
+                                        UniversalToolCommandBuilder(language = language, cheatsheets = listOf(tool))
                                     }
                                 }
                             }
