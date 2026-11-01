@@ -61,16 +61,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hackingcheatsheets.app.data.AppLanguage
-import com.hackingcheatsheets.app.ui.components.BuilderTool
-import com.hackingcheatsheets.app.ui.components.FfufBuilder
-import com.hackingcheatsheets.app.ui.components.HashcatBuilder
-import com.hackingcheatsheets.app.ui.components.HydraBuilder
-import com.hackingcheatsheets.app.ui.components.LigoloChiselBuilder
-import com.hackingcheatsheets.app.ui.components.MsfvenomBuilder
-import com.hackingcheatsheets.app.ui.components.NetExecBuilder
-import com.hackingcheatsheets.app.ui.components.NmapBuilder
-import com.hackingcheatsheets.app.ui.components.SqlmapBuilder
-import com.hackingcheatsheets.app.ui.components.UniversalToolCommandBuilder
+import com.hackingcheatsheets.app.ui.components.ALL_BUILDER_TOOLS
+import com.hackingcheatsheets.app.ui.components.CommandBuilderView
 import com.hackingcheatsheets.app.ui.components.MarkdownBlock
 import com.hackingcheatsheets.app.ui.components.MarkdownBlockView
 import com.hackingcheatsheets.app.ui.components.normalizeAnchor
@@ -124,15 +116,15 @@ fun DetailScreen(
     val hasQuickCommands = !tool.quickCommandsJson.isNullOrBlank()
 
     val builderToolForId = remember(tool.id) {
-        when (tool.id.lowercase()) {
-            "nmap" -> BuilderTool.NMAP
-            "ffuf", "gobuster", "feroxbuster", "dirsearch" -> BuilderTool.FFUF
-            "netexec", "crackmapexec" -> BuilderTool.NETEXEC
-            "sqlmap" -> BuilderTool.SQLMAP
-            "hashcat", "john-the-ripper" -> BuilderTool.HASHCAT
-            "msfvenom", "metasploit" -> BuilderTool.MSFVENOM
-            "hydra" -> BuilderTool.HYDRA
-            "chisel", "ligolo-ng" -> BuilderTool.LIGOLO_CHISEL
+        val toolSlug = tool.id.lowercase().replace("_", "-").trim()
+        when {
+            ALL_BUILDER_TOOLS.any { it.id == toolSlug } -> toolSlug
+            toolSlug == "crackmapexec" -> "netexec"
+            toolSlug == "john-the-ripper" -> "john"
+            toolSlug == "metasploit" -> "msfvenom"
+            toolSlug == "radare2" || toolSlug == "rizin" -> "radare2"
+            toolSlug == "linpeas" || toolSlug == "winpeas" -> "peass-ng"
+            toolSlug == "wireshark" -> "tshark"
             else -> null
         }
     }
@@ -337,10 +329,8 @@ fun DetailScreen(
                 }
             }
 
-            // Interactive Command Builder (supported for all tools with commands)
-            val hasBuilder = builderToolForId != null || (!tool.quickCommandsJson.isNullOrBlank() && tool.quickCommandsJson != "[]")
-
-            if (hasBuilder) {
+            // Interactive Command Builder (supported if tool matches a builder)
+            if (builderToolForId != null) {
                 item {
                     var isBuilderExpanded by remember { mutableStateOf(false) }
 
@@ -407,20 +397,10 @@ fun DetailScreen(
 
                             AnimatedVisibility(visible = isBuilderExpanded) {
                                 Column(modifier = Modifier.padding(top = 14.dp)) {
-                                    if (builderToolForId != null) {
-                                        when (builderToolForId) {
-                                            BuilderTool.NMAP -> NmapBuilder(language)
-                                            BuilderTool.FFUF -> FfufBuilder(language)
-                                            BuilderTool.NETEXEC -> NetExecBuilder(language)
-                                            BuilderTool.SQLMAP -> SqlmapBuilder(language)
-                                            BuilderTool.HASHCAT -> HashcatBuilder(language)
-                                            BuilderTool.MSFVENOM -> MsfvenomBuilder(language)
-                                            BuilderTool.HYDRA -> HydraBuilder(language)
-                                            BuilderTool.LIGOLO_CHISEL -> LigoloChiselBuilder(language)
-                                        }
-                                    } else {
-                                        UniversalToolCommandBuilder(language = language, cheatsheets = listOf(tool))
-                                    }
+                                    CommandBuilderView(
+                                        language = language,
+                                        initialToolId = builderToolForId
+                                    )
                                 }
                             }
                         }
