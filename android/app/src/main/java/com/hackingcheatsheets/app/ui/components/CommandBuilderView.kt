@@ -238,6 +238,10 @@ val ALL_BUILDER_TOOLS = listOf(
     BuilderToolItem("certipy", "Certipy", BuilderCategory.AD, "AD CS sertifika şablon zafiyetleri", "Active Directory Certificate Services"),
     BuilderToolItem("kerbrute", "Kerbrute", BuilderCategory.AD, "Kerberos kullanıcı ve parola püskürtme", "Kerberos pre-auth enum & spraying"),
     BuilderToolItem("evil-winrm", "Evil-WinRM", BuilderCategory.AD, "Windows uzaktan yönetim kabuğu", "Ultimate WinRM shell for hacking"),
+    BuilderToolItem("pkinittools", "PKINITtools", BuilderCategory.AD, "Kerberos PKINIT ve sertifika manipülasyon araçları", "Tools for Kerberos PKINIT and certificate attacks"),
+    BuilderToolItem("snaffler", "Snaffler", BuilderCategory.AD, "Domain paylaşımlarında hassas parola/anahtar avcısı", "Find sensitive data and credentials in AD file shares"),
+    BuilderToolItem("adidnsdump", "adidnsdump", BuilderCategory.AD, "Active Directory entegre DNS bölge döküm motoru", "Dump Active Directory integrated DNS zones"),
+    BuilderToolItem("powerview", "PowerView", BuilderCategory.AD, "PowerShell tabanlı Active Directory keşif kiti", "PowerShell tool for Active Directory domain enumeration"),
     BuilderToolItem("responder", "Responder", BuilderCategory.AD, "LLMNR, NBT-NS ve MDNS zehirleyici", "LLMNR/NBT-NS poisoner and rogue auth"),
 
     // 4. PASSWORDS & CRACKING
@@ -655,12 +659,16 @@ fun CommandBuilderView(
             "impacket" -> ImpacketBuilder(language)
             "bloodhound", "bloodhound-python", "sharphound" -> BloodHoundBuilder(language)
             "responder" -> ResponderBuilder(language)
-            "coercer" -> CoercerBuilder(language)
+            "evil-winrm", "evilwinrm" -> EvilWinrmBuilder(language)
             "rubeus" -> RubeusBuilder(language)
-            "enum4linux-ng" -> Enum4linuxNgBuilder(language)
-            "certipy" -> CertipyBuilder(language)
+            "powerview" -> PowerViewBuilder(language)
             "kerbrute" -> KerbruteBuilder(language)
-            "evil-winrm" -> EvilWinrmBuilder(language)
+            "certipy" -> CertipyBuilder(language)
+            "adidnsdump" -> AdidnsdumpBuilder(language)
+            "coercer" -> CoercerBuilder(language)
+            "snaffler" -> SnafflerBuilder(language)
+            "enum4linux-ng" -> Enum4linuxNgBuilder(language)
+            "pkinittools", "gettgtpkinit" -> PkinittoolsBuilder(language)
             "hashcat" -> HashcatBuilder(language)
             "john", "john-the-ripper" -> JohnBuilder(language)
             "hydra" -> HydraBuilder(language)
@@ -7860,287 +7868,1405 @@ fun ResponderBuilder(language: AppLanguage) {
     }
 }
 
-// 24. COERCER
+// ==========================================
+// PART 5: ACTIVE DIRECTORY İLERİ DÜZEY & WINDOWS AĞLARI (41 - 50)
+// ==========================================
+
+// 41. EVIL-WINRM
 @Composable
-fun CoercerBuilder(language: AppLanguage) {
-    var mode by remember { mutableStateOf("coerce") }
-    var target by remember { mutableStateOf("10.10.10.10") }
-    var listener by remember { mutableStateOf("10.10.14.5") }
-    var user by remember { mutableStateOf("domain_user") }
-    var pass by remember { mutableStateOf("Password123!") }
-    var domain by remember { mutableStateOf("corp.local") }
-    var webdav by remember { mutableStateOf(false) }
-    var rpc by remember { mutableStateOf(false) }
-    var smb by remember { mutableStateOf(false) }
+fun EvilWinrmBuilder(language: AppLanguage) {
+    var targetIp by remember { mutableStateOf("10.10.10.100") }
+    var port by remember { mutableStateOf("5985") }
+    var username by remember { mutableStateOf("Administrator") }
+    var authMode by remember { mutableStateOf("password") }
+    var password by remember { mutableStateOf("Password123!") }
+    var ntlmHash by remember { mutableStateOf("") }
+    var realmDomain by remember { mutableStateOf("corp.local") }
+    var certFile by remember { mutableStateOf("cert.pem") }
+    var keyFile by remember { mutableStateOf("privkey.pem") }
+    var useSsl by remember { mutableStateOf(false) }
+    var scriptsFolder by remember { mutableStateOf("/opt/scripts") }
+    var execFolder by remember { mutableStateOf("/opt/executables") }
+    var singleCommand by remember { mutableStateOf("") }
 
     Column {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf("coerce" to "Zorla Tetikle (coerce)", "scan" to "Zafiyetleri Listele (scan)").forEach { (m, lbl) ->
-                val sel = mode == m
+            OutlinedTextField(
+                value = targetIp,
+                onValueChange = { targetIp = it },
+                label = { Text("Hedef Host/IP (-i)") },
+                modifier = Modifier.weight(2f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = port,
+                onValueChange = { port = it },
+                label = { Text("Port (-P)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(
+            value = username,
+            onValueChange = { username = it },
+            label = { Text("Kullanıcı (-u: Administrator vb.)") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+            singleLine = true
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "KİMLİK DOĞRULAMA TÜRÜ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf("password" to "Parola (-p)", "hash" to "NTLM Hash (-H)", "kerberos" to "Kerberos (-r)", "cert" to "SSL Sertifika (-c/-k)").forEach { (m, lbl) ->
+                val isSelected = authMode == m
                 Box(
-                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mode = m }.padding(vertical = 6.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(if (isSelected) CyberGreen.copy(alpha = 0.2f) else SurfaceDark)
+                        .border(1.dp, if (isSelected) CyberGreen else BorderDark, RoundedCornerShape(6.dp))
+                        .clickable {
+                            authMode = m
+                            if (m == "cert") {
+                                useSsl = true
+                                port = "5986"
+                            }
+                        }
+                        .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) {
+                    Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                }
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = target, onValueChange = { target = it }, label = { Text("Hedef DC IP (-t)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = listener, onValueChange = { listener = it }, label = { Text("Dinleyici / Responder IP (-l)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            OutlinedTextField(value = user, onValueChange = { user = it }, label = { Text("Kullanıcı (-u)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = pass, onValueChange = { pass = it }, label = { Text("Parola (-p)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = domain, onValueChange = { domain = it }, label = { Text("Domain (-d)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-        Spacer(modifier = Modifier.height(6.dp))
-        ToggleOption(label = "--webdav WebDAV Protokolünü Zorla", checked = webdav, onCheckedChange = { webdav = it })
-        ToggleOption(label = "--rpc RPC Protokolünü Zorla", checked = rpc, onCheckedChange = { rpc = it })
-        ToggleOption(label = "--smb SMB Protokolünü Zorla", checked = smb, onCheckedChange = { smb = it })
 
-        val parts = mutableListOf("coercer", mode, "-t", target, "-l", listener, "-u", user, "-p", "'$pass'", "-d", domain)
-        if (webdav) parts.add("--webdav")
-        if (rpc) parts.add("--rpc")
-        if (smb) parts.add("--smb")
+        Spacer(modifier = Modifier.height(6.dp))
+        when (authMode) {
+            "password" -> {
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text("Parola (-p)") },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+            }
+            "hash" -> {
+                OutlinedTextField(
+                    value = ntlmHash,
+                    onValueChange = { ntlmHash = it },
+                    label = { Text("Pass-The-Hash (-H: 31d6cfe0d16ae931b73c59d7e0c089c0)") },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+            }
+            "kerberos" -> {
+                OutlinedTextField(
+                    value = realmDomain,
+                    onValueChange = { realmDomain = it },
+                    label = { Text("Kerberos Realm / Domain (-r corp.local)") },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+            }
+            "cert" -> {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(
+                        value = certFile,
+                        onValueChange = { certFile = it },
+                        label = { Text("Cert PEM (-c)") },
+                        modifier = Modifier.weight(1f),
+                        colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                        singleLine = true
+                    )
+                    OutlinedTextField(
+                        value = keyFile,
+                        onValueChange = { keyFile = it },
+                        label = { Text("Key PEM (-k)") },
+                        modifier = Modifier.weight(1f),
+                        colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                        singleLine = true
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "DİNAMİK SCRİPT & ÇALIŞTIRMA SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(
+                value = scriptsFolder,
+                onValueChange = { scriptsFolder = it },
+                label = { Text("PS Script Dizini (-s: opsiyonel)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = execFolder,
+                onValueChange = { execFolder = it },
+                label = { Text("Exe/C# Dizini (-e: opsiyonel)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(
+            value = singleCommand,
+            onValueChange = { singleCommand = it },
+            label = { Text("Tek Komut Çalıştır ve Çık (--cmd: opsiyonel)") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+            singleLine = true
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        ToggleOption(
+            label = "-S SSL/TLS Şifreli Bağlantıyı Zorla (Varsayılan port 5986)",
+            checked = useSsl,
+            onCheckedChange = {
+                useSsl = it
+                if (it && port == "5985") port = "5986" else if (!it && port == "5986") port = "5985"
+            }
+        )
+
+        // Live Command Synthesis
+        val parts = mutableListOf("evil-winrm", "-i", targetIp.trim(), "-u", username.trim())
+        if (port.isNotBlank() && port != "5985") parts.addAll(listOf("-P", port.trim()))
+
+        when (authMode) {
+            "password" -> parts.addAll(listOf("-p", "\"${password.trim()}\""))
+            "hash" -> if (ntlmHash.isNotBlank()) parts.addAll(listOf("-H", ntlmHash.trim()))
+            "kerberos" -> parts.addAll(listOf("-r", realmDomain.trim()))
+            "cert" -> parts.addAll(listOf("-c", certFile.trim(), "-k", keyFile.trim()))
+        }
+
+        if (useSsl) parts.add("-S")
+        if (scriptsFolder.isNotBlank()) parts.addAll(listOf("-s", scriptsFolder.trim()))
+        if (execFolder.isNotBlank()) parts.addAll(listOf("-e", execFolder.trim()))
+        if (singleCommand.isNotBlank()) parts.addAll(listOf("--cmd", "\"${singleCommand.trim()}\""))
 
         GeneratedCommandCard(command = parts.joinToString(" "), language = language)
     }
 }
 
-// 25. RUBEUS
+// 42. RUBEUS
 @Composable
 fun RubeusBuilder(language: AppLanguage) {
     var action by remember { mutableStateOf("kerberoast") }
     var domain by remember { mutableStateOf("corp.local") }
-    var user by remember { mutableStateOf("") }
+    var dcFqdn by remember { mutableStateOf("dc01.corp.local") }
+    var username by remember { mutableStateOf("admin") }
+    var password by remember { mutableStateOf("P@ssw0rd") }
     var rc4Hash by remember { mutableStateOf("") }
+    var targetSpn by remember { mutableStateOf("MSSQLSvc/sql.corp.local:1433") }
+    var impersonateUser by remember { mutableStateOf("Administrator") }
+    var msdsSpn by remember { mutableStateOf("cifs/dc01.corp.local") }
+    var ticketData by remember { mutableStateOf("ticket.kirbi") }
+    var outFile by remember { mutableStateOf("kerberoast.txt") }
+    var opsecFilter by remember { mutableStateOf(true) }
     var noWrap by remember { mutableStateOf(true) }
-    var saveOutput by remember { mutableStateOf(true) }
+    var pttDirect by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "KERBEROS EYLEMİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = "RUBEUS EYLEM MODÜLÜ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
-                "kerberoast" to "Kerberoasting (TGS)",
+                "kerberoast" to "Kerberoast (SPN Biletleri)",
                 "asreproast" to "AS-REP Roasting",
-                "asktgt" to "TGT Talep Et",
-                "tgtdeleg" to "TGT Delegasyon",
-                "s4u" to "S4U Taklit",
-                "dump" to "Biletleri Dök"
+                "asktgt" to "TGT Talep Et (asktgt)",
+                "s4u" to "S4U Delegasyon (Constrained)",
+                "ptt" to "Pass-the-Ticket (ptt)",
+                "tgtdeleg" to "TGT Delegation (Unconstrained)",
+                "dump" to "Bellekten Bilet Dök (dump)",
+                "monitor" to "Logon Biletlerini İzle (monitor)"
             ).forEach { (act, lbl) ->
-                val sel = action == act
+                val isSelected = action == act
                 Box(
-                    modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { action = act }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = "$act ($lbl)", fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(if (isSelected) CyberGreen.copy(alpha = 0.2f) else SurfaceDark)
+                        .border(1.dp, if (isSelected) CyberGreen else BorderDark, RoundedCornerShape(6.dp))
+                        .clickable { action = act }
+                        .padding(horizontal = 8.dp, vertical = 6.dp)
+                ) {
+                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                }
             }
         }
+
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = domain, onValueChange = { domain = it }, label = { Text("Domain (/domain:corp.local)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = user, onValueChange = { user = it }, label = { Text("Hedef Kullanıcı (/user: opsiyonel)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-        if (action == "asktgt") {
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = rc4Hash, onValueChange = { rc4Hash = it }, label = { Text("RC4 NTLM Hash (/rc4:)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(
+                value = domain,
+                onValueChange = { domain = it },
+                label = { Text("Domain (/domain:corp.local)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = dcFqdn,
+                onValueChange = { dcFqdn = it },
+                label = { Text("DC Hostname (/dc:dc01..)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
         }
+
         Spacer(modifier = Modifier.height(6.dp))
-        ToggleOption(label = "/nowrap Hashleri Tek Satırda Dök (Kırma için)", checked = noWrap, onCheckedChange = { noWrap = it })
-        ToggleOption(label = "/outfile:hashes.txt Dosyaya Kaydet", checked = saveOutput, onCheckedChange = { saveOutput = it })
-
-        val parts = mutableListOf("Rubeus.exe", action)
-        if (domain.isNotBlank()) parts.add("/domain:$domain")
-        if (user.isNotBlank()) parts.add("/user:$user")
-        if (action == "asktgt" && rc4Hash.isNotBlank()) parts.add("/rc4:$rc4Hash")
-        if (noWrap) parts.add("/nowrap")
-        if (saveOutput) parts.add("/outfile:hashes.txt")
-
-        GeneratedCommandCard(command = parts.joinToString(" "), language = language)
-    }
-}
-
-// 26. ENUM4LINUX-NG
-@Composable
-fun Enum4linuxNgBuilder(language: AppLanguage) {
-    var target by remember { mutableStateOf("10.10.10.100") }
-    var user by remember { mutableStateOf("") }
-    var pass by remember { mutableStateOf("") }
-    var domain by remember { mutableStateOf("") }
-    var allChecks by remember { mutableStateOf(true) }
-    var enumUsers by remember { mutableStateOf(false) }
-    var enumShares by remember { mutableStateOf(false) }
-    var enumGroups by remember { mutableStateOf(false) }
-    var passPolicy by remember { mutableStateOf(false) }
-    var ridBrute by remember { mutableStateOf(false) }
-    var saveOutput by remember { mutableStateOf(true) }
-
-    Column {
-        OutlinedTextField(value = target, onValueChange = { target = it }, label = { Text("Hedef IP (-A)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = user, onValueChange = { user = it }, label = { Text("Kullanıcı (-u: opsiyonel)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = pass, onValueChange = { pass = it }, label = { Text("Parola (-p)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-        }
-        Spacer(modifier = Modifier.height(6.dp))
-        ToggleOption(label = "-A Tüm Kontrolleri Çalıştır (Önerilen)", checked = allChecks, onCheckedChange = { allChecks = it })
-        if (!allChecks) {
-            ToggleOption(label = "-U Kullanıcıları Listele", checked = enumUsers, onCheckedChange = { enumUsers = it })
-            ToggleOption(label = "-S Paylaşımları Listele", checked = enumShares, onCheckedChange = { enumShares = it })
-            ToggleOption(label = "-G Grupları Listele", checked = enumGroups, onCheckedChange = { enumGroups = it })
-            ToggleOption(label = "-P Parola Politikasını Çek", checked = passPolicy, onCheckedChange = { passPolicy = it })
-            ToggleOption(label = "-R RID Kaba Kuvveti Yap", checked = ridBrute, onCheckedChange = { ridBrute = it })
-        }
-        ToggleOption(label = "-oA enum4linux_report (JSON, YAML, Text Kaydet)", checked = saveOutput, onCheckedChange = { saveOutput = it })
-
-        val parts = mutableListOf("enum4linux-ng")
-        if (allChecks) {
-            parts.add("-A")
-        } else {
-            if (enumUsers) parts.add("-U")
-            if (enumShares) parts.add("-S")
-            if (enumGroups) parts.add("-G")
-            if (passPolicy) parts.add("-P")
-            if (ridBrute) parts.add("-R")
-        }
-        if (user.isNotBlank()) parts.addAll(listOf("-u", user))
-        if (pass.isNotBlank()) parts.addAll(listOf("-p", pass))
-        if (domain.isNotBlank()) parts.addAll(listOf("-d", domain))
-        if (saveOutput) parts.addAll(listOf("-oA", "enum4linux_report"))
-        parts.add(target)
-
-        GeneratedCommandCard(command = parts.joinToString(" "), language = language)
-    }
-}
-
-// 28. CERTIPY
-@Composable
-fun CertipyBuilder(language: AppLanguage) {
-    var action by remember { mutableStateOf("find") }
-    var domain by remember { mutableStateOf("corp.local") }
-    var user by remember { mutableStateOf("user1") }
-    var pass by remember { mutableStateOf("Pass123!") }
-    var dcIp by remember { mutableStateOf("10.10.10.1") }
-    var caName by remember { mutableStateOf("corp-CA") }
-    var template by remember { mutableStateOf("ESC1") }
-    var vulnerableOnly by remember { mutableStateOf(true) }
-
-    Column {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            listOf("find" to "Zafiyet Bul (find)", "req" to "Talep Et (req)", "auth" to "TGT Al (auth)").forEach { (act, lbl) ->
-                val sel = action == act
-                Box(
-                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { action = act }.padding(vertical = 6.dp),
-                    contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
-            }
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = domain, onValueChange = { domain = it }, label = { Text("Domain Adı") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = dcIp, onValueChange = { dcIp = it }, label = { Text("DC IP (-dc-ip)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = user, onValueChange = { user = it }, label = { Text("Kullanıcı") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = pass, onValueChange = { pass = it }, label = { Text("Parola") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-        }
-        if (action == "req") {
-            Spacer(modifier = Modifier.height(8.dp))
+        if (action == "asktgt" || action == "s4u") {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = caName, onValueChange = { caName = it }, label = { Text("CA Adı (-ca)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = template, onValueChange = { template = it }, label = { Text("Şablon (-template)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(
+                    value = username,
+                    onValueChange = { username = it },
+                    label = { Text("Kullanıcı (/user:admin)") },
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text("Parola (/password:...)") },
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
             }
-        }
-        if (action == "find") {
             Spacer(modifier = Modifier.height(6.dp))
-            ToggleOption(label = "-vulnerable Yalnızca İstismar Edilebilir Şablonları Listele", checked = vulnerableOnly, onCheckedChange = { vulnerableOnly = it })
+            OutlinedTextField(
+                value = rc4Hash,
+                onValueChange = { rc4Hash = it },
+                label = { Text("NTLM / RC4 Hash (/rc4:NTLM - Opsiyonel)") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
         }
 
-        val parts = mutableListOf("certipy", action, "-u", "'$user@$domain'", "-p", "'$pass'", "-dc-ip", dcIp)
-        if (action == "find" && vulnerableOnly) parts.addAll(listOf("-vulnerable", "-stdout"))
-        if (action == "req") parts.addAll(listOf("-ca", caName, "-template", template, "-upn", "administrator@$domain"))
-        if (action == "auth") parts.addAll(listOf("-pfx", "administrator.pfx"))
+        if (action == "s4u") {
+            Spacer(modifier = Modifier.height(6.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = impersonateUser,
+                    onValueChange = { impersonateUser = it },
+                    label = { Text("Taklit Edilecek (/impersonateuser)") },
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = msdsSpn,
+                    onValueChange = { msdsSpn = it },
+                    label = { Text("Hedef SPN (/msdsspn:cifs/..)") },
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+            }
+        }
+
+        if (action == "kerberoast") {
+            Spacer(modifier = Modifier.height(6.dp))
+            OutlinedTextField(
+                value = targetSpn,
+                onValueChange = { targetSpn = it },
+                label = { Text("Özel SPN Filtresi (/spn:MSSQL... - boş ise tümü)") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+
+        if (action == "ptt") {
+            Spacer(modifier = Modifier.height(6.dp))
+            OutlinedTextField(
+                value = ticketData,
+                onValueChange = { ticketData = it },
+                label = { Text("Bilet Dosyası veya Base64 (/ticket:ticket.kirbi)") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+
+        if (action == "kerberoast" || action == "asreproast") {
+            Spacer(modifier = Modifier.height(6.dp))
+            OutlinedTextField(
+                value = outFile,
+                onValueChange = { outFile = it },
+                label = { Text("Hash Kayıt Dosyası (/outfile:hashes.txt)") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "GİZLİLİK VE BELLEK AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        if (action == "kerberoast") {
+            ToggleOption(label = "/opsec Yalnızca RC4 Destekli Hesapları İste (AES log gürültüsünü önle)", checked = opsecFilter, onCheckedChange = { opsecFilter = it })
+        }
+        ToggleOption(label = "/nowrap Base64 Bilet Çıktısını Tek Satıra Bas (Kopyalama kolaylığı)", checked = noWrap, onCheckedChange = { noWrap = it })
+        ToggleOption(label = "/ptt Üretilen Bileti Doğrudan Mevcut Oturuma Enjekte Et", checked = pttDirect, onCheckedChange = { pttDirect = it })
+
+        // Live Command Synthesis
+        val parts = mutableListOf(".\\Rubeus.exe", action)
+        if (domain.isNotBlank()) parts.add("/domain:${domain.trim()}")
+        if (dcFqdn.isNotBlank()) parts.add("/dc:${dcFqdn.trim()}")
+
+        when (action) {
+            "asktgt" -> {
+                if (username.isNotBlank()) parts.add("/user:${username.trim()}")
+                if (rc4Hash.isNotBlank()) parts.add("/rc4:${rc4Hash.trim()}") else parts.add("/password:${password.trim()}")
+            }
+            "kerberoast" -> {
+                if (targetSpn.isNotBlank()) parts.add("/spn:${targetSpn.trim()}")
+                if (opsecFilter) parts.add("/opsec")
+                if (outFile.isNotBlank()) parts.add("/outfile:${outFile.trim()}")
+            }
+            "asreproast" -> {
+                if (outFile.isNotBlank()) parts.add("/outfile:${outFile.trim()}")
+            }
+            "s4u" -> {
+                if (username.isNotBlank()) parts.add("/user:${username.trim()}")
+                if (rc4Hash.isNotBlank()) parts.add("/rc4:${rc4Hash.trim()}") else parts.add("/password:${password.trim()}")
+                if (impersonateUser.isNotBlank()) parts.add("/impersonateuser:${impersonateUser.trim()}")
+                if (msdsSpn.isNotBlank()) parts.add("/msdsspn:${msdsSpn.trim()}")
+            }
+            "ptt" -> {
+                if (ticketData.isNotBlank()) parts.add("/ticket:${ticketData.trim()}")
+            }
+        }
+
+        if (noWrap) parts.add("/nowrap")
+        if (pttDirect && action != "ptt") parts.add("/ptt")
 
         GeneratedCommandCard(command = parts.joinToString(" "), language = language)
     }
 }
 
-// 29. KERBRUTE
+// 43. POWERVIEW
+@Composable
+fun PowerViewBuilder(language: AppLanguage) {
+    var cmdFunction by remember { mutableStateOf("Get-DomainUser") }
+    var domain by remember { mutableStateOf("corp.local") }
+    var identityFilter by remember { mutableStateOf("") }
+    var properties by remember { mutableStateOf("samaccountname,description,memberof") }
+    var ldapFilter by remember { mutableStateOf("") }
+    var resolveGuids by remember { mutableStateOf(true) }
+    var wrapBypass by remember { mutableStateOf(false) }
+
+    Column {
+        Text(text = "POWERVIEW SORGUSU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf(
+                "Get-DomainUser" to "Kullanıcılar (User)",
+                "Get-DomainUser -PreauthNotRequired" to "AS-REP Roastable",
+                "Get-DomainUser -SPN" to "Kerberoastable",
+                "Get-DomainGroup" to "Gruplar (Group)",
+                "Get-DomainGroupMember" to "Grup Üyeleri",
+                "Get-DomainComputer" to "Bilgisayarlar",
+                "Get-DomainController" to "Domain Controller",
+                "Find-LocalAdminAccess" to "Local Admin Tespiti",
+                "Find-InterestingDomainAcl" to "Hassas ACL İzinleri",
+                "Get-DomainTrust" to "Domain Güven İlişkileri"
+            ).forEach { (fn, lbl) ->
+                val isSelected = cmdFunction == fn
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(if (isSelected) CyberGreen.copy(alpha = 0.2f) else SurfaceDark)
+                        .border(1.dp, if (isSelected) CyberGreen else BorderDark, RoundedCornerShape(6.dp))
+                        .clickable { cmdFunction = fn }
+                        .padding(horizontal = 8.dp, vertical = 6.dp)
+                ) {
+                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(
+                value = domain,
+                onValueChange = { domain = it },
+                label = { Text("Hedef Domain (-Domain corp.local)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = identityFilter,
+                onValueChange = { identityFilter = it },
+                label = { Text("Kimlik / Nesne Filtresi (-Identity: opsiyonel)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(
+            value = properties,
+            onValueChange = { properties = it },
+            label = { Text("Öznitelikler (-Properties: samaccountname,mail,memberof vb.)") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+            singleLine = true
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(
+            value = ldapFilter,
+            onValueChange = { ldapFilter = it },
+            label = { Text("Özel LDAP Filtresi (-LDAPFilter: '(&(adminCount=1))' - Opsiyonel)") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+            singleLine = true
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "SEÇENEKLER VE POWERSHELL SARMALAYICI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        ToggleOption(label = "-ResolveGUIDs ACL/Object GUID İsimlerini Açık Metne Çöz", checked = resolveGuids, onCheckedChange = { resolveGuids = it })
+        ToggleOption(label = "PowerShell ExecutionPolicy Bypass Komutu Olarak Sarmala", checked = wrapBypass, onCheckedChange = { wrapBypass = it })
+
+        // Live Command Synthesis
+        val innerCmd = buildString {
+            append(cmdFunction)
+            if (domain.isNotBlank()) append(" -Domain ${domain.trim()}")
+            if (identityFilter.isNotBlank()) append(" -Identity \"${identityFilter.trim()}\"")
+            if (properties.isNotBlank() && !cmdFunction.contains("Find-")) append(" -Properties ${properties.trim()}")
+            if (ldapFilter.isNotBlank()) append(" -LDAPFilter \"${ldapFilter.trim()}\"")
+            if (resolveGuids && (cmdFunction.contains("Acl") || cmdFunction.contains("Object"))) append(" -ResolveGUIDs")
+        }
+
+        val fullCommand = if (wrapBypass) {
+            "powershell -ep bypass -c \"Import-Module .\\PowerView.ps1; $innerCmd\""
+        } else {
+            innerCmd
+        }
+
+        GeneratedCommandCard(command = fullCommand, language = language)
+    }
+}
+
+// 44. KERBRUTE
 @Composable
 fun KerbruteBuilder(language: AppLanguage) {
     var mode by remember { mutableStateOf("userenum") }
     var domain by remember { mutableStateOf("corp.local") }
-    var dc by remember { mutableStateOf("10.10.10.1") }
+    var dcIp by remember { mutableStateOf("10.10.10.1") }
     var userlist by remember { mutableStateOf("users.txt") }
-    var passOrList by remember { mutableStateOf("Password123!") }
-    var threads by remember { mutableStateOf("50") }
-    var safeMode by remember { mutableStateOf(false) }
+    var password by remember { mutableStateOf("Welcome2026!") }
+    var passlist by remember { mutableStateOf("passwords.txt") }
+    var singleUser by remember { mutableStateOf("administrator") }
+    var threads by remember { mutableStateOf("10") }
+    var delayMs by remember { mutableStateOf("") }
+    var safeLockout by remember { mutableStateOf(true) }
+    var verbose by remember { mutableStateOf(false) }
+    var outputFile by remember { mutableStateOf("valid_users.txt") }
 
     Column {
+        Text(text = "KERBRUTE SALDIRI MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            listOf("userenum" to "Kullanıcı (userenum)", "passwordspray" to "Püskürtme (spray)", "bruteforce" to "Kaba Kuvvet (brute)").forEach { (m, lbl) ->
-                val sel = mode == m
+            listOf("userenum" to "Kullanıcı Keşfi", "passwordspray" to "Parola Püskürtme", "bruteforce" to "User:Pass Kaba Kuvvet", "bruteuser" to "Tek Kullanıcı").forEach { (m, lbl) ->
+                val isSelected = mode == m
                 Box(
-                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mode = m }.padding(vertical = 6.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(if (isSelected) CyberGreen.copy(alpha = 0.2f) else SurfaceDark)
+                        .border(1.dp, if (isSelected) CyberGreen else BorderDark, RoundedCornerShape(6.dp))
+                        .clickable {
+                            mode = m
+                            if (m == "userenum") outputFile = "valid_users.txt" else outputFile = "cracked_creds.txt"
+                        }
+                        .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) {
+                    Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                }
             }
         }
+
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = domain, onValueChange = { domain = it }, label = { Text("Domain (-d)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = dc, onValueChange = { dc = it }, label = { Text("DC IP (--dc)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(
+                value = domain,
+                onValueChange = { domain = it },
+                label = { Text("Hedef Domain (-d corp.local)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = dcIp,
+                onValueChange = { dcIp = it },
+                label = { Text("DC IP / FQDN (--dc 10.10.10.1)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = userlist, onValueChange = { userlist = it }, label = { Text("Kullanıcı Listesi") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-        if (mode != "userenum") {
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = passOrList, onValueChange = { passOrList = it }, label = { Text(if (mode == "passwordspray") "Tek Parola" else "Parola Listesi") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+
+        Spacer(modifier = Modifier.height(6.dp))
+        if (mode == "userenum" || mode == "passwordspray" || mode == "bruteforce") {
+            OutlinedTextField(
+                value = userlist,
+                onValueChange = { userlist = it },
+                label = { Text("Kullanıcı Listesi (users.txt)") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+
+        if (mode == "passwordspray") {
+            Spacer(modifier = Modifier.height(6.dp))
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Püskürtülecek Parola ('Welcome2026!')") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+
+        if (mode == "bruteuser") {
+            Spacer(modifier = Modifier.height(6.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = singleUser,
+                    onValueChange = { singleUser = it },
+                    label = { Text("Hedef Kullanıcı") },
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = passlist,
+                    onValueChange = { passlist = it },
+                    label = { Text("Parola Wordlist") },
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+            }
+        }
+
+        if (mode == "bruteforce") {
+            Spacer(modifier = Modifier.height(6.dp))
+            OutlinedTextField(
+                value = passlist,
+                onValueChange = { passlist = it },
+                label = { Text("Parola Listesi (passwords.txt)") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "HIZ VE GÜVENLİK AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(
+                value = threads,
+                onValueChange = { threads = it },
+                label = { Text("Threads (-t)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = delayMs,
+                onValueChange = { delayMs = it },
+                label = { Text("Gecikme ms (--delay 100 - Opsiyonel)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
         }
         Spacer(modifier = Modifier.height(6.dp))
-        ToggleOption(label = "--safe Hesap Kilitlemeyi Engellemek İçin Yavaş Mod", checked = safeMode, onCheckedChange = { safeMode = it })
+        OutlinedTextField(
+            value = outputFile,
+            onValueChange = { outputFile = it },
+            label = { Text("Sonuç Kayıt Dosyası (-o)") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+            singleLine = true
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        ToggleOption(label = "--safe Hesap Kilitlenme Uyarılarında Taramayı Durdur", checked = safeLockout, onCheckedChange = { safeLockout = it })
+        ToggleOption(label = "-v Ayrıntılı Çıktı (Verbose)", checked = verbose, onCheckedChange = { verbose = it })
 
-        val parts = mutableListOf("kerbrute", mode, "-d", domain, "--dc", dc)
-        if (safeMode) parts.add("--safe")
-        parts.addAll(listOf("-t", threads))
-        if (mode == "userenum") {
-            parts.add(userlist)
-        } else if (mode == "passwordspray") {
-            parts.addAll(listOf(userlist, passOrList))
+        // Live Command Synthesis
+        val parts = mutableListOf("kerbrute", mode)
+        parts.addAll(listOf("-d", domain.trim(), "--dc", dcIp.trim()))
+
+        when (mode) {
+            "userenum" -> parts.add(userlist.trim())
+            "passwordspray" -> parts.addAll(listOf(userlist.trim(), "\"${password.trim()}\""))
+            "bruteuser" -> parts.addAll(listOf(singleUser.trim(), passlist.trim()))
+            "bruteforce" -> parts.addAll(listOf(userlist.trim(), passlist.trim()))
+        }
+
+        if (threads.isNotBlank() && threads != "10") parts.addAll(listOf("-t", threads.trim()))
+        if (delayMs.isNotBlank()) parts.addAll(listOf("--delay", delayMs.trim()))
+        if (safeLockout) parts.add("--safe")
+        if (verbose) parts.add("-v")
+        if (outputFile.isNotBlank()) parts.addAll(listOf("-o", outputFile.trim()))
+
+        GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+    }
+}
+
+// 45. CERTIPY
+@Composable
+fun CertipyBuilder(language: AppLanguage) {
+    var action by remember { mutableStateOf("find") }
+    var domain by remember { mutableStateOf("corp.local") }
+    var username by remember { mutableStateOf("user1") }
+    var password by remember { mutableStateOf("Password123!") }
+    var ntlmHash by remember { mutableStateOf("") }
+    var dcIp by remember { mutableStateOf("10.10.10.1") }
+    var caName by remember { mutableStateOf("CORP-CA") }
+    var templateName by remember { mutableStateOf("ESC1") }
+    var sanAltName by remember { mutableStateOf("administrator@corp.local") }
+    var pfxFile by remember { mutableStateOf("cert.pfx") }
+    var vulnerableOnly by remember { mutableStateOf(true) }
+    var exportBloodhound by remember { mutableStateOf(false) }
+    var stdoutOutput by remember { mutableStateOf(true) }
+
+    Column {
+        Text(text = "CERTIPY EYLEM MODÜLÜ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf(
+                "find" to "Zafiyet Keşfi (find)",
+                "req" to "Sertifika İste (req)",
+                "auth" to "PKINIT Giriş / Hash (auth)",
+                "shadow" to "Shadow Credentials",
+                "cert" to "Sertifika Yönetimi",
+                "ca" to "CA Bilgisi"
+            ).forEach { (act, lbl) ->
+                val isSelected = action == act
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(if (isSelected) CyberGreen.copy(alpha = 0.2f) else SurfaceDark)
+                        .border(1.dp, if (isSelected) CyberGreen else BorderDark, RoundedCornerShape(6.dp))
+                        .clickable { action = act }
+                        .padding(horizontal = 8.dp, vertical = 6.dp)
+                ) {
+                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(
+                value = username,
+                onValueChange = { username = it },
+                label = { Text("Kullanıcı (-u user@corp.local)") },
+                modifier = Modifier.weight(1.2f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = dcIp,
+                onValueChange = { dcIp = it },
+                label = { Text("DC IP (-dc-ip)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Parola (-p)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = ntlmHash,
+                onValueChange = { ntlmHash = it },
+                label = { Text("NTLM Hash (-hashes: opsiyonel)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+
+        if (action == "req") {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "SERTİFİKA TALEP DETAYLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = caName,
+                    onValueChange = { caName = it },
+                    label = { Text("CA Adı (-ca)") },
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = templateName,
+                    onValueChange = { templateName = it },
+                    label = { Text("Şablon (-template: ESC1)") },
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+            }
+            Spacer(modifier = Modifier.height(6.dp))
+            OutlinedTextField(
+                value = sanAltName,
+                onValueChange = { sanAltName = it },
+                label = { Text("Taklit Edilecek UPN / SAN (-upn: administrator@corp.local)") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+
+        if (action == "auth") {
+            Spacer(modifier = Modifier.height(6.dp))
+            OutlinedTextField(
+                value = pfxFile,
+                onValueChange = { pfxFile = it },
+                label = { Text("Alınan PFX Dosyası (-pfx cert.pfx)") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+
+        if (action == "find") {
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "KEŞİF VE ÇIKTI FİLTRELERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            ToggleOption(label = "-vulnerable Yalnızca İstismar Edilebilir Şablonları Listele (ESC1-ESC13)", checked = vulnerableOnly, onCheckedChange = { vulnerableOnly = it })
+            ToggleOption(label = "-stdout Sonuçları Ekrana Ayrıntılı Olarak Bas", checked = stdoutOutput, onCheckedChange = { stdoutOutput = it })
+            ToggleOption(label = "-bloodhound Çıktıları BloodHound JSON Formatında Dök", checked = exportBloodhound, onCheckedChange = { exportBloodhound = it })
+        }
+
+        // Live Command Synthesis
+        val userAuth = if (username.contains("@")) username.trim() else "${username.trim()}@${domain.trim()}"
+        val parts = mutableListOf("certipy", action)
+
+        if (action == "auth") {
+            parts.addAll(listOf("-pfx", pfxFile.trim(), "-dc-ip", dcIp.trim()))
         } else {
-            parts.addAll(listOf(userlist, passOrList))
+            parts.addAll(listOf("-u", "\"$userAuth\""))
+            if (ntlmHash.isNotBlank()) {
+                parts.addAll(listOf("-hashes", ntlmHash.trim()))
+            } else {
+                parts.addAll(listOf("-p", "\"${password.trim()}\""))
+            }
+            if (dcIp.isNotBlank()) parts.addAll(listOf("-dc-ip", dcIp.trim()))
+
+            if (action == "find") {
+                if (vulnerableOnly) parts.add("-vulnerable")
+                if (stdoutOutput) parts.add("-stdout")
+                if (exportBloodhound) parts.add("-bloodhound")
+            } else if (action == "req") {
+                if (caName.isNotBlank()) parts.addAll(listOf("-ca", caName.trim()))
+                if (templateName.isNotBlank()) parts.addAll(listOf("-template", templateName.trim()))
+                if (sanAltName.isNotBlank()) parts.addAll(listOf("-upn", sanAltName.trim()))
+            }
         }
 
         GeneratedCommandCard(command = parts.joinToString(" "), language = language)
     }
 }
 
-// 30. EVIL-WINRM
+// 46. ADIDNSDUMP
 @Composable
-fun EvilWinrmBuilder(language: AppLanguage) {
-    var ip by remember { mutableStateOf("10.10.10.100") }
-    var user by remember { mutableStateOf("Administrator") }
-    var passOrHash by remember { mutableStateOf("Password123!") }
-    var isHash by remember { mutableStateOf(false) }
-    var scriptsDir by remember { mutableStateOf("") }
-    var exesDir by remember { mutableStateOf("") }
-    var useSsl by remember { mutableStateOf(false) }
+fun AdidnsdumpBuilder(language: AppLanguage) {
+    var dcTarget by remember { mutableStateOf("10.10.10.1") }
+    var username by remember { mutableStateOf("corp.local\\jdoe") }
+    var password by remember { mutableStateOf("P@ssw0rd123!") }
+    var ntlmHash by remember { mutableStateOf("") }
+    var targetZone by remember { mutableStateOf("") }
+    var dumpTombstoned by remember { mutableStateOf(true) }
+    var resolveRecords by remember { mutableStateOf(false) }
+    var forestZone by remember { mutableStateOf(false) }
+    var printZonesOnly by remember { mutableStateOf(false) }
+    var csvExport by remember { mutableStateOf(true) }
+    var useKerberos by remember { mutableStateOf(false) }
 
     Column {
-        OutlinedTextField(value = ip, onValueChange = { ip = it }, label = { Text("Hedef IP (-i)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = user, onValueChange = { user = it }, label = { Text("Kullanıcı (-u)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = passOrHash, onValueChange = { passOrHash = it }, label = { Text(if (isHash) "NTLM Hash (-H)" else "Parola (-p)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(
+            value = dcTarget,
+            onValueChange = { dcTarget = it },
+            label = { Text("Hedef Domain Controller IP / Hostname") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+            singleLine = true
+        )
         Spacer(modifier = Modifier.height(6.dp))
-        ToggleOption(label = "Pass-the-Hash / NTLM Hash Girişi (-H)", checked = isHash, onCheckedChange = { isHash = it })
-        ToggleOption(label = "-S SSL/TLS ile Güvenli WinRM (Port 5986)", checked = useSsl, onCheckedChange = { useSsl = it })
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(
+                value = username,
+                onValueChange = { username = it },
+                label = { Text("Kullanıcı (-u 'DOMAIN\\user')") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Parola (-p)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(
+            value = ntlmHash,
+            onValueChange = { ntlmHash = it },
+            label = { Text("Pass-The-Hash (--hashes :NTLM: opsiyonel)") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+            singleLine = true
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(
+            value = targetZone,
+            onValueChange = { targetZone = it },
+            label = { Text("Özel DNS Bölgesi (-z corp.local: opsiyonel)") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+            singleLine = true
+        )
 
-        val parts = mutableListOf("evil-winrm", "-i", ip, "-u", "'$user'")
-        if (isHash) parts.addAll(listOf("-H", passOrHash)) else parts.addAll(listOf("-p", "'$passOrHash'"))
-        if (scriptsDir.isNotBlank()) parts.addAll(listOf("-s", scriptsDir))
-        if (exesDir.isNotBlank()) parts.addAll(listOf("-e", exesDir))
-        if (useSsl) parts.add("-S")
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "DÖKÜM SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        ToggleOption(label = "--dns-tombstoned Silinmiş / Tombstoned DNS Kayıtlarını Dahil Et", checked = dumpTombstoned, onCheckedChange = { dumpTombstoned = it })
+        ToggleOption(label = "-r Tespit Edilen Kayıtları DNS Sorgusu ile Doğrula (Resolve)", checked = resolveRecords, onCheckedChange = { resolveRecords = it })
+        ToggleOption(label = "--forest ForestDnsZones Bölgesini de Tara", checked = forestZone, onCheckedChange = { forestZone = it })
+        ToggleOption(label = "--print-zones Sadece Mevcut DNS Bölgelerini Listele", checked = printZonesOnly, onCheckedChange = { printZonesOnly = it })
+        ToggleOption(label = "--csv Çıktıyı CSV Dosyası Olarak Kaydet (records.csv)", checked = csvExport, onCheckedChange = { csvExport = it })
+        ToggleOption(label = "-k Kerberos Kimlik Doğrulaması Kullan", checked = useKerberos, onCheckedChange = { useKerberos = it })
+
+        // Live Command Synthesis
+        val parts = mutableListOf("adidnsdump")
+        if (useKerberos) parts.add("-k")
+        parts.addAll(listOf("-u", "\"${username.trim()}\""))
+        if (ntlmHash.isNotBlank()) {
+            parts.addAll(listOf("--hashes", ntlmHash.trim()))
+        } else {
+            parts.addAll(listOf("-p", "\"${password.trim()}\""))
+        }
+
+        if (targetZone.isNotBlank()) parts.addAll(listOf("-z", targetZone.trim()))
+        if (dumpTombstoned) parts.add("--dns-tombstoned")
+        if (resolveRecords) parts.add("-r")
+        if (forestZone) parts.add("--forest")
+        if (printZonesOnly) parts.add("--print-zones")
+        if (csvExport) parts.add("--csv")
+
+        parts.add(dcTarget.trim())
+
+        GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+    }
+}
+
+// 47. COERCER
+@Composable
+fun CoercerBuilder(language: AppLanguage) {
+    var mode by remember { mutableStateOf("coerce") }
+    var target by remember { mutableStateOf("10.10.10.1") }
+    var listenerIp by remember { mutableStateOf("10.10.14.5") }
+    var username by remember { mutableStateOf("testuser") }
+    var password by remember { mutableStateOf("Password123!") }
+    var domain by remember { mutableStateOf("corp.local") }
+    var ntlmHash by remember { mutableStateOf("") }
+    var protoFilter by remember { mutableStateOf("all") }
+    var alwaysContinue by remember { mutableStateOf(false) }
+    var verbose by remember { mutableStateOf(true) }
+
+    Column {
+        Text(text = "COERCER ÇALIŞMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf("coerce" to "Tetikle (Coerce)", "scan" to "Tarama (Scan)", "fuzz" to "Bulanıklaştırma (Fuzz)").forEach { (m, lbl) ->
+                val isSelected = mode == m
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(if (isSelected) CyberGreen.copy(alpha = 0.2f) else SurfaceDark)
+                        .border(1.dp, if (isSelected) CyberGreen else BorderDark, RoundedCornerShape(6.dp))
+                        .clickable { mode = m }
+                        .padding(vertical = 6.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(
+                value = target,
+                onValueChange = { target = it },
+                label = { Text("Hedef Host/IP (-t 10.10.10.1)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+            if (mode == "coerce") {
+                OutlinedTextField(
+                    value = listenerIp,
+                    onValueChange = { listenerIp = it },
+                    label = { Text("Listener IP (-l Responder/Relay)") },
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(6.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(
+                value = username,
+                onValueChange = { username = it },
+                label = { Text("Kullanıcı (-u)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = domain,
+                onValueChange = { domain = it },
+                label = { Text("Domain (-d)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Parola (-p)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = ntlmHash,
+                onValueChange = { ntlmHash = it },
+                label = { Text("NTLM Hash (--hashes: opsiyonel)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "HEDEF RPC PROTOKOL FİLTRESİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf("all" to "Tümü (All)", "MS-RPRN" to "PrintSpooler (MS-RPRN)", "MS-EFSR" to "PetitPotam (MS-EFSR)", "MS-FSRVP" to "ShadowCoerce (MS-FSRVP)", "MS-DFSNM" to "DFSNMC (MS-DFSNM)").forEach { (p, lbl) ->
+                val isSelected = protoFilter == p
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(if (isSelected) CyberGreen.copy(alpha = 0.2f) else SurfaceDark)
+                        .border(1.dp, if (isSelected) CyberGreen else BorderDark, RoundedCornerShape(6.dp))
+                        .clickable { protoFilter = p }
+                        .padding(horizontal = 8.dp, vertical = 6.dp)
+                ) {
+                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "SEÇENEKLER", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        ToggleOption(label = "--always-continue Başarılı İstek Sonrası Diğer Metotları Denemeye Devam Et", checked = alwaysContinue, onCheckedChange = { alwaysContinue = it })
+        ToggleOption(label = "-v Ayrıntılı Çıktı (Verbose)", checked = verbose, onCheckedChange = { verbose = it })
+
+        // Live Command Synthesis
+        val parts = mutableListOf("coercer", mode, "-u", "\"${username.trim()}\"")
+        if (ntlmHash.isNotBlank()) {
+            parts.addAll(listOf("--hashes", ntlmHash.trim()))
+        } else {
+            parts.addAll(listOf("-p", "\"${password.trim()}\""))
+        }
+
+        if (domain.isNotBlank()) parts.addAll(listOf("-d", "\"${domain.trim()}\""))
+        parts.addAll(listOf("-t", target.trim()))
+        if (mode == "coerce") parts.addAll(listOf("-l", listenerIp.trim()))
+
+        if (protoFilter != "all") parts.addAll(listOf("--filter-protocol-name", protoFilter))
+        if (alwaysContinue) parts.add("--always-continue")
+        if (verbose) parts.add("-v")
+
+        GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+    }
+}
+
+// 48. SNAFFLER
+@Composable
+fun SnafflerBuilder(language: AppLanguage) {
+    var domain by remember { mutableStateOf("corp.local") }
+    var singleComputer by remember { mutableStateOf("") }
+    var triageLevel by remember { mutableStateOf("red") }
+    var maxFileSizeMb by remember { mutableStateOf("10") }
+    var maxThreads by remember { mutableStateOf("20") }
+    var outputFile by remember { mutableStateOf("C:\\Temp\\loot.txt") }
+    var shareDiscoveryOnly by remember { mutableStateOf(false) }
+
+    Column {
+        OutlinedTextField(
+            value = domain,
+            onValueChange = { domain = it },
+            label = { Text("Hedef Domain (-d corp.local)") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+            singleLine = true
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(
+            value = singleComputer,
+            onValueChange = { singleComputer = it },
+            label = { Text("Hedef Tek Bilgisayar (-c fs01.corp.local: opsiyonel)") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+            singleLine = true
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "HASSAS VERİ TRİYAJ SEVİYESİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf("black" to "Black (Sadece Key/Pass)", "red" to "Red (Parolalar & Gizli)", "yellow" to "Yellow (Konfigler)", "green" to "Green (Tüm Dosyalar)").forEach { (lvl, lbl) ->
+                val isSelected = triageLevel == lvl
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(if (isSelected) CyberGreen.copy(alpha = 0.2f) else SurfaceDark)
+                        .border(1.dp, if (isSelected) CyberGreen else BorderDark, RoundedCornerShape(6.dp))
+                        .clickable { triageLevel = lvl }
+                        .padding(vertical = 6.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "PERFORMANS VE ÇIKTI AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(
+                value = maxFileSizeMb,
+                onValueChange = { maxFileSizeMb = it },
+                label = { Text("Azami Dosya Boyutu MB (-m)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = maxThreads,
+                onValueChange = { maxThreads = it },
+                label = { Text("Thread Sayısı (-t)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(
+            value = outputFile,
+            onValueChange = { outputFile = it },
+            label = { Text("Sonuç Dosyası (-o C:\\Temp\\loot.txt)") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+            singleLine = true
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        ToggleOption(label = "-s Yalnızca Erişilebilir Paylaşımları Keşfet (İçerik taramadan)", checked = shareDiscoveryOnly, onCheckedChange = { shareDiscoveryOnly = it })
+
+        // Live Command Synthesis
+        val parts = mutableListOf(".\\Snaffler.exe")
+        if (shareDiscoveryOnly) parts.add("-s")
+        if (domain.isNotBlank()) parts.addAll(listOf("-d", domain.trim()))
+        if (singleComputer.isNotBlank()) parts.addAll(listOf("-c", singleComputer.trim()))
+
+        when (triageLevel) {
+            "black" -> parts.add("-b")
+            "red" -> parts.addAll(listOf("-v", "info"))
+            "yellow" -> parts.addAll(listOf("-v", "debug"))
+            "green" -> parts.addAll(listOf("-v", "trace"))
+        }
+
+        if (maxFileSizeMb.isNotBlank() && maxFileSizeMb != "10") parts.addAll(listOf("-m", maxFileSizeMb.trim()))
+        if (maxThreads.isNotBlank() && maxThreads != "20") parts.addAll(listOf("-t", maxThreads.trim()))
+        if (outputFile.isNotBlank()) parts.addAll(listOf("-o", outputFile.trim()))
+
+        GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+    }
+}
+
+// 49. ENUM4LINUX-NG
+@Composable
+fun Enum4linuxNgBuilder(language: AppLanguage) {
+    var targetHost by remember { mutableStateOf("10.10.10.100") }
+    var isNullSession by remember { mutableStateOf(false) }
+    var username by remember { mutableStateOf("jdoe") }
+    var password by remember { mutableStateOf("Password123!") }
+    var domain by remember { mutableStateOf("CORP.LOCAL") }
+    var runAll by remember { mutableStateOf(true) }
+    var enumUsers by remember { mutableStateOf(true) }
+    var enumGroups by remember { mutableStateOf(true) }
+    var enumShares by remember { mutableStateOf(true) }
+    var enumPolicy by remember { mutableStateOf(true) }
+    var enumOs by remember { mutableStateOf(true) }
+    var ridCycle by remember { mutableStateOf(false) }
+    var outputPrefix by remember { mutableStateOf("enum4linux_out") }
+
+    Column {
+        OutlinedTextField(
+            value = targetHost,
+            onValueChange = { targetHost = it },
+            label = { Text("Hedef Host/IP") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+            singleLine = true
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            ToggleChip("Kimlik Bilgisi ile", !isNullSession, modifier = Modifier.weight(1f)) { isNullSession = false }
+            ToggleChip("Anonim / Null Session (-u '' -p '')", isNullSession, modifier = Modifier.weight(1f)) { isNullSession = true }
+        }
+
+        if (!isNullSession) {
+            Spacer(modifier = Modifier.height(6.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = username,
+                    onValueChange = { username = it },
+                    label = { Text("Kullanıcı (-u)") },
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = domain,
+                    onValueChange = { domain = it },
+                    label = { Text("Domain (-d: opsiyonel)") },
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+            }
+            Spacer(modifier = Modifier.height(6.dp))
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Parola (-p)") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "NUMARALANDIRMA MODÜLLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        ToggleOption(label = "-A Tüm Kontrolleri Çalıştır (Kapsamlı Analiz)", checked = runAll, onCheckedChange = { runAll = it })
+        if (!runAll) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                ToggleChip("Users (-U)", enumUsers, modifier = Modifier.weight(1f)) { enumUsers = !enumUsers }
+                ToggleChip("Groups (-G)", enumGroups, modifier = Modifier.weight(1f)) { enumGroups = !enumGroups }
+                ToggleChip("Shares (-S)", enumShares, modifier = Modifier.weight(1f)) { enumShares = !enumShares }
+            }
+            Row(modifier = Modifier.fillMaxWidth().padding(top = 4.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                ToggleChip("PassPolicy (-P)", enumPolicy, modifier = Modifier.weight(1f)) { enumPolicy = !enumPolicy }
+                ToggleChip("OS Info (-O)", enumOs, modifier = Modifier.weight(1f)) { enumOs = !enumOs }
+                ToggleChip("RID Cycle (-R)", ridCycle, modifier = Modifier.weight(1f)) { ridCycle = !ridCycle }
+            }
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(
+            value = outputPrefix,
+            onValueChange = { outputPrefix = it },
+            label = { Text("Rapor Çıktı Dosyaları Ön Adı (-oA: txt, yaml, json)") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+            singleLine = true
+        )
+
+        // Live Command Synthesis
+        val parts = mutableListOf("enum4linux-ng")
+        if (isNullSession) {
+            parts.addAll(listOf("-u", """", "-p", """"))
+        } else {
+            parts.addAll(listOf("-u", "\"${username.trim()}\"", "-p", "\"${password.trim()}\""))
+            if (domain.isNotBlank()) parts.addAll(listOf("-d", "\"${domain.trim()}\""))
+        }
+
+        if (runAll) {
+            parts.add("-A")
+        } else {
+            if (enumUsers) parts.add("-U")
+            if (enumGroups) parts.add("-G")
+            if (enumShares) parts.add("-S")
+            if (enumPolicy) parts.add("-P")
+            if (enumOs) parts.add("-O")
+            if (ridCycle) parts.add("-R")
+        }
+
+        if (outputPrefix.isNotBlank()) parts.addAll(listOf("-oA", outputPrefix.trim()))
+        parts.add(targetHost.trim())
+
+        GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+    }
+}
+
+// 50. PKINITTOOLS
+@Composable
+fun PkinittoolsBuilder(language: AppLanguage) {
+    var subTool by remember { mutableStateOf("gettgtpkinit") }
+    var domainUser by remember { mutableStateOf("corp.local/administrator") }
+    var dcIp by remember { mutableStateOf("10.10.10.1") }
+    var certPfx by remember { mutableStateOf("administrator.pfx") }
+    var pfxPassword by remember { mutableStateOf("CertPass123") }
+    var ccacheOutput by remember { mutableStateOf("admin.ccache") }
+    var asrepKeyHash by remember { mutableStateOf("") }
+
+    Column {
+        Text(text = "PKINITTOOLS ARACI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf(
+                "gettgtpkinit" to "gettgtpkinit.py (TGT İste)",
+                "getskeyhash" to "getskeyhash.py (NT Hash Al)"
+            ).forEach { (tool, lbl) ->
+                val isSelected = subTool == tool
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(if (isSelected) CyberGreen.copy(alpha = 0.2f) else SurfaceDark)
+                        .border(1.dp, if (isSelected) CyberGreen else BorderDark, RoundedCornerShape(6.dp))
+                        .clickable { subTool = tool }
+                        .padding(vertical = 6.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = domainUser,
+            onValueChange = { domainUser = it },
+            label = { Text("Hedef Hesap (domain.local/username)") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+            singleLine = true
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(
+                value = dcIp,
+                onValueChange = { dcIp = it },
+                label = { Text("DC IP (-dc-ip)") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = ccacheOutput,
+                onValueChange = { ccacheOutput = it },
+                label = { Text("CCACHE Dosyası") },
+                modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+
+        Spacer(modifier = Modifier.height(6.dp))
+        if (subTool == "gettgtpkinit") {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = certPfx,
+                    onValueChange = { certPfx = it },
+                    label = { Text("Sertifika PFX (-cert-pfx)") },
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = pfxPassword,
+                    onValueChange = { pfxPassword = it },
+                    label = { Text("PFX Parolası (-pfx-pass)") },
+                    modifier = Modifier.weight(1f),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+            }
+        } else {
+            OutlinedTextField(
+                value = asrepKeyHash,
+                onValueChange = { asrepKeyHash = it },
+                label = { Text("AS-REP Key Hash (-hashes :hash)") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+        }
+
+        // Live Command Synthesis
+        val parts = mutableListOf("$subTool.py")
+        if (subTool == "gettgtpkinit") {
+            parts.addAll(listOf("-cert-pfx", certPfx.trim()))
+            if (pfxPassword.isNotBlank()) parts.addAll(listOf("-pfx-pass", "\"${pfxPassword.trim()}\""))
+            if (dcIp.isNotBlank()) parts.addAll(listOf("-dc-ip", dcIp.trim()))
+            parts.addAll(listOf(domainUser.trim(), ccacheOutput.trim()))
+        } else {
+            if (asrepKeyHash.isNotBlank()) parts.addAll(listOf("-hashes", asrepKeyHash.trim()))
+            if (dcIp.isNotBlank()) parts.addAll(listOf("-dc-ip", dcIp.trim()))
+            parts.addAll(listOf(domainUser.trim(), ccacheOutput.trim()))
+        }
 
         GeneratedCommandCard(command = parts.joinToString(" "), language = language)
     }
