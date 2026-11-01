@@ -17,3 +17,5 @@ local.properties
 # Un-ignore Android app assets, manifests, resources, and data packages
 !app/src/
 !app/src/**
+*.bak
+*.backup

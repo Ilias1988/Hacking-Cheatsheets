@@ -84,6 +84,7 @@ logs/
 *.backup
 tmp/
 temp/
+backups/
 
 # -----------------
 # Build & Package Files
@@ -196,6 +197,7 @@ drafts/
 WIP-*
 wip-*
 TODO.md
+ilerleme.md
 
 # Test files
 test/
