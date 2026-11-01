@@ -65,6 +65,7 @@ import com.hackingcheatsheets.app.ui.components.ALL_BUILDER_TOOLS
 import com.hackingcheatsheets.app.ui.components.CommandBuilderView
 import com.hackingcheatsheets.app.ui.components.MarkdownBlock
 import com.hackingcheatsheets.app.ui.components.MarkdownBlockView
+import com.hackingcheatsheets.app.ui.components.isActualCliTool
 import com.hackingcheatsheets.app.ui.components.normalizeAnchor
 import com.hackingcheatsheets.app.ui.components.parseMarkdown
 import com.hackingcheatsheets.app.ui.theme.BackgroundDark
@@ -329,8 +330,8 @@ fun DetailScreen(
                 }
             }
 
-            // Interactive Command Builder (supported if tool matches a builder or has CLI commands)
-            val hasBuilder = builderToolForId != null || (!tool.quickCommandsJson.isNullOrBlank() && tool.quickCommandsJson != "[]")
+            // Interactive Command Builder (supported only for actual CLI tools, excluding methodology/checklists)
+            val hasBuilder = isActualCliTool(tool.id, tool.category) && (builderToolForId != null || (!tool.quickCommandsJson.isNullOrBlank() && tool.quickCommandsJson != "[]"))
 
             if (hasBuilder) {
                 item {
