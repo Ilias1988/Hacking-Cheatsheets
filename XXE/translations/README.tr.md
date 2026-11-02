@@ -1,5 +1,8 @@
 # 📄 XXE - XML Dış Varlık Enjeksiyonu Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```

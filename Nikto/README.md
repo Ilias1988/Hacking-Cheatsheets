@@ -1,6 +1,9 @@
 # 🕷️ Nikto - Complete Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
     _   _ _ _    _        
@@ -119,6 +122,7 @@ nikto -h          # Help
 
 ---
 
+<a id="-basic-syntax"></a>
 ## ⌨️ Basic Syntax
 
 ### General Syntax
@@ -228,6 +232,7 @@ nikto -h 192.168.1.1 -vhost target.com
 
 ---
 
+<a id="-scan-tuning"></a>
 ## 🎚️ Scan Tuning
 
 ### Tuning Options (-Tuning)
@@ -333,6 +338,7 @@ nikto -h target.com -cookies cookies.txt
 
 ---
 
+<a id="-proxy--evasion"></a>
 ## 🛡️ Proxy & Evasion
 
 ### Proxy Support

@@ -1,6 +1,9 @@
 # 🔓 Hydra - Complete Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   _   _           _           
@@ -105,6 +108,7 @@ hydra -V
 
 ---
 
+<a id="-basic-syntax"></a>
 ## ⌨️ Basic Syntax
 
 ### General Syntax
@@ -286,6 +290,7 @@ hydra -l admin -P passwords.txt http-proxy://proxy.server:3128
 
 ---
 
+<a id="-database-attacks"></a>
 ## 🗄️ Database Attacks
 
 ### MySQL
@@ -333,6 +338,7 @@ hydra -P passwords.txt redis://192.168.1.1
 
 ---
 
+<a id="-remote-desktop-attacks"></a>
 ## 🖥️ Remote Desktop Attacks
 
 ### RDP (Windows Remote Desktop)

@@ -1,5 +1,8 @@
 # 🎭 Sosyal Mühendislik Kopya Kağıdı (Social Engineering Cheatsheets)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
 ███████╗ ██████╗  ██████╗██╗ █████╗ ██╗         ███████╗███╗   ██╗ ██████╗ ██╗███╗   ██╗███████╗███████╗██████╗ ██╗███╗   ██╗ ██████╗ 
 ██╔════╝██╔═══██╗██╔════╝██║██╔══██╗██║         ██╔════╝████╗  ██║██╔════╝ ██║████╗  ██║██╔════╝██╔════╝██╔══██╗██║████╗  ██║██╔════╝ 

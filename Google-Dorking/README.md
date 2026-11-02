@@ -1,5 +1,8 @@
 # 🔍 Google Dorking - Complete Cheatsheet
 
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
 ```
    ██████╗  ██████╗  ██████╗  ██████╗ ██╗     ███████╗
   ██╔════╝ ██╔═══██╗██╔═══██╗██╔════╝ ██║     ██╔════╝
@@ -24,7 +27,7 @@
 
 <p align="center">
   <b>🎯 Advanced Google Search Techniques for Security Researchers</b><br>
-  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a> • <a href="translations/README.el.md">🇬🇷 Ελληνικά</a>
 </p>
 
 ---
@@ -434,6 +437,7 @@ site:target.com filetype:sql "-- phpMyAdmin SQL Dump"
 
 ---
 
+<a id="-configuration-files"></a>
 ## ⚙️ Configuration Files
 
 ### Web Server Config
@@ -544,6 +548,7 @@ site:target.com "id_dsa"
 
 ---
 
+<a id="-vulnerable-servers"></a>
 ## ⚠️ Vulnerable Servers
 
 ### Open Directories
@@ -745,6 +750,7 @@ site:target.com "Magento"
 
 ---
 
+<a id="-tools--automation"></a>
 ## 🛠️ Tools & Automation
 
 ### Google Dorking Tools

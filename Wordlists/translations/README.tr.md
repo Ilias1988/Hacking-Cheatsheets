@@ -2,6 +2,9 @@
 
 # 📚 Kelime Listeleri (Wordlists) - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██╗    ██╗ ██████╗ ██████╗ ██████╗ ██╗     ██╗███████╗████████╗███████╗
   ██║    ██║██╔═══██╗██╔══██╗██╔══██╗██║     ██║██╔════╝╚══██╔══╝██╔════╝
@@ -26,19 +29,17 @@
 
 ## 📋 İçindekiler
 
-- [Parola Kelime Listeleri](#-parola-kelime-listeleri)
-- [Dizin ve Dosya Kelime Listeleri](#-dizin-ve-dosya-kelime-listeleri)
-- [Alt Alan Adı Kelime Listeleri](#-alt-alan-adı-kelime-listeleri)
-- [Kullanıcı Adı Kelime Listeleri](#-kullanıcı-adı-kelime-listeleri)
-- [Web Fuzzing Kelime Listeleri](#-web-fuzzing-kelime-listeleri)
-- [SecLists Koleksiyonu](#-seclists-koleksiyonu)
-- [Kali Varsayılan Kelime Listeleri](#-kali-varsayılan-kelime-listeleri)
-- [Özel Kelime Listesi Üretim Araçları](#-özel-kelime-listesi-üretim-araçları)
-- [Hızlı İndirme Komutları](#-hızlı-i̇ndirme-komutları)
-- [İpuçları ve En İyi Pratikler](#-ipuçları-ve-en-iyi-pratikler)
-- [Hızlı Başvuru](#-hızlı-başvuru)
-
----
+- [🔐 Parola Kelime Listeleri](#-parola-kelime-listeleri)
+- [📂 Dizin ve Dosya Kelime Listeleri](#-dizin-ve-dosya-kelime-listeleri)
+- [🌐 Alt Alan Adı Kelime Listeleri](#-alt-alan-adı-kelime-listeleri)
+- [👤 Kullanıcı Adı Kelime Listeleri](#-kullanıcı-adı-kelime-listeleri)
+- [💉 Web Fuzzing Kelime Listeleri](#-web-fuzzing-kelime-listeleri)
+- [📦 SecLists Koleksiyonu](#-seclists-koleksiyonu)
+- [🐧 Kali Varsayılan Kelime Listeleri](#-kali-varsayılan-kelime-listeleri)
+- [🛠️ Özel Kelime Listesi Üretim Araçları](#️-özel-kelime-listesi-üretim-araçları)
+- [⬇️ Hızlı İndirme Komutları](#️-hızlı-i̇ndirme-komutları)
+- [💡 İpuçları ve En İyi Pratikler](#-i̇puçları-ve-en-i̇yi-pratikler)
+- [📚 Kaynaklar](#-kaynaklar)
 
 ## 🔐 Parola Kelime Listeleri
 
@@ -325,6 +326,7 @@ ls -la /usr/share/wordlists/
 
 ---
 
+<a id="-özel-kelime-listesi-üretim-araçları"></a>
 ## 🛠️ Özel Kelime Listesi Üretim Araçları
 
 ### CeWL (Web Sayfasından Kelime Çıkarıcı)
@@ -382,6 +384,7 @@ hashcat -r /usr/share/hashcat/rules/best64.rule wordlist.txt --stdout > mutated.
 
 ---
 
+<a id="-hızlı-i̇ndirme-komutları"></a>
 ## ⬇️ Hızlı İndirme Komutları
 
 ```bash
@@ -400,6 +403,7 @@ wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/
 
 ---
 
+<a id="-ipuçları-ve-en-iyi-pratikler"></a>
 ## 💡 İpuçları ve En İyi Pratikler
 
 ### Göreve Göre Doğru Listeyi Seçme

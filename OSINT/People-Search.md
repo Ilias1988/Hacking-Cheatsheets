@@ -1,7 +1,10 @@
 # 👤 People Search OSINT
 
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
 <p align="center">
-  <a href="translations/People-Search.tr.md">🇹🇷 Türkçe Sürüm</a>
+  <a href="translations/People-Search.tr.md">🇹🇷 Türkçe Sürüm</a> • <a href="translations/People-Search.el.md">🇬🇷 Ελληνικά</a>
 </p>
 
 ```

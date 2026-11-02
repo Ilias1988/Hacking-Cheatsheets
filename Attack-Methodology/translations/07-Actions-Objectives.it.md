@@ -1,5 +1,8 @@
 # 🎯 Fase 7: Actions on Objectives
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
    █████╗  ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗     ██████╗ ███╗   ██╗
   ██╔══██╗██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝    ██╔═══██╗████╗  ██║
@@ -296,9 +299,9 @@ sc config wuauserv start= disabled
 
 ## 🔗 Cheatsheet Correlate
 
-- [Mimikatz](../Mimikatz/translations/README.it.md)
-- [Linux Commands](../Linux-Commands/translations/README.it.md)
-- [PowerShell](../PowerShell/translations/README.it.md)
+- [Mimikatz](../../Mimikatz/translations/README.it.md)
+- [Linux Commands](../../Linux-Commands/translations/README.it.md)
+- [PowerShell](../../PowerShell/translations/README.it.md)
 
 ---
 

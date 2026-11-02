@@ -1,6 +1,9 @@
 # 🐛 Bug Bounty Methodology
 
-[🇮🇹 Versione Italiana](translations/README.it.md) • [🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇮🇹 Versione Italiana](translations/README.it.md) • [🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ██████╗ ██╗   ██╗ ██████╗     ██████╗  ██████╗ ██╗   ██╗███╗   ██╗████████╗██╗   ██╗
@@ -547,6 +550,7 @@ nuclei -l alive.txt -s critical,high -o nuclei_results.txt
 
 ---
 
+<a id="-tool-installation"></a>
 ## 🛠️ Tool Installation
 
 ### Essential Tools

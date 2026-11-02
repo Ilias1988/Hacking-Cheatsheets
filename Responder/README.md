@@ -1,6 +1,9 @@
 # 🎣 Responder - LLMNR/NBT-NS Poisoning
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ██████╗ ███████╗███████╗██████╗  ██████╗ ███╗   ██╗██████╗ ███████╗██████╗ 
@@ -218,6 +221,7 @@ impacket-ntlmrelayx -tf targets.txt -smb2support --sam
 
 ---
 
+<a id="-rogue-servers"></a>
 ## 🖥️ Rogue Servers
 
 ### Built-in Servers
@@ -277,6 +281,7 @@ sudo responder -I eth0 -d
 
 ---
 
+<a id="-configuration"></a>
 ## ⚙️ Configuration
 
 ### Responder.conf

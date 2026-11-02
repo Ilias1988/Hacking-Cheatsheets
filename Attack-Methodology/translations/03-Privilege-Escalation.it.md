@@ -1,5 +1,8 @@
 # ⬆️ Fase 3: Privilege Escalation
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██████╗ ██████╗ ██╗██╗   ██╗███████╗███████╗ ██████╗
   ██╔══██╗██╔══██╗██║██║   ██║██╔════╝██╔════╝██╔════╝
@@ -11,7 +14,7 @@
 
 **Obiettivo:** Eleva i privilegi da utente standard ad Administrator/SYSTEM (Windows) o root (Linux).
 
-> 📚 **Guide complete:** [Windows PrivEsc](../Windows-PrivEsc/translations/README.it.md) | [Linux PrivEsc](../Linux-PrivEsc/translations/README.it.md)
+> 📚 **Guide complete:** [Windows PrivEsc](../../Windows-PrivEsc/translations/README.it.md) | [Linux PrivEsc](../../Linux-PrivEsc/translations/README.it.md)
 
 ---
 
@@ -311,9 +314,9 @@ chmod +s /mnt/bash
 
 ## 🔗 Cheatsheet Correlate
 
-- [Windows PrivEsc (Completo)](../Windows-PrivEsc/translations/README.it.md)
-- [Linux PrivEsc (Completo)](../Linux-PrivEsc/translations/README.it.md)
-- [Mimikatz](../Mimikatz/translations/README.it.md)
+- [Windows PrivEsc (Completo)](../../Windows-PrivEsc/translations/README.it.md)
+- [Linux PrivEsc (Completo)](../../Linux-PrivEsc/translations/README.it.md)
+- [Mimikatz](../../Mimikatz/translations/README.it.md)
 
 ---
 

@@ -1,6 +1,9 @@
 # 🔓 Deserialization Payloads
 
-[🇹🇷 Türkçe Sürüm](translations/Deserialization.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Deserialization.tr.md) • [🇬🇷 Ελληνικά](translations/Deserialization.el.md)
 
 ```
 ██████╗ ███████╗███████╗███████╗██████╗ ██╗ █████╗ ██╗     ██╗███████╗ █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
@@ -352,4 +355,4 @@ requirements:
 
 ---
 
-**Back to Payloads:** [💉 Payloads Collection](./README.md)
+**Back to Payloads:** [💉 Payloads Collection](../README.md)

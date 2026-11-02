@@ -1,5 +1,8 @@
 # 🔄 Tersine Mühendislik CTF Kopya Kağıdı (Reverse Engineering CTF Cheatsheet)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ---
 
 ## 🔍 İlk Analiz

@@ -1,6 +1,9 @@
 # 💉 SQLMap - Complete Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
    _____ ____    __    __  __           
@@ -120,6 +123,7 @@ sqlmap -hh         # Advanced help
 
 ---
 
+<a id="-basic-syntax"></a>
 ## ⌨️ Basic Syntax
 
 ### General Syntax
@@ -534,6 +538,7 @@ sqlmap -u "http://target.com/page.php?id=1" --reg-del --reg-key="..." --reg-valu
 
 ---
 
+<a id="-bypass-techniques"></a>
 ## 🛡️ Bypass Techniques
 
 ### WAF/IPS Bypass
@@ -577,6 +582,7 @@ sqlmap -u "http://target.com/page.php?id=1" --tamper=space2comment,randomcase,be
 --tamper=equaltolike
 ```
 
+<a id="-tamper-scripts"></a>
 ### Tamper Scripts Reference
 
 | Script | Description |

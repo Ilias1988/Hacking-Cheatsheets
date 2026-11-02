@@ -1,6 +1,9 @@
 # 🔄 Reverse Engineering CTF Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/Reverse-Engineering-CTF.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Reverse-Engineering-CTF.tr.md) • [🇬🇷 Ελληνικά](translations/Reverse-Engineering-CTF.el.md)
 
 ---
 

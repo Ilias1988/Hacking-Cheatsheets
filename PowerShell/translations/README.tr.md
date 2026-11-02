@@ -2,6 +2,9 @@
 
 # 💻 PowerShell - Kapsamlı Sızma Testi Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██████╗  ██████╗ ██╗    ██╗███████╗██████╗ ███████╗██╗  ██╗███████╗██╗     ██╗     
   ██╔══██╗██╔═══██╗██║    ██║██╔════╝██╔══██╗██╔════╝██║  ██║██╔════╝██║     ██║     
@@ -445,6 +448,7 @@ Get-FileHash file.txt -Algorithm SHA512
 
 ---
 
+<a id="-süreç--servis-yönetimi"></a>
 ## ⚙️ Süreç & Servis Yönetimi
 
 ### Süreçler (Processes)
@@ -637,6 +641,7 @@ Get-GPOReport -Name "Default Domain Policy" -ReportType HTML -Path report.html
 
 ---
 
+<a id="-i̇ndirme--çalıştırma-download--execution"></a>
 ## ⬇️ İndirme & Çalıştırma (Download & Execution)
 
 ### Dosya İndirme
@@ -754,6 +759,7 @@ $listener.Stop()
 
 ---
 
+<a id="-atlatma-teknikleri-bypass"></a>
 ## 🛡️ Atlatma Teknikleri (Bypass)
 
 ### Yürütme İlkesini Atlatma (Execution Policy Bypass)

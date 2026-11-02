@@ -1,6 +1,9 @@
 # 📶 Wifite - Automated WiFi Auditor Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ██╗    ██╗██╗███████╗██╗████████╗███████╗
@@ -222,6 +225,7 @@ sudo wifite --power -50
 
 ---
 
+<a id="-attack-options"></a>
 ## ⚔️ Attack Options
 
 ### WPA/WPA2 Options
@@ -353,6 +357,7 @@ sudo wifite --pmkid-timeout 120
 
 ---
 
+<a id="-advanced-options"></a>
 ## ⚙️ Advanced Options
 
 ### Interface Options

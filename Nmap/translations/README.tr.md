@@ -1,5 +1,8 @@
 # 🔍 Nmap - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -113,6 +116,7 @@ nmap -h          # Yardım menüsü
 
 ---
 
+<a id="-temel-sözdizimi"></a>
 ## ⌨️ Temel Sözdizimi
 
 ### Genel Komut Yapısı
@@ -390,6 +394,7 @@ sudo nmap -sI zombi_ip 192.168.1.1
 
 ---
 
+<a id="-port-belirleme"></a>
 ## 🎚️ Port Belirleme
 
 ### Port Seçenekleri
@@ -510,6 +515,7 @@ nmap -sV --version-intensity 5 192.168.1.1
 
 ---
 
+<a id="-işletim-sistemi-os-tespiti"></a>
 ## 💻 İşletim Sistemi (OS) Tespiti
 
 ### OS Tespiti Seçenekleri
@@ -548,6 +554,7 @@ sudo nmap -A 192.168.1.1
 
 ---
 
+<a id="-zamanlama-ve-performans-timing"></a>
 ## ⏱️ Zamanlama ve Performans (Timing)
 
 ### Zamanlama Şablonları (Timing Templates)
@@ -817,6 +824,7 @@ nmap --reason 192.168.1.1
 
 ---
 
+<a id="-güvenlik-duvarı--ids-atlatma-evasion"></a>
 ## 🛡️ Güvenlik Duvarı / IDS Atlatma (Evasion)
 
 ### Atlatma Teknikleri Tablosu
@@ -990,6 +998,7 @@ sudo nmap -A -T4 -p- 192.168.1.1
 
 ---
 
+<a id="-ipuçları-ve-en-iyi-uygulamalar"></a>
 ## 💡 İpuçları ve En İyi Uygulamalar
 
 ### Performans İpuçları

@@ -1,5 +1,8 @@
 # 🐍 Impacket - Python Active Directory Saldırı Paketi Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -249,6 +252,7 @@ impacket-ntlmrelayx -t ldap://DC01.domain.local --escalate-user saldirgan
 
 ---
 
+<a id="-mssql-saldırıları"></a>
 ## 🗄️ MSSQL Saldırıları
 
 ```bash
@@ -277,6 +281,7 @@ impacket-findDelegation domain.local/kullanici:parola -dc-ip 10.10.10.10
 
 ---
 
+<a id="-hızlı-başvuru-tablosu-ve-iş-akışı"></a>
 ## 📊 Hızlı Başvuru Tablosu ve İş Akışı
 
 ### Tipik Active Directory Saldırı Sıralaması

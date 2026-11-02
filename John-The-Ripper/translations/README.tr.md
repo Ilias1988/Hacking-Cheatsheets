@@ -1,5 +1,8 @@
 # 🔨 John the Ripper - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -128,6 +131,7 @@ john --list=formats | wc -l    # Desteklenen format sayısını gösterir
 
 ---
 
+<a id="-temel-sözdizimi"></a>
 ## ⌨️ Temel Sözdizimi
 
 ### Genel Sözdizimi
@@ -467,6 +471,7 @@ john --wordlist=rockyou.txt keepass.hash
 
 ---
 
+<a id="-kurallar--türetme-rules--mangling"></a>
 ## ⚙️ Kurallar & Türetme (Rules & Mangling)
 
 ### Kuralları Etkinleştirme

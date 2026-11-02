@@ -1,6 +1,9 @@
 # 🔍 Ghidra - Reverse Engineering Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
    ██████╗ ██╗  ██╗██╗██████╗ ██████╗  █████╗ 
@@ -119,6 +122,7 @@ cd ghidra_*
 
 ---
 
+<a id="-interface-overview"></a>
 ## 🖥️ Interface Overview
 
 ### Main Windows
@@ -524,6 +528,7 @@ refs = refMgr.getReferencesTo(addr)
 
 ---
 
+<a id="-keyboard-shortcuts"></a>
 ## ⌨️ Keyboard Shortcuts
 
 ### Navigation

@@ -1,5 +1,8 @@
 # 🔒 Faz 5: Kalıcılık Sağlama (Persistence)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../05-Persistence.md) • [🇮🇹 Versione Italiana](05-Persistence.it.md)
 
 ```

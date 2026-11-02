@@ -1,6 +1,9 @@
 # 🔌 WebSocket Attacks Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/WebSocket-Attacks.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/WebSocket-Attacks.tr.md) • [🇬🇷 Ελληνικά](translations/WebSocket-Attacks.el.md)
 
 ```
 ██╗    ██╗███████╗██████╗ ███████╗ ██████╗  ██████╗██╗  ██╗███████╗████████╗
@@ -394,4 +397,4 @@ socket.on('message', function(data) {
 
 ---
 
-**Back to Payloads:** [💉 Payloads Collection](./README.md)
+**Back to Payloads:** [💉 Payloads Collection](../README.md)

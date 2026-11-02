@@ -2,6 +2,9 @@
 
 # 🔍 Arjun - Gizli Parametre Keşif Aracı
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
    █████╗ ██████╗      ██╗██╗   ██╗███╗   ██╗
   ██╔══██╗██╔══██╗     ██║██║   ██║████╗  ██║
@@ -152,6 +155,7 @@ arjun -u https://example.com/endpoint -m GET,POST,JSON
 
 ---
 
+<a id="-gelişmiş-seçenekler"></a>
 ## ⚙️ Gelişmiş Seçenekler
 
 ### Özel Kelime Listesi (Wordlist)
@@ -314,6 +318,7 @@ arjun -i burp_requests.txt --burp
 
 ---
 
+<a id="-bug-bounty-iş-akışları"></a>
 ## 🎯 Bug Bounty İş Akışları
 
 ### Temel Keşif
@@ -384,6 +389,7 @@ ffuf -u "https://target.com/search?FUZZ=test" -w params.txt
 
 ---
 
+<a id="-ipuçları"></a>
 ## 💡 İpuçları
 
 1. **Önce pasif başlayın** - JavaScript dosyalarını tarayarak başlayın

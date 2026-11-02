@@ -1,5 +1,8 @@
 # 🎯 Faz 7: Hedef Eylemler (Actions on Objectives)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../07-Actions-Objectives.md) • [🇮🇹 Versione Italiana](07-Actions-Objectives.it.md)
 
 ```

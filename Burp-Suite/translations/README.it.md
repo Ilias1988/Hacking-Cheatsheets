@@ -1,5 +1,8 @@
 # 🔶 Burp Suite - Cheatsheet Completo
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../README.md) | [🇹🇷 Türkçe Sürüm](README.tr.md)
 
 ```
@@ -319,6 +322,7 @@ Funzionalità:
 
 ---
 
+<a id="-spidercrawler"></a>
 ## 🕷️ Spider/Crawler
 
 ### Avvio dello Spider
@@ -794,6 +798,7 @@ Extender → Options
 
 ---
 
+<a id="-scorciatoie-da-tastiera"></a>
 ## ⌨️ Scorciatoie da Tastiera
 
 ### Scorciatoie Globali
@@ -1035,8 +1040,8 @@ Intruder → Options:
 - [TryHackMe](https://tryhackme.com/)
 
 ### Cheatsheet Correlate
-- [SQLMap](../SQLMap/translations/README.it.md)
-- [Metasploit Framework](../Metasploit/translations/README.it.md)
+- [SQLMap](../../SQLMap/translations/README.it.md)
+- [Metasploit Framework](../../Metasploit/translations/README.it.md)
 
 ---
 

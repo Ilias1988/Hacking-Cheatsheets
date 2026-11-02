@@ -1,5 +1,8 @@
 # 🗡️ CrackMapExec - Active Directory İsviçre Çakısı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md) | [🇮🇹 Italiano](README.it.md)
 
 ```
@@ -75,6 +78,7 @@ crackmapexec smb --help
 
 ---
 
+<a id="-smb-protokolü"></a>
 ## 🖥️ SMB Protokolü
 
 ### Temel Ağ Keşfi ve Doğrulama
@@ -209,6 +213,7 @@ cme ldap DC01 -u kullanici -p parola --bloodhound -ns DC01 -c All
 
 ---
 
+<a id="-mssql-protokolü"></a>
 ## 🗄️ MSSQL Protokolü
 
 ```bash

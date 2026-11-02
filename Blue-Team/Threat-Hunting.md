@@ -1,6 +1,9 @@
 # 🎯 Threat Hunting Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/Threat-Hunting.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Threat-Hunting.tr.md) • [🇬🇷 Ελληνικά](translations/Threat-Hunting.el.md)
 
 ```
 ████████╗██╗  ██╗██████╗ ███████╗ █████╗ ████████╗    ██╗  ██╗██╗   ██╗███╗   ██╗████████╗██╗███╗   ██╗ ██████╗ 

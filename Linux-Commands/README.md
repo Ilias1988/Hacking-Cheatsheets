@@ -1,6 +1,9 @@
 # 🐧 Linux Commands & Bash - Complete Pentesting Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ██╗     ██╗███╗   ██╗██╗   ██╗██╗  ██╗
@@ -460,6 +463,7 @@ sha1sum file
 
 ---
 
+<a id="-text-processing"></a>
 ## ✂️ Text Processing
 
 ### Cut
@@ -614,6 +618,7 @@ find / -perm -2000 2>/dev/null         # SGID
 
 ---
 
+<a id="-process-management"></a>
 ## ⚙️ Process Management
 
 ### View Processes
@@ -899,6 +904,7 @@ stty rows 40 cols 150
 
 ---
 
+<a id="-file-transfers"></a>
 ## ⬇️ File Transfers
 
 ### From Attacker to Target

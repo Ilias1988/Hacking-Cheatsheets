@@ -1,5 +1,8 @@
 # 📂 LFI (Yerel Dosya Dahil Etme) Payload Koleksiyonu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../LFI.md)
 
 ```

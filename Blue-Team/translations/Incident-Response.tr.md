@@ -1,5 +1,8 @@
 # 🚨 Olay Müdahalesi Kopya Kağıdı (Incident Response Cheatsheet)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██╗███╗   ██╗ ██████╗██╗██████╗ ███████╗███╗   ██╗████████╗
   ██║████╗  ██║██╔════╝██║██╔══██╗██╔════╝████╗  ██║╚══██╔══╝

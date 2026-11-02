@@ -1,6 +1,9 @@
 # 🔴 Metasploit Framework - Complete Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
                                    ___          ____
@@ -110,6 +113,7 @@ docker run --rm -it metasploitframework/metasploit-framework ./msfconsole
 
 ---
 
+<a id="-architecture-overview"></a>
 ## 🏗️ Architecture Overview
 
 ```
@@ -186,6 +190,7 @@ msfconsole -r commands.rc
 
 ---
 
+<a id="-basic-commands"></a>
 ## ⌨️ Basic Commands
 
 ### Navigation & Help
@@ -367,6 +372,7 @@ msf6 exploit(ms17_010_eternalblue) > exploit
 
 ---
 
+<a id="-database-integration"></a>
 ## 🗄️ Database Integration
 
 ### Setup & Connection

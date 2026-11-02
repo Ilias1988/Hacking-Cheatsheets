@@ -1,5 +1,8 @@
 # 🎯 Nuclei - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -27,22 +30,20 @@
 
 ## 📋 İçindekiler
 
-- [Giriş](#-giriş)
-- [Kurulum](#-kurulum)
-- [Temel Sözdizimi](#-temel-sözdizimi)
-- [Şablon Kategorileri](#-şablon-kategorileri)
-- [Hedefleri Tarama](#-hedefleri-tarama)
-- [Şablon Seçimi](#-şablon-seçimi)
-- [Çıktı Seçenekleri](#-çıktı-seçenekleri)
-- [Gelişmiş Özellikler](#-gelişmiş-özellikler)
-- [Özel Şablon Yazma (Custom Templates)](#-özel-şablon-yazma-custom-templates)
-- [Bug Bounty İş Akışı](#-bug-bounty-i̇ş-akışı)
-- [Gerçek Dünya Örnekleri](#-gerçek-dünya-örnekleri)
-- [Hızlı Başvuru](#-hızlı-başvuru)
-- [İpuçları ve En İyi Uygulamalar](#-i̇puçları-ve-en-i̇yi-uygulamalar)
-- [Kaynaklar](#-kaynaklar)
-
----
+- [🎯 Giriş](#-giriş)
+- [📥 Kurulum](#-kurulum)
+- [⌨️ Temel Sözdizimi](#️-temel-sözdizimi)
+- [📂 Şablon Kategorileri](#-şablon-kategorileri)
+- [🎯 Hedefleri Tarama](#-hedefleri-tarama)
+- [🏷️ Şablon Seçimi](#️-şablon-seçimi)
+- [📤 Çıktı Seçenekleri](#-çıktı-seçenekleri)
+- [⚡ Gelişmiş Özellikler](#-gelişmiş-özellikler)
+- [📝 Özel Şablon Yazma (Custom Templates)](#-özel-şablon-yazma-custom-templates)
+- [🔄 Bug Bounty İş Akışı](#-bug-bounty-i̇ş-akışı)
+- [📊 Hızlı Başvuru](#-hızlı-başvuru)
+- [💡 İpuçları ve En İyi Uygulamalar](#-i̇puçları-ve-en-i̇yi-uygulamalar)
+- [⚠️ Yasal Uyarı](#️-yasal-uyarı)
+- [📚 Kaynaklar](#-kaynaklar)
 
 ## 🎯 Giriş
 
@@ -118,6 +119,7 @@ nuclei -tl              # Yüklü şablonları listele
 
 ---
 
+<a id="-temel-sözdizimi"></a>
 ## ⌨️ Temel Sözdizimi
 
 ### Genel Sözdizimi
@@ -245,6 +247,7 @@ subfinder -d example.com -silent | httpx -silent | nuclei -silent
 
 ---
 
+<a id="-şablon-seçimi"></a>
 ## 🏷️ Şablon Seçimi
 
 ### Önem Derecesine Göre Filtreleme (-severity)

@@ -1,6 +1,9 @@
 # 💉 SQL Injection Payloads
 
-[🇹🇷 Türkçe Sürüm](translations/SQLi.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/SQLi.tr.md) • [🇬🇷 Ελληνικά](translations/SQLi.el.md)
 
 ```
   ███████╗ ██████╗ ██╗     ██╗    ██████╗  █████╗ ██╗   ██╗██╗      ██████╗  █████╗ ██████╗ ███████╗
@@ -197,6 +200,7 @@ Password: ' OR '1'='1' --
 
 ---
 
+<a id="-error-based-injection"></a>
 ## ⚠️ Error-Based Injection
 
 ### MySQL Error-Based
@@ -283,6 +287,7 @@ Password: ' OR '1'='1' --
 
 ---
 
+<a id="-time-based-injection"></a>
 ## ⏱️ Time-Based Injection
 
 ### MySQL
@@ -321,6 +326,7 @@ Password: ' OR '1'='1' --
 
 ---
 
+<a id="-dbms-specific"></a>
 ## 🗄️ DBMS Specific
 
 ### MySQL Payloads
@@ -416,6 +422,7 @@ Password: ' OR '1'='1' --
 
 ---
 
+<a id="-waf-bypass"></a>
 ## 🛡️ WAF Bypass
 
 ### Space Bypass

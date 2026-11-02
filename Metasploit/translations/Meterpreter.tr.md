@@ -1,5 +1,8 @@
 # 🎭 Meterpreter - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../Meterpreter.md)
 
 ```
@@ -22,24 +25,22 @@
 
 ## 📋 İçindekiler
 
-- [Meterpreter Nedir?](#-meterpreter-nedir)
-- [Temel Konsol Komutları](#-temel-konsol-komutları)
-- [Sistem Bilgisi Toplama](#-sistem-bilgisi-toplama)
-- [Dosya Sistemi Komutları](#-dosya-sistemi-komutları)
-- [Ağ Komutları](#-ağ-komutları)
-- [Süreç (Process) Yönetimi](#-süreç-process-yönetimi)
-- [Kullanıcı ve Yetki Yönetimi](#-kullanıcı-ve-yetki-yönetimi)
-- [Parola ve Kimlik Bilgisi Toplama (Password Harvesting)](#-parola-ve-kimlik-bilgisi-toplama-password-harvesting)
-- [Klavye Dinleme (Keylogging)](#-klavye-dinleme-keylogging)
-- [Ekran Görüntüsü ve Kamera](#-ekran-görüntüsü-ve-kamera)
-- [Kalıcılık Sağlama (Persistence)](#-kalıcılık-sağlama-persistence)
-- [Ağ İçi Geçiş (Pivoting) ve Port Yönlendirme](#-ağ-içi-geçiş-pivoting-ve-port-yönlendirme)
-- [Adli Bilişim İzlerini Temizleme (Anti-Forensics)](#-adli-bilişim-izlerini-temizleme-anti-forensics)
-- [Betikleme ve Otomasyon](#-betikleme-ve-otomasyon)
-- [Hızlı Başvuru Tablosu](#-hızlı-başvuru-tablosu)
-- [İpuçları ve Püf Noktaları](#-ipuçları-ve-püf-noktaları)
-
----
+- [🎯 Meterpreter Nedir?](#-meterpreter-nedir)
+- [⌨️ Temel Konsol Komutları](#️-temel-konsol-komutları)
+- [💻 Sistem Bilgisi Toplama](#-sistem-bilgisi-toplama)
+- [📁 Dosya Sistemi Komutları](#-dosya-sistemi-komutları)
+- [🌐 Ağ Komutları](#-ağ-komutları)
+- [⚙️ Süreç (Process) Yönetimi](#️-süreç-process-yönetimi)
+- [👤 Kullanıcı ve Yetki Yönetimi](#-kullanıcı-ve-yetki-yönetimi)
+- [🔐 Parola ve Kimlik Bilgisi Toplama (Password Harvesting)](#-parola-ve-kimlik-bilgisi-toplama-password-harvesting)
+- [⌨️ Klavye Dinleme (Keylogging)](#️-klavye-dinleme-keylogging)
+- [📸 Ekran Görüntüsü ve Kamera](#-ekran-görüntüsü-ve-kamera)
+- [🔄 Kalıcılık Sağlama (Persistence)](#-kalıcılık-sağlama-persistence)
+- [🔀 Ağ İçi Geçiş (Pivoting) ve Rota Yönetimi](#-ağ-i̇çi-geçiş-pivoting-ve-rota-yönetimi)
+- [🧹 Adli Bilişim İzlerini Temizleme (Anti-Forensics)](#-adli-bilişim-i̇zlerini-temizleme-anti-forensics)
+- [📊 Hızlı Başvuru Tablosu](#-hızlı-başvuru-tablosu)
+- [💡 İpuçları ve Püf Noktaları](#-i̇puçları-ve-püf-noktaları)
+- [⚠️ Yasal Uyarı](#️-yasal-uyarı)
 
 ## 🎯 Meterpreter Nedir?
 
@@ -57,6 +58,7 @@
 
 ---
 
+<a id="-temel-konsol-komutları"></a>
 ## ⌨️ Temel Konsol Komutları
 
 ### Yardım ve Gezinme
@@ -237,6 +239,7 @@ meterpreter > portfwd add -l 3389 -p 3389 -r 10.10.10.5
 
 ---
 
+<a id="-süreç-process-yönetimi"></a>
 ## ⚙️ Süreç (Process) Yönetimi
 
 ### Süreçleri Listeleme ve Süreç Göçü (Migrate)
@@ -319,6 +322,7 @@ meterpreter > golden_ticket_create -d domain.local -k <krbtgt_hash> -s <domain_s
 
 ---
 
+<a id="-klavye-dinleme-keylogging"></a>
 ## ⌨️ Klavye Dinleme (Keylogging)
 
 ```bash
@@ -385,6 +389,7 @@ meterpreter > run autoroute -p
 
 ---
 
+<a id="-adli-bilişim-izlerini-temizleme-anti-forensics"></a>
 ## 🧹 Adli Bilişim İzlerini Temizleme (Anti-Forensics)
 
 ```bash
@@ -417,6 +422,7 @@ meterpreter > timestomp C:\\backdoor.exe -f C:\\Windows\\System32\\calc.exe
 
 ---
 
+<a id="-ipuçları-ve-püf-noktaları"></a>
 ## 💡 İpuçları ve Püf Noktaları
 
 1. **İlk Kural: Hemen Migrate Olun:** Hedef oturumu açar açmaz ilk işiniz kararlı bir sürece (`explorer.exe`, `svchost.exe`) taşınmak olmalıdır.

@@ -1,6 +1,9 @@
 # 🧠 Volatility - Memory Forensics Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ██╗   ██╗ ██████╗ ██╗      █████╗ ████████╗██╗██╗     ██╗████████╗██╗   ██╗
@@ -190,6 +193,7 @@ vol -f memory.raw mac.info
 
 ---
 
+<a id="-process-analysis"></a>
 ## ⚙️ Process Analysis
 
 ### List Processes

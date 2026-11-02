@@ -1,5 +1,8 @@
 # 🎯 Metodologia di Attacco - Kill Chain
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
    █████╗ ████████╗████████╗ █████╗  ██████╗██╗  ██╗    ██╗  ██╗██╗██╗     ██╗          ██████╗██╗  ██╗ █████╗ ██╗███╗   ██╗
   ██╔══██╗╚══██╔══╝╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝    ██║ ██╔╝██║██║     ██║         ██╔════╝██║  ██║██╔══██╗██║████╗  ██║
@@ -66,13 +69,13 @@ La **Attack Kill Chain** (nota anche come **Cyber Kill Chain** o **MITRE ATT&CK*
 
 | Fase | Strumenti Correlati |
 |------|---------------------|
-| Initial Access | [Metasploit](../Metasploit/translations/README.it.md), [SQLMap](../SQLMap/translations/README.it.md), [Hydra](../Hydra/translations/README.it.md) |
-| Enumeration | [Nmap](../Nmap/translations/README.it.md), [BloodHound](../BloodHound/translations/README.it.md), [PowerView](../PowerView/translations/README.it.md) |
-| Privilege Escalation | [Linux-PrivEsc](../Linux-PrivEsc/translations/README.it.md), [Windows-PrivEsc](../Windows-PrivEsc/translations/README.it.md) |
-| Lateral Movement | [Impacket](../Impacket/translations/README.it.md), [CrackMapExec](../CrackMapExec/translations/README.it.md), [Evil-WinRM](../Evil-WinRM/translations/README.it.md) |
-| Persistence | [PowerShell](../PowerShell/translations/README.it.md), [Metasploit](../Metasploit/translations/README.it.md) |
-| Defense Evasion | [Mimikatz](../Mimikatz/translations/README.it.md), [PowerShell](../PowerShell/translations/README.it.md) |
-| Data Exfiltration | [Linux-Commands](../Linux-Commands/translations/README.it.md) |
+| Initial Access | [Metasploit](../../Metasploit/translations/README.it.md), [SQLMap](../../SQLMap/translations/README.it.md), [Hydra](../../Hydra/translations/README.it.md) |
+| Enumeration | [Nmap](../../Nmap/translations/README.it.md), [BloodHound](../../BloodHound/translations/README.it.md), [PowerView](../../PowerView/translations/README.it.md) |
+| Privilege Escalation | [Linux-PrivEsc](../../Linux-PrivEsc/translations/README.it.md), [Windows-PrivEsc](../../Windows-PrivEsc/translations/README.it.md) |
+| Lateral Movement | [Impacket](../../Impacket/translations/README.it.md), [CrackMapExec](../../CrackMapExec/translations/README.it.md), [Evil-WinRM](../../Evil-WinRM/translations/README.it.md) |
+| Persistence | [PowerShell](../../PowerShell/translations/README.it.md), [Metasploit](../../Metasploit/translations/README.it.md) |
+| Defense Evasion | [Mimikatz](../../Mimikatz/translations/README.it.md), [PowerShell](../../PowerShell/translations/README.it.md) |
+| Data Exfiltration | [Linux-Commands](../../Linux-Commands/translations/README.it.md) |
 
 ---
 

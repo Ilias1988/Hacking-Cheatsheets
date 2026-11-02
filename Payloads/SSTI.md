@@ -1,6 +1,9 @@
 # 🔥 SSTI Payloads Collection
 
-[🇹🇷 Türkçe Sürüm](translations/SSTI.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/SSTI.tr.md) • [🇬🇷 Ελληνικά](translations/SSTI.el.md)
 
 ```
   ███████╗███████╗████████╗██╗    ██████╗  █████╗ ██╗   ██╗██╗      ██████╗  █████╗ ██████╗ ███████╗

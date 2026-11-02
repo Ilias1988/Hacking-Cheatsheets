@@ -1,7 +1,10 @@
 # 📱 Social Media OSINT
 
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
 <p align="center">
-  <a href="translations/Social-Media-OSINT.tr.md">🇹🇷 Türkçe Sürüm</a>
+  <a href="translations/Social-Media-OSINT.tr.md">🇹🇷 Türkçe Sürüm</a> • <a href="translations/Social-Media-OSINT.el.md">🇬🇷 Ελληνικά</a>
 </p>
 
 ---

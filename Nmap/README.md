@@ -1,6 +1,9 @@
 # 🔍 Nmap - Complete Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
     _   __                      
@@ -113,6 +116,7 @@ nmap -h          # Help
 
 ---
 
+<a id="-basic-syntax"></a>
 ## ⌨️ Basic Syntax
 
 ### General Syntax
@@ -395,6 +399,7 @@ sudo nmap -sI zombie_host 192.168.1.1
 
 ---
 
+<a id="-port-specification"></a>
 ## 🎚️ Port Specification
 
 ### Port Options
@@ -553,6 +558,7 @@ sudo nmap -A 192.168.1.1
 
 ---
 
+<a id="-timing--performance"></a>
 ## ⏱️ Timing & Performance
 
 ### Timing Templates
@@ -818,6 +824,7 @@ nmap --reason 192.168.1.1
 
 ---
 
+<a id="-firewallids-evasion"></a>
 ## 🛡️ Firewall/IDS Evasion
 
 ### Evasion Techniques

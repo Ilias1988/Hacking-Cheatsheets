@@ -1,6 +1,9 @@
 # 🚀 ffuf - Complete Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
    __  __        __ 
@@ -101,6 +104,7 @@ ffuf -h
 
 ---
 
+<a id="-basic-syntax"></a>
 ## ⌨️ Basic Syntax
 
 ### General Syntax

@@ -1,5 +1,8 @@
 # ➡️ Faz 4: Yatay İlerleme (Lateral Movement)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../04-Lateral-Movement.md) • [🇮🇹 Versione Italiana](04-Lateral-Movement.it.md)
 
 ```

@@ -1,6 +1,9 @@
 # 💾 Firmware Analysis Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/Firmware-Analysis.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Firmware-Analysis.tr.md) • [🇬🇷 Ελληνικά](translations/Firmware-Analysis.el.md)
 
 ---
 

@@ -1,6 +1,9 @@
 # 📝 Sigma Rules Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/Sigma-Rules.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Sigma-Rules.tr.md) • [🇬🇷 Ελληνικά](translations/Sigma-Rules.el.md)
 
 ```
 ███████╗██╗ ██████╗ ███╗   ███╗ █████╗     ██████╗ ██╗   ██╗██╗     ███████╗███████╗

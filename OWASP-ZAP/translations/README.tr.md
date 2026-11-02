@@ -1,5 +1,8 @@
 # ⚡ OWASP ZAP - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -28,25 +31,22 @@
 
 ## 📋 İçindekiler
 
-- [Giriş](#-giriş)
-- [Kurulum](#-kurulum)
-- [Arayüze Genel Bakış](#-arayüze-genel-bakış)
-- [Proxy Yapılandırması](#-proxy-yapılandırması)
-- [Manuel Testler (Intercept / Request Editor)](#-manuel-testler-intercept--request-editor)
-- [Örümcek & Tarayıcı (Spider & Crawler)](#-örümcek--tarayıcı-spider--crawler)
-- [Aktif Tarama (Active Scan)](#-aktif-tarama-active-scan)
-- [Pasif Tarama (Passive Scan)](#-pasif-tarama-passive-scan)
-- [Bağlamlar & Oturumlar (Contexts & Sessions)](#-bağlamlar--oturumlar-contexts--sessions)
-- [Fuzzer (Bulanık Test)](#-fuzzer-bulanık-test)
-- [API & Otomasyon](#-api--otomasyon)
-- [Komut Satırı ve Docker](#-komut-satırı-ve-docker)
-- [Eklentiler (Add-ons)](#-eklentiler-add-ons)
-- [Gerçek Dünya Örnekleri](#-gerçek-dünya-örnekleri)
-- [Hızlı Başvuru](#-hızlı-başvuru)
-- [İpuçları ve En İyi Uygulamalar](#-i̇puçları-ve-en-i̇yi-uygulamalar)
-- [Kaynaklar](#-kaynaklar)
-
----
+- [🎯 Giriş](#-giriş)
+- [📥 Kurulum](#-kurulum)
+- [🖥️ Arayüze Genel Bakış](#️-arayüze-genel-bakış)
+- [🔌 Proxy Yapılandırması](#-proxy-yapılandırması)
+- [🔧 Manuel Testler (Intercept / Request Editor)](#-manuel-testler-intercept--request-editor)
+- [🕷️ Örümcek & Tarayıcı (Spider & Crawler)](#️-örümcek--tarayıcı-spider--crawler)
+- [⚡ Aktif Tarama (Active Scan)](#-aktif-tarama-active-scan)
+- [👁️ Pasif Tarama (Passive Scan)](#️-pasif-tarama-passive-scan)
+- [🎯 Bağlamlar & Oturumlar (Contexts & Sessions)](#-bağlamlar--oturumlar-contexts--sessions)
+- [🎲 Fuzzer (Bulanık Test)](#-fuzzer-bulanık-test)
+- [🤖 API & Otomasyon](#-api--otomasyon)
+- [⌨️ Komut Satırı ve Docker](#️-komut-satırı-ve-docker)
+- [📊 Hızlı Başvuru](#-hızlı-başvuru)
+- [💡 İpuçları ve En İyi Uygulamalar](#-i̇puçları-ve-en-i̇yi-uygulamalar)
+- [⚠️ Yasal Uyarı](#️-yasal-uyarı)
+- [📚 Kaynaklar](#-kaynaklar)
 
 ## 🎯 Giriş
 
@@ -116,6 +116,7 @@ docker run -u zap -p 8080:8080 -i ghcr.io/zaproxy/zaproxy:stable zap.sh -daemon 
 
 ---
 
+<a id="-arayüze-genel-bakış"></a>
 ## 🖥️ Arayüze Genel Bakış
 
 ### Ana Paneller
@@ -200,6 +201,7 @@ Tools → Encode/Decode/Hash (veya Ctrl+E)
 
 ---
 
+<a id="-örümcek--tarayıcı-spider--crawler"></a>
 ## 🕷️ Örümcek & Tarayıcı (Spider & Crawler)
 
 ### Standart Örümcek (Traditional Spider)
@@ -246,6 +248,7 @@ Hedefe sağ tık → Attack → Active Scan...
 
 ---
 
+<a id="-pasif-tarama-passive-scan"></a>
 ## 👁️ Pasif Tarama (Passive Scan)
 
 Pasif tarama, ZAP proxy'si üzerinden akan trafiği **hiçbir ek istek göndermeden** arka planda otomatik olarak inceler:
@@ -326,6 +329,7 @@ for alert in alerts:
 
 ---
 
+<a id="-komut-satırı-ve-docker"></a>
 ## ⌨️ Komut Satırı ve Docker
 
 ### Otomatik Docker Taramaları

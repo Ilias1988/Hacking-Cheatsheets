@@ -2,6 +2,9 @@
 
 # 📱 Sosyal Medya OSINT
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ---
 
 ## 🔍 Kullanıcı Adı Arama Araçları

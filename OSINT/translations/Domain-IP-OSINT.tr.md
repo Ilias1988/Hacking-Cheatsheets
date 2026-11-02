@@ -2,6 +2,9 @@
 
 # 🌐 Alan Adı ve IP OSINT (Domain & IP OSINT)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ---
 
 ## 🔍 Alan Adı Keşif Araçları

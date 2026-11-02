@@ -1,6 +1,9 @@
 # 🔍 Phase 2: Discovery / Enumeration
 
-[🇹🇷 Türkçe Sürüm](translations/02-Enumeration.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/02-Enumeration.tr.md) • [🇬🇷 Ελληνικά](translations/02-Enumeration.el.md)
 
 ```
   ███████╗███╗   ██╗██╗   ██╗███╗   ███╗███████╗██████╗  █████╗ ████████╗██╗ ██████╗ ███╗   ██╗

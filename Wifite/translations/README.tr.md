@@ -2,6 +2,9 @@
 
 # 📶 Wifite - Otomatik WiFi Güvenlik Denetim Aracı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██╗    ██╗██╗███████╗██╗████████╗███████╗
   ██║    ██║██║██╔════╝██║╚══██╔══╝██╔════╝
@@ -221,6 +224,7 @@ sudo wifite --power -50
 
 ---
 
+<a id="-saldırı-seçenekleri"></a>
 ## ⚔️ Saldırı Seçenekleri
 
 ### WPA/WPA2 Ayarları
@@ -352,6 +356,7 @@ sudo wifite --pmkid-timeout 120
 
 ---
 
+<a id="-gelişmiş-seçenekler"></a>
 ## ⚙️ Gelişmiş Seçenekler
 
 ### Arayüz Belirtme

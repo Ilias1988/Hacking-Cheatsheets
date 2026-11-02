@@ -1,5 +1,8 @@
 # 🔍 Autopsy - Cheatsheet Digital Forensics Platform
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
    █████╗ ██╗   ██╗████████╗ ██████╗ ██████╗ ███████╗██╗   ██╗
   ██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗██╔══██╗██╔════╝╚██╗ ██╔╝
@@ -135,6 +138,7 @@ CaseName/
 
 ---
 
+<a id="-aggiunta-sorgenti-dati"></a>
 ## 📀 Aggiunta delle Sorgenti Dati
 
 ### Tipi di Sorgente
@@ -179,6 +183,7 @@ CaseName/
 
 ---
 
+<a id="-moduli-ingest"></a>
 ## ⚙️ Moduli Ingest
 
 ### Cosa sono i Moduli Ingest?
@@ -659,9 +664,9 @@ sha256sum -c image.dd.sha256
 - [DFIR Training](https://www.dfir.training/)
 
 ### Cheatsheet Correlate
-- [Volatility](../Volatility/translations/README.it.md)
-- [Linux Commands](../Linux-Commands/translations/README.it.md)
-- [Wireshark](../Wireshark/translations/README.it.md)
+- [Volatility](../../Volatility/translations/README.it.md)
+- [Linux Commands](../../Linux-Commands/translations/README.it.md)
+- [Wireshark](../../Wireshark/translations/README.it.md)
 
 ---
 

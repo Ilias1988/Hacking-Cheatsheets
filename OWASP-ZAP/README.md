@@ -1,6 +1,9 @@
 # ⚡ OWASP ZAP - Complete Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
    ____  _    _  ___   _____ _____    _____   ___  _____  
@@ -131,6 +134,7 @@ zap.bat      # Windows
 
 ---
 
+<a id="-interface-overview"></a>
 ## 🖥️ Interface Overview
 
 ### Main Panels
@@ -280,6 +284,7 @@ Search across:
 
 ---
 
+<a id="-spider--crawler"></a>
 ## 🕷️ Spider & Crawler
 
 ### Standard Spider
@@ -397,6 +402,7 @@ Filter scans by technology:
 
 ---
 
+<a id="-passive-scanning"></a>
 ## 👁️ Passive Scanning
 
 ### What is Passive Scanning?
@@ -640,6 +646,7 @@ for alert in alerts:
 
 ---
 
+<a id="-command-line"></a>
 ## ⌨️ Command Line
 
 ### Basic Command Line Options

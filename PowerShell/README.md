@@ -1,6 +1,9 @@
 # 💻 PowerShell - Complete Pentesting Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ██████╗  ██████╗ ██╗    ██╗███████╗██████╗ ███████╗██╗  ██╗███████╗██╗     ██╗     
@@ -445,6 +448,7 @@ Get-FileHash file.txt -Algorithm SHA512
 
 ---
 
+<a id="-process--service-management"></a>
 ## ⚙️ Process & Service Management
 
 ### Processes
@@ -637,6 +641,7 @@ Get-GPOReport -Name "Default Domain Policy" -ReportType HTML -Path report.html
 
 ---
 
+<a id="-download--execution"></a>
 ## ⬇️ Download & Execution
 
 ### Download Files
@@ -754,6 +759,7 @@ $listener.Stop()
 
 ---
 
+<a id="-bypass-techniques"></a>
 ## 🛡️ Bypass Techniques
 
 ### Execution Policy Bypass

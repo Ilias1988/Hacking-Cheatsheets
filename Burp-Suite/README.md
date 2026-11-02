@@ -1,6 +1,9 @@
 # 🔶 Burp Suite - Complete Cheatsheet
 
-[🇮🇹 Versione Italiana](translations/README.it.md) | [🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇮🇹 Versione Italiana](translations/README.it.md) | [🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
     ____                      _____       _ __     
@@ -319,6 +322,7 @@ Features:
 
 ---
 
+<a id="-spidercrawler"></a>
 ## 🕷️ Spider/Crawler
 
 ### Starting the Spider
@@ -794,6 +798,7 @@ Extender → Options
 
 ---
 
+<a id="-keyboard-shortcuts"></a>
 ## ⌨️ Keyboard Shortcuts
 
 ### Global Shortcuts

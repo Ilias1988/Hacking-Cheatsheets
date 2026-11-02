@@ -1,5 +1,8 @@
 # 🐙 GitHub Dorking - Complete Cheatsheet
 
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
 ```
    ██████╗ ██╗████████╗██╗  ██╗██╗   ██╗██████╗ 
   ██╔════╝ ██║╚══██╔══╝██║  ██║██║   ██║██╔══██╗
@@ -24,7 +27,7 @@
 
 <p align="center">
   <b>🔐 Find Exposed Secrets, API Keys, and Credentials in GitHub Repositories</b><br>
-  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a> • <a href="translations/README.el.md">🇬🇷 Ελληνικά</a>
 </p>
 
 ---
@@ -353,6 +356,7 @@ extension:pem "CERTIFICATE"
 
 ---
 
+<a id="-configuration-files"></a>
 ## ⚙️ Configuration Files
 
 ### Environment Files
@@ -427,6 +431,7 @@ filename:.gitlab-ci.yml
 
 ---
 
+<a id="-cloud-secrets"></a>
 ## ☁️ Cloud Secrets
 
 ### AWS
@@ -685,6 +690,7 @@ xox[baprs]-[0-9]{12}-[0-9]{12}-[a-zA-Z0-9]{24}
 
 ---
 
+<a id="-automation-tools"></a>
 ## 🛠️ Automation Tools
 
 ### TruffleHog

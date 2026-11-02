@@ -1,5 +1,8 @@
 # 🔐 Kriptografi CTF Kopya Kağıdı (Crypto CTF Cheatsheet)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ---
 
 ## 🔤 Kodlama ve Çözme (Encoding / Decoding)

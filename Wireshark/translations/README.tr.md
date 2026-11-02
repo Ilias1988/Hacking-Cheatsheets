@@ -1,5 +1,8 @@
 # 🦈 Wireshark - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -27,23 +30,21 @@
 
 ## 📋 İçindekiler
 
-- [Giriş](#-giriş)
-- [Kurulum](#-kurulum)
-- [Arayüze Genel Bakış](#-arayüze-genel-bakış)
-- [Paket Yakalama Temelleri](#-paket-yakalama-temelleri)
-- [Görüntüleme Filtreleri (Display Filters)](#-görüntüleme-filtreleri-display-filters)
-- [Yakalama Filtreleri (Capture Filters)](#-yakalama-filtreleri-capture-filters)
-- [Protokol Analizi](#-protokol-analizi)
-- [Akışları Takip Etme (Follow Stream)](#-akışları-takip-etme-follow-stream)
-- [İstatistikler & Analiz](#-i̇statistikler--analiz)
-- [tshark (Komut Satırı Sürümü)](#-tshark-komut-satırı-sürümü)
-- [Gerçek Dünya Örnekleri](#-gerçek-dünya-örnekleri)
-- [Hızlı Başvuru](#-hızlı-başvuru)
-- [Klavye Kısayolları](#-klavye-kısayolları)
-- [İpuçları ve En İyi Uygulamalar](#-i̇puçları-ve-en-i̇yi-uygulamalar)
-- [Kaynaklar](#-kaynaklar)
-
----
+- [🎯 Giriş](#-giriş)
+- [📥 Kurulum](#-kurulum)
+- [🖥️ Arayüze Genel Bakış](#️-arayüze-genel-bakış)
+- [📡 Paket Yakalama Temelleri](#-paket-yakalama-temelleri)
+- [🔍 Görüntüleme Filtreleri (Display Filters)](#-görüntüleme-filtreleri-display-filters)
+- [🎣 Yakalama Filtreleri (Capture Filters)](#-yakalama-filtreleri-capture-filters)
+- [🔬 Protokol Analizi](#-protokol-analizi)
+- [🔗 Akışları Takip Etme (Follow Stream)](#-akışları-takip-etme-follow-stream)
+- [📊 İstatistikler & Analiz](#-i̇statistikler--analiz)
+- [💻 tshark (Komut Satırı Sürümü)](#-tshark-komut-satırı-sürümü)
+- [🎬 Gerçek Dünya Örnekleri](#-gerçek-dünya-örnekleri)
+- [📊 Hızlı Başvuru](#-hızlı-başvuru)
+- [⌨️ Klavye Kısayolları](#️-klavye-kısayolları)
+- [⚠️ Yasal Uyarı](#️-yasal-uyarı)
+- [📚 Kaynaklar](#-kaynaklar)
 
 ## 🎯 Giriş
 
@@ -99,6 +100,7 @@ tshark --version
 
 ---
 
+<a id="-arayüze-genel-bakış"></a>
 ## 🖥️ Arayüze Genel Bakış
 
 ### Ana Pencere Bölümleri
@@ -515,6 +517,7 @@ Listeden istenen dosya seçilip diske kaydedilir
 
 ---
 
+<a id="-klavye-kısayolları"></a>
 ## ⌨️ Klavye Kısayolları
 
 | Kısayol | İşlem |

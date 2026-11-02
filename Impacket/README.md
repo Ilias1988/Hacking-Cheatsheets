@@ -1,6 +1,9 @@
 # 🐍 Impacket - Python AD Attack Toolkit
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ██╗███╗   ███╗██████╗  █████╗  ██████╗██╗  ██╗███████╗████████╗
@@ -378,6 +381,7 @@ impacket-ntlmrelayx -t ldap://DC01.domain.local
 
 ---
 
+<a id="-mssql-attacks"></a>
 ## 🗄️ MSSQL Attacks
 
 ### mssqlclient.py

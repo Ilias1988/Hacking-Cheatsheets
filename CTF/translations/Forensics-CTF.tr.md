@@ -1,5 +1,8 @@
 # 🔬 Adli Bilişim CTF Kopya Kağıdı (Forensics CTF Cheatsheet)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ---
 
 ## 📁 Dosya Analizi

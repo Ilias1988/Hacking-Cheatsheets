@@ -1,6 +1,9 @@
 # 🦈 Wireshark - Complete Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
  __        ___           ____  _                _    
@@ -109,6 +112,7 @@ tshark --version
 
 ---
 
+<a id="-interface-overview"></a>
 ## 🖥️ Interface Overview
 
 ### Main Window Areas
@@ -723,6 +727,7 @@ http contains "password" or http contains "passwd" or ftp or telnet
 
 ---
 
+<a id="-keyboard-shortcuts"></a>
 ## ⌨️ Keyboard Shortcuts
 
 | Shortcut | Action |

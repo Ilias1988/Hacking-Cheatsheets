@@ -1,6 +1,9 @@
 # 🎭 Pretexting Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/Pretexting.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Pretexting.tr.md) • [🇬🇷 Ελληνικά](translations/Pretexting.el.md)
 
 ```
 ██████╗ ██████╗ ███████╗████████╗███████╗██╗  ██╗████████╗██╗███╗   ██╗ ██████╗ 

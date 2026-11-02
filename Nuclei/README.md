@@ -1,6 +1,9 @@
 # 🎯 Nuclei - Complete Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   _   _            _      _ 
@@ -119,6 +122,7 @@ nuclei -tl              # List templates
 
 ---
 
+<a id="-basic-syntax"></a>
 ## ⌨️ Basic Syntax
 
 ### General Syntax
@@ -290,6 +294,7 @@ subfinder -d example.com -silent | httpx -silent | nuclei -silent
 
 ---
 
+<a id="-template-selection"></a>
 ## 🏷️ Template Selection
 
 ### By Template Path

@@ -1,5 +1,8 @@
 # 💉 SQL Enjeksiyonu (SQLi) Payload Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../SQLi.md)
 
 ```
@@ -15,17 +18,16 @@
 
 ## 📋 İçindekiler
 
-- [Tespit Payload'ları](#-tespit-payloadları)
-- [Kimlik Doğrulama Atlatma (Auth Bypass)](#-kimlik-doğrulama-atlatma-auth-bypass)
-- [Union Tabanlı Enjeksiyon](#-union-tabanlı-enjeksiyon)
-- [Hata Tabanlı Enjeksiyon (Error-Based)](#-hata-tabanlı-enjeksiyon-error-based)
-- [Kör SQL Enjeksiyonu (Blind SQLi)](#-kör-sql-enjeksiyonu-blind-sqli)
-- [Zaman Tabanlı Enjeksiyon (Time-Based)](#-zaman-tabanlı-enjeksiyon-time-based)
-- [Veritabanı Türüne Özel Komutlar](#-veritabanı-türüne-özel-komutlar)
-- [WAF Filtre Atlatma](#-waf-filtre-atlatma)
-- [Bant Dışı (Out-of-Band - OOB)](#-bant-dışı-out-of-band---oob)
-
----
+- [🔍 Tespit Payload'ları](#-tespit-payloadları)
+- [🔓 Kimlik Doğrulama Atlatma (Auth Bypass)](#-kimlik-doğrulama-atlatma-auth-bypass)
+- [🔗 Union Tabanlı Enjeksiyon](#-union-tabanlı-enjeksiyon)
+- [⚠️ Hata Tabanlı Enjeksiyon (Error-Based)](#️-hata-tabanlı-enjeksiyon-error-based)
+- [🔮 Kör SQL Enjeksiyonu (Blind SQLi)](#-kör-sql-enjeksiyonu-blind-sqli)
+- [⏱️ Zaman Tabanlı Enjeksiyon (Time-Based)](#️-zaman-tabanlı-enjeksiyon-time-based)
+- [🗄️ Veritabanı Türüne Özel Kritik İşlemler](#️-veritabanı-türüne-özel-kritik-i̇şlemler)
+- [🛡️ WAF Filtre Atlatma (Bypass)](#️-waf-filtre-atlatma-bypass)
+- [📡 Bant Dışı (Out-of-Band - OOB) Veri Çekme](#-bant-dışı-out-of-band---oob-veri-çekme)
+- [📊 Hızlı Başvuru Tablosu](#-hızlı-başvuru-tablosu)
 
 ## 🔍 Tespit Payload'ları
 
@@ -165,6 +167,7 @@ Hata alana kadar sütun numarasını artırın:
 
 ---
 
+<a id="-hata-tabanlı-enjeksiyon-error-based"></a>
 ## ⚠️ Hata Tabanlı Enjeksiyon (Error-Based)
 
 Veritabanı detaylı hata mesajı döndürüyorsa veriyi hata mesajının içine gömerek çekme:
@@ -214,6 +217,7 @@ Ekrana hata mesajı veya veri yansımıyorsa, True/False koşullarına göre uyg
 
 ---
 
+<a id="-zaman-tabanlı-enjeksiyon-time-based"></a>
 ## ⏱️ Zaman Tabanlı Enjeksiyon (Time-Based)
 
 Sunucudan hiçbir dönüt alınamıyorsa veritabanı motoruna gecikme (sleep) komutu verdirilir:

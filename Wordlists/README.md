@@ -1,5 +1,8 @@
 # 📚 Wordlists - Complete Reference Guide
 
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
 ```
   ██╗    ██╗ ██████╗ ██████╗ ██████╗ ██╗     ██╗███████╗████████╗███████╗
   ██║    ██║██╔═══██╗██╔══██╗██╔══██╗██║     ██║██╔════╝╚══██╔══╝██╔════╝
@@ -18,7 +21,7 @@
 
 <p align="center">
   <b>📖 Complete reference for penetration testing wordlists</b><br>
-  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a> • <a href="translations/README.el.md">🇬🇷 Ελληνικά</a>
 </p>
 
 ---
@@ -413,6 +416,7 @@ ls /usr/share/dirb/wordlists/
 
 ---
 
+<a id="-custom-wordlist-tools"></a>
 ## 🛠️ Custom Wordlist Tools
 
 ### CeWL (Custom Word List generator)
@@ -530,6 +534,7 @@ hashcat -r /usr/share/hashcat/rules/best64.rule wordlist.txt --stdout
 
 ---
 
+<a id="-quick-download"></a>
 ## ⬇️ Quick Download
 
 ### One-Liner Downloads

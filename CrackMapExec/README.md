@@ -1,6 +1,9 @@
 # 🗡️ CrackMapExec - AD Swiss Army Knife
 
-[🇮🇹 Versione Italiana](translations/README.it.md) | [🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇮🇹 Versione Italiana](translations/README.it.md) | [🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
    ██████╗███╗   ███╗███████╗
@@ -91,6 +94,7 @@ crackmapexec smb --help
 
 ---
 
+<a id="-smb-protocol"></a>
 ## 🖥️ SMB Protocol
 
 ### Basic Enumeration
@@ -273,6 +277,7 @@ cme ldap DC01 -u user -p password --admin-count
 
 ---
 
+<a id="-mssql-protocol"></a>
 ## 🗄️ MSSQL Protocol
 
 ### Basic Usage

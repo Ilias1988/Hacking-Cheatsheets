@@ -1,6 +1,9 @@
 # 📷 ExifTool - Metadata Extraction Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ███████╗██╗  ██╗██╗███████╗████████╗ ██████╗  ██████╗ ██╗     
@@ -208,6 +211,7 @@ exiftool -p '$filename: $make $model' image.jpg
 
 ---
 
+<a id="-writing-metadata"></a>
 ## ✏️ Writing Metadata
 
 ### Write Single Tag
@@ -271,6 +275,7 @@ exiftool -TagsFromFile source.jpg -GPS:all *.jpg
 
 ---
 
+<a id="-removing-metadata"></a>
 ## 🗑️ Removing Metadata
 
 ### Remove All Metadata
@@ -460,6 +465,7 @@ exiftool -a -G1 image.jpg | grep -i "facebook\|instagram\|twitter"
 
 ---
 
+<a id="-batch-processing"></a>
 ## ⚙️ Batch Processing
 
 ### Process Multiple Files

@@ -1,6 +1,9 @@
 # 🔧 Hardware Hacking Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/Hardware-Hacking.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Hardware-Hacking.tr.md) • [🇬🇷 Ελληνικά](translations/Hardware-Hacking.el.md)
 
 ---
 

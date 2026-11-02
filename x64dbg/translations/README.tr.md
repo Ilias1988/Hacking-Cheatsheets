@@ -2,6 +2,9 @@
 
 # 🔧 x64dbg - Windows Hata Ayıklayıcı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██╗  ██╗ ██████╗ ██╗  ██╗██████╗ ██████╗  ██████╗ 
   ╚██╗██╔╝██╔════╝ ██║  ██║██╔══██╗██╔══██╗██╔════╝ 
@@ -108,6 +111,7 @@ https://github.com/x64dbg/x64dbg/releases
 
 ---
 
+<a id="-arayüze-genel-bakış"></a>
 ## 🖥️ Arayüze Genel Bakış
 
 ### Ana Pencereler
@@ -285,6 +289,7 @@ be *                 # Hepsini aç
 
 ---
 
+<a id="-adımlama--yürütme-stepping--execution"></a>
 ## ▶️ Adımlama & Yürütme (Stepping & Execution)
 
 ### Adımlama İşlemleri
@@ -599,6 +604,7 @@ ret
 
 ---
 
+<a id="-klavye-kısayolları"></a>
 ## ⌨️ Klavye Kısayolları
 
 ### Genel Kısayollar

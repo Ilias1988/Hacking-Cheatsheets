@@ -2,6 +2,9 @@
 
 # 🐧 Linux Komutları & Bash - Kapsamlı Sızma Testi Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██╗     ██╗███╗   ██╗██╗   ██╗██╗  ██╗
   ██║     ██║████╗  ██║██║   ██║╚██╗██╔╝
@@ -460,6 +463,7 @@ sha1sum file
 
 ---
 
+<a id="-metin-i̇şleme"></a>
 ## ✂️ Metin İşleme
 
 ### Cut
@@ -614,6 +618,7 @@ find / -perm -2000 2>/dev/null         # SGID
 
 ---
 
+<a id="-süreç-process-yönetimi"></a>
 ## ⚙️ Süreç (Process) Yönetimi
 
 ### Süreçleri Görüntüleme
@@ -899,6 +904,7 @@ stty rows 40 cols 150
 
 ---
 
+<a id="-dosya-transferleri"></a>
 ## ⬇️ Dosya Transferleri
 
 ### Saldırgandan Hedefe Transfer

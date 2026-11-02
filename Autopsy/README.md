@@ -1,6 +1,9 @@
 # 🔍 Autopsy - Digital Forensics Platform Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
    █████╗ ██╗   ██╗████████╗ ██████╗ ██████╗ ███████╗██╗   ██╗
@@ -181,6 +184,7 @@ CaseName/
 
 ---
 
+<a id="-ingest-modules"></a>
 ## ⚙️ Ingest Modules
 
 ### What are Ingest Modules?

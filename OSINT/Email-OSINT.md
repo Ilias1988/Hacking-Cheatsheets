@@ -1,7 +1,10 @@
 # 📧 Email OSINT Cheatsheet
 
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
 <p align="center">
-  <a href="translations/Email-OSINT.tr.md">🇹🇷 Türkçe Sürüm</a>
+  <a href="translations/Email-OSINT.tr.md">🇹🇷 Türkçe Sürüm</a> • <a href="translations/Email-OSINT.el.md">🇬🇷 Ελληνικά</a>
 </p>
 
 ```

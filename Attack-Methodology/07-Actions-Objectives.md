@@ -1,6 +1,9 @@
 # 🎯 Phase 7: Actions on Objectives
 
-[🇹🇷 Türkçe Sürüm](translations/07-Actions-Objectives.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/07-Actions-Objectives.tr.md) • [🇬🇷 Ελληνικά](translations/07-Actions-Objectives.el.md)
 
 ```
    █████╗  ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗     ██████╗ ███╗   ██╗

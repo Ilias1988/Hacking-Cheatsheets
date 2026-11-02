@@ -1,5 +1,8 @@
 # 🌐 Web CTF Kopya Kağıdı (Web CTF Cheatsheet)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ---
 
 ## 💉 SQL Enjeksiyonu (SQL Injection)

@@ -1,6 +1,9 @@
 # 📊 Executive Summary Template
 
-[🇹🇷 Türkçe Sürüm](translations/Executive-Summary-Template.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Executive-Summary-Template.tr.md) • [🇬🇷 Ελληνικά](translations/Executive-Summary-Template.el.md)
 
 ```
 ███████╗██╗  ██╗███████╗ ██████╗██╗   ██╗████████╗██╗██╗   ██╗███████╗
@@ -370,4 +373,4 @@ Risk Level
 
 ---
 
-**Back to Reporting:** [📝 Reporting Templates](./README.md)
+**Back to Reporting:** [📝 Reporting Templates](../README.md)

@@ -1,6 +1,9 @@
 # 🚪 Phase 1: Initial Access
 
-[🇹🇷 Türkçe Sürüm](translations/01-Initial-Access.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/01-Initial-Access.tr.md) • [🇬🇷 Ελληνικά](translations/01-Initial-Access.el.md)
 
 ```
   ██╗███╗   ██╗██╗████████╗██╗ █████╗ ██╗          █████╗  ██████╗ ██████╗███████╗███████╗███████╗

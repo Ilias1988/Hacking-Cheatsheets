@@ -1,5 +1,8 @@
 # 🚪 Faz 1: İlk Erişim (Initial Access)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../01-Initial-Access.md) • [🇮🇹 Versione Italiana](01-Initial-Access.it.md)
 
 ```

@@ -1,6 +1,9 @@
 # ➡️ Phase 4: Lateral Movement
 
-[🇹🇷 Türkçe Sürüm](translations/04-Lateral-Movement.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/04-Lateral-Movement.tr.md) • [🇬🇷 Ελληνικά](translations/04-Lateral-Movement.el.md)
 
 ```
   ██╗      █████╗ ████████╗███████╗██████╗  █████╗ ██╗     

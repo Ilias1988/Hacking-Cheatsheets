@@ -1,5 +1,8 @@
 # 🕷️ Nikto - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -108,6 +111,7 @@ nikto -h          # Yardım menüsü
 
 ---
 
+<a id="-temel-sözdizimi"></a>
 ## ⌨️ Temel Sözdizimi
 
 ### Genel Sözdizimi
@@ -215,6 +219,7 @@ nikto -h 192.168.1.1 -vhost target.com
 
 ---
 
+<a id="-tarama-ayarları-tuning"></a>
 ## 🎚️ Tarama Ayarları (Tuning)
 
 ### İnce Ayar Kodları (-Tuning)
@@ -295,6 +300,7 @@ nikto -h target.com -cookies cookies.txt
 
 ---
 
+<a id="-proxy--atlatma-evasion"></a>
 ## 🛡️ Proxy & Atlatma (Evasion)
 
 ### Proxy Desteği

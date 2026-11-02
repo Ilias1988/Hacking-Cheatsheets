@@ -2,6 +2,9 @@
 
 # 🌐 Shodan - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ███████╗██╗  ██╗ ██████╗ ██████╗  █████╗ ███╗   ██╗
   ██╔════╝██║  ██║██╔═══██╗██╔══██╗██╔══██╗████╗  ██║
@@ -341,6 +344,7 @@ http.component:"Bootstrap"
 
 ---
 
+<a id="-zafiyetli-servisler"></a>
 ## ⚠️ Zafiyetli Servisler
 
 ### Bilinen CVE Numaraları ile Arama
@@ -604,6 +608,7 @@ product:plex
 
 ---
 
+<a id="-bulut-servisleri"></a>
 ## ☁️ Bulut Servisleri
 
 ### Amazon AWS

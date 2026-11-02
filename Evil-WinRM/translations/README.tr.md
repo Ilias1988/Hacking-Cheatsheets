@@ -1,5 +1,8 @@
 # 😈 Evil-WinRM - Windows Uzak Kabuk Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -142,6 +145,7 @@ evil-winrm -i 10.10.10.10 -u user -p pass -e /opt/tools/
 
 ---
 
+<a id="-dahili-komutlar"></a>
 ## 🛠️ Dahili Komutlar
 
 ### Menü

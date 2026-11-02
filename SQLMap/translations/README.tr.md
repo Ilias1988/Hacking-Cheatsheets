@@ -1,5 +1,8 @@
 # 💉 SQLMap - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -27,24 +30,22 @@
 
 ## 📋 İçindekiler
 
-- [Giriş](#-giriş)
-- [Kurulum](#-kurulum)
-- [Temel Sözdizimi](#-temel-sözdizimi)
-- [Hedef Belirleme Seçenekleri](#-hedef-belirleme-seçenekleri)
-- [İstek (Request) Seçenekleri](#-istek-request-seçenekleri)
-- [Tespit (Detection) Seçenekleri](#-tespit-detection-seçenekleri)
-- [Numaralandırma (Enumeration)](#-numaralandırma-enumeration)
-- [Veri Çıkarma (Data Extraction)](#-veri-çıkarma-data-extraction)
-- [Dosya İşlemleri](#-dosya-işlemleri)
-- [İşletim Sistemi Erişimi (OS Access)](#-işletim-sistemi-erişimi-os-access)
-- [Filtre ve WAF Atlatma Teknikleri](#-filtre-ve-waf-atlatma-teknikleri)
-- [Tamper Betikleri Referansı](#-tamper-betikleri-referansı)
-- [Gerçek Dünya Örnek Senaryoları](#-gerçek-dünya-örnek-senaryoları)
-- [Hızlı Başvuru Tablosu](#-hızlı-başvuru-tablosu)
-- [İpuçları ve En İyi Uygulamalar](#-ipuçları-ve-en-iyi-uygulamalar)
-- [Kaynaklar](#-kaynaklar)
-
----
+- [🎯 Giriş](#-giriş)
+- [📥 Kurulum](#-kurulum)
+- [⌨️ Temel Sözdizimi](#️-temel-sözdizimi)
+- [🎯 Hedef Belirleme Seçenekleri](#-hedef-belirleme-seçenekleri)
+- [📡 İstek (Request) Seçenekleri](#-i̇stek-request-seçenekleri)
+- [🔍 Tespit (Detection) Seçenekleri](#-tespit-detection-seçenekleri)
+- [📊 Numaralandırma (Enumeration)](#-numaralandırma-enumeration)
+- [📤 Veri Çıkarma (Data Extraction)](#-veri-çıkarma-data-extraction)
+- [📁 Dosya İşlemleri](#-dosya-i̇şlemleri)
+- [💻 İşletim Sistemi Erişimi (OS Access)](#-i̇şletim-sistemi-erişimi-os-access)
+- [🛡️ Filtre ve WAF Atlatma Teknikleri](#️-filtre-ve-waf-atlatma-teknikleri)
+- [🎬 Gerçek Dünya Örnek Senaryoları](#-gerçek-dünya-örnek-senaryoları)
+- [📊 Hızlı Başvuru Tablosu](#-hızlı-başvuru-tablosu)
+- [💡 İpuçları ve En İyi Uygulamalar](#-i̇puçları-ve-en-i̇yi-uygulamalar)
+- [⚠️ Yasal Uyarı](#️-yasal-uyarı)
+- [📚 Kaynaklar](#-kaynaklar)
 
 ## 🎯 Giriş
 
@@ -118,6 +119,7 @@ sqlmap -hh         # Gelişmiş tüm seçenekleri gösteren yardım
 
 ---
 
+<a id="-temel-sözdizimi"></a>
 ## ⌨️ Temel Sözdizimi
 
 ### Genel Kullanım Yapısı
@@ -183,6 +185,7 @@ sqlmap -d "mysql://kullanici:parola@hedef.com:3306/veritabani"
 
 ---
 
+<a id="-istek-request-seçenekleri"></a>
 ## 📡 İstek (Request) Seçenekleri
 
 ### HTTP Yöntemi ve Gövde Verisi
@@ -321,6 +324,7 @@ sqlmap -u "http://target.com/page.php?id=1" --sql-shell
 
 ---
 
+<a id="-dosya-işlemleri"></a>
 ## 📁 Dosya İşlemleri
 
 ```bash
@@ -334,6 +338,7 @@ sqlmap -u "http://target.com/page.php?id=1" --file-write="./shell.php" --file-de
 
 ---
 
+<a id="-işletim-sistemi-erişimi-os-access"></a>
 ## 💻 İşletim Sistemi Erişimi (OS Access)
 
 ```bash
@@ -349,6 +354,7 @@ sqlmap -u "http://target.com/page.php?id=1" --os-pwn
 
 ---
 
+<a id="-filtre-ve-waf-atlatma-teknikleri"></a>
 ## 🛡️ Filtre ve WAF Atlatma Teknikleri
 
 ```bash
@@ -427,6 +433,7 @@ sqlmap -u "http://target.com/news.php?id=1" \
 
 ---
 
+<a id="-ipuçları-ve-en-iyi-uygulamalar"></a>
 ## 💡 İpuçları ve En İyi Uygulamalar
 
 1. **`--batch` Parametresini Alışkanlık Haline Getirin:** Otomasyon ve hızlı taramalarda SQLMap'in her adımda soru sormasını engeller.

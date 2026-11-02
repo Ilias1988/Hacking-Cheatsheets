@@ -1,5 +1,8 @@
 # 🎣 Responder - LLMNR/NBT-NS Zehirleme Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -218,6 +221,7 @@ impacket-ntlmrelayx -tf targets.txt -smb2support --sam
 
 ---
 
+<a id="-sahte-sunucular-rogue-servers"></a>
 ## 🖥️ Sahte Sunucular (Rogue Servers)
 
 ### Yerleşik Sunucular
@@ -277,6 +281,7 @@ sudo responder -I eth0 -d
 
 ---
 
+<a id="-yapılandırma"></a>
 ## ⚙️ Yapılandırma
 
 ### Responder.conf

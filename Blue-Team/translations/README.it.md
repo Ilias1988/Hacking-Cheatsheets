@@ -1,5 +1,8 @@
 # 🛡️ Blue Team Cheatsheets
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██████╗ ██╗     ██╗   ██╗███████╗    ████████╗███████╗ █████╗ ███╗   ███╗
   ██╔══██╗██║     ██║   ██║██╔════╝    ╚══██╔══╝██╔════╝██╔══██╗████╗ ████║
@@ -65,8 +68,8 @@
 
 | Argomento | Descrizione | Guida |
 |-----------|-------------|-------|
-| **Malware Analysis** | Tecniche di analisi statica/dinamica | [📄 Visualizza](./Malware-Analysis.it.md) |
-| **Network Defense** | IDS/IPS, regole firewall, sicurezza rete | [📄 Visualizza](./Network-Defense.it.md) |
+| **Malware Analysis** | Tecniche di analisi statica/dinamica | 📄 Visualizza — guida non ancora inclusa |
+| **Network Defense** | IDS/IPS, regole firewall, sicurezza rete | 📄 Visualizza — guida non ancora inclusa |
 | **Hardening** | Checklist hardening Windows/Linux | [📄 Visualizza](./Hardening.it.md) |
 
 ### 📝 Detection Rules

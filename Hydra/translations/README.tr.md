@@ -1,5 +1,8 @@
 # 🔓 Hydra - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -105,6 +108,7 @@ hydra -V
 
 ---
 
+<a id="-temel-sözdizimi"></a>
 ## ⌨️ Temel Sözdizimi
 
 ### Genel Sözdizimi
@@ -292,6 +296,7 @@ hydra -l admin -P passwords.txt http-proxy://proxy.server:3128
 
 ---
 
+<a id="-veritabanı-saldırıları"></a>
 ## 🗄️ Veritabanı Saldırıları
 
 ### MySQL
@@ -339,6 +344,7 @@ hydra -P passwords.txt redis://192.168.1.1
 
 ---
 
+<a id="-uzak-masaüstü-saldırıları"></a>
 ## 🖥️ Uzak Masaüstü Saldırıları
 
 ### RDP (Windows Uzak Masaüstü)

@@ -1,6 +1,9 @@
 # 📊 Log Analysis Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/Log-Analysis.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Log-Analysis.tr.md) • [🇬🇷 Ελληνικά](translations/Log-Analysis.el.md)
 
 ```
   ██╗      ██████╗  ██████╗      █████╗ ███╗   ██╗ █████╗ ██╗  ██╗   ██╗███████╗██╗███████╗

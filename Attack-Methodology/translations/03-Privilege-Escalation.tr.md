@@ -1,5 +1,8 @@
 # ⬆️ Faz 3: Yetki Yükseltme (Privilege Escalation)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../03-Privilege-Escalation.md) • [🇮🇹 Versione Italiana](03-Privilege-Escalation.it.md)
 
 ```

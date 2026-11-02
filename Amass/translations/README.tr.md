@@ -2,6 +2,9 @@
 
 # 🌐 Amass - Saldırı Yüzeyi Haritalama (Attack Surface Mapping)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
    █████╗ ███╗   ███╗ █████╗ ███████╗███████╗
   ██╔══██╗████╗ ████║██╔══██╗██╔════╝██╔════╝
@@ -138,6 +141,7 @@ amass enum -passive -d example.com -max-depth 3
 
 ---
 
+<a id="-istihbarat-modu-intel"></a>
 ## 🏢 İstihbarat Modu (Intel)
 
 > Intel modu; kuruluşlarla ilişkili kök alan adlarını, ASN'leri ve CIDR IP bloklarını keşfeder.
@@ -207,6 +211,7 @@ amass dns -df subdomains.txt
 
 ---
 
+<a id="-yapılandırma"></a>
 ## ⚙️ Yapılandırma
 
 ### Yapılandırma Dosyası Konumu
@@ -301,6 +306,7 @@ data_sources:
 
 ---
 
+<a id="-bug-bounty-iş-akışı"></a>
 ## 🎯 Bug Bounty İş Akışı
 
 ```bash

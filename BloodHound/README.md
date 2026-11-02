@@ -1,6 +1,9 @@
 # 🩸 BloodHound - Active Directory Attack Path Visualization
 
-[🇮🇹 Versione Italiana](translations/README.it.md) | [🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇮🇹 Versione Italiana](translations/README.it.md) | [🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ██████╗ ██╗      ██████╗  ██████╗ ██████╗ ██╗  ██╗ ██████╗ ██╗   ██╗███╗   ██╗██████╗ 
@@ -212,6 +215,7 @@ bloodhound-python -u user --hashes :NTLMHASH -d domain.local -c All
 
 ---
 
+<a id="-using-bloodhound-gui"></a>
 ## 🖥️ Using BloodHound GUI
 
 ### Start BloodHound

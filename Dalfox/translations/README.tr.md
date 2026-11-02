@@ -2,6 +2,9 @@
 
 # 🦊 Dalfox - XSS Tarama ve Analiz Çatısı
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██████╗  █████╗ ██╗     ███████╗ ██████╗ ██╗  ██╗
   ██╔══██╗██╔══██╗██║     ██╔════╝██╔═══██╗╚██╗██╔╝
@@ -158,6 +161,7 @@ dalfox server -p 8080
 
 ---
 
+<a id="-gelişmiş-seçenekler"></a>
 ## ⚙️ Gelişmiş Seçenekler
 
 ### Özel HTTP Başlıkları (Headers)
@@ -314,6 +318,7 @@ dalfox url https://example.com/form?name=test \
 
 ---
 
+<a id="-bug-bounty-iş-akışları"></a>
 ## 🎯 Bug Bounty İş Akışları
 
 ### Hızlı XSS Taraması
@@ -387,6 +392,7 @@ cat form_urls.txt | dalfox pipe \
 
 ---
 
+<a id="-xss-avcılığı-ipuçları"></a>
 ## 💡 XSS Avcılığı İpuçları
 
 1. **Tüm parametreleri inceleyin** - Yalnızca arama kutularına odaklanmayın

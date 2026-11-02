@@ -1,5 +1,8 @@
 # 🐧 Linux Yetki Yükseltme (Privilege Escalation) - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -278,6 +281,7 @@ vim -c ':py import os; os.setuid(0); os.execl("/bin/sh", "sh", "-c", "reset; exe
 
 ---
 
+<a id="-sudo-yetkilerini-istismar-etme"></a>
 ## 🔑 Sudo Yetkilerini İstismar Etme
 
 ### Sudo İzinlerini Kontrol Etme
@@ -414,6 +418,7 @@ Crontab başında tanımlanan `PATH` içinde yazılabilir bir dizin varsa ve bet
 
 ---
 
+<a id="-path-ele-geçirme-path-hijacking"></a>
 ## 🛤️ PATH Ele Geçirme (PATH Hijacking)
 
 Root tarafından çalıştırılan veya SUID bitine sahip bir program komutları tam yol (`/bin/ls`) yerine göreceli yol (`ls`) ile çağırıyorsa:

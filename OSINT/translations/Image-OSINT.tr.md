@@ -2,6 +2,9 @@
 
 # 🖼️ Görsel OSINT (Image OSINT)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ---
 
 ## 🔍 Tersine Görsel Arama (Reverse Image Search)

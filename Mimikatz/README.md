@@ -1,6 +1,9 @@
 # 🔑 Mimikatz - Complete Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ███╗   ███╗██╗███╗   ███╗██╗██╗  ██╗ █████╗ ████████╗███████╗
@@ -472,6 +475,7 @@ mimikatz # token::run /user:domain\admin
 
 ---
 
+<a id="-evasion-techniques"></a>
 ## 🛡️ Evasion Techniques
 
 ### Obfuscated Names

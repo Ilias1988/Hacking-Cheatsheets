@@ -1,6 +1,9 @@
 # 📊 GraphQL Injection Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/GraphQL-Injection.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/GraphQL-Injection.tr.md) • [🇬🇷 Ελληνικά](translations/GraphQL-Injection.el.md)
 
 ```
  ██████╗ ██████╗  █████╗ ██████╗ ██╗  ██╗ ██████╗ ██╗     
@@ -528,4 +531,4 @@ curl -X POST https://target.com/graphql \
 
 ---
 
-**Back to Payloads:** [💉 Payloads Collection](./README.md)
+**Back to Payloads:** [💉 Payloads Collection](../README.md)

@@ -1,5 +1,8 @@
 # 📶 Aircrack-ng - WiFi Hacking Suite Cheatsheet
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
     █████╗ ██╗██████╗  ██████╗██████╗  █████╗  ██████╗██╗  ██╗
    ██╔══██╗██║██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔════╝██║ ██╔╝
@@ -614,9 +617,9 @@ Non usare mai per:
 
 ### Cheatsheets Collegate
 
-- [Hashcat](../Hashcat/translations/README.it.md)
-- [Wireshark](../Wireshark/translations/README.it.md)
-- [Linux Commands](../Linux-Commands/translations/README.it.md)
+- [Hashcat](../../Hashcat/translations/README.it.md)
+- [Wireshark](../../Wireshark/translations/README.it.md)
+- [Linux Commands](../../Linux-Commands/translations/README.it.md)
 
 ---
 

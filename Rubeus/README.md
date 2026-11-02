@@ -1,6 +1,9 @@
 # 🎫 Rubeus - Kerberos Abuse Toolkit
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ██████╗ ██╗   ██╗██████╗ ███████╗██╗   ██╗███████╗
@@ -62,6 +65,7 @@ execute-assembly Rubeus.exe <command>
 
 ---
 
+<a id="-ticket-operations"></a>
 ## 🎟️ Ticket Operations
 
 ### Request TGT

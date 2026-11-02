@@ -1,6 +1,9 @@
 # 🐛 GDB - GNU Debugger Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
    ██████╗ ██████╗ ██████╗ 
@@ -271,6 +274,7 @@ gdb -x commands.gdb ./program
 
 ---
 
+<a id="-execution-control"></a>
 ## ▶️ Execution Control
 
 ### Stepping

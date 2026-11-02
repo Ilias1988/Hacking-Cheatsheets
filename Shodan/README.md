@@ -1,5 +1,8 @@
 # 🌐 Shodan - Complete Cheatsheet
 
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
 ```
   ███████╗██╗  ██╗ ██████╗ ██████╗  █████╗ ███╗   ██╗
   ██╔════╝██║  ██║██╔═══██╗██╔══██╗██╔══██╗████╗  ██║
@@ -20,7 +23,7 @@
 
 <p align="center">
   <b>🔍 Search engine for Internet-connected devices, servers, and infrastructure</b><br>
-  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a> • <a href="translations/README.el.md">🇬🇷 Ελληνικά</a>
 </p>
 
 ---
@@ -342,6 +345,7 @@ http.component:"Bootstrap"
 
 ---
 
+<a id="-vulnerable-services"></a>
 ## ⚠️ Vulnerable Services
 
 ### Known CVEs
@@ -627,6 +631,7 @@ http.title:"AXIS"
 
 ---
 
+<a id="-cloud-services"></a>
 ## ☁️ Cloud Services
 
 ### Amazon AWS

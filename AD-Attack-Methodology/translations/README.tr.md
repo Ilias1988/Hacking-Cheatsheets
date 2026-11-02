@@ -1,5 +1,8 @@
 # 🏢 Active Directory Saldırı Metodolojisi
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md) • [🇮🇹 Versione Italiana](README.it.md)
 
 ```
@@ -151,6 +154,7 @@ MATCH (u:User)-[:DCSync|:GetChanges|:GetChangesAll]->(d:Domain) RETURN u.name
 
 ---
 
+<a id="-faz-2-ilk-erişim-initial-access"></a>
 ## 🔑 Faz 2: İlk Erişim (Initial Access)
 
 ### 2.1 Parola Püskürtme (Password Spraying)
@@ -214,6 +218,7 @@ hashcat -m 18200 asrep.txt rockyou.txt
 
 ---
 
+<a id="-faz-3-yetki-yükseltme-privilege-escalation"></a>
 ## ⬆️ Faz 3: Yetki Yükseltme (Privilege Escalation)
 
 ### 3.1 Kerberoasting
@@ -295,6 +300,7 @@ getST.py -spn cifs/target.domain.local -impersonate administrator domain.local/F
 
 ---
 
+<a id="-faz-4-yatay-ilerleme-lateral-movement"></a>
 ## ➡️ Faz 4: Yatay İlerleme (Lateral Movement)
 
 ### 4.1 Pass-the-Hash (PtH)
@@ -467,6 +473,7 @@ GetUserSPNs.py domain.local/user:pass -dc-ip 10.10.10.10 -request
 
 ---
 
+<a id="-ctf-ipuçları"></a>
 ## 🎯 CTF İpuçları
 
 1. **Önce daima keşif yapın:** Körlemesine saldırmayın, portları ve paylaşımları listeleyin.

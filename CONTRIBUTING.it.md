@@ -48,7 +48,7 @@ Ci impegniamo a fornire un ambiente amichevole, sicuro e accogliente per tutti i
 
 Hai esperienza con uno strumento di sicurezza non ancora trattato? Crea una nuova cheatsheet!
 
-1. Controlla se lo strumento è elencato nelle [Cheatsheets Programmate](README.it.md#-cheatsheets-programmate)
+1. Controlla se lo strumento è elencato nelle [Cheatsheets Programmate](README.it.md#-indice-delle-categorie)
 2. Crea una nuova cartella per lo strumento
 3. Segui le [Linee guida per le Cheatsheet](#-linee-guida-per-le-cheatsheet)
 4. Invia una pull request

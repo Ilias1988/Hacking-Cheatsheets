@@ -2,6 +2,9 @@
 
 # ⚔️ Katana - Yeni Nesil Web Tarayıcısı (Web Crawler)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██╗  ██╗ █████╗ ████████╗ █████╗ ███╗   ██╗ █████╗ 
   ██║ ██╔╝██╔══██╗╚══██╔══╝██╔══██╗████╗  ██║██╔══██╗
@@ -109,6 +112,7 @@ katana -u https://example.com -d 1
 
 ---
 
+<a id="-tarama-seçenekleri"></a>
 ## 🕷️ Tarama Seçenekleri
 
 ### Kapsam (Scope) Kontrolü
@@ -319,6 +323,7 @@ katana -u https://example.com -proxy http://127.0.0.1:8080
 
 ---
 
+<a id="-bug-bounty-iş-akışları"></a>
 ## 🎯 Bug Bounty İş Akışları
 
 ### Hızlı Temel Tarama

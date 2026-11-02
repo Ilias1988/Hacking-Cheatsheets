@@ -1,5 +1,8 @@
 # 🔶 Burp Suite - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md) | [🇮🇹 Italiano](README.it.md)
 
 ```
@@ -27,26 +30,24 @@
 
 ## 📋 İçindekiler
 
-- [Giriş](#-giriş)
-- [Kurulum ve İlk Ayarlar](#-kurulum-ve-ilk-ayarlar)
-- [Proxy Yapılandırması](#-proxy-yapılandırması)
-- [Trafiği Araya Girerek Yakalama (Intercept)](#-trafiği-araya-girerek-yakalama-intercept)
-- [Hedef ve Kapsam (Target & Scope)](#-hedef-ve-kapsam-target--scope)
-- [Örümcek / Tarayıcı (Spider / Crawler)](#-örümcek--tarayıcı-spider--crawler)
-- [Scanner (Otomatik Tarayıcı)](#-scanner-otomatik-tarayıcı)
-- [Repeater (İstek Tekrarlayıcı)](#-repeater-istek-tekrarlayıcı)
-- [Intruder (Otomatik Saldırı Motoru)](#-intruder-otomatik-saldırı-motoru)
-- [Decoder (Kod Çözücü ve Kodlayıcı)](#-decoder-kod-çözücü-ve-kodlayıcı)
-- [Comparer (Yanıt Karşılaştırıcı)](#-comparer-yanıt-karşılaştırıcı)
-- [Sequencer (Rastgelelik Analizcisi)](#-sequencer-rastgelelik-analizcisi)
-- [Eklentiler (Extensions / BApp Store)](#-eklentiler-extensions--bapp-store)
-- [Klavye Kısayolları](#-klavye-kısayolları)
-- [Test İş Akışı (Testing Workflow)](#-test-iş-akışı-testing-workflow)
-- [Hızlı Başvuru Tablosu](#-hızlı-başvuru-tablosu)
-- [İpuçları ve En İyi Uygulamalar](#-ipuçları-ve-en-iyi-uygulamalar)
-- [Kaynaklar](#-kaynaklar)
-
----
+- [🎯 Giriş](#-giriş)
+- [📥 Kurulum ve İlk Ayarlar](#-kurulum-ve-i̇lk-ayarlar)
+- [🔌 Proxy Yapılandırması](#-proxy-yapılandırması)
+- [🎣 Trafiği Araya Girerek Yakalama (Intercept)](#-trafiği-araya-girerek-yakalama-intercept)
+- [🎯 Hedef ve Kapsam (Target & Scope)](#-hedef-ve-kapsam-target--scope)
+- [🕷️ Örümcek / Tarayıcı (Spider / Crawler)](#️-örümcek--tarayıcı-spider--crawler)
+- [🔍 Scanner (Otomatik Zafiyet Tarayıcısı)](#-scanner-otomatik-zafiyet-tarayıcısı)
+- [🔁 Repeater (İstek Tekrarlayıcı)](#-repeater-i̇stek-tekrarlayıcı)
+- [🔫 Intruder (Otomatik Saldırı Motoru)](#-intruder-otomatik-saldırı-motoru)
+- [🔓 Decoder (Kod Çözücü ve Kodlayıcı)](#-decoder-kod-çözücü-ve-kodlayıcı)
+- [📊 Comparer (Yanıt Karşılaştırıcı)](#-comparer-yanıt-karşılaştırıcı)
+- [🔢 Sequencer (Rastgelelik Analizcisi)](#-sequencer-rastgelelik-analizcisi)
+- [🧩 Eklentiler (Extensions / BApp Store)](#-eklentiler-extensions--bapp-store)
+- [⌨️ Klavye Kısayolları](#️-klavye-kısayolları)
+- [🎯 Test İş Akışı (Testing Workflow)](#-test-i̇ş-akışı-testing-workflow)
+- [💡 İpuçları ve En İyi Uygulamalar](#-i̇puçları-ve-en-i̇yi-uygulamalar)
+- [⚠️ Yasal Uyarı](#️-yasal-uyarı)
+- [📚 Kaynaklar](#-kaynaklar)
 
 ## 🎯 Giriş
 
@@ -75,6 +76,7 @@
 
 ---
 
+<a id="-kurulum-ve-ilk-ayarlar"></a>
 ## 📥 Kurulum ve İlk Ayarlar
 
 ### İndirme
@@ -315,6 +317,7 @@ Target → Site map
 
 ---
 
+<a id="-örümcek--tarayıcı-spider--crawler"></a>
 ## 🕷️ Örümcek / Tarayıcı (Spider / Crawler)
 
 ### Taramayı Başlatma
@@ -373,6 +376,7 @@ Scanner modülü aşağıdaki açık kategorilerini otomatik test eder:
 
 ---
 
+<a id="-repeater-istek-tekrarlayıcı"></a>
 ## 🔁 Repeater (İstek Tekrarlayıcı)
 
 ### Kullanım Amacı
@@ -516,6 +520,7 @@ Oturum çerezleri (Session ID), CSRF token'ları veya parola sıfırlama anahtar
 
 ---
 
+<a id="-klavye-kısayolları"></a>
 ## ⌨️ Klavye Kısayolları
 
 ### Genel Kısayollar
@@ -540,6 +545,7 @@ Oturum çerezleri (Session ID), CSRF token'ları veya parola sıfırlama anahtar
 
 ---
 
+<a id="-test-iş-akışı-testing-workflow"></a>
 ## 🎯 Test İş Akışı (Testing Workflow)
 
 ```
@@ -570,6 +576,7 @@ Oturum çerezleri (Session ID), CSRF token'ları veya parola sıfırlama anahtar
 
 ---
 
+<a id="-ipuçları-ve-en-iyi-uygulamalar"></a>
 ## 💡 İpuçları ve En İyi Uygulamalar
 
 1. **Kapsamı Dar Tutun:** Yalnızca test ettiğiniz alan adını Scope'a ekleyin. Böylece arka plandaki gereksiz telemetri ve analitik istekleri Proxy geçmişinizi kirletmez.

@@ -1,6 +1,9 @@
 # 💥 Pwn/Binary Exploitation CTF Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/Pwn-CTF.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Pwn-CTF.tr.md) • [🇬🇷 Ελληνικά](translations/Pwn-CTF.el.md)
 
 ---
 

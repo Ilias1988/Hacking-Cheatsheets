@@ -1,5 +1,8 @@
 # 🦊 Dalfox - XSS Scanning Framework
 
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
 ```
   ██████╗  █████╗ ██╗     ███████╗ ██████╗ ██╗  ██╗
   ██╔══██╗██╔══██╗██║     ██╔════╝██╔═══██╗╚██╗██╔╝
@@ -14,7 +17,7 @@
   <img src="https://img.shields.io/badge/Dalfox-XSS_Scanner-blue?style=for-the-badge" alt="Dalfox">
   <img src="https://img.shields.io/badge/Reflected_XSS-green?style=for-the-badge" alt="Reflected">
   <img src="https://img.shields.io/badge/Bug_Bounty-red?style=for-the-badge" alt="Bug Bounty"><br>
-  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a> • <a href="translations/README.el.md">🇬🇷 Ελληνικά</a>
 </p>
 
 ---
@@ -154,6 +157,7 @@ dalfox server -p 8080
 
 ---
 
+<a id="-advanced-options"></a>
 ## ⚙️ Advanced Options
 
 ### Custom Headers

@@ -1,5 +1,8 @@
 # 🪟 Windows Yetki Yükseltme (Privilege Escalation) - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -140,6 +143,7 @@ Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uni
 
 ---
 
+<a id="-servis-izinlerini-istismar-etme-service-exploitation"></a>
 ## ⚙️ Servis İzinlerini İstismar Etme (Service Exploitation)
 
 ### Zafiyetli Servisleri Tespit Etme
@@ -383,6 +387,7 @@ echo net localgroup administrators user /add >> C:\Scripts\backup.bat
 
 ---
 
+<a id="-uac-atlatma-uac-bypass"></a>
 ## 🛡️ UAC Atlatma (UAC Bypass)
 
 Kullanıcınız `Administrators` grubunda olduğu halde tam yetkili yönetici olarak çalışmıyorsa UAC atlatma teknikleri kullanılır:

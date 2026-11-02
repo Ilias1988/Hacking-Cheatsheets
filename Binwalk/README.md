@@ -1,6 +1,9 @@
 # 🔧 Binwalk - Firmware Analysis Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ██████╗ ██╗███╗   ██╗██╗    ██╗ █████╗ ██╗     ██╗  ██╗
@@ -463,6 +466,7 @@ ls -la suspicious.jpg
 
 ---
 
+<a id="-advanced-options"></a>
 ## ⚙️ Advanced Options
 
 ### Hexdump Output

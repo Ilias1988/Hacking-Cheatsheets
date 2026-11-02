@@ -1,6 +1,9 @@
 # 📡 tcpdump - Complete Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   _             _                       
@@ -94,6 +97,7 @@ tcpdump -D              # List interfaces
 
 ---
 
+<a id="-basic-syntax"></a>
 ## ⌨️ Basic Syntax
 
 ### General Syntax
@@ -120,6 +124,7 @@ sudo tcpdump -vvv
 
 ---
 
+<a id="-common-options"></a>
 ## ⚙️ Common Options
 
 ### Display Options

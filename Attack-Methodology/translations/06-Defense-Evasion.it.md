@@ -1,5 +1,8 @@
 # 🛡️ Fase 6: Defense Evasion
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██████╗ ███████╗███████╗███████╗███╗   ██╗███████╗███████╗
   ██╔══██╗██╔════╝██╔════╝██╔════╝████╗  ██║██╔════╝██╔════╝
@@ -288,8 +291,8 @@ exec -a "[kworker/0:0]" ./malicious
 
 ## 🔗 Cheatsheet Correlate
 
-- [PowerShell](../PowerShell/translations/README.it.md)
-- [Mimikatz](../Mimikatz/translations/README.it.md)
+- [PowerShell](../../PowerShell/translations/README.it.md)
+- [Mimikatz](../../Mimikatz/translations/README.it.md)
 
 ---
 

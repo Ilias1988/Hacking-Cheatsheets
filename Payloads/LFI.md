@@ -1,6 +1,9 @@
 # 📂 LFI Payloads Collection
 
-[🇹🇷 Türkçe Sürüm](translations/LFI.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/LFI.tr.md) • [🇬🇷 Ελληνικά](translations/LFI.el.md)
 
 ```
   ██╗     ███████╗██╗    ██████╗  █████╗ ██╗   ██╗██╗      ██████╗  █████╗ ██████╗ ███████╗

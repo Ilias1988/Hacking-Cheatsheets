@@ -2,6 +2,9 @@
 
 # 🌐 httpx - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   _     _   _           
  | |__ | |_| |_ _ __ __  __
@@ -108,6 +111,7 @@ httpx -h
 
 ---
 
+<a id="-temel-sözdizimi"></a>
 ## ⌨️ Temel Sözdizimi
 
 ### Genel Sözdizimi
@@ -477,6 +481,7 @@ httpx -l urls.txt -resume -resume-file progress.txt
 
 ---
 
+<a id="-bug-bounty-iş-akışı"></a>
 ## 🔄 Bug Bounty İş Akışı
 
 ### Eksiksiz Keşif Boru Hattı
@@ -641,6 +646,7 @@ nuclei -severity critical,high
 
 ---
 
+<a id="-ipuçları-ve-en-iyi-pratikler"></a>
 ## 💡 İpuçları ve En İyi Pratikler
 
 ### Bug Bounty İpuçları

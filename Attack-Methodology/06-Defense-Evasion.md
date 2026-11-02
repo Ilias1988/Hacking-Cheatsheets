@@ -1,6 +1,9 @@
 # 🛡️ Phase 6: Defense Evasion
 
-[🇹🇷 Türkçe Sürüm](translations/06-Defense-Evasion.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/06-Defense-Evasion.tr.md) • [🇬🇷 Ελληνικά](translations/06-Defense-Evasion.el.md)
 
 ```
   ██████╗ ███████╗███████╗███████╗███╗   ██╗███████╗███████╗

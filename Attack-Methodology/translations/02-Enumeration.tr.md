@@ -1,5 +1,8 @@
 # 🔍 Faz 2: Keşif ve Numaralandırma (Enumeration)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../02-Enumeration.md) • [🇮🇹 Versione Italiana](02-Enumeration.it.md)
 
 ```

@@ -1,5 +1,8 @@
 # 🐛 Bug Bounty Methodology
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██████╗ ██╗   ██╗ ██████╗     ██████╗  ██████╗ ██╗   ██╗███╗   ██╗████████╗██╗   ██╗
   ██╔══██╗██║   ██║██╔════╝     ██╔══██╗██╔═══██╗██║   ██║████╗  ██║╚══██╔══╝╚██╗ ██╔╝
@@ -546,6 +549,7 @@ nuclei -l alive.txt -s critical,high -o nuclei_results.txt
 
 ---
 
+<a id="-installazione-del-tool"></a>
 ## 🛠️ Installazione del Tool
 
 ### Strumenti Essenziali
@@ -624,12 +628,12 @@ go install -v github.com/PentestPad/subzy@latest
 
 ## 📚 Cheatsheet Correlate
 
-- [Nuclei](../Nuclei/translations/README.it.md)
-- [ffuf](../ffuf/translations/README.it.md)
-- [Subfinder](../Subfinder/translations/README.it.md)
-- [httpx](../httpx/translations/README.it.md)
-- [Google Dorking](../Google-Dorking/translations/README.it.md)
-- [Burp Suite](../Burp-Suite/translations/README.it.md)
+- [Nuclei](../../Nuclei/translations/README.it.md)
+- [ffuf](../../ffuf/translations/README.it.md)
+- [Subfinder](../../Subfinder/translations/README.it.md)
+- [httpx](../../httpx/translations/README.it.md)
+- [Google Dorking](../../Google-Dorking/translations/README.it.md)
+- [Burp Suite](../../Burp-Suite/translations/README.it.md)
 
 ---
 

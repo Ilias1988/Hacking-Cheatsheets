@@ -1,6 +1,9 @@
 # 🔬 YARA Rules Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/YARA-Rules.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/YARA-Rules.tr.md) • [🇬🇷 Ελληνικά](translations/YARA-Rules.el.md)
 
 ```
 ██╗   ██╗ █████╗ ██████╗  █████╗     ██████╗ ██╗   ██╗██╗     ███████╗███████╗
@@ -278,7 +281,7 @@ yarac rules.yar compiled.yarc
 ## 🔗 Related Cheatsheets
 
 - [Sigma Rules](./Sigma-Rules.md)
-- [Malware Analysis](./Malware-Analysis.md)
+- Malware Analysis — guide not yet included
 - [Threat Hunting](./Threat-Hunting.md)
 
 ---

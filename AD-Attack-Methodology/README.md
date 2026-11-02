@@ -1,6 +1,9 @@
 # 🏢 Active Directory Attack Methodology
 
-[🇮🇹 Versione Italiana](translations/README.it.md) • [🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇮🇹 Versione Italiana](translations/README.it.md) • [🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
     █████╗ ██████╗     █████╗ ████████╗████████╗ █████╗  ██████╗██╗  ██╗
@@ -210,6 +213,7 @@ hashcat -m 18200 asrep.txt rockyou.txt
 
 ---
 
+<a id="-phase-3-privilege-escalation"></a>
 ## ⬆️ Phase 3: Privilege Escalation
 
 ### 3.1 Kerberoasting
@@ -289,6 +293,7 @@ getST.py -spn cifs/target.domain.local -impersonate administrator domain.local/F
 
 ---
 
+<a id="-phase-4-lateral-movement"></a>
 ## ➡️ Phase 4: Lateral Movement
 
 ### 4.1 Pass-the-Hash

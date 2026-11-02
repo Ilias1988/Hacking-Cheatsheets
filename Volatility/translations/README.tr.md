@@ -2,6 +2,9 @@
 
 # 🧠 Volatility - Bellek Adli Bilişimi Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██╗   ██╗ ██████╗ ██╗      █████╗ ████████╗██╗██╗     ██╗████████╗██╗   ██╗
   ██║   ██║██╔═══██╗██║     ██╔══██╗╚══██╔══╝██║██║     ██║╚══██╔══╝╚██╗ ██╔╝
@@ -178,6 +181,7 @@ vol -f memory.raw mac.info
 
 ---
 
+<a id="-süreç-analizi-process-analysis"></a>
 ## ⚙️ Süreç Analizi (Process Analysis)
 
 ### Süreçleri Listeleme

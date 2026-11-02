@@ -1,5 +1,8 @@
 # 🔑 Mimikatz - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -395,6 +398,7 @@ mimikatz # token::revert
 
 ---
 
+<a id="-atlatma-teknikleri-evasion"></a>
 ## 🛡️ Atlatma Teknikleri (Evasion)
 
 ### Dosyasız (Fileless) ve Bellek İçi Yürütme

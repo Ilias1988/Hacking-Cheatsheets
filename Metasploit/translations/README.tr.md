@@ -1,5 +1,8 @@
 # 🔴 Metasploit Framework - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -37,24 +40,22 @@
 
 ## 📋 İçindekiler
 
-- [Giriş](#-giriş)
-- [Kurulum](#-kurulum)
-- [Mimari Genel Bakış](#-mimari-genel-bakış)
-- [Metasploit'i Başlatma](#-metasploiti-başlatma)
-- [Temel Komutlar](#-temel-komutlar)
-- [Modül Türleri](#-modül-türleri)
-- [İstismar (Exploitation) İş Akışı](#-istismar-exploitation-iş-akışı)
-- [Veritabanı Entegrasyonu (PostgreSQL)](#-veritabanı-entegrasyonu-postgresql)
-- [Tarama ve Numaralandırma (Scanning & Enumeration)](#-tarama-ve-numaralandırma-scanning--enumeration)
-- [Payload Üretimi (msfvenom)](#-payload-üretimi-msfvenom)
-- [Sömürü Sonrası (Post-Exploitation)](#-sömürü-sonrası-post-exploitation)
-- [Yardımcı Modüller (Auxiliary)](#-yardımcı-modüller-auxiliary)
-- [Gerçek Dünya Örnek Senaryoları](#-gerçek-dünya-örnek-senaryoları)
-- [Hızlı Başvuru Tabloları](#-hızlı-başvuru-tabloları)
-- [İpuçları ve En İyi Uygulamalar](#-ipuçları-ve-en-iyi-uygulamalar)
-- [Kaynaklar](#-kaynaklar)
-
----
+- [🎯 Giriş](#-giriş)
+- [📥 Kurulum](#-kurulum)
+- [🏗️ Mimari Genel Bakış](#️-mimari-genel-bakış)
+- [🚀 Metasploit'i Başlatma](#-metasploiti-başlatma)
+- [⌨️ Temel Komutlar](#️-temel-komutlar)
+- [📦 Modül Türleri](#-modül-türleri)
+- [🎯 İstismar (Exploitation) İş Akışı](#-i̇stismar-exploitation-i̇ş-akışı)
+- [🗄️ Veritabanı Entegrasyonu (PostgreSQL)](#️-veritabanı-entegrasyonu-postgresql)
+- [💉 Payload Üretimi (msfvenom)](#-payload-üretimi-msfvenom)
+- [🔓 Sömürü Sonrası (Post-Exploitation)](#-sömürü-sonrası-post-exploitation)
+- [🔧 Yardımcı Modüller (Auxiliary)](#-yardımcı-modüller-auxiliary)
+- [🎬 Gerçek Dünya Örnek Senaryoları](#-gerçek-dünya-örnek-senaryoları)
+- [📊 Hızlı Başvuru Tabloları](#-hızlı-başvuru-tabloları)
+- [💡 İpuçları ve En İyi Uygulamalar](#-i̇puçları-ve-en-i̇yi-uygulamalar)
+- [⚠️ Yasal Uyarı](#️-yasal-uyarı)
+- [📚 Kaynaklar](#-kaynaklar)
 
 ## 🎯 Giriş
 
@@ -104,6 +105,7 @@ docker run --rm -it metasploitframework/metasploit-framework ./msfconsole
 
 ---
 
+<a id="-mimari-genel-bakış"></a>
 ## 🏗️ Mimari Genel Bakış
 
 ```
@@ -180,6 +182,7 @@ msfconsole -r commands.rc
 
 ---
 
+<a id="-temel-komutlar"></a>
 ## ⌨️ Temel Komutlar
 
 ### Gezinme ve Yardım
@@ -299,6 +302,7 @@ show encoders
 
 ---
 
+<a id="-istismar-exploitation-iş-akışı"></a>
 ## 🎯 İstismar (Exploitation) İş Akışı
 
 ```
@@ -344,6 +348,7 @@ msf6 exploit(ms17_010_eternalblue) > exploit
 
 ---
 
+<a id="-veritabanı-entegrasyonu-postgresql"></a>
 ## 🗄️ Veritabanı Entegrasyonu (PostgreSQL)
 
 ### Çalışma Alanları (Workspace)
@@ -544,6 +549,7 @@ run
 
 ---
 
+<a id="-ipuçları-ve-en-iyi-uygulamalar"></a>
 ## 💡 İpuçları ve En İyi Uygulamalar
 
 1. **Her Zaman PostgreSQL Kullanın:** `msfdb init` yaparak veritabanını aktif tutun; böylece taranan tüm servisler ve bulunan kimlik bilgileri otomatik indekslenir.

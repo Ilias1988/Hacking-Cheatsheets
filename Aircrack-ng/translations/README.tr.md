@@ -2,6 +2,9 @@
 
 # 📶 Aircrack-ng - WiFi Güvenlik & Kırma Paketi Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
    █████╗ ██╗██████╗  ██████╗██████╗  █████╗  ██████╗██╗  ██╗
   ██╔══██╗██║██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔════╝██║ ██╔╝

@@ -1,6 +1,9 @@
 # 🌐 Web CTF Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/Web-CTF.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Web-CTF.tr.md) • [🇬🇷 Ελληνικά](translations/Web-CTF.el.md)
 
 ---
 

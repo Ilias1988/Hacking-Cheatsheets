@@ -1,6 +1,9 @@
 # 🎣 Phishing Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/Phishing.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Phishing.tr.md) • [🇬🇷 Ελληνικά](translations/Phishing.el.md)
 
 ```
 ██████╗ ██╗  ██╗██╗███████╗██╗  ██╗██╗███╗   ██╗ ██████╗ 

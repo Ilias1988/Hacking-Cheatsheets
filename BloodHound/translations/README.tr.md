@@ -1,5 +1,8 @@
 # 🩸 BloodHound - Active Directory Saldırı Yolu Görselleştirme Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md) | [🇮🇹 Italiano](README.it.md)
 
 ```
@@ -22,18 +25,16 @@
 
 ## 📋 İçindekiler
 
-- [BloodHound Nedir?](#-bloodhound-nedir)
-- [Kurulum](#-kurulum)
-- [SharpHound ile Veri Toplama](#-sharphound-ile-veri-toplama)
-- [BloodHound Grafik Arayüzü Kullanımı](#-bloodhound-grafik-arayüzü-kullanımı)
-- [Dahili Hazır Sorgular](#-dahili-hazır-sorgular)
-- [Özel Cypher Sorguları](#-özel-cypher-sorguları)
-- [Saldırı Yolu Analizi](#-saldırı-yolu-analizi)
-- [BloodHound CE (Community Edition)](#-bloodhound-ce-community-edition)
-- [Hızlı Başvuru Tablosu](#-hızlı-başvuru-tablosu)
-- [Kaynaklar](#-kaynaklar)
-
----
+- [🎯 BloodHound Nedir?](#-bloodhound-nedir)
+- [🚀 Kurulum](#-kurulum)
+- [📡 SharpHound ile Veri Toplama](#-sharphound-ile-veri-toplama)
+- [🖥️ BloodHound Grafik Arayüzü Kullanımı](#️-bloodhound-grafik-arayüzü-kullanımı)
+- [🔍 Dahili Hazır Sorgular (Built-in Queries)](#-dahili-hazır-sorgular-built-in-queries)
+- [📝 Özel Cypher Sorguları (Custom Cypher Queries)](#-özel-cypher-sorguları-custom-cypher-queries)
+- [🎯 Saldırı Yolu Analizi (Attack Path Analysis)](#-saldırı-yolu-analizi-attack-path-analysis)
+- [🆕 BloodHound CE (Community Edition)](#-bloodhound-ce-community-edition)
+- [📊 Hızlı Başvuru Tablosu](#-hızlı-başvuru-tablosu)
+- [📚 Kaynaklar](#-kaynaklar)
 
 ## 🎯 BloodHound Nedir?
 
@@ -161,6 +162,7 @@ bloodhound-python -u 'kullanici' --hashes :NTLMHASH -d domain.local -c All
 
 ---
 
+<a id="-bloodhound-grafik-arayüzü-kullanımı"></a>
 ## 🖥️ BloodHound Grafik Arayüzü Kullanımı
 
 1. Neo4j servisini başlatın (`sudo neo4j start`).

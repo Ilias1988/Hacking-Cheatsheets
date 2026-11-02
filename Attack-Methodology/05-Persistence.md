@@ -1,6 +1,9 @@
 # 🔒 Phase 5: Persistence
 
-[🇹🇷 Türkçe Sürüm](translations/05-Persistence.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/05-Persistence.tr.md) • [🇬🇷 Ελληνικά](translations/05-Persistence.el.md)
 
 ```
   ██████╗ ███████╗██████╗ ███████╗██╗███████╗████████╗███████╗███╗   ██╗ ██████╗███████╗

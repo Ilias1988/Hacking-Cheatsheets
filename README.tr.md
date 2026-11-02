@@ -1,6 +1,6 @@
 # 🔴 Hacking Cheatsheets
 
-[🇬🇧 English](README.md) • [🇮🇹 Versione Italiana](README.it.md)
+[🇬🇧 English](README.md) • [🇬🇷 Ελληνικά](README.el.md) • [🇹🇷 Türkçe](README.tr.md) • [🇮🇹 Italiano](README.it.md) • [🇩🇪 Deutsch](README.de.md) • [🇷🇺 Русский](README.ru.md) • [🇫🇷 Français](README.fr.md) • [🇪🇸 Español](README.es.md) • [🇵🇹 Português (Portugal)](README.pt.md) • [🌐 العربية](README.ar.md) • [🇨🇳 简体中文](README.zh-CN.md) • [🇳🇴 Norsk (Bokmål)](README.nb.md)
 
 ```
     ██╗  ██╗ █████╗  ██████╗██╗  ██╗██╗███╗   ██╗ ██████╗ 
@@ -140,6 +140,7 @@
 
 ---
 
+<a id="📝-raporlama-şablonları-reporting-templates"></a>
 ## 📝 Raporlama Şablonları (Reporting Templates)
 
 > Güvenlik uzmanları ve bug bounty avcıları için profesyonel rapor şablonları.

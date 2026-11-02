@@ -1,5 +1,8 @@
 # 🛡️ Faz 6: Savunma Atlatma (Defense Evasion)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../06-Defense-Evasion.md) • [🇮🇹 Versione Italiana](06-Defense-Evasion.it.md)
 
 ```

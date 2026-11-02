@@ -1,5 +1,8 @@
 # 📡 tcpdump - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -95,6 +98,7 @@ tcpdump -D              # Kullanılabilir ağ arayüzlerini listeler
 
 ---
 
+<a id="-temel-sözdizimi"></a>
 ## ⌨️ Temel Sözdizimi
 
 ### Genel Sözdizimi
@@ -121,6 +125,7 @@ sudo tcpdump -vvv
 
 ---
 
+<a id="-sık-kullanılan-seçenekler"></a>
 ## ⚙️ Sık Kullanılan Seçenekler
 
 ### Gösterim Seçenekleri

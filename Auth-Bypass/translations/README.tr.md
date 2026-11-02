@@ -1,5 +1,8 @@
 # 🔐 Kimlik Doğrulama Atlatma (Auth Bypass) Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md) • [🇮🇹 Versione Italiana](README.it.md)
 
 ```

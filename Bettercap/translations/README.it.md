@@ -1,5 +1,8 @@
 # 🦈 Bettercap - Cheatsheet Network Attack Framework
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██████╗ ███████╗████████╗████████╗███████╗██████╗  ██████╗ █████╗ ██████╗ 
   ██╔══██╗██╔════╝╚══██╔══╝╚══██╔══╝██╔════╝██╔══██╗██╔════╝██╔══██╗██╔══██╗
@@ -704,9 +707,9 @@ PERMESSO SCRITTO ESPLICITO.
 - [Caplets](https://github.com/bettercap/caplets)
 
 ### Cheatsheet Correlate
-- [Aircrack-ng](../Aircrack-ng/translations/README.it.md)
-- [Wifite](../Wifite/translations/README.it.md)
-- [Wireshark](../Wireshark/translations/README.it.md)
+- [Aircrack-ng](../../Aircrack-ng/translations/README.it.md)
+- [Wifite](../../Wifite/translations/README.it.md)
+- [Wireshark](../../Wireshark/translations/README.it.md)
 
 ---
 

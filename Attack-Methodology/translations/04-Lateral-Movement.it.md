@@ -1,5 +1,8 @@
 # ➡️ Fase 4: Lateral Movement
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██╗      █████╗ ████████╗███████╗██████╗  █████╗ ██╗     
   ██║     ██╔══██╗╚══██╔══╝██╔════╝██╔══██╗██╔══██╗██║     
@@ -286,11 +289,11 @@ mimikatz# kerberos::golden /user:Administrator /domain:domain.local /sid:S-1-5-2
 
 ## 🔗 Cheatsheet Correlate
 
-- [Impacket](../Impacket/translations/README.it.md)
-- [CrackMapExec](../CrackMapExec/translations/README.it.md)
-- [Evil-WinRM](../Evil-WinRM/translations/README.it.md)
-- [Mimikatz](../Mimikatz/translations/README.it.md)
-- [Rubeus](../Rubeus/translations/README.it.md)
+- [Impacket](../../Impacket/translations/README.it.md)
+- [CrackMapExec](../../CrackMapExec/translations/README.it.md)
+- [Evil-WinRM](../../Evil-WinRM/translations/README.it.md)
+- [Mimikatz](../../Mimikatz/translations/README.it.md)
+- [Rubeus](../../Rubeus/translations/README.it.md)
 
 ---
 

@@ -2,6 +2,9 @@
 
 # 🔍 Autopsy - Dijital Adli Bilişim Platformu Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
    █████╗ ██╗   ██╗████████╗ ██████╗ ██████╗ ███████╗██╗   ██╗
   ██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗██╔══██╗██╔════╝╚██╗ ██╔╝
@@ -155,6 +158,7 @@ bağlantı modu kullanın!
 
 ---
 
+<a id="-i̇çe-aktarma-modülleri-ingest-modules"></a>
 ## ⚙️ İçe Aktarma Modülleri (Ingest Modules)
 
 ### İçe Aktarma Modülü Nedir?

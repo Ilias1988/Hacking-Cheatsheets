@@ -1,6 +1,9 @@
 # 🔬 Forensics CTF Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/Forensics-CTF.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Forensics-CTF.tr.md) • [🇬🇷 Ελληνικά](translations/Forensics-CTF.el.md)
 
 ---
 

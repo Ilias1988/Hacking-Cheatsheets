@@ -1,5 +1,8 @@
 # 🔍 Subfinder - Complete Cheatsheet
 
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
 ```
   ____        _     __ _           _           
  / ___| _   _| |__ / _(_)_ __   __| | ___ _ __ 
@@ -19,7 +22,7 @@
 
 <p align="center">
   <b>🌐 Fast passive subdomain enumeration tool by ProjectDiscovery</b><br>
-  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a> • <a href="translations/README.el.md">🇬🇷 Ελληνικά</a>
 </p>
 
 ---
@@ -106,6 +109,7 @@ subfinder -h
 
 ---
 
+<a id="-basic-syntax"></a>
 ## ⌨️ Basic Syntax
 
 ### General Syntax

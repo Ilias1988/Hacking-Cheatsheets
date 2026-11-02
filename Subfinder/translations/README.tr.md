@@ -2,6 +2,9 @@
 
 # 🔍 Subfinder - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ____        _     __ _           _           
  / ___| _   _| |__ / _(_)_ __   __| | ___ _ __ 
@@ -107,6 +110,7 @@ subfinder -h
 
 ---
 
+<a id="-temel-sözdizimi"></a>
 ## ⌨️ Temel Sözdizimi
 
 ### Genel Sözdizimi
@@ -404,6 +408,7 @@ subfinder -d target.com -proxy socks5://127.0.0.1:9050
 
 ---
 
+<a id="-bug-bounty-iş-akışı"></a>
 ## 🔄 Bug Bounty İş Akışı
 
 ### Eksiksiz Keşif Boru Hattı (Pipeline)
@@ -560,6 +565,7 @@ subfinder -d target.com -recursive -all -silent
 
 ---
 
+<a id="-ipuçları-ve-en-iyi-pratikler"></a>
 ## 💡 İpuçları ve En İyi Pratikler
 
 ### Bug Bounty İpuçları

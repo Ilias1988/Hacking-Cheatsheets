@@ -1,5 +1,8 @@
 # 🔒 Cheatsheet Hardening di Sistema
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
 ██╗  ██╗ █████╗ ██████╗ ██████╗ ███████╗███╗   ██╗██╗███╗   ██╗ ██████╗ 
 ██║  ██║██╔══██╗██╔══██╗██╔══██╗██╔════╝████╗  ██║██║████╗  ██║██╔════╝ 
@@ -299,7 +302,7 @@ systemctl restart auditd
 ## 🔗 Cheatsheet Correlate
 
 - [Incident Response](./Incident-Response.it.md)
-- [Network Defense](./Network-Defense.it.md)
+- Network Defense — guida non ancora inclusa
 
 ---
 

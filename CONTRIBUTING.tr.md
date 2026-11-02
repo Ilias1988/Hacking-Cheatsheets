@@ -8,14 +8,12 @@ Bu belge, depoya katkıda bulunmanız için geçerli kuralları ve yönergeleri 
 
 ## 📋 İçindekiler
 
-- [Davranış Kuralları (Code of Conduct)](#-davranış-kuralları-code-of-conduct)
-- [Nasıl Katkıda Bulunabilirim?](#-nasıl-katkıda-bulunabilirim)
-- [Kılavuz Kuralları & Şablonu](#-kılavuz-kuralları--şablonu)
-- [Stil ve Biçimlendirme Rehberi](#-stil-ve-biçimlendirme-rehberi)
-- [Pull Request (PR) Süreci](#-pull-request-pr-süreci)
-- [Katkıda Bulunanların Tanınması](#-katkıda-bulunanların-tanınması)
-
----
+- [📜 Davranış Kuralları (Code of Conduct)](#-davranış-kuralları-code-of-conduct)
+- [🎯 Nasıl Katkıda Bulunabilirim?](#-nasıl-katkıda-bulunabilirim)
+- [📖 Kılavuz Kuralları & Şablonu](#-kılavuz-kuralları--şablonu)
+- [🎨 Stil ve Biçimlendirme Rehberi](#-stil-ve-biçimlendirme-rehberi)
+- [🏆 Katkıda Bulunanların Tanınması](#-katkıda-bulunanların-tanınması)
+- [❓ Sorularınız mı Var?](#-sorularınız-mı-var)
 
 ## 📜 Davranış Kuralları (Code of Conduct)
 

@@ -1,6 +1,9 @@
 # 🎭 Meterpreter - Complete Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/Meterpreter.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Meterpreter.tr.md) • [🇬🇷 Ελληνικά](translations/Meterpreter.el.md)
 
 ```
     ███╗   ███╗███████╗████████╗███████╗██████╗ ██████╗ ██████╗ ███████╗████████╗███████╗██████╗ 
@@ -85,6 +88,7 @@ python/meterpreter/reverse_tcp
 
 ---
 
+<a id="-core-commands"></a>
 ## ⌨️ Core Commands
 
 ### Help & Navigation
@@ -358,6 +362,7 @@ meterpreter > run post/windows/gather/enum_proxy
 
 ---
 
+<a id="-process-commands"></a>
 ## ⚙️ Process Commands
 
 ### Process Listing
@@ -538,6 +543,7 @@ meterpreter > run post/windows/gather/credentials/outlook
 
 ---
 
+<a id="-keylogging"></a>
 ## ⌨️ Keylogging
 
 ### Start/Stop Keylogger

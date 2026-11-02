@@ -2,6 +2,9 @@
 
 # 🐙 GitHub Dorking - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
    ██████╗ ██╗████████╗██╗  ██╗██╗   ██╗██████╗ 
   ██╔════╝ ██║╚══██╔══╝██║  ██║██║   ██║██╔══██╗
@@ -32,21 +35,21 @@
 
 ## 📋 İçindekiler
 
-- [Giriş](#-giriş)
-- [GitHub Arama Sözdizimi](#-github-arama-sözdizimi)
-- [API Anahtarları ve Belirteçler (Tokens)](#-api-anahtarları-ve-belirteçler-tokens)
-- [Veritabanı Kimlik Bilgileri](#-veritabanı-kimlik-bilgileri)
-- [Özel Anahtarlar (Private Keys)](#-özel-anahtarlar-private-keys)
-- [Yapılandırma Dosyaları](#-yapılandırma-dosyaları)
-- [Bulut (Cloud) Gizli Anahtarları](#-bulut-cloud-gizli-anahtarları)
-- [Parolalar ve Kimlik Bilgileri](#-parolalar-ve-kimlik-bilgileri)
-- [Bug Bounty Hedefleri](#-bug-bounty-hedefleri)
-- [İleri Düzey Teknikler](#-i̇leri-düzey-teknikler)
-- [Otomasyon Araçları](#-otomasyon-araçları)
-- [Hızlı Başvuru](#-hızlı-başvuru)
-- [Kaynaklar](#-kaynaklar)
-
----
+- [🎯 Giriş](#-giriş)
+- [🔧 GitHub Arama Sözdizimi](#-github-arama-sözdizimi)
+- [🔑 API Anahtarları ve Belirteçler (Tokens)](#-api-anahtarları-ve-belirteçler-tokens)
+- [💾 Veritabanı Kimlik Bilgileri](#-veritabanı-kimlik-bilgileri)
+- [🔐 Özel Anahtarlar (Private Keys)](#-özel-anahtarlar-private-keys)
+- [⚙️ Yapılandırma Dosyaları](#️-yapılandırma-dosyaları)
+- [☁️ Bulut (Cloud) Gizli Anahtarları](#️-bulut-cloud-gizli-anahtarları)
+- [🔓 Parolalar ve Kimlik Bilgileri](#-parolalar-ve-kimlik-bilgileri)
+- [🎯 Bug Bounty Hedefleri](#-bug-bounty-hedefleri)
+- [🔬 İleri Düzey Teknikler](#-i̇leri-düzey-teknikler)
+- [🛠️ Otomasyon Araçları](#️-otomasyon-araçları)
+- [📊 Hızlı Başvuru](#-hızlı-başvuru)
+- [💡 İpuçları ve En İyi Pratikler](#-i̇puçları-ve-en-i̇yi-pratikler)
+- [⚠️ Yasal Uyarı](#️-yasal-uyarı)
+- [📚 Kaynaklar](#-kaynaklar)
 
 ## 🎯 Giriş
 
@@ -427,6 +430,7 @@ filename:.gitlab-ci.yml
 
 ---
 
+<a id="-bulut-cloud-gizli-anahtarları"></a>
 ## ☁️ Bulut (Cloud) Gizli Anahtarları
 
 ### AWS
@@ -681,6 +685,7 @@ xox[baprs]-[0-9]{12}-[0-9]{12}-[a-zA-Z0-9]{24}
 
 ---
 
+<a id="-otomasyon-araçları"></a>
 ## 🛠️ Otomasyon Araçları
 
 ### TruffleHog

@@ -2,6 +2,9 @@
 
 # 🔧 Binwalk - Bellenim (Firmware) Analiz Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██████╗ ██╗███╗   ██╗██╗    ██╗ █████╗ ██╗     ██╗  ██╗
   ██╔══██╗██║████╗  ██║██║    ██║██╔══██╗██║     ██║ ██╔╝
@@ -401,6 +404,7 @@ strings * | grep -i flag
 
 ---
 
+<a id="-gelişmiş-seçenekler"></a>
 ## ⚙️ Gelişmiş Seçenekler
 
 ### Hex Dökümü Görüntüleme

@@ -1,6 +1,9 @@
 # 🔐 Crypto CTF Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/Crypto-CTF.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Crypto-CTF.tr.md) • [🇬🇷 Ελληνικά](translations/Crypto-CTF.el.md)
 
 ---
 

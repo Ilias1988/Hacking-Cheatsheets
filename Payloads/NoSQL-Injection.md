@@ -1,6 +1,9 @@
 # 🍃 NoSQL Injection Payloads
 
-[🇹🇷 Türkçe Sürüm](translations/NoSQL-Injection.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/NoSQL-Injection.tr.md) • [🇬🇷 Ελληνικά](translations/NoSQL-Injection.el.md)
 
 ```
 ███╗   ██╗ ██████╗ ███████╗ ██████╗ ██╗         ██╗███╗   ██╗     ██╗███████╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗
@@ -338,4 +341,4 @@ curl -X POST http://target/login \
 
 ---
 
-**Back to Payloads:** [💉 Payloads Collection](./README.md)
+**Back to Payloads:** [💉 Payloads Collection](../README.md)

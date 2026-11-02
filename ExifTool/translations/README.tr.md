@@ -2,6 +2,9 @@
 
 # 📷 ExifTool - Meta Veri (Metadata) Analiz Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ███████╗██╗  ██╗██╗███████╗████████╗ ██████╗  ██████╗ ██╗     
   ██╔════╝╚██╗██╔╝██║██╔════╝╚══██╔══╝██╔═══██╗██╔═══██╗██║     
@@ -195,6 +198,7 @@ exiftool -p '$filename: $make $model' image.jpg
 
 ---
 
+<a id="-meta-veri-yazma-ve-güncelleme"></a>
 ## ✏️ Meta Veri Yazma ve Güncelleme
 
 ### Tek Etiket Güncelleme
@@ -258,6 +262,7 @@ exiftool -TagsFromFile source.jpg -GPS:all *.jpg
 
 ---
 
+<a id="-meta-verileri-temizleme--silme"></a>
 ## 🗑️ Meta Verileri Temizleme / Silme
 
 ### Tüm Meta Verileri Silme
@@ -430,6 +435,7 @@ exiftool -ModifyDate -CreateDate -DateTimeOriginal image.jpg
 
 ---
 
+<a id="-toplu-i̇şlemler-batch-processing"></a>
 ## ⚙️ Toplu İşlemler (Batch Processing)
 
 ### Birden Fazla Dosyayı İşleme

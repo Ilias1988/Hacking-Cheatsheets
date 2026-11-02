@@ -1,5 +1,8 @@
 # 🌐 Amass - Attack Surface Mapping
 
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
 ```
    █████╗ ███╗   ███╗ █████╗ ███████╗███████╗
   ██╔══██╗████╗ ████║██╔══██╗██╔════╝██╔════╝
@@ -14,7 +17,7 @@
   <img src="https://img.shields.io/badge/Amass-OWASP-blue?style=for-the-badge" alt="Amass">
   <img src="https://img.shields.io/badge/Subdomain-Discovery-green?style=for-the-badge" alt="Subdomain">
   <img src="https://img.shields.io/badge/ASN-Mapping-red?style=for-the-badge" alt="ASN"><br>
-  <a href="translations/README.it.md">🇮🇹 Versione Italiana</a> | <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
+  <a href="translations/README.it.md">🇮🇹 Versione Italiana</a> | <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a> • <a href="translations/README.el.md">🇬🇷 Ελληνικά</a>
 </p>
 
 ---
@@ -204,6 +207,7 @@ amass dns -df subdomains.txt
 
 ---
 
+<a id="-configuration"></a>
 ## ⚙️ Configuration
 
 ### Config File Location

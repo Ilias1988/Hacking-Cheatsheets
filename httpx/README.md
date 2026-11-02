@@ -1,5 +1,8 @@
 # 🌐 httpx - Complete Cheatsheet
 
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
 ```
   _     _   _           
  | |__ | |_| |_ _ __ __  __
@@ -20,7 +23,7 @@
 
 <p align="center">
   <b>⚡ Fast and multi-purpose HTTP toolkit by ProjectDiscovery</b><br>
-  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a> • <a href="translations/README.el.md">🇬🇷 Ελληνικά</a>
 </p>
 
 ---
@@ -107,6 +110,7 @@ httpx -h
 
 ---
 
+<a id="-basic-syntax"></a>
 ## ⌨️ Basic Syntax
 
 ### General Syntax

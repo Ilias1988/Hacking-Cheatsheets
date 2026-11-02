@@ -1,5 +1,8 @@
 # 🩸 BloodHound - Visualizzazione dei percorsi di attacco Active Directory
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../README.md) | [🇹🇷 Türkçe Sürüm](README.tr.md)
 
 ```
@@ -212,6 +215,7 @@ bloodhound-python -u user --hashes :NTLMHASH -d domain.local -c All
 
 ---
 
+<a id="-utilizzo-della-gui-di-bloodhound"></a>
 ## 🖥️ Utilizzo della GUI di BloodHound
 
 ### Avvia BloodHound
@@ -595,9 +599,9 @@ Output SharpHound:
 - [bloodhound.py](https://github.com/fox-it/BloodHound.py)
 
 ### Cheatsheet correlate
-- [Mimikatz](../Mimikatz/translations/README.it.md)
-- [PowerShell](../PowerShell/translations/README.it.md)
-- [Windows PrivEsc](../Windows-PrivEsc/translations/README.it.md)
+- [Mimikatz](../../Mimikatz/translations/README.it.md)
+- [PowerShell](../../PowerShell/translations/README.it.md)
+- [Windows PrivEsc](../../Windows-PrivEsc/translations/README.it.md)
 
 ---
 

@@ -1,5 +1,8 @@
 # 🚨 Cheatsheet di Incident Response
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██╗███╗   ██╗ ██████╗██╗██████╗ ███████╗███╗   ██╗████████╗
   ██║████╗  ██║██╔════╝██║██╔══██╗██╔════╝████╗  ██║╚══██╔══╝
@@ -393,7 +396,7 @@ net user username /logonpasswordchg:yes
 
 - [Analisi Log](./Log-Analysis.it.md)
 - [Rilevamento SIEM](./SIEM-Detection.it.md)
-- [Volatility (Forensics)](../Volatility/translations/README.it.md)
+- [Volatility (Forensics)](../../Volatility/translations/README.it.md)
 
 ---
 

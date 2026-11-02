@@ -1,6 +1,9 @@
 # 🚨 Incident Response Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/Incident-Response.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Incident-Response.tr.md) • [🇬🇷 Ελληνικά](translations/Incident-Response.el.md)
 
 ```
   ██╗███╗   ██╗ ██████╗██╗██████╗ ███████╗███╗   ██╗████████╗

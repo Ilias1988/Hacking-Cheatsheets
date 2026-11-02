@@ -2,6 +2,9 @@
 
 # 🔍 Google Dorking - Kapsamlı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
    ██████╗  ██████╗  ██████╗  ██████╗ ██╗     ███████╗
   ██╔════╝ ██╔═══██╗██╔═══██╗██╔════╝ ██║     ██╔════╝
@@ -32,24 +35,24 @@
 
 ## 📋 İçindekiler
 
-- [Giriş](#-giriş)
-- [Temel Operatörler](#-temel-operatörler)
-- [Gelişmiş Operatörler](#-gelişmiş-operatörler)
-- [Operatörleri Birleştirme](#-operatörleri-birleştirme)
-- [Dosya Keşfi](#-dosya-keşfi)
-- [Dizin Listeleme (Directory Listing)](#-dizin-listeleme-directory-listing)
-- [Yönetici (Admin) Panelleri](#-yönetici-admin-panelleri)
-- [Veritabanı & SQL](#-veritabanı--sql)
-- [Yapılandırma Dosyaları](#-yapılandırma-dosyaları)
-- [Kimlik Bilgileri ve Gizli Anahtarlar](#-kimlik-bilgileri-ve-gizli-anahtarlar)
-- [Zafiyetli Sunucular](#-zafiyetli-sunucular)
-- [Bug Bounty Dork'ları](#-bug-bounty-dorkları)
-- [CMS'e Özel Dork'lar](#-cmse-özel-dorklar)
-- [Hızlı Başvuru](#-hızlı-başvuru)
-- [Araçlar ve Otomasyon](#-araçlar-ve-otomasyon)
-- [Kaynaklar](#-kaynaklar)
-
----
+- [🎯 Giriş](#-giriş)
+- [🔧 Temel Operatörler](#-temel-operatörler)
+- [⚡ Gelişmiş Operatörler](#-gelişmiş-operatörler)
+- [🔗 Operatörleri Birleştirme](#-operatörleri-birleştirme)
+- [📁 Dosya Keşfi](#-dosya-keşfi)
+- [📂 Dizin Listeleme (Directory Listing)](#-dizin-listeleme-directory-listing)
+- [🔐 Yönetici (Admin) Panelleri](#-yönetici-admin-panelleri)
+- [💾 Veritabanı & SQL](#-veritabanı--sql)
+- [⚙️ Yapılandırma Dosyaları](#️-yapılandırma-dosyaları)
+- [🔑 Kimlik Bilgileri ve Gizli Anahtarlar](#-kimlik-bilgileri-ve-gizli-anahtarlar)
+- [⚠️ Zafiyetli Sunucular](#️-zafiyetli-sunucular)
+- [🐛 Bug Bounty Dork'ları](#-bug-bounty-dorkları)
+- [📱 CMS'e Özel Dork'lar](#-cmse-özel-dorklar)
+- [📊 Hızlı Başvuru](#-hızlı-başvuru)
+- [🛠️ Araçlar ve Otomasyon](#️-araçlar-ve-otomasyon)
+- [💡 İpuçları ve En İyi Pratikler](#-i̇puçları-ve-en-i̇yi-pratikler)
+- [⚠️ Yasal Uyarı](#️-yasal-uyarı)
+- [📚 Kaynaklar](#-kaynaklar)
 
 ## 🎯 Giriş
 
@@ -545,6 +548,7 @@ site:target.com "id_dsa"
 
 ---
 
+<a id="-zafiyetli-sunucular"></a>
 ## ⚠️ Zafiyetli Sunucular
 
 ### Açık Dizinler
@@ -746,6 +750,7 @@ site:target.com "Magento"
 
 ---
 
+<a id="-araçlar-ve-otomasyon"></a>
 ## 🛠️ Araçlar ve Otomasyon
 
 ### Google Dorking Araçları

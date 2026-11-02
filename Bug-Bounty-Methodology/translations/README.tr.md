@@ -1,5 +1,8 @@
 # 🐛 Bug Bounty Metodolojisi
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md) • [🇮🇹 Versione Italiana](README.it.md)
 
 ```
@@ -380,6 +383,7 @@ subzy run --targets subdomains.txt --concurrency 100 --hide_fails --verify_ssl
 
 ---
 
+<a id="-araç-kurulumları"></a>
 ## 🛠️ Araç Kurulumları
 
 ```bash

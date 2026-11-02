@@ -1,5 +1,8 @@
 # 🏢 Metodologia di Attacco Active Directory
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
     █████╗ ██████╗     █████╗ ████████╗████████╗ █████╗  ██████╗██╗  ██╗
    ██╔══██╗██╔══██╗   ██╔══██╗╚══██╔══╝╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝
@@ -212,6 +215,7 @@ hashcat -m 18200 asrep.txt rockyou.txt
 
 ---
 
+<a id="-fase-3-privilege-escalation"></a>
 ## ⬆️ Fase 3: Privilege Escalation
 
 ### 3.1 Kerberoasting
@@ -298,6 +302,7 @@ getST.py -spn cifs/target.domain.local -impersonate administrator domain.local/F
 
 ---
 
+<a id="-fase-4-lateral-movement"></a>
 ## ➡️ Fase 4: Lateral Movement
 
 ### 4.1 Pass-the-Hash
@@ -480,14 +485,14 @@ GetUserSPNs.py domain.local/user:pass -dc-ip 10.10.10.10 -request
 
 ## 📚 Cheatsheets Correlate
 
-- [BloodHound](../BloodHound/translations/README.it.md)
-- [Impacket](../Impacket/translations/README.it.md)
-- [CrackMapExec](../CrackMapExec/translations/README.it.md)
-- [Rubeus](../Rubeus/translations/README.it.md)
-- [PowerView](../PowerView/translations/README.it.md)
-- [Responder](../Responder/translations/README.it.md)
-- [Evil-WinRM](../Evil-WinRM/translations/README.it.md)
-- [Mimikatz](../Mimikatz/translations/README.it.md)
+- [BloodHound](../../BloodHound/translations/README.it.md)
+- [Impacket](../../Impacket/translations/README.it.md)
+- [CrackMapExec](../../CrackMapExec/translations/README.it.md)
+- [Rubeus](../../Rubeus/translations/README.it.md)
+- [PowerView](../../PowerView/translations/README.it.md)
+- [Responder](../../Responder/translations/README.it.md)
+- [Evil-WinRM](../../Evil-WinRM/translations/README.it.md)
+- [Mimikatz](../../Mimikatz/translations/README.it.md)
 
 ---
 

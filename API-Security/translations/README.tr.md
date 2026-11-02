@@ -1,5 +1,8 @@
 # 🔌 API Güvenlik Testi Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md) • [🇮🇹 Versione Italiana](README.it.md)
 
 ```
@@ -21,15 +24,13 @@
 
 ## 📋 İçindekiler
 
-- [OWASP API Top 10](#-owasp-api-top-10)
-- [REST API Testleri](#-rest-api-testleri)
-- [GraphQL Testleri](#-graphql-testleri)
-- [Kimlik Doğrulama Saldırıları](#-kimlik-doğrulama-saldırıları)
-- [JWT Saldırıları](#-jwt-saldırıları)
-- [Yaygın Zafiyetler ve Atlatma](#-yaygın-zafiyetler-ve-atlatma)
-- [Kullanılan Araçlar ve Kaynaklar](#-kullanılan-araçlar-ve-kaynaklar)
-
----
+- [🔴 OWASP API Top 10](#-owasp-api-top-10)
+- [🌐 REST API Testleri](#-rest-api-testleri)
+- [📊 GraphQL Testleri](#-graphql-testleri)
+- [🔐 Kimlik Doğrulama Saldırıları](#-kimlik-doğrulama-saldırıları)
+- [🎫 JWT (JSON Web Token) Saldırıları](#-jwt-json-web-token-saldırıları)
+- [🐛 Yaygın Zafiyetler ve Atlatma](#-yaygın-zafiyetler-ve-atlatma)
+- [🛠️ Kullanılan Araçlar ve Kaynaklar](#️-kullanılan-araçlar-ve-kaynaklar)
 
 ## 🔴 OWASP API Top 10
 
@@ -370,6 +371,7 @@ DELETE /api/users  # Doğrudan kullanıcı silme testi
 
 ---
 
+<a id="-kullanılan-araçlar-ve-kaynaklar"></a>
 ## 🛠️ Kullanılan Araçlar ve Kaynaklar
 
 | Araç | Kullanım Amacı |

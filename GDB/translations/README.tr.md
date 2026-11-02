@@ -2,6 +2,9 @@
 
 # 🐛 GDB - GNU Hata Ayıklayıcı Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
    ██████╗ ██████╗ ██████╗ 
   ██╔════╝ ██╔══██╗██╔══██╗
@@ -269,6 +272,7 @@ gdb -x commands.gdb ./program
 
 ---
 
+<a id="-yürütme-kontrolü-execution-control"></a>
 ## ▶️ Yürütme Kontrolü (Execution Control)
 
 ### Adım Adım İlerletme (Stepping)

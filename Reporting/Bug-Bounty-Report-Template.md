@@ -1,6 +1,9 @@
 # 🐛 Bug Bounty Report Template
 
-[🇹🇷 Türkçe Sürüm](translations/Bug-Bounty-Report-Template.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Bug-Bounty-Report-Template.tr.md) • [🇬🇷 Ελληνικά](translations/Bug-Bounty-Report-Template.el.md)
 
 ```
 ██████╗ ██╗   ██╗ ██████╗     ██████╗  ██████╗ ██╗   ██╗███╗   ██╗████████╗██╗   ██╗
@@ -479,4 +482,4 @@ Would you consider re-evaluating the bounty amount?
 
 ---
 
-**Back to Reporting:** [📝 Reporting Templates](./README.md)
+**Back to Reporting:** [📝 Reporting Templates](../README.md)

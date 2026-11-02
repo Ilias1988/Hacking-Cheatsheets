@@ -1,6 +1,9 @@
 # 🔓 IDOR - Insecure Direct Object Reference
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ██╗██████╗  ██████╗ ██████╗ 
@@ -164,6 +167,7 @@ echo "124" | base64  → MTI0
 
 ---
 
+<a id="-bypass-techniques"></a>
 ## 🛡️ Bypass Techniques
 
 ### Parameter Manipulation
@@ -296,6 +300,7 @@ PUT /api/users/124     → Allowed?
 
 ---
 
+<a id="-tools--automation"></a>
 ## 🛠️ Tools & Automation
 
 ### Burp Suite Extensions

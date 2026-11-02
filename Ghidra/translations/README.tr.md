@@ -2,6 +2,9 @@
 
 # 🔍 Ghidra - Tersine Mühendislik Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
    ██████╗ ██╗  ██╗██╗██████╗ ██████╗  █████╗ 
   ██╔════╝ ██║  ██║██║██╔══██╗██╔══██╗██╔══██╗
@@ -119,6 +122,7 @@ cd ghidra_*
 
 ---
 
+<a id="-arayüze-genel-bakış"></a>
 ## 🖥️ Arayüze Genel Bakış
 
 ### Temel Pencereler
@@ -520,6 +524,7 @@ refs = refMgr.getReferencesTo(addr)
 
 ---
 
+<a id="-klavye-kısayolları"></a>
 ## ⌨️ Klavye Kısayolları
 
 ### Gezinme

@@ -1,5 +1,8 @@
 # 💾 Bellenim Analizi Kopya Kağıdı (Firmware Analysis Cheatsheet)
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ---
 
 ## 📥 Bellenim Elde Etme (Firmware Acquisition)

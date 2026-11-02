@@ -1,6 +1,9 @@
 # 🐧 Linux Privilege Escalation - Complete Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ██╗     ██╗███╗   ██╗██╗   ██╗██╗  ██╗
@@ -443,6 +446,7 @@ chmod +x /home/user/backup.sh
 
 ---
 
+<a id="-path-hijacking"></a>
 ## 🛤️ PATH Hijacking
 
 ### Find Vulnerable Scripts
@@ -778,7 +782,7 @@ grep -r "password" /home/ 2>/dev/null
 - [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Linux%20-%20Privilege%20Escalation.md)
 
 ### Related Cheatsheets
-- [LinPEAS](../LinPEAS/README.md)
+- LinPEAS — guide not yet included
 - [Windows PrivEsc](../Windows-PrivEsc/README.md)
 
 ---

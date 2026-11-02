@@ -1,6 +1,9 @@
 # 📈 SIEM Detection Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/SIEM-Detection.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/SIEM-Detection.tr.md) • [🇬🇷 Ελληνικά](translations/SIEM-Detection.el.md)
 
 ```
   ███████╗██╗███████╗███╗   ███╗    ██████╗ ███████╗████████╗███████╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗

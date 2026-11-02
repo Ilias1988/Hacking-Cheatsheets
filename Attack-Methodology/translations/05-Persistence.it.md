@@ -1,5 +1,8 @@
 # 🔒 Fase 5: Persistence
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
   ██████╗ ███████╗██████╗ ███████╗██╗███████╗████████╗███████╗███╗   ██╗ ██████╗███████╗
   ██╔══██╗██╔════╝██╔══██╗██╔════╝██║██╔════╝╚══██╔══╝██╔════╝████╗  ██║██╔════╝██╔════╝
@@ -305,9 +308,9 @@ if (Request["cmd"] != null) {
 
 ## 🔗 Cheatsheet Correlate
 
-- [PowerShell](../PowerShell/translations/README.it.md)
-- [Linux Commands](../Linux-Commands/translations/README.it.md)
-- [Metasploit](../Metasploit/translations/README.it.md)
+- [PowerShell](../../PowerShell/translations/README.it.md)
+- [Linux Commands](../../Linux-Commands/translations/README.it.md)
+- [Metasploit](../../Metasploit/translations/README.it.md)
 
 ---
 

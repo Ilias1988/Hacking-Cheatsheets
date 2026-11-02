@@ -1,6 +1,9 @@
 # 💻 Command Injection Payloads
 
-[🇹🇷 Türkçe Sürüm](translations/Command-Injection.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/Command-Injection.tr.md) • [🇬🇷 Ελληνικά](translations/Command-Injection.el.md)
 
 ```
  ██████╗ ███████╗     ██████╗ ██████╗ ███╗   ███╗███╗   ███╗ █████╗ ███╗   ██╗██████╗ 
@@ -298,4 +301,4 @@ File upload names:
 
 ---
 
-**Back to Payloads:** [💉 Payloads Collection](./README.md)
+**Back to Payloads:** [💉 Payloads Collection](../README.md)

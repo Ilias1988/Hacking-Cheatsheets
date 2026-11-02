@@ -1,5 +1,8 @@
 # 🎫 Rubeus - Kerberos İstismar Araç Seti Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -62,6 +65,7 @@ execute-assembly Rubeus.exe <komut>
 
 ---
 
+<a id="-bilet-i̇şlemleri-ticket-operations"></a>
 ## 🎟️ Bilet İşlemleri (Ticket Operations)
 
 ### TGT İsteme (Request TGT)

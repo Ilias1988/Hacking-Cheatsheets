@@ -2,6 +2,9 @@
 
 # 🔗 GAU - Get All URLs
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 ```
    ██████╗  █████╗ ██╗   ██╗
   ██╔════╝ ██╔══██╗██║   ██║
@@ -315,6 +318,7 @@ gau example.com | grep "=" | httpx -silent
 
 ---
 
+<a id="-bug-bounty-iş-akışı"></a>
 ## 🎯 Bug Bounty İş Akışı
 
 ```bash

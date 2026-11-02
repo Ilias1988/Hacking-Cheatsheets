@@ -1,6 +1,9 @@
 # 😈 Evil-WinRM - Windows Remote Shell
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
   ███████╗██╗   ██╗██╗██╗      ██╗    ██╗██╗███╗   ██╗██████╗ ███╗   ███╗
@@ -142,6 +145,7 @@ evil-winrm -i 10.10.10.10 -u user -p pass -e /opt/tools/
 
 ---
 
+<a id="-built-in-commands"></a>
 ## 🛠️ Built-in Commands
 
 ### Menu

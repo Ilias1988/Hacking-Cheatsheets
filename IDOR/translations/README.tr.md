@@ -1,5 +1,8 @@
 # 🔓 IDOR - Güvensiz Doğrudan Nesne Başvurusu Başvuru Kılavuzu
 
+<!-- language-home-navigation -->
+[🏠 Türkçe ana sayfa](../../README.tr.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../../README.md)
 
 ```
@@ -137,6 +140,7 @@ echo "124" | base64   # MTI0
 
 ---
 
+<a id="-atlatma-bypass-teknikleri"></a>
 ## 🛡️ Atlatma (Bypass) Teknikleri
 
 ### Parametre Manipülasyonu
@@ -221,6 +225,7 @@ PUT /api/users/124     → Kabul edildi mi?
 
 ---
 
+<a id="-araçlar-ve-otomasyon"></a>
 ## 🛠️ Araçlar ve Otomasyon
 
 ### Burp Suite Eklentileri

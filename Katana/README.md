@@ -1,5 +1,8 @@
 # ⚔️ Katana - Next-Gen Web Crawler
 
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
 ```
   ██╗  ██╗ █████╗ ████████╗ █████╗ ███╗   ██╗ █████╗ 
   ██║ ██╔╝██╔══██╗╚══██╔══╝██╔══██╗████╗  ██║██╔══██╗
@@ -14,7 +17,7 @@
   <img src="https://img.shields.io/badge/Katana-ProjectDiscovery-blue?style=for-the-badge" alt="Katana">
   <img src="https://img.shields.io/badge/Web_Crawler-green?style=for-the-badge" alt="Crawler">
   <img src="https://img.shields.io/badge/Bug_Bounty-red?style=for-the-badge" alt="Bug Bounty"><br>
-  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a> • <a href="translations/README.el.md">🇬🇷 Ελληνικά</a>
 </p>
 
 ---
@@ -106,6 +109,7 @@ katana -u https://example.com -d 1
 
 ---
 
+<a id="-crawling-options"></a>
 ## 🕷️ Crawling Options
 
 ### Scope Control

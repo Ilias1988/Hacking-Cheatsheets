@@ -1,6 +1,9 @@
 # 🔨 John the Ripper - Complete Cheatsheet
 
-[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+<!-- language-home-navigation -->
+[🏠 Home](../README.md) • [🌐 Languages](../README.md#-available-languages)
+
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md) • [🇬🇷 Ελληνικά](translations/README.el.md)
 
 ```
        __      __         
@@ -128,6 +131,7 @@ john --list=formats | wc -l    # Count supported formats
 
 ---
 
+<a id="-basic-syntax"></a>
 ## ⌨️ Basic Syntax
 
 ### General Syntax
@@ -453,6 +457,7 @@ john --wordlist=rockyou.txt keepass.hash
 
 ---
 
+<a id="-rules--mangling"></a>
 ## ⚙️ Rules & Mangling
 
 ### Enable Rules

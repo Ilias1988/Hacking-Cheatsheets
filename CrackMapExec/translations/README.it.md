@@ -1,5 +1,8 @@
 # 🗡️ CrackMapExec - AD Swiss Army Knife
 
+<!-- language-home-navigation -->
+[🏠 Pagina iniziale italiana](../../README.it.md) • [🌐 Languages](../../README.md#-available-languages)
+
 [🇬🇧 English](../README.md) | [🇹🇷 Türkçe Sürüm](README.tr.md)
 
 ```
@@ -91,6 +94,7 @@ crackmapexec smb --help
 
 ---
 
+<a id="-protocollo-smb"></a>
 ## 🖥️ Protocollo SMB
 
 ### Enumeration di Base
@@ -273,6 +277,7 @@ cme ldap DC01 -u user -p password --admin-count
 
 ---
 
+<a id="-protocollo-mssql"></a>
 ## 🗄️ Protocollo MSSQL
 
 ### Utilizzo di Base
@@ -378,6 +383,7 @@ cme ldap DC01 -u user -p password --bloodhound -ns DC01 -c All
 
 ---
 
+<a id="-password-spray"></a>
 ## 🔓 Spray Password
 
 ### Spraying di Base
@@ -516,9 +522,9 @@ cme smb 10.10.10.0/24 -u newuser -H NEWHASH
 
 ### Cheatsheet Correlate
 
-* [BloodHound](../BloodHound/translations/README.it.md)
-* [Impacket](../Impacket/translations/README.it.md)
-* [Mimikatz](../Mimikatz/translations/README.it.md)
+* [BloodHound](../../BloodHound/translations/README.it.md)
+* [Impacket](../../Impacket/translations/README.it.md)
+* [Mimikatz](../../Mimikatz/translations/README.it.md)
 
 ---
 
