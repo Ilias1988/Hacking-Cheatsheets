@@ -467,15 +467,40 @@ cat Metasploit/README.md
 code Metasploit/
 ```
 
-### Offline Access & Mobile App
+### 📱 Android Mobile Application & CLI Command Builder
 
-All cheatsheets are in Markdown format, and a native **Android application** is included directly in this repository ([`android/`](android/)):
+All cheatsheets are in Markdown format, and a powerful native **Android application** is included directly in this repository ([`android/`](android/)):
 
-- 📱 **Native Android App:** Fast, offline, dark-themed UI built with Jetpack Compose.
-- ⚡ **Instant Search:** Full-text search across all 200 guides (EN & TR).
-- 📋 **1-Tap Copy:** Copy any command syntax instantly to clipboard.
-- 🛠️ **Penetration Testing Utilities:** Reverse shell generator, encoders/decoders, hash identifier.
-- 📦 **Build APK:** `cd android && ./gradlew assembleDebug` (Output: `android/app/build/outputs/apk/debug/app-debug.apk`)
+- 📱 **Native Jetpack Compose Architecture:** Ultra-fast, offline-first dark terminal UI with Material 3 styling.
+- 🛠️ **109 Interactive CLI Command Builders:** Real-time flag configuration, switches, toggle chips, target inputs, and dynamic syntax-highlighted 1-tap command generation across 10 security domains (Nmap, Nuclei, Hashcat, Ligolo-ng, BloodHound, NetExec, Metasploit, etc.).
+- ⚡ **Live Multi-Algorithm Hash Generator & Identifier:**
+  - **Instant Plaintext Hashing:** MD5, NTLM (SAM / Active Directory), SHA-1, SHA-256, SHA-512, SHA-384, SHA-224, SHA3-256 (Keccak / Web3), CRC32.
+  - **Salt & Keyed Hashes:** Custom salt prefix/suffix positioning and HMAC secrets (HMAC-MD5, HMAC-SHA1, HMAC-SHA256, HMAC-SHA512).
+  - **Entropy & Identifier:** Automatic hash classification by length and Shannon entropy with Hashcat mode (`-m`) references.
+- 🌐 **100% Bilingual Support (🇬🇧 EN / 🇹🇷 TR):** Seamless 1-tap language toggle across the entire application — 200 cheatsheet guides, 109 command builders, toggle chips, option flags, input fields, and utility engines.
+- 🔍 **Instant Full-Text Search:** Sub-second search across 200 security guides and 12 categorized attack/defense domains.
+- 🛠️ **Field Utilities Suite:** Interactive Reverse Shell generator (Bash, Python, Netcat, PowerShell, Socat, Perl, PHP), BPF tcpdump/tshark filter generator, UFW firewall rule builder, and encoders/decoders (Base64, URL, Hex).
+- 📦 **Pre-built APK:** Ready-to-install signed APK (v2/v3 scheme) available on [GitHub Releases](https://github.com/cihan-atas/Hacking-Cheatsheets/releases/tag/v1.1.0) (`Hacking-Cheatsheets.apk`).
+- 🔨 **Build from Source:**
+  ```bash
+  cd android
+  export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+  ./gradlew assembleRelease
+  # Signed APK: android/app/build/outputs/apk/release/app-release.apk
+  ```
+
+#### 📸 Application Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/home_en.png" width="32%" alt="Home Screen (EN)"/>
+  <img src="docs/screenshots/utilities_builder_en.png" width="32%" alt="Command Builder (EN)"/>
+  <img src="docs/screenshots/utilities_hash_en.png" width="32%" alt="Hash Generator & Identifier (EN)"/>
+</p>
+<p align="center">
+  <img src="docs/screenshots/categories_en.png" width="32%" alt="Categories (EN)"/>
+  <img src="docs/screenshots/search_en.png" width="32%" alt="Instant Search (EN)"/>
+  <img src="docs/screenshots/detail_en.png" width="32%" alt="Cheatsheet Detail (EN)"/>
+</p>
 
 ---
 

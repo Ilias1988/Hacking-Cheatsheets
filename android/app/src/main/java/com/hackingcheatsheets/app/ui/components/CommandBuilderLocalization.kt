@@ -1293,7 +1293,32 @@ private val TRANSLATIONS_7 = mapOf<String, String>(
     "Şifreli TLS Dinleyici (OpenSSL)" to "Encrypted TLS Dinleyici (OpenSSL)",
     "Şifreli TLS Shell Gönder" to "Encrypted TLS Shell Send",
     "ŞİFRELEME (ENCODER) VE EVASION" to "ENCRYPTION (ENCODER) AND EVASION",
-    "↳ --version-intensity 9 (Derin Versiyon Sondajı)" to "↳ --version-intensity 9 (Deep Version Probing)"
+    "↳ --version-intensity 9 (Derin Versiyon Sondajı)" to "↳ --version-intensity 9 (Deep Version Probing)",
+    "ARP Zehirleme Hedefi (set arp.spoof.targets)" to "ARP Spoofing Target (set arp.spoof.targets)",
+    "DB Exports (dbe)" to "DB Exports (dbe)",
+    "Dinleme Portu" to "Listening Port",
+    "Dinleme Portu (-p)" to "Listening Port (-p)",
+    "Dinleme Portu (TCP/SSL-LISTEN)" to "Listening Port (TCP/SSL-LISTEN)",
+    "Dosyadan Oku (-i)" to "Read from File (-i)",
+    "Dosyadan Oku (-iL)" to "Read from File (-iL)",
+    "Dosyadan Oku (-r)" to "Read from File (-r)",
+    "İstatistik (-z)" to "Statistics (-z)",
+    "Canlı (-i)" to "Live (-i)",
+    "Hatalı Baytlar (-b: \\x00\\x0a\\x0d)" to "Bad Bytes (-b: \\x00\\x0a\\x0d)",
+    "Kullanıcı (-u 'DOMAIN\\user')" to "User (-u 'DOMAIN\\user')",
+    "LPORT" to "LPORT",
+    "Portlar (-ports 80,443,8080)" to "Ports (-ports 80,443,8080)",
+    "Proxy Dinleme Portu (-laddr)" to "Proxy Listening Port (-laddr)",
+    "RPORT" to "RPORT",
+    "Reverse Shell (--reverse-shell LHOST LPORT)" to "Reverse Shell (--reverse-shell LHOST LPORT)",
+    "Reverse Shell Hedefi (LHOST=.. LPORT=..)" to "Reverse Shell Target (LHOST=.. LPORT=..)",
+    "Sonuç Dosyası (-o C:\\Temp\\loot.txt)" to "Output File (-o C:\\Temp\\loot.txt)",
+    "Taranacak Kanallar (-c: 1,6,11)" to "Channels to Scan (-c: 1,6,11)",
+    "Taranacak Servisler (--services: s3,iam,ec2,cloudtrail,kms)" to "Services to Scan (--services: s3,iam,ec2,cloudtrail,kms)",
+    "Taranacak Siteler (--site github --site twitter)" to "Sites to Scan (--site github --site twitter)",
+    "Web Dinleme Portu (-p)" to "Web Listening Port (-p)",
+    "Yerel Dinleme Portu (-l)" to "Local Listening Port (-l)",
+    "Çalıştırılacak Komut (\$action)" to "Command to Execute (\$action)"
 )
 
 val BUILDER_TRANSLATIONS: Map<String, String> by lazy {

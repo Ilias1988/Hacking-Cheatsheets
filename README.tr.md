@@ -36,7 +36,7 @@
   <a href="#-lisans">Lisans</a>
 </p>
 
-> ⚠️ **Bilgilendirme:** Bu depo Türkçe dil desteğine kavuşturulmaktadır. Henüz çevirisi tamamlanmamış dokümanlar orijinal İngilizce sürümlerine yönlendirilir. Çeviri süreci devam ettikçe Türkçe kılavuz bağlantıları güncellenecektir.
+> 🇹🇷 **Tam Türkçe Destek:** Bu depodaki 200 sızma testi, araç ve metodoloji kılavuzunun tamamı ile yerel Android uygulamasının tamamı (109 araçlık interaktif komut oluşturucu dahil) %100 Türkçe ve İngilizce desteğine kavuşturulmuştur. Tek dokunuşla dil değiştirebilirsiniz.
 
 ---
 
@@ -469,15 +469,40 @@ cat Metasploit/README.md
 code Metasploit/
 ```
 
-### Çevrimdışı Erişim ve Mobil Uygulama
+### 📱 Android Mobil Uygulaması & CLI Komut Oluşturucu
 
-Tüm kılavuzlar Markdown formatındadır ve ayrıca bu depoda doğrudan yer alan **yerel Android uygulaması** ([`android/`](android/)) bulunmaktadır:
+Tüm kılavuzlar Markdown formatındadır ve ayrıca bu depoda doğrudan yer alan güçlü **yerel Android uygulaması** ([`android/`](android/)) bulunmaktadır:
 
-- 📱 **Yerel Android Uygulaması:** Jetpack Compose ve koyu tema ile ultra hızlı ve akıcı mobil deneyim.
-- ⚡ **Anında Arama:** 200 rehberin tamamında (TR ve EN) anlık arama desteği.
-- 📋 **Tek Dokunuşla Kopyalama:** Komut sözdizimlerini doğrudan panoya kopyalama.
-- 🛠️ **Entegre Pentest Yardımcıları:** Reverse Shell oluşturucu, kodlayıcı/çözücü (Base64/URL), hash türü tespit aracı.
-- 📦 **APK Derleme:** `cd android && ./gradlew assembleDebug` (Çıktı: `android/app/build/outputs/apk/debug/app-debug.apk`)
+- 📱 **Yerel Jetpack Compose Mimarisi:** Koyu tema, akıcı animasyonlar ve modern Material 3 tasarımıyla ultra hızlı çevrimdışı mobil deneyim.
+- 🛠️ **109 Güvenlik Aracı İçin İnteraktif Komut Oluşturucu (CLI Command Builder):** Bayrak seçimleri, anahtarlar, çipler, hedef parametreleri ve tek dokunuşla çalışan komut kopyalama paneli (Nmap, Nuclei, Hashcat, Ligolo-ng, BloodHound, NetExec, Metasploit vb. 109 araç).
+- ⚡ **Canlı Çoklu Algoritma Hash Üretici & Gelişmiş Tanıma:**
+  - **Anlık Hash Üretimi:** MD5, NTLM (SAM / Active Directory), SHA-1, SHA-256, SHA-512, SHA-384, SHA-224, SHA3-256 (Keccak / Web3), CRC32.
+  - **Salt & HMAC Desteği:** İsteğe bağlı salt (önek/sonek) ve gizli anahtarlı HMAC (HMAC-MD5, HMAC-SHA1, HMAC-SHA256, HMAC-SHA512).
+  - **Entropi & Tanıma:** Uzunluk ve Shannon entropisi analiziyle anlık hash algoritması tespiti ve ilgili Hashcat kırma modu (`-m`).
+- 🌐 **%100 Çift Dilli Altyapı (🇹🇷 TR / 🇬🇧 EN):** Uygulamanın tamamında anlık dil geçişi — 200 rehber dokümanı, 109 komut oluşturucu, seçenek anahtarları, girdi alanları ve yardımcı araçların tamamı çift dillidir.
+- 🔍 **Anında Tam Metin Arama:** 200 rehber ve 12 güvenlik kategorisi genelinde gecikmesiz arama.
+- 🛠️ **Saha Yardımcıları Paketi:** Ters Kabuk (Reverse Shell) üretici (Bash, Python, Netcat, PowerShell, Socat, Perl, PHP), BPF tcpdump/tshark filtre oluşturucu, UFW güvenlik duvarı kural motoru ve Kodlayıcı/Çözücü (Base64, URL, Hex).
+- 📦 **Hazır İmzalı APK:** v2/v3 şemalarıyla imzalanmış kuruluma hazır APK [GitHub Releases](https://github.com/cihan-atas/Hacking-Cheatsheets/releases/tag/v1.1.0) sayfasından indirilebilir (`Hacking-Cheatsheets.apk`).
+- 🔨 **Kaynak Koddan Derleme:**
+  ```bash
+  cd android
+  export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+  ./gradlew assembleRelease
+  # İmzalı APK: android/app/build/outputs/apk/release/app-release.apk
+  ```
+
+#### 📸 Uygulama Ekran Görüntüleri
+
+<p align="center">
+  <img src="docs/screenshots/home_tr.png" width="32%" alt="Ana Sayfa (TR)"/>
+  <img src="docs/screenshots/utilities_builder_tr.png" width="32%" alt="Komut Oluşturucu (TR)"/>
+  <img src="docs/screenshots/utilities_hash_tr.png" width="32%" alt="Hash Üretici & Tanıma (TR)"/>
+</p>
+<p align="center">
+  <img src="docs/screenshots/categories_tr.png" width="32%" alt="Kategoriler (TR)"/>
+  <img src="docs/screenshots/search_tr.png" width="32%" alt="Anlık Arama (TR)"/>
+  <img src="docs/screenshots/detail_tr.png" width="32%" alt="Kılavuz Detayı (TR)"/>
+</p>
 
 ---
 
