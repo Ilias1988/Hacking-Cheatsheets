@@ -88,8 +88,6 @@ English remains the primary version. The translations cover all **127 guides acr
 
 👉 **[Full Kill Chain Overview](./Attack-Methodology/README.md)**
 
-🇬🇷 **[Attack Methodology — Ελληνική έκδοση](./Attack-Methodology/translations/README.el.md)**
-
 ---
 
 ## 🛡️ Blue Team (Defensive Security)
@@ -108,8 +106,6 @@ English remains the primary version. The translations cover all **127 guides acr
 
 👉 **[Full Blue Team Overview](./Blue-Team/README.md)**
 
-🇬🇷 **[Blue Team — Ελληνική έκδοση](./Blue-Team/translations/README.el.md)**
-
 ---
 
 ## ☁️ Cloud Security
@@ -124,8 +120,6 @@ English remains the primary version. The translations cover all **127 guides acr
 
 👉 **[Full Cloud Security Overview](./Cloud-Security/README.md)**
 
-🇬🇷 **[Cloud Security — Ελληνική έκδοση](./Cloud-Security/translations/README.el.md)**
-
 ---
 
 ## 📱 Mobile Security
@@ -138,8 +132,6 @@ English remains the primary version. The translations cover all **127 guides acr
 | **iOS** | IPA analysis, jailbreak, Objection, keychain | [📄 View](./Mobile-Security/iOS-Pentesting.md) |
 
 👉 **[Full Mobile Security Overview](./Mobile-Security/README.md)**
-
-🇬🇷 **[Mobile Security — Ελληνική έκδοση](./Mobile-Security/translations/README.el.md)**
 
 ---
 
@@ -154,8 +146,6 @@ English remains the primary version. The translations cover all **127 guides acr
 
 👉 **[Full Container Security Overview](./Container-Security/README.md)**
 
-🇬🇷 **[Container Security — Ελληνική έκδοση](./Container-Security/translations/README.el.md)**
-
 ---
 
 ## 🎭 Social Engineering
@@ -169,8 +159,6 @@ English remains the primary version. The translations cover all **127 guides acr
 
 👉 **[Full Social Engineering Overview](./Social-Engineering/README.md)**
 
-🇬🇷 **[Social Engineering — Ελληνική έκδοση](./Social-Engineering/translations/README.el.md)**
-
 ---
 
 ## 📝 Reporting Templates
@@ -182,8 +170,6 @@ English remains the primary version. The translations cover all **127 guides acr
 | **Pentest Report** | Full penetration test report structure | [📄 View](./Reporting/Pentest-Report-Template.md) |
 | **Bug Bounty Report** | HackerOne/Bugcrowd submission template | [📄 View](./Reporting/Bug-Bounty-Report-Template.md) |
 | **Executive Summary** | Non-technical summary for C-level | [📄 View](./Reporting/Executive-Summary-Template.md) |
-
-🇬🇷 **[Reporting Templates — Ελληνική έκδοση](./Reporting/translations/README.el.md)**
 
 ---
 
@@ -201,8 +187,6 @@ English remains the primary version. The translations cover all **127 guides acr
 
 👉 **[Full OSINT Overview](./OSINT/README.md)**
 
-🇬🇷 **[OSINT — Ελληνική έκδοση](./OSINT/translations/README.el.md)**
-
 ---
 
 ## 🌐 Network Pentesting
@@ -217,8 +201,6 @@ English remains the primary version. The translations cover all **127 guides acr
 | **Service Exploitation** | FTP, SSH, SMB, RDP, databases | [📄 View](./Network-Pentesting/Service-Exploitation.md) |
 
 👉 **[Full Network Pentesting Overview](./Network-Pentesting/README.md)**
-
-🇬🇷 **[Network Pentesting — Ελληνική έκδοση](./Network-Pentesting/translations/README.el.md)**
 
 ---
 
@@ -236,8 +218,6 @@ English remains the primary version. The translations cover all **127 guides acr
 
 👉 **[Full CTF Overview](./CTF/README.md)**
 
-🇬🇷 **[CTF — Ελληνική έκδοση](./CTF/translations/README.el.md)**
-
 ---
 
 ## 📡 IoT Hacking
@@ -251,8 +231,6 @@ English remains the primary version. The translations cover all **127 guides acr
 
 👉 **[Full IoT Hacking Overview](./IoT-Hacking/README.md)**
 
-🇬🇷 **[IoT Hacking — Ελληνική έκδοση](./IoT-Hacking/translations/README.el.md)**
-
 ---
 
 ## 📖 Cheatsheets
@@ -261,156 +239,156 @@ English remains the primary version. The translations cover all **127 guides acr
 
 | Tool | Description | Cheatsheet |
 |------|-------------|------------|
-| **Metasploit Framework** | The world's most used penetration testing framework | [📄 View](./Metasploit/README.md) • [🇬🇷 Ελληνικά](./Metasploit/translations/README.el.md) |
-| **Meterpreter** | Advanced post-exploitation payload | [📄 View](./Metasploit/Meterpreter.md) • [🇬🇷 Ελληνικά](./Metasploit/translations/Meterpreter.el.md) |
-| **Mimikatz** | Windows credential extraction tool | [📄 View](./Mimikatz/README.md) • [🇬🇷 Ελληνικά](./Mimikatz/translations/README.el.md) |
-| **PowerShell** | Windows scripting for pentesting | [📄 View](./PowerShell/README.md) • [🇬🇷 Ελληνικά](./PowerShell/translations/README.el.md) |
-| **Linux Commands** | Linux & Bash for pentesting | [📄 View](./Linux-Commands/README.md) • [🇬🇷 Ελληνικά](./Linux-Commands/translations/README.el.md) |
+| **Metasploit Framework** | The world's most used penetration testing framework | [📄 View](./Metasploit/README.md) |
+| **Meterpreter** | Advanced post-exploitation payload | [📄 View](./Metasploit/Meterpreter.md) |
+| **Mimikatz** | Windows credential extraction tool | [📄 View](./Mimikatz/README.md) |
+| **PowerShell** | Windows scripting for pentesting | [📄 View](./PowerShell/README.md) |
+| **Linux Commands** | Linux & Bash for pentesting | [📄 View](./Linux-Commands/README.md) |
 
 ### 🔍 Reconnaissance & Scanning
 
 | Tool | Description | Cheatsheet |
 |------|-------------|------------|
-| **Nmap** | Network discovery and security auditing | [📄 View](./Nmap/README.md) • [🇬🇷 Ελληνικά](./Nmap/translations/README.el.md) |
-| **Gobuster** | Directory/DNS/VHost brute-forcing | [📄 View](./Gobuster/README.md) • [🇬🇷 Ελληνικά](./Gobuster/translations/README.el.md) |
-| **Nikto** | Web server scanner | [📄 View](./Nikto/README.md) • [🇬🇷 Ελληνικά](./Nikto/translations/README.el.md) |
+| **Nmap** | Network discovery and security auditing | [📄 View](./Nmap/README.md) |
+| **Gobuster** | Directory/DNS/VHost brute-forcing | [📄 View](./Gobuster/README.md) |
+| **Nikto** | Web server scanner | [📄 View](./Nikto/README.md) |
 
 ### 🌐 Web Application Testing
 
 | Tool | Description | Cheatsheet |
 |------|-------------|------------|
-| **SQLMap** | SQL injection automation tool | [📄 View](./SQLMap/README.md) • [🇬🇷 Ελληνικά](./SQLMap/translations/README.el.md) |
-| **Burp Suite** | Web application security testing platform | [📄 View](./Burp-Suite/README.md) • [🇬🇷 Ελληνικά](./Burp-Suite/translations/README.el.md) |
-| **OWASP ZAP** | Free web app security scanner | [📄 View](./OWASP-ZAP/README.md) • [🇬🇷 Ελληνικά](./OWASP-ZAP/translations/README.el.md) |
+| **SQLMap** | SQL injection automation tool | [📄 View](./SQLMap/README.md) |
+| **Burp Suite** | Web application security testing platform | [📄 View](./Burp-Suite/README.md) |
+| **OWASP ZAP** | Free web app security scanner | [📄 View](./OWASP-ZAP/README.md) |
 
 ### 🔓 Password Cracking
 
 | Tool | Description | Cheatsheet |
 |------|-------------|------------|
-| **Hydra** | Fast network login cracker | [📄 View](./Hydra/README.md) • [🇬🇷 Ελληνικά](./Hydra/translations/README.el.md) |
-| **John the Ripper** | Legendary password cracker | [📄 View](./John-The-Ripper/README.md) • [🇬🇷 Ελληνικά](./John-The-Ripper/translations/README.el.md) |
-| **Hashcat** | World's fastest GPU password cracker | [📄 View](./Hashcat/README.md) • [🇬🇷 Ελληνικά](./Hashcat/translations/README.el.md) |
+| **Hydra** | Fast network login cracker | [📄 View](./Hydra/README.md) |
+| **John the Ripper** | Legendary password cracker | [📄 View](./John-The-Ripper/README.md) |
+| **Hashcat** | World's fastest GPU password cracker | [📄 View](./Hashcat/README.md) |
 
 ### 📡 Network Analysis
 
 | Tool | Description | Cheatsheet |
 |------|-------------|------------|
-| **Wireshark** | Network protocol analyzer | [📄 View](./Wireshark/README.md) • [🇬🇷 Ελληνικά](./Wireshark/translations/README.el.md) |
-| **tcpdump** | Command-line packet analyzer | [📄 View](./tcpdump/README.md) • [🇬🇷 Ελληνικά](./tcpdump/translations/README.el.md) |
+| **Wireshark** | Network protocol analyzer | [📄 View](./Wireshark/README.md) |
+| **tcpdump** | Command-line packet analyzer | [📄 View](./tcpdump/README.md) |
 
 ### 🐛 Bug Bounty
 
 | Tool | Description | Cheatsheet |
 |------|-------------|------------|
-| **⭐ BB Methodology** | Complete bug bounty hunting guide | [📄 View](./Bug-Bounty-Methodology/README.md) • [🇬🇷 Ελληνικά](./Bug-Bounty-Methodology/translations/README.el.md) |
-| **Nuclei** | Template-based vulnerability scanner | [📄 View](./Nuclei/README.md) • [🇬🇷 Ελληνικά](./Nuclei/translations/README.el.md) |
-| **ffuf** | Fast web fuzzer | [📄 View](./ffuf/README.md) • [🇬🇷 Ελληνικά](./ffuf/translations/README.el.md) |
-| **Subfinder** | Subdomain discovery | [📄 View](./Subfinder/README.md) • [🇬🇷 Ελληνικά](./Subfinder/translations/README.el.md) |
-| **httpx** | HTTP probe & toolkit | [📄 View](./httpx/README.md) • [🇬🇷 Ελληνικά](./httpx/translations/README.el.md) |
-| **Amass** | In-depth attack surface mapping | [📄 View](./Amass/README.md) • [🇬🇷 Ελληνικά](./Amass/translations/README.el.md) |
-| **GAU** | Get All URLs from archives | [📄 View](./GAU/README.md) • [🇬🇷 Ελληνικά](./GAU/translations/README.el.md) |
-| **Katana** | Next-gen web crawler | [📄 View](./Katana/README.md) • [🇬🇷 Ελληνικά](./Katana/translations/README.el.md) |
-| **Arjun** | Hidden parameter discovery | [📄 View](./Arjun/README.md) • [🇬🇷 Ελληνικά](./Arjun/translations/README.el.md) |
-| **Dalfox** | XSS vulnerability scanner | [📄 View](./Dalfox/README.md) • [🇬🇷 Ελληνικά](./Dalfox/translations/README.el.md) |
+| **⭐ BB Methodology** | Complete bug bounty hunting guide | [📄 View](./Bug-Bounty-Methodology/README.md) |
+| **Nuclei** | Template-based vulnerability scanner | [📄 View](./Nuclei/README.md) |
+| **ffuf** | Fast web fuzzer | [📄 View](./ffuf/README.md) |
+| **Subfinder** | Subdomain discovery | [📄 View](./Subfinder/README.md) |
+| **httpx** | HTTP probe & toolkit | [📄 View](./httpx/README.md) |
+| **Amass** | In-depth attack surface mapping | [📄 View](./Amass/README.md) |
+| **GAU** | Get All URLs from archives | [📄 View](./GAU/README.md) |
+| **Katana** | Next-gen web crawler | [📄 View](./Katana/README.md) |
+| **Arjun** | Hidden parameter discovery | [📄 View](./Arjun/README.md) |
+| **Dalfox** | XSS vulnerability scanner | [📄 View](./Dalfox/README.md) |
 
 ### 💉 Payloads Collection
 
 | Vulnerability | Description | Cheatsheet |
 |---------------|-------------|------------|
-| **XSS** | Cross-Site Scripting payloads | [📄 View](./Payloads/XSS.md) • [🇬🇷 Ελληνικά](./Payloads/translations/XSS.el.md) |
-| **SQLi** | SQL Injection payloads | [📄 View](./Payloads/SQLi.md) • [🇬🇷 Ελληνικά](./Payloads/translations/SQLi.el.md) |
-| **LFI** | Local File Inclusion payloads | [📄 View](./Payloads/LFI.md) • [🇬🇷 Ελληνικά](./Payloads/translations/LFI.el.md) |
-| **SSTI** | Server-Side Template Injection | [📄 View](./Payloads/SSTI.md) • [🇬🇷 Ελληνικά](./Payloads/translations/SSTI.el.md) |
-| **Command Injection** | OS command injection payloads | [📄 View](./Payloads/Command-Injection.md) • [🇬🇷 Ελληνικά](./Payloads/translations/Command-Injection.el.md) |
-| **NoSQL Injection** | MongoDB, CouchDB, Redis payloads | [📄 View](./Payloads/NoSQL-Injection.md) • [🇬🇷 Ελληνικά](./Payloads/translations/NoSQL-Injection.el.md) |
-| **Deserialization** | Java, PHP, Python, .NET payloads | [📄 View](./Payloads/Deserialization.md) • [🇬🇷 Ελληνικά](./Payloads/translations/Deserialization.el.md) |
-| **WebSocket Attacks** | CSWSH, injection, hijacking | [📄 View](./Payloads/WebSocket-Attacks.md) • [🇬🇷 Ελληνικά](./Payloads/translations/WebSocket-Attacks.el.md) |
-| **GraphQL Injection** | Introspection, IDOR, injection | [📄 View](./Payloads/GraphQL-Injection.md) • [🇬🇷 Ελληνικά](./Payloads/translations/GraphQL-Injection.el.md) |
+| **XSS** | Cross-Site Scripting payloads | [📄 View](./Payloads/XSS.md) |
+| **SQLi** | SQL Injection payloads | [📄 View](./Payloads/SQLi.md) |
+| **LFI** | Local File Inclusion payloads | [📄 View](./Payloads/LFI.md) |
+| **SSTI** | Server-Side Template Injection | [📄 View](./Payloads/SSTI.md) |
+| **Command Injection** | OS command injection payloads | [📄 View](./Payloads/Command-Injection.md) |
+| **NoSQL Injection** | MongoDB, CouchDB, Redis payloads | [📄 View](./Payloads/NoSQL-Injection.md) |
+| **Deserialization** | Java, PHP, Python, .NET payloads | [📄 View](./Payloads/Deserialization.md) |
+| **WebSocket Attacks** | CSWSH, injection, hijacking | [📄 View](./Payloads/WebSocket-Attacks.md) |
+| **GraphQL Injection** | Introspection, IDOR, injection | [📄 View](./Payloads/GraphQL-Injection.md) |
 
 ### 🔴 Web Vulnerabilities
 
 | Vulnerability | Description | Cheatsheet |
 |---------------|-------------|------------|
-| **API Security** | REST/GraphQL/JWT testing guide | [📄 View](./API-Security/README.md) • [🇬🇷 Ελληνικά](./API-Security/translations/README.el.md) |
-| **IDOR** | Insecure Direct Object Reference | [📄 View](./IDOR/README.md) • [🇬🇷 Ελληνικά](./IDOR/translations/README.el.md) |
-| **SSRF** | Server-Side Request Forgery | [📄 View](./SSRF/README.md) • [🇬🇷 Ελληνικά](./SSRF/translations/README.el.md) |
-| **XXE** | XML External Entity Injection | [📄 View](./XXE/README.md) • [🇬🇷 Ελληνικά](./XXE/translations/README.el.md) |
-| **Race Conditions** | Timing & concurrency attacks | [📄 View](./Race-Conditions/README.md) • [🇬🇷 Ελληνικά](./Race-Conditions/translations/README.el.md) |
-| **Auth Bypass** | Authentication bypass techniques | [📄 View](./Auth-Bypass/README.md) • [🇬🇷 Ελληνικά](./Auth-Bypass/translations/README.el.md) |
-| **CORS** | Cross-Origin misconfigurations | [📄 View](./CORS/README.md) • [🇬🇷 Ελληνικά](./CORS/translations/README.el.md) |
-| **Open Redirect** | URL redirect vulnerabilities | [📄 View](./Open-Redirect/README.md) • [🇬🇷 Ελληνικά](./Open-Redirect/translations/README.el.md) |
+| **API Security** | REST/GraphQL/JWT testing guide | [📄 View](./API-Security/README.md) |
+| **IDOR** | Insecure Direct Object Reference | [📄 View](./IDOR/README.md) |
+| **SSRF** | Server-Side Request Forgery | [📄 View](./SSRF/README.md) |
+| **XXE** | XML External Entity Injection | [📄 View](./XXE/README.md) |
+| **Race Conditions** | Timing & concurrency attacks | [📄 View](./Race-Conditions/README.md) |
+| **Auth Bypass** | Authentication bypass techniques | [📄 View](./Auth-Bypass/README.md) |
+| **CORS** | Cross-Origin misconfigurations | [📄 View](./CORS/README.md) |
+| **Open Redirect** | URL redirect vulnerabilities | [📄 View](./Open-Redirect/README.md) |
 
 ### 🛡️ Advanced Attack Techniques
 
 | Topic | Description | Cheatsheet |
 |-------|-------------|------------|
-| **WAF Bypass** | Origin IP discovery & WAF evasion | [📄 View](./WAF-Bypass/README.md) • [🇬🇷 Ελληνικά](./WAF-Bypass/translations/README.el.md) |
-| **Cloudflare Bypass** | Find origin IP behind Cloudflare | [📄 View](./Cloudflare-Bypass/README.md) • [🇬🇷 Ελληνικά](./Cloudflare-Bypass/translations/README.el.md) |
-| **Subdomain Takeover** | Dangling CNAME exploitation | [📄 View](./Subdomain-Takeover/README.md) • [🇬🇷 Ελληνικά](./Subdomain-Takeover/translations/README.el.md) |
-| **Cache Poisoning** | Web cache poisoning & deception | [📄 View](./Cache-Poisoning/README.md) • [🇬🇷 Ελληνικά](./Cache-Poisoning/translations/README.el.md) |
-| **HTTP Smuggling** | Request smuggling (CL.TE/TE.CL) | [📄 View](./HTTP-Request-Smuggling/README.md) • [🇬🇷 Ελληνικά](./HTTP-Request-Smuggling/translations/README.el.md) |
-| **Prototype Pollution** | JavaScript prototype attacks | [📄 View](./Prototype-Pollution/README.md) • [🇬🇷 Ελληνικά](./Prototype-Pollution/translations/README.el.md) |
+| **WAF Bypass** | Origin IP discovery & WAF evasion | [📄 View](./WAF-Bypass/README.md) |
+| **Cloudflare Bypass** | Find origin IP behind Cloudflare | [📄 View](./Cloudflare-Bypass/README.md) |
+| **Subdomain Takeover** | Dangling CNAME exploitation | [📄 View](./Subdomain-Takeover/README.md) |
+| **Cache Poisoning** | Web cache poisoning & deception | [📄 View](./Cache-Poisoning/README.md) |
+| **HTTP Smuggling** | Request smuggling (CL.TE/TE.CL) | [📄 View](./HTTP-Request-Smuggling/README.md) |
+| **Prototype Pollution** | JavaScript prototype attacks | [📄 View](./Prototype-Pollution/README.md) |
 
 ### 🔎 Dorking & OSINT
 
 | Tool | Description | Cheatsheet |
 |------|-------------|------------|
-| **Google Dorking** | Advanced Google search techniques | [📄 View](./Google-Dorking/README.md) • [🇬🇷 Ελληνικά](./Google-Dorking/translations/README.el.md) |
-| **Shodan** | IoT & device search engine | [📄 View](./Shodan/README.md) • [🇬🇷 Ελληνικά](./Shodan/translations/README.el.md) |
-| **GitHub Dorking** | Secret hunting in repositories | [📄 View](./GitHub-Dorking/README.md) • [🇬🇷 Ελληνικά](./GitHub-Dorking/translations/README.el.md) |
+| **Google Dorking** | Advanced Google search techniques | [📄 View](./Google-Dorking/README.md) |
+| **Shodan** | IoT & device search engine | [📄 View](./Shodan/README.md) |
+| **GitHub Dorking** | Secret hunting in repositories | [📄 View](./GitHub-Dorking/README.md) |
 
 ### 🔝 Privilege Escalation
 
 | Topic | Description | Cheatsheet |
 |-------|-------------|------------|
-| **Linux PrivEsc** | Linux privilege escalation techniques | [📄 View](./Linux-PrivEsc/README.md) • [🇬🇷 Ελληνικά](./Linux-PrivEsc/translations/README.el.md) |
-| **Windows PrivEsc** | Windows privilege escalation techniques | [📄 View](./Windows-PrivEsc/README.md) • [🇬🇷 Ελληνικά](./Windows-PrivEsc/translations/README.el.md) |
+| **Linux PrivEsc** | Linux privilege escalation techniques | [📄 View](./Linux-PrivEsc/README.md) |
+| **Windows PrivEsc** | Windows privilege escalation techniques | [📄 View](./Windows-PrivEsc/README.md) |
 
 ### 🔬 Digital Forensics
 
 | Tool | Description | Cheatsheet |
 |------|-------------|------------|
-| **Volatility** | Memory forensics framework | [📄 View](./Volatility/README.md) • [🇬🇷 Ελληνικά](./Volatility/translations/README.el.md) |
-| **Autopsy** | Digital forensics platform (GUI) | [📄 View](./Autopsy/README.md) • [🇬🇷 Ελληνικά](./Autopsy/translations/README.el.md) |
-| **ExifTool** | Metadata extraction & analysis | [📄 View](./ExifTool/README.md) • [🇬🇷 Ελληνικά](./ExifTool/translations/README.el.md) |
-| **Binwalk** | Firmware analysis & extraction | [📄 View](./Binwalk/README.md) • [🇬🇷 Ελληνικά](./Binwalk/translations/README.el.md) |
+| **Volatility** | Memory forensics framework | [📄 View](./Volatility/README.md) |
+| **Autopsy** | Digital forensics platform (GUI) | [📄 View](./Autopsy/README.md) |
+| **ExifTool** | Metadata extraction & analysis | [📄 View](./ExifTool/README.md) |
+| **Binwalk** | Firmware analysis & extraction | [📄 View](./Binwalk/README.md) |
 
 ### 🔄 Reverse Engineering
 
 | Tool | Description | Cheatsheet |
 |------|-------------|------------|
-| **Ghidra** | NSA reverse engineering suite | [📄 View](./Ghidra/README.md) • [🇬🇷 Ελληνικά](./Ghidra/translations/README.el.md) |
-| **GDB** | GNU Debugger (Linux debugging) | [📄 View](./GDB/README.md) • [🇬🇷 Ελληνικά](./GDB/translations/README.el.md) |
-| **x64dbg** | Windows x64/x32 debugger | [📄 View](./x64dbg/README.md) • [🇬🇷 Ελληνικά](./x64dbg/translations/README.el.md) |
+| **Ghidra** | NSA reverse engineering suite | [📄 View](./Ghidra/README.md) |
+| **GDB** | GNU Debugger (Linux debugging) | [📄 View](./GDB/README.md) |
+| **x64dbg** | Windows x64/x32 debugger | [📄 View](./x64dbg/README.md) |
 
 ### 📶 WiFi Hacking
 
 | Tool | Description | Cheatsheet |
 |------|-------------|------------|
-| **Aircrack-ng** | WiFi hacking suite (WPA/WPA2) | [📄 View](./Aircrack-ng/README.md) • [🇬🇷 Ελληνικά](./Aircrack-ng/translations/README.el.md) |
-| **Wifite** | Automated WiFi auditor | [📄 View](./Wifite/README.md) • [🇬🇷 Ελληνικά](./Wifite/translations/README.el.md) |
-| **Bettercap** | Network attack framework (MITM/WiFi) | [📄 View](./Bettercap/README.md) • [🇬🇷 Ελληνικά](./Bettercap/translations/README.el.md) |
+| **Aircrack-ng** | WiFi hacking suite (WPA/WPA2) | [📄 View](./Aircrack-ng/README.md) |
+| **Wifite** | Automated WiFi auditor | [📄 View](./Wifite/README.md) |
+| **Bettercap** | Network attack framework (MITM/WiFi) | [📄 View](./Bettercap/README.md) |
 
 ### 🏢 Active Directory
 
 | Tool | Description | Cheatsheet |
 |------|-------------|------------|
-| **⭐ AD Methodology** | Step-by-step attack guide | [📄 View](./AD-Attack-Methodology/README.md) • [🇬🇷 Ελληνικά](./AD-Attack-Methodology/translations/README.el.md) |
-| **BloodHound** | AD attack path visualization | [📄 View](./BloodHound/README.md) • [🇬🇷 Ελληνικά](./BloodHound/translations/README.el.md) |
-| **Impacket** | Python AD attack toolkit | [📄 View](./Impacket/README.md) • [🇬🇷 Ελληνικά](./Impacket/translations/README.el.md) |
-| **CrackMapExec** | AD Swiss Army knife | [📄 View](./CrackMapExec/README.md) • [🇬🇷 Ελληνικά](./CrackMapExec/translations/README.el.md) |
-| **Rubeus** | Kerberos abuse toolkit | [📄 View](./Rubeus/README.md) • [🇬🇷 Ελληνικά](./Rubeus/translations/README.el.md) |
-| **PowerView** | PowerShell AD enumeration | [📄 View](./PowerView/README.md) • [🇬🇷 Ελληνικά](./PowerView/translations/README.el.md) |
-| **Responder** | LLMNR/NBT-NS poisoning | [📄 View](./Responder/README.md) • [🇬🇷 Ελληνικά](./Responder/translations/README.el.md) |
-| **Evil-WinRM** | WinRM shell for pentesters | [📄 View](./Evil-WinRM/README.md) • [🇬🇷 Ελληνικά](./Evil-WinRM/translations/README.el.md) |
-| **Kerbrute** | Kerberos user enum & spray | [📄 View](./Kerbrute/README.md) • [🇬🇷 Ελληνικά](./Kerbrute/translations/README.el.md) |
+| **⭐ AD Methodology** | Step-by-step attack guide | [📄 View](./AD-Attack-Methodology/README.md) |
+| **BloodHound** | AD attack path visualization | [📄 View](./BloodHound/README.md) |
+| **Impacket** | Python AD attack toolkit | [📄 View](./Impacket/README.md) |
+| **CrackMapExec** | AD Swiss Army knife | [📄 View](./CrackMapExec/README.md) |
+| **Rubeus** | Kerberos abuse toolkit | [📄 View](./Rubeus/README.md) |
+| **PowerView** | PowerShell AD enumeration | [📄 View](./PowerView/README.md) |
+| **Responder** | LLMNR/NBT-NS poisoning | [📄 View](./Responder/README.md) |
+| **Evil-WinRM** | WinRM shell for pentesters | [📄 View](./Evil-WinRM/README.md) |
+| **Kerbrute** | Kerberos user enum & spray | [📄 View](./Kerbrute/README.md) |
 
 ### 📚 Resources
 
 | Resource | Description | Cheatsheet |
 |----------|-------------|------------|
-| **Wordlists** | Complete wordlist reference guide | [📄 View](./Wordlists/README.md) • [🇬🇷 Ελληνικά](./Wordlists/translations/README.el.md) |
-| **Kali Linux Tools** | 600+ tools by category | [📄 View](./Kali-Linux-Tools/README.md) • [🇬🇷 Ελληνικά](./Kali-Linux-Tools/translations/README.el.md) |
+| **Wordlists** | Complete wordlist reference guide | [📄 View](./Wordlists/README.md) |
+| **Kali Linux Tools** | 600+ tools by category | [📄 View](./Kali-Linux-Tools/README.md) |
 
 ---
 
