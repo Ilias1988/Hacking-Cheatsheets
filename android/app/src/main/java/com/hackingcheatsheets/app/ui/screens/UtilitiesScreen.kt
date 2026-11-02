@@ -333,7 +333,7 @@ fun NetworkFilterRuleTab(language: AppLanguage) {
                         OutlinedTextField(
                             value = iface,
                             onValueChange = { iface = it },
-                            label = { Text("Arayüz (-i)") },
+                            label = { Text(if (language == AppLanguage.TR) "Arayüz (-i)" else "Interface (-i)") },
                             modifier = Modifier.weight(1f),
                             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                             singleLine = true
@@ -341,7 +341,7 @@ fun NetworkFilterRuleTab(language: AppLanguage) {
                         OutlinedTextField(
                             value = customPort,
                             onValueChange = { customPort = it },
-                            label = { Text("Port (opsiyonel)") },
+                            label = { Text(if (language == AppLanguage.TR) "Port (opsiyonel)" else "Port (optional)") },
                             modifier = Modifier.weight(1f),
                             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                             singleLine = true
@@ -353,7 +353,7 @@ fun NetworkFilterRuleTab(language: AppLanguage) {
                     OutlinedTextField(
                         value = customHost,
                         onValueChange = { customHost = it },
-                        label = { Text("Hedef Host/IP veya Ağ (opsiyonel)") },
+                        label = { Text(if (language == AppLanguage.TR) "Hedef Host/IP veya Ağ (opsiyonel)" else "Target Host/IP or Network (optional)") },
                         modifier = Modifier.fillMaxWidth(),
                         colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                         singleLine = true
@@ -363,19 +363,19 @@ fun NetworkFilterRuleTab(language: AppLanguage) {
 
                     // BPF toggles
                     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("-nn (DNS ve Port İsimlerini Çözme)", fontSize = 11.5.sp, color = TextPrimary)
+                        Text(if (language == AppLanguage.TR) "-nn (DNS ve Port İsimlerini Çözme)" else "-nn (Do not resolve hostnames/ports)", fontSize = 11.5.sp, color = TextPrimary)
                         Switch(checked = noDns, onCheckedChange = { noDns = it }, colors = SwitchDefaults.colors(checkedThumbColor = BackgroundDark, checkedTrackColor = CyberGreen))
                     }
                     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("-v (Ayrıntılı Paket Başlıkları)", fontSize = 11.5.sp, color = TextPrimary)
+                        Text(if (language == AppLanguage.TR) "-v (Ayrıntılı Paket Başlıkları)" else "-v (Verbose packet headers)", fontSize = 11.5.sp, color = TextPrimary)
                         Switch(checked = verbose, onCheckedChange = { verbose = it }, colors = SwitchDefaults.colors(checkedThumbColor = BackgroundDark, checkedTrackColor = CyberGreen))
                     }
                     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("-X (Hex ve ASCII Paket Dökümü)", fontSize = 11.5.sp, color = TextPrimary)
+                        Text(if (language == AppLanguage.TR) "-X (Hex ve ASCII Paket Dökümü)" else "-X (Hex & ASCII packet dump)", fontSize = 11.5.sp, color = TextPrimary)
                         Switch(checked = hexDump, onCheckedChange = { hexDump = it }, colors = SwitchDefaults.colors(checkedThumbColor = BackgroundDark, checkedTrackColor = CyberGreen))
                     }
                     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("-w $pcapFile (Trafiği Dosyaya Kaydet)", fontSize = 11.5.sp, color = TextPrimary)
+                        Text(if (language == AppLanguage.TR) "-w $pcapFile (Trafiği Dosyaya Kaydet)" else "-w $pcapFile (Save traffic to file)", fontSize = 11.5.sp, color = TextPrimary)
                         Switch(checked = savePcap, onCheckedChange = { savePcap = it }, colors = SwitchDefaults.colors(checkedThumbColor = BackgroundDark, checkedTrackColor = CyberGreen))
                     }
 
@@ -414,7 +414,7 @@ fun NetworkFilterRuleTab(language: AppLanguage) {
 
                     Spacer(modifier = Modifier.height(14.dp))
                     Text(
-                        text = if (toolMode == 0) "ÜRETİLEN TCPDUMP KOMUTU" else "ÜRETİLEN TSHARK KOMUTU",
+                        text = if (language == AppLanguage.TR) (if (toolMode == 0) "ÜRETİLEN TCPDUMP KOMUTU" else "ÜRETİLEN TSHARK KOMUTU") else (if (toolMode == 0) "GENERATED TCPDUMP COMMAND" else "GENERATED TSHARK COMMAND"),
                         style = MaterialTheme.typography.labelLarge,
                         color = CyberGreen
                     )
@@ -534,7 +534,7 @@ fun NetworkFilterRuleTab(language: AppLanguage) {
                     OutlinedTextField(
                         value = ufwPort,
                         onValueChange = { ufwPort = it },
-                        label = { Text("Port / Servis (örn: 22/tcp, 80,443/tcp, OpenSSH)") },
+                        label = { Text(if (language == AppLanguage.TR) "Port / Servis (örn: 22/tcp, 80,443/tcp, OpenSSH)" else "Port / Service (e.g. 22/tcp, 80,443/tcp, OpenSSH)") },
                         modifier = Modifier.fillMaxWidth(),
                         colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                         singleLine = true
@@ -543,7 +543,7 @@ fun NetworkFilterRuleTab(language: AppLanguage) {
                     OutlinedTextField(
                         value = ufwSource,
                         onValueChange = { ufwSource = it },
-                        label = { Text("Kaynak IP / Subnet (opsiyonel: 192.168.1.100)") },
+                        label = { Text(if (language == AppLanguage.TR) "Kaynak IP / Subnet (opsiyonel: 192.168.1.100)" else "Source IP / Subnet (optional: 192.168.1.100)") },
                         modifier = Modifier.fillMaxWidth(),
                         colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                         singleLine = true
@@ -665,7 +665,7 @@ fun EncoderDecoderTab(language: AppLanguage) {
                 ) { Text("Text -> Hex", fontSize = 10.5.sp, color = CyberGreen) }
 
                 Button(
-                    onClick = { output = hexToString(input) },
+                    onClick = { output = hexToString(input, language) },
                     colors = ButtonDefaults.buttonColors(containerColor = SurfaceVariantDark),
                     modifier = Modifier.weight(1f)
                 ) { Text("Hex -> Text", fontSize = 10.5.sp, color = TerminalCyan) }
@@ -702,13 +702,13 @@ fun EncoderDecoderTab(language: AppLanguage) {
                     output = if (converted.isNotEmpty()) {
                         converted.entries.joinToString("\n") { "${it.key}: ${it.value}" }
                     } else {
-                        "Geçerli bir IPv4 adresi girin (örn: 127.0.0.1 veya 192.168.1.1)"
+                        if (language == AppLanguage.TR) "Geçerli bir IPv4 adresi girin (örn: 127.0.0.1 veya 192.168.1.1)" else "Enter a valid IPv4 address (e.g. 127.0.0.1 or 192.168.1.1)"
                     }
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = SurfaceVariantDark),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("IPv4 Dönüştür (Decimal, Hex, Octal, Binary)", fontSize = 11.sp, color = CyberGreen)
+                Text(if (language == AppLanguage.TR) "IPv4 Dönüştür (Decimal, Hex, Octal, Binary)" else "Convert IPv4 (Decimal, Hex, Octal, Binary)", fontSize = 11.sp, color = CyberGreen)
             }
 
             Spacer(modifier = Modifier.height(14.dp))
@@ -792,7 +792,7 @@ fun HashIdentifierView(language: AppLanguage) {
     var hashInput by remember { mutableStateOf("") }
     val trimmed = hashInput.trim()
     val entropy = calculateEntropy(trimmed)
-    val candidates = identifyHashDetailed(trimmed)
+    val candidates = identifyHashDetailed(trimmed, language)
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -848,7 +848,7 @@ fun HashIdentifierView(language: AppLanguage) {
                         contentAlignment = Alignment.Center
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("ENTROPİ", fontSize = 9.sp, fontFamily = FontFamily.Monospace, color = TextMuted)
+                            Text(if (language == AppLanguage.TR) "ENTROPİ" else "ENTROPY", fontSize = 9.sp, fontFamily = FontFamily.Monospace, color = TextMuted)
                             Text("$entropy bits/char", fontSize = 11.5.sp, fontWeight = FontWeight.Bold, color = CyberGreen)
                         }
                     }
@@ -1254,10 +1254,11 @@ fun generateAllHashes(
     text: String,
     isUppercase: Boolean,
     isHmac: Boolean,
-    hmacKey: String
+    hmacKey: String,
+    language: AppLanguage = AppLanguage.TR
 ): List<GeneratedHashResult> {
     if (text.isEmpty()) {
-        val emptyHint = "(Metin bekleniyor...)"
+        val emptyHint = if (language == AppLanguage.TR) "(Metin bekleniyor...)" else "(Waiting for text...)"
         return listOf(
             GeneratedHashResult("MD5", "128-bit", CyberGreen, emptyHint),
             GeneratedHashResult("NTLM", "Windows SAM", WarningOrange, emptyHint),
@@ -1478,9 +1479,9 @@ fun stringToHex(s: String, spaceSeparated: Boolean): String {
     }
 }
 
-fun hexToString(hex: String): String {
+fun hexToString(hex: String, language: AppLanguage = AppLanguage.TR): String {
     val clean = hex.replace(" ", "").replace("0x", "").replace(":", "")
-    if (clean.length % 2 != 0) return "Geçersiz Hex (tek sayıda karakter)"
+    if (clean.length % 2 != 0) return if (language == AppLanguage.TR) "Geçersiz Hex (tek sayıda karakter)" else "Invalid Hex (odd character count)"
     return try {
         val bytes = ByteArray(clean.length / 2)
         for (i in bytes.indices) {
@@ -1488,7 +1489,7 @@ fun hexToString(hex: String): String {
         }
         String(bytes, Charsets.UTF_8)
     } catch (e: Exception) {
-        "Geçersiz Hex baytları"
+        if (language == AppLanguage.TR) "Geçersiz Hex baytları" else "Invalid Hex bytes"
     }
 }
 
@@ -1515,8 +1516,16 @@ fun htmlEntityDecode(s: String): String {
         .replace("&#x2F;", "/")
 }
 
-fun identifyHashDetailed(hash: String): List<HashCandidate> {
-    if (hash.isEmpty()) return listOf(HashCandidate("Girdi bekleniyor...", "Lütfen tanımlamak istediğiniz hash değerini yapıştırın."))
+fun identifyHashDetailed(hash: String, language: AppLanguage = AppLanguage.TR): List<HashCandidate> {
+    val isTr = language == AppLanguage.TR
+    if (hash.isEmpty()) {
+        return listOf(
+            HashCandidate(
+                if (isTr) "Girdi bekleniyor..." else "Waiting for input...",
+                if (isTr) "Lütfen tanımlamak istediğiniz hash değerini yapıştırın." else "Please paste the hash you want to identify into the box above."
+            )
+        )
+    }
     val len = hash.length
     val isHex = hash.matches(Regex("^[0-9a-fA-F]+$"))
     val list = mutableListOf<HashCandidate>()
@@ -1524,49 +1533,54 @@ fun identifyHashDetailed(hash: String): List<HashCandidate> {
     if (isHex) {
         when (len) {
             32 -> {
-                list.add(HashCandidate("MD5", "Eski ve yaygın 128-bit hash", "-m 0", "hashcat -m 0 hashes.txt /usr/share/wordlists/rockyou.txt"))
-                list.add(HashCandidate("NTLM", "Windows yerel parola hash formatı", "-m 1000", "hashcat -m 1000 hashes.txt /usr/share/wordlists/rockyou.txt"))
-                list.add(HashCandidate("MD4", "Eski Windows & NTLM temeli", "-m 900", "hashcat -m 900 hashes.txt /usr/share/wordlists/rockyou.txt"))
+                list.add(HashCandidate("MD5", if (isTr) "Eski ve yaygın 128-bit hash" else "Legacy and common 128-bit hash", "-m 0", "hashcat -m 0 hashes.txt /usr/share/wordlists/rockyou.txt"))
+                list.add(HashCandidate("NTLM", if (isTr) "Windows yerel parola hash formatı" else "Windows local password hash format", "-m 1000", "hashcat -m 1000 hashes.txt /usr/share/wordlists/rockyou.txt"))
+                list.add(HashCandidate("MD4", if (isTr) "Eski Windows & NTLM temeli" else "Legacy Windows & NTLM foundation", "-m 900", "hashcat -m 900 hashes.txt /usr/share/wordlists/rockyou.txt"))
             }
             40 -> {
-                list.add(HashCandidate("SHA-1", "160-bit kriptografik özet", "-m 100", "hashcat -m 100 hashes.txt /usr/share/wordlists/rockyou.txt"))
-                list.add(HashCandidate("MySQL 4.1/5+", "MySQL veritabanı parola hash'i", "-m 300", "hashcat -m 300 hashes.txt /usr/share/wordlists/rockyou.txt"))
+                list.add(HashCandidate("SHA-1", if (isTr) "160-bit kriptografik özet" else "160-bit cryptographic digest", "-m 100", "hashcat -m 100 hashes.txt /usr/share/wordlists/rockyou.txt"))
+                list.add(HashCandidate("MySQL 4.1/5+", if (isTr) "MySQL veritabanı parola hash'i" else "MySQL database password hash", "-m 300", "hashcat -m 300 hashes.txt /usr/share/wordlists/rockyou.txt"))
             }
             56 -> {
-                list.add(HashCandidate("SHA-224", "224-bit SHA-2 ailesi", "-m 1300", "hashcat -m 1300 hashes.txt /usr/share/wordlists/rockyou.txt"))
+                list.add(HashCandidate("SHA-224", if (isTr) "224-bit SHA-2 ailesi" else "224-bit SHA-2 family", "-m 1300", "hashcat -m 1300 hashes.txt /usr/share/wordlists/rockyou.txt"))
             }
             64 -> {
-                list.add(HashCandidate("SHA-256", "Modern standart 256-bit hash", "-m 1400", "hashcat -m 1400 hashes.txt /usr/share/wordlists/rockyou.txt"))
-                list.add(HashCandidate("Keccak-256", "Ethereum / Web3 hash formatı", "-m 17700", "hashcat -m 17700 hashes.txt /usr/share/wordlists/rockyou.txt"))
+                list.add(HashCandidate("SHA-256", if (isTr) "Modern standart 256-bit hash" else "Modern standard 256-bit hash", "-m 1400", "hashcat -m 1400 hashes.txt /usr/share/wordlists/rockyou.txt"))
+                list.add(HashCandidate("Keccak-256", if (isTr) "Ethereum / Web3 hash formatı" else "Ethereum / Web3 hash format", "-m 17700", "hashcat -m 17700 hashes.txt /usr/share/wordlists/rockyou.txt"))
             }
             96 -> {
-                list.add(HashCandidate("SHA-384", "384-bit SHA-2 ailesi", "-m 10800", "hashcat -m 10800 hashes.txt /usr/share/wordlists/rockyou.txt"))
+                list.add(HashCandidate("SHA-384", if (isTr) "384-bit SHA-2 ailesi" else "384-bit SHA-2 family", "-m 10800", "hashcat -m 10800 hashes.txt /usr/share/wordlists/rockyou.txt"))
             }
             128 -> {
-                list.add(HashCandidate("SHA-512", "512-bit güçlü kriptografik özet", "-m 1700", "hashcat -m 1700 hashes.txt /usr/share/wordlists/rockyou.txt"))
-                list.add(HashCandidate("Whirlpool", "512-bit blok şifre tabanlı hash", "-m 6100", "hashcat -m 6100 hashes.txt /usr/share/wordlists/rockyou.txt"))
+                list.add(HashCandidate("SHA-512", if (isTr) "512-bit güçlü kriptografik özet" else "512-bit strong cryptographic digest", "-m 1700", "hashcat -m 1700 hashes.txt /usr/share/wordlists/rockyou.txt"))
+                list.add(HashCandidate("Whirlpool", if (isTr) "512-bit blok şifre tabanlı hash" else "512-bit block cipher based hash", "-m 6100", "hashcat -m 6100 hashes.txt /usr/share/wordlists/rockyou.txt"))
             }
         }
     }
 
     if (hash.startsWith("$2a$") || hash.startsWith("$2b$") || hash.startsWith("$2y$")) {
-        list.add(HashCandidate("bcrypt", "Blowfish tabanlı yavaş hash algoritması", "-m 3200", "hashcat -m 3200 hashes.txt /usr/share/wordlists/rockyou.txt"))
+        list.add(HashCandidate("bcrypt", if (isTr) "Blowfish tabanlı yavaş hash algoritması" else "Blowfish-based slow password hashing algorithm", "-m 3200", "hashcat -m 3200 hashes.txt /usr/share/wordlists/rockyou.txt"))
     }
     if (hash.startsWith("$6$")) {
-        list.add(HashCandidate("SHA512-Crypt", "Linux /etc/shadow varsayılan parola formatı", "-m 1800", "hashcat -m 1800 hashes.txt /usr/share/wordlists/rockyou.txt"))
+        list.add(HashCandidate("SHA512-Crypt", if (isTr) "Linux /etc/shadow varsayılan parola formatı" else "Linux /etc/shadow default password hash", "-m 1800", "hashcat -m 1800 hashes.txt /usr/share/wordlists/rockyou.txt"))
     }
     if (hash.startsWith("$1$")) {
-        list.add(HashCandidate("MD5-Crypt", "Eski Linux /etc/shadow parola formatı", "-m 500", "hashcat -m 500 hashes.txt /usr/share/wordlists/rockyou.txt"))
+        list.add(HashCandidate("MD5-Crypt", if (isTr) "Eski Linux /etc/shadow parola formatı" else "Legacy Linux /etc/shadow password format", "-m 500", "hashcat -m 500 hashes.txt /usr/share/wordlists/rockyou.txt"))
     }
     if (hash.startsWith("\$krb5asrep\$")) {
-        list.add(HashCandidate("Kerberos 5 AS-REP", "AS-REP Roasting saldırı çıktısı", "-m 18200", "hashcat -m 18200 hashes.txt /usr/share/wordlists/rockyou.txt"))
+        list.add(HashCandidate("Kerberos 5 AS-REP", if (isTr) "AS-REP Roasting saldırı çıktısı" else "AS-REP Roasting attack hash output", "-m 18200", "hashcat -m 18200 hashes.txt /usr/share/wordlists/rockyou.txt"))
     }
     if (hash.startsWith("\$krb5tgs\$")) {
-        list.add(HashCandidate("Kerberos 5 TGS", "Kerberoasting SPN servis bileti hash'i", "-m 13100", "hashcat -m 13100 hashes.txt /usr/share/wordlists/rockyou.txt"))
+        list.add(HashCandidate("Kerberos 5 TGS", if (isTr) "Kerberoasting SPN servis bileti hash'i" else "Kerberoasting SPN service ticket hash", "-m 13100", "hashcat -m 13100 hashes.txt /usr/share/wordlists/rockyou.txt"))
     }
 
     if (list.isEmpty()) {
-        list.add(HashCandidate("Bilinmeyen İmza", "Uzunluk: $len karakter. Özel tuzlama (salt) veya tescilli algoritma olabilir."))
+        list.add(
+            HashCandidate(
+                if (isTr) "Bilinmeyen İmza" else "Unknown Signature",
+                if (isTr) "Uzunluk: $len karakter. Özel tuzlama (salt) veya tescilli algoritma olabilir." else "Length: $len characters. Could be salted or proprietary algorithm."
+            )
+        )
     }
     return list
 }

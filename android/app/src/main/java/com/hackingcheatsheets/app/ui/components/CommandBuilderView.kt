@@ -66,6 +66,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -390,6 +391,7 @@ fun CommandBuilderView(
         matchesCategory && matchesSearch
     }
 
+    CompositionLocalProvider(LocalAppLanguage provides language) {
     Column(modifier = modifier.fillMaxWidth()) {
         // Legal Disclaimer Banner
         LegalDisclaimerBanner(language = language)
@@ -443,7 +445,7 @@ fun CommandBuilderView(
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
-                                text = currentTool.category.titleTr.uppercase(),
+                                text = (if (language == AppLanguage.TR) currentTool.category.titleTr else currentTool.category.titleEn).uppercase(),
                                 fontSize = 9.sp,
                                 fontFamily = FontFamily.Monospace,
                                 color = currentTool.category.color
@@ -779,6 +781,7 @@ fun CommandBuilderView(
             }
         }
     }
+    }
 }
 
 // -------------------------------------------------------------
@@ -944,6 +947,7 @@ fun ToggleOption(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) {
+    val displayLabel = tr(label)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -953,7 +957,7 @@ fun ToggleOption(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = label,
+            text = displayLabel,
             fontSize = 11.5.sp,
             fontFamily = FontFamily.Monospace,
             color = if (checked) TextPrimary else TextSecondary,
@@ -979,6 +983,7 @@ fun ToggleChip(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
+    val displayLabel = tr(label)
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(6.dp))
@@ -989,7 +994,7 @@ fun ToggleChip(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = label,
+            text = displayLabel,
             fontSize = 10.5.sp,
             fontFamily = FontFamily.Monospace,
             fontWeight = if (checked) FontWeight.Bold else FontWeight.Normal,
@@ -1070,7 +1075,7 @@ fun UniversalToolBuilder(tool: Cheatsheet, language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text("Hedef IP / URL / Domain (<TARGET>)") },
+            label = { Text(tr("Hedef IP / URL / Domain (<TARGET>)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -1082,7 +1087,7 @@ fun UniversalToolBuilder(tool: Cheatsheet, language: AppLanguage) {
             OutlinedTextField(
                 value = customPort,
                 onValueChange = { customPort = it },
-                label = { Text("Port (opsiyonel)") },
+                label = { Text(tr("Port (opsiyonel)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1090,7 +1095,7 @@ fun UniversalToolBuilder(tool: Cheatsheet, language: AppLanguage) {
             OutlinedTextField(
                 value = wordlist,
                 onValueChange = { wordlist = it },
-                label = { Text("Wordlist Yolu") },
+                label = { Text(tr("Wordlist Yolu")) },
                 modifier = Modifier.weight(1.5f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1179,7 +1184,7 @@ fun NmapBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text(if (isTargetList) "Hedef Dosyası (-iL targets.txt)" else "Hedef IP / CIDR / Domain") },
+            label = { Text(tr(if (isTargetList) "Hedef Dosyası (-iL targets.txt)" else "Hedef IP / CIDR / Domain")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -1188,14 +1193,14 @@ fun NmapBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = excludeHosts,
             onValueChange = { excludeHosts = it },
-            label = { Text("Hariç Tut (--exclude 10.10.10.1) - Opsiyonel") },
+            label = { Text(tr("Hariç Tut (--exclude 10.10.10.1) - Opsiyonel")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "TARAMA TEKNİĞİ (-s*)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("TARAMA TEKNİĞİ (-s*)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("-sS" to "SYN Stealth", "-sT" to "Connect", "-sU" to "UDP", "-sA" to "ACK", "-sN" to "Null/FIN", "-sn" to "Ping Sweep").forEach { (type, lbl) ->
@@ -1210,13 +1215,13 @@ fun NmapBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "$type\n$lbl", fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary, lineHeight = 11.sp)
+                    Text(text = "$type\n${tr(lbl)}", fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary, lineHeight = 11.sp)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PORT SEÇENEKLERİ (-p / --top-ports)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PORT SEÇENEKLERİ (-p / --top-ports)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("top100" to "Top 100", "top1000" to "Top 1000", "all" to "Tümü (-p-)", "fast" to "Hızlı (-F)", "custom" to "Özel").forEach { (opt, lbl) ->
@@ -1231,7 +1236,7 @@ fun NmapBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -1240,7 +1245,7 @@ fun NmapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customPorts,
                 onValueChange = { customPorts = it },
-                label = { Text("Port Listesi (örn: 21-25,80,443,445,8080)") },
+                label = { Text(tr("Port Listesi (örn: 21-25,80,443,445,8080)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1248,7 +1253,7 @@ fun NmapBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ZAMANLAMA ŞABLONU (TIMING)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ZAMANLAMA ŞABLONU (TIMING)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("-T2" to "Polite (-T2)", "-T3" to "Normal (-T3)", "-T4" to "Aggressive (-T4)", "-T5" to "Insane (-T5)").forEach { (t, _) ->
@@ -1269,7 +1274,7 @@ fun NmapBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "NSE SCRIPTLERİ (--script)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("NSE SCRIPTLERİ (--script)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             ToggleChip("default (-sC)", scriptDefault, modifier = Modifier.weight(1f)) { scriptDefault = !scriptDefault }
@@ -1283,7 +1288,7 @@ fun NmapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customScript,
                 onValueChange = { customScript = it },
-                label = { Text("Özel Script (örn: smb-vuln-ms17-010)") },
+                label = { Text(tr("Özel Script (örn: smb-vuln-ms17-010)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1291,7 +1296,7 @@ fun NmapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = scriptArgs,
                 onValueChange = { scriptArgs = it },
-                label = { Text("Script Args") },
+                label = { Text(tr("Script Args")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1299,7 +1304,7 @@ fun NmapBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "SERVİS VE İŞLETİM SİSTEMİ TESPİTİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SERVİS VE İŞLETİM SİSTEMİ TESPİTİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-sV Servis ve Versiyon Tespiti", checked = enableVersionDetect, onCheckedChange = { enableVersionDetect = it })
         if (enableVersionDetect) {
@@ -1309,7 +1314,7 @@ fun NmapBuilder(language: AppLanguage) {
         ToggleOption(label = "-A Tam Donanımlı Agresif Mod (OS + Sürüm + Script + Traceroute)", checked = aggressiveScan, onCheckedChange = { aggressiveScan = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "FIREWALL & IDS ATLATMA (EVASION)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("FIREWALL & IDS ATLATMA (EVASION)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-Pn Ping Kontrolünü Atla (Hostu Açık Say)", checked = noPing, onCheckedChange = { noPing = it })
         ToggleOption(label = "-n DNS Çözümlemesi Yapma (Taramayı Hızlandır)", checked = noDns, onCheckedChange = { noDns = it })
@@ -1324,7 +1329,7 @@ fun NmapBuilder(language: AppLanguage) {
         ToggleOption(label = "--reason Port Durumunun Gerekçesini Göster", checked = showReason, onCheckedChange = { showReason = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÇIKTI FORMATI (-o*)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇIKTI FORMATI (-o*)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("oN" to "Normal (-oN)", "oX" to "XML (-oX)", "oG" to "Grepable (-oG)", "oA" to "Tümü (-oA)", "none" to "Terminal").forEach { (fmt, lbl) ->
@@ -1339,7 +1344,7 @@ fun NmapBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -1348,7 +1353,7 @@ fun NmapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = outputFile,
                 onValueChange = { outputFile = it },
-                label = { Text("Çıktı Dosyası Adı") },
+                label = { Text(tr("Çıktı Dosyası Adı")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1456,14 +1461,14 @@ fun RustScanBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text(if (isAddressList) "Adres Listesi Dosyası (hosts.txt)" else "Hedef IP / CIDR / Domain") },
+            label = { Text(tr(if (isAddressList) "Adres Listesi Dosyası (hosts.txt)" else "Hedef IP / CIDR / Domain")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PORT SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PORT SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("full" to "Tüm Portlar (1-65535)", "top" to "Top 1000 (--top)", "custom" to "Özel Aralık (-r)").forEach { (opt, lbl) ->
@@ -1478,7 +1483,7 @@ fun RustScanBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -1487,7 +1492,7 @@ fun RustScanBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customRange,
                 onValueChange = { customRange = it },
-                label = { Text("Port Aralığı (örn: 1-1000, 80,443,8080)") },
+                label = { Text(tr("Port Aralığı (örn: 1-1000, 80,443,8080)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1495,13 +1500,13 @@ fun RustScanBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PERFORMANS VE LİMİTLER", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PERFORMANS VE LİMİTLER"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = batchSize,
                 onValueChange = { batchSize = it },
-                label = { Text("Batch Size (-b)") },
+                label = { Text(tr("Batch Size (-b)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1509,7 +1514,7 @@ fun RustScanBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = ulimit,
                 onValueChange = { ulimit = it },
-                label = { Text("Ulimit (-u)") },
+                label = { Text(tr("Ulimit (-u)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1517,7 +1522,7 @@ fun RustScanBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = timeout,
                 onValueChange = { timeout = it },
-                label = { Text("Timeout ms (-t)") },
+                label = { Text(tr("Timeout ms (-t)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1525,7 +1530,7 @@ fun RustScanBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "TARAMA DÜZENİ VE MODLAR", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("TARAMA DÜZENİ VE MODLAR"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("serial" to "Sıralı (Serial)", "random" to "Rastgele (Random)").forEach { (ord, lbl) ->
@@ -1540,7 +1545,7 @@ fun RustScanBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -1550,7 +1555,7 @@ fun RustScanBuilder(language: AppLanguage) {
         ToggleOption(label = "--no-config Yapılandırma Dosyalarını Yok Say", checked = noConfig, onCheckedChange = { noConfig = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "NMAP ENTEGRASYONU (PIPING)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("NMAP ENTEGRASYONU (PIPING)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "Açık Portları Nmap'e Aktar (-- <nmap bayrakları>)", checked = pipeNmap, onCheckedChange = { pipeNmap = it })
         if (pipeNmap) {
@@ -1574,7 +1579,7 @@ fun RustScanBuilder(language: AppLanguage) {
                             .padding(vertical = 6.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                        Text(text = tr(lbl), fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                     }
                 }
             }
@@ -1582,7 +1587,7 @@ fun RustScanBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customNmapFlags,
                 onValueChange = { customNmapFlags = it },
-                label = { Text("Nmap Bayrakları") },
+                label = { Text(tr("Nmap Bayrakları")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1647,14 +1652,14 @@ fun MasscanBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text(if (isTargetFile) "Hedef Dosyası (-iL targets.txt)" else "Hedef Ağ (CIDR / IP / Aralık)") },
+            label = { Text(tr(if (isTargetFile) "Hedef Dosyası (-iL targets.txt)" else "Hedef Ağ (CIDR / IP / Aralık)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PORT SEÇENEKLERİ (-p)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PORT SEÇENEKLERİ (-p)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("all" to "0-65535", "web" to "Web (80,443..)", "top100" to "Top 100", "top1000" to "Top 1000", "custom" to "Özel").forEach { (opt, lbl) ->
@@ -1669,7 +1674,7 @@ fun MasscanBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -1678,7 +1683,7 @@ fun MasscanBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customPorts,
                 onValueChange = { customPorts = it },
-                label = { Text("Port Listesi") },
+                label = { Text(tr("Port Listesi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1690,7 +1695,7 @@ fun MasscanBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = udpPorts,
                 onValueChange = { udpPorts = it },
-                label = { Text("UDP Portları (53,161,123)") },
+                label = { Text(tr("UDP Portları (53,161,123)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1698,13 +1703,13 @@ fun MasscanBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PERFORMANS VE AĞ YAPILANDIRMASI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PERFORMANS VE AĞ YAPILANDIRMASI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = rate,
                 onValueChange = { rate = it },
-                label = { Text("Paket Hızı (--rate pps)") },
+                label = { Text(tr("Paket Hızı (--rate pps)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1712,7 +1717,7 @@ fun MasscanBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = iface,
                 onValueChange = { iface = it },
-                label = { Text("Arayüz (-e eth0)") },
+                label = { Text(tr("Arayüz (-e eth0)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1723,7 +1728,7 @@ fun MasscanBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = excludeIp,
                 onValueChange = { excludeIp = it },
-                label = { Text("Hariç Tut (--exclude)") },
+                label = { Text(tr("Hariç Tut (--exclude)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1731,7 +1736,7 @@ fun MasscanBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = routerMac,
                 onValueChange = { routerMac = it },
-                label = { Text("Router MAC (--router-mac)") },
+                label = { Text(tr("Router MAC (--router-mac)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1742,7 +1747,7 @@ fun MasscanBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = adapterIp,
                 onValueChange = { adapterIp = it },
-                label = { Text("Adapter IP (--adapter-ip)") },
+                label = { Text(tr("Adapter IP (--adapter-ip)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1750,14 +1755,14 @@ fun MasscanBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "BAYRAKLAR VE SEÇENEKLER", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("BAYRAKLAR VE SEÇENEKLER"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "--banners Servis Başlıklarını Yakala (Banner Grab)", checked = banners, onCheckedChange = { banners = it })
         ToggleOption(label = "--ping ICMP Ping İstekleri Gönder", checked = ping, onCheckedChange = { ping = it })
         ToggleOption(label = "--source-port 53 Kaynak Portunu DNS (53) Yap", checked = sourcePort53, onCheckedChange = { sourcePort53 = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÇIKTI FORMATI (-o*)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇIKTI FORMATI (-o*)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("txt" to "-oL Liste", "json" to "-oJ JSON", "gnmap" to "-oG Grepable", "xml" to "-oX XML", "none" to "Terminal").forEach { (f, lbl) ->
@@ -1772,7 +1777,7 @@ fun MasscanBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -1854,14 +1859,14 @@ fun NaabuBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text("Hedef Host (-host) veya Liste Dosyası (-list targets.txt)") },
+            label = { Text(tr("Hedef Host (-host) veya Liste Dosyası (-list targets.txt)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PORT SEÇENEKLERİ (-p / -top-ports)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PORT SEÇENEKLERİ (-p / -top-ports)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("top100" to "Top 100", "top1000" to "Top 1000", "all" to "Tümü (-p -)", "custom" to "Özel").forEach { (opt, lbl) ->
@@ -1876,7 +1881,7 @@ fun NaabuBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -1885,7 +1890,7 @@ fun NaabuBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customPorts,
                 onValueChange = { customPorts = it },
-                label = { Text("Port Listesi (-p 80,443,8080)") },
+                label = { Text(tr("Port Listesi (-p 80,443,8080)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1895,14 +1900,14 @@ fun NaabuBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = excludePorts,
             onValueChange = { excludePorts = it },
-            label = { Text("Hariç Tutulacak Portlar (-exclude-ports 25,110) - Opsiyonel") },
+            label = { Text(tr("Hariç Tutulacak Portlar (-exclude-ports 25,110) - Opsiyonel")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "TARAMA TÜRÜ (-s)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("TARAMA TÜRÜ (-s)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("s" to "SYN Stealth (-s s)", "c" to "TCP Connect (-s c)").forEach { (st, lbl) ->
@@ -1917,19 +1922,19 @@ fun NaabuBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PERFORMANS AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PERFORMANS AYARLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = rate,
                 onValueChange = { rate = it },
-                label = { Text("Hız (-rate)") },
+                label = { Text(tr("Hız (-rate)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1937,7 +1942,7 @@ fun NaabuBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = concurrency,
                 onValueChange = { concurrency = it },
-                label = { Text("Concurrency (-c)") },
+                label = { Text(tr("Concurrency (-c)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1945,7 +1950,7 @@ fun NaabuBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = timeout,
                 onValueChange = { timeout = it },
-                label = { Text("Timeout ms") },
+                label = { Text(tr("Timeout ms")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1956,7 +1961,7 @@ fun NaabuBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = retries,
                 onValueChange = { retries = it },
-                label = { Text("Yeniden Dene (-retries)") },
+                label = { Text(tr("Yeniden Dene (-retries)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1964,7 +1969,7 @@ fun NaabuBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = warmUpTime,
                 onValueChange = { warmUpTime = it },
-                label = { Text("Isınma Süresi sn (-warm-up-time)") },
+                label = { Text(tr("Isınma Süresi sn (-warm-up-time)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -1972,7 +1977,7 @@ fun NaabuBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "CDN VE GÜVENLİK DUVARI FİLTRELERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("CDN VE GÜVENLİK DUVARI FİLTRELERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-exclude-cdn Cloudflare/Akamai CDN IP'lerini Atla", checked = excludeCdn, onCheckedChange = { excludeCdn = it })
         ToggleOption(label = "-display-cdn CDN Sağlayıcısını Ekrana Bas", checked = displayCdn, onCheckedChange = { displayCdn = it })
@@ -1980,7 +1985,7 @@ fun NaabuBuilder(language: AppLanguage) {
         ToggleOption(label = "-nmap-cli 'nmap -sV -sC' Açık Portları Nmap'e Aktar", checked = nmapPipe, onCheckedChange = { nmapPipe = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÇIKTI FORMATI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇIKTI FORMATI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("txt" to "Metin (.txt)", "json" to "JSON (.json)", "csv" to "CSV (.csv)", "none" to "Sadece Terminal").forEach { (fmt, lbl) ->
@@ -1995,7 +2000,7 @@ fun NaabuBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -2074,7 +2079,7 @@ fun DnsxBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text("Hedef Alan Adı (-d) veya Alt Alan Listesi (-l subdomains.txt)") },
+            label = { Text(tr("Hedef Alan Adı (-d) veya Alt Alan Listesi (-l subdomains.txt)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -2083,14 +2088,14 @@ fun DnsxBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = wordlist,
             onValueChange = { wordlist = it },
-            label = { Text("Kaba Kuvvet Kelime Listesi (-w wordlist.txt) - Opsiyonel") },
+            label = { Text(tr("Kaba Kuvvet Kelime Listesi (-w wordlist.txt) - Opsiyonel")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "SORGULANACAK DNS KAYITLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SORGULANACAK DNS KAYITLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             ToggleChip("Recon (-recon)", resolveRecon, modifier = Modifier.weight(1.5f)) { resolveRecon = !resolveRecon }
@@ -2111,14 +2116,14 @@ fun DnsxBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "FİLTRELER VE ÇÖZÜMLEME AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("FİLTRELER VE ÇÖZÜMLEME AYARLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-wc Wildcard Filtreleme (Sahte Subdomainleri Ele)", checked = wildcardFilter, onCheckedChange = { wildcardFilter = it })
         if (wildcardFilter) {
             OutlinedTextField(
                 value = wildcardDomain,
                 onValueChange = { wildcardDomain = it },
-                label = { Text("Wildcard Domain (-wd target.com) - Opsiyonel") },
+                label = { Text(tr("Wildcard Domain (-wd target.com) - Opsiyonel")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2130,13 +2135,13 @@ fun DnsxBuilder(language: AppLanguage) {
         ToggleOption(label = "-silent Terminal Bannerlarını Gizle", checked = silent, onCheckedChange = { silent = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "RESOLVERS VE PERFORMANS", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("RESOLVERS VE PERFORMANS"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = customResolvers,
                 onValueChange = { customResolvers = it },
-                label = { Text("Resolvers (-r res.txt)") },
+                label = { Text(tr("Resolvers (-r res.txt)")) },
                 modifier = Modifier.weight(1.5f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2144,7 +2149,7 @@ fun DnsxBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = threads,
                 onValueChange = { threads = it },
-                label = { Text("Threads (-t)") },
+                label = { Text(tr("Threads (-t)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2152,7 +2157,7 @@ fun DnsxBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = rateLimit,
                 onValueChange = { rateLimit = it },
-                label = { Text("Rate (-rl)") },
+                label = { Text(tr("Rate (-rl)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2160,7 +2165,7 @@ fun DnsxBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÇIKTI FORMATI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇIKTI FORMATI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("txt" to "Metin (.txt)", "json" to "JSON (-json)", "none" to "Terminal").forEach { (fmt, lbl) ->
@@ -2175,7 +2180,7 @@ fun DnsxBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -2253,7 +2258,7 @@ fun SubfinderBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = domain,
             onValueChange = { domain = it },
-            label = { Text("Hedef Domain (-d) veya Liste Dosyası (-dL domains.txt)") },
+            label = { Text(tr("Hedef Domain (-d) veya Liste Dosyası (-dL domains.txt)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -2263,7 +2268,7 @@ fun SubfinderBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = specificSources,
                 onValueChange = { specificSources = it },
-                label = { Text("Belirli Kaynaklar (-s censys..)") },
+                label = { Text(tr("Belirli Kaynaklar (-s censys..)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2271,7 +2276,7 @@ fun SubfinderBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = excludeSources,
                 onValueChange = { excludeSources = it },
-                label = { Text("Hariç Tut (-es alienvault..)") },
+                label = { Text(tr("Hariç Tut (-es alienvault..)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2279,7 +2284,7 @@ fun SubfinderBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "KEŞİF BAYRAKLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KEŞİF BAYRAKLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-all Tüm Pasif Kaynakları Kullan (Derin Keşif)", checked = allSources, onCheckedChange = { allSources = it })
         ToggleOption(label = "-recursive Özyinelemeli Subdomain Keşfi", checked = recursive, onCheckedChange = { recursive = it })
@@ -2288,13 +2293,13 @@ fun SubfinderBuilder(language: AppLanguage) {
         ToggleOption(label = "-silent Sade Çıktı (Terminal Bannerlarını Gizle)", checked = silent, onCheckedChange = { silent = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "AĞ VE PERFORMANS AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("AĞ VE PERFORMANS AYARLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = threads,
                 onValueChange = { threads = it },
-                label = { Text("Threads (-t)") },
+                label = { Text(tr("Threads (-t)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2302,7 +2307,7 @@ fun SubfinderBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = timeout,
                 onValueChange = { timeout = it },
-                label = { Text("Timeout (-timeout)") },
+                label = { Text(tr("Timeout (-timeout)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2310,7 +2315,7 @@ fun SubfinderBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = rateLimit,
                 onValueChange = { rateLimit = it },
-                label = { Text("Rate (-rl)") },
+                label = { Text(tr("Rate (-rl)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2321,7 +2326,7 @@ fun SubfinderBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customResolvers,
                 onValueChange = { customResolvers = it },
-                label = { Text("Resolvers (-r 1.1.1.1 veya -rL res.txt)") },
+                label = { Text(tr("Resolvers (-r 1.1.1.1 veya -rL res.txt)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2329,7 +2334,7 @@ fun SubfinderBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxy,
                 onValueChange = { proxy = it },
-                label = { Text("Proxy (-proxy http://..)") },
+                label = { Text(tr("Proxy (-proxy http://..)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2337,7 +2342,7 @@ fun SubfinderBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÇIKTI FORMATI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇIKTI FORMATI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("txt" to "Metin (.txt)", "json" to "JSON (-oJ)", "none" to "Terminal").forEach { (fmt, lbl) ->
@@ -2352,7 +2357,7 @@ fun SubfinderBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -2410,7 +2415,7 @@ fun AmassBuilder(language: AppLanguage) {
     var outputFormat by remember { mutableStateOf("txt") }
 
     Column {
-        Text(text = "ALT KOMUT MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ALT KOMUT MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("enum" to "Numaralandırma (enum)", "intel" to "İstihbarat (intel)", "viz" to "Görselleştir (viz)", "track" to "Fark Takip (track)").forEach { (m, lbl) ->
@@ -2425,13 +2430,13 @@ fun AmassBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "HEDEF TİPİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HEDEF TİPİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("domain" to "Domain (-d)", "asn" to "ASN (-asn)", "cidr" to "CIDR (-cidr)", "file" to "Liste (-df)").forEach { (t, lbl) ->
@@ -2446,7 +2451,7 @@ fun AmassBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -2454,7 +2459,7 @@ fun AmassBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text("Hedef (örn: target.com / 13335 / 192.168.1.0/24 / domains.txt)") },
+            label = { Text(tr("Hedef (örn: target.com / 13335 / 192.168.1.0/24 / domains.txt)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -2462,7 +2467,7 @@ fun AmassBuilder(language: AppLanguage) {
 
         if (mode == "enum") {
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "TARAMA TEKNİĞİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("TARAMA TEKNİĞİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 listOf("passive" to "Pasif (-passive)", "active" to "Aktif (-active)").forEach { (st, lbl) ->
@@ -2477,20 +2482,20 @@ fun AmassBuilder(language: AppLanguage) {
                             .padding(vertical = 6.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                        Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "KABA KUVVET VE PERMÜTASYON", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("KABA KUVVET VE PERMÜTASYON"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             ToggleOption(label = "-brute DNS Kaba Kuvvet Taraması Yap", checked = bruteForce, onCheckedChange = { bruteForce = it })
             if (bruteForce) {
                 OutlinedTextField(
                     value = wordlist,
                     onValueChange = { wordlist = it },
-                    label = { Text("Wordlist Yolu (-w)") },
+                    label = { Text(tr("Wordlist Yolu (-w)")) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -2500,13 +2505,13 @@ fun AmassBuilder(language: AppLanguage) {
             ToggleOption(label = "-alterations Alt Alan Adı Permütasyonları Üret", checked = alterations, onCheckedChange = { alterations = it })
 
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "AĞ VE DNS AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("AĞ VE DNS AYARLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(
                     value = minRecursive,
                     onValueChange = { minRecursive = it },
-                    label = { Text("Recursive Derinlik (-min-for-recursive)") },
+                    label = { Text(tr("Recursive Derinlik (-min-for-recursive)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -2514,7 +2519,7 @@ fun AmassBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = maxDnsQueries,
                     onValueChange = { maxDnsQueries = it },
-                    label = { Text("Max DNS Sorgu (-max-dns-queries)") },
+                    label = { Text(tr("Max DNS Sorgu (-max-dns-queries)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -2524,7 +2529,7 @@ fun AmassBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = resolversFile,
                 onValueChange = { resolversFile = it },
-                label = { Text("Özel DNS Sunucuları (-rf resolvers.txt) - Opsiyonel") },
+                label = { Text(tr("Özel DNS Sunucuları (-rf resolvers.txt) - Opsiyonel")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2532,7 +2537,7 @@ fun AmassBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÇIKTI VE VERİTABANI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇIKTI VE VERİTABANI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("txt" to "Metin (-o)", "json" to "JSON (-json)", "none" to "Terminal").forEach { (fmt, lbl) ->
@@ -2547,7 +2552,7 @@ fun AmassBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -2611,14 +2616,14 @@ fun DnsreconBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = domain,
             onValueChange = { domain = it },
-            label = { Text("Hedef Alan Adı (-d target.com)") },
+            label = { Text(tr("Hedef Alan Adı (-d target.com)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "TARAMA TÜRÜ (-t)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("TARAMA TÜRÜ (-t)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("std" to "Standart (std)", "axfr" to "Zone Transfer (axfr)", "brt" to "Brute-force (brt)", "srv" to "SRV Kayıtları (srv)").forEach { (t, lbl) ->
@@ -2633,7 +2638,7 @@ fun DnsreconBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -2650,7 +2655,7 @@ fun DnsreconBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -2660,7 +2665,7 @@ fun DnsreconBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = wordlist,
                 onValueChange = { wordlist = it },
-                label = { Text("Alt Alan Kelime Listesi (-D)") },
+                label = { Text(tr("Alt Alan Kelime Listesi (-D)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2672,7 +2677,7 @@ fun DnsreconBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = ipRange,
                 onValueChange = { ipRange = it },
-                label = { Text("Ters Çözümleme Aralığı (-r CIDR) - Opsiyonel") },
+                label = { Text(tr("Ters Çözümleme Aralığı (-r CIDR) - Opsiyonel")) },
                 modifier = Modifier.weight(1.2f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2680,7 +2685,7 @@ fun DnsreconBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = nameserver,
                 onValueChange = { nameserver = it },
-                label = { Text("DNS Sunucusu (-n)") },
+                label = { Text(tr("DNS Sunucusu (-n)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2688,7 +2693,7 @@ fun DnsreconBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "GELİŞMİŞ NUMARALANDIRMA BAYRAKLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("GELİŞMİŞ NUMARALANDIRMA BAYRAKLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-a Standart Taramada AXFR (Zone Transfer) Dene", checked = axfrCheck, onCheckedChange = { axfrCheck = it })
         ToggleOption(label = "-s SPF Kayıtlarındaki IPv4 Bloklarını Ters Çözümle", checked = spfLookup, onCheckedChange = { spfLookup = it })
@@ -2697,13 +2702,13 @@ fun DnsreconBuilder(language: AppLanguage) {
         ToggleOption(label = "-z DNSSEC NSEC Kayıtları Üzerinden Alan Adı Haritala", checked = dnssecWalk, onCheckedChange = { dnssecWalk = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PERFORMANS VE ÇIKTI FORMATI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PERFORMANS VE ÇIKTI FORMATI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = threads,
                 onValueChange = { threads = it },
-                label = { Text("Threads (--threads)") },
+                label = { Text(tr("Threads (--threads)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2711,7 +2716,7 @@ fun DnsreconBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = lifetime,
                 onValueChange = { lifetime = it },
-                label = { Text("Timeout sn (--lifetime)") },
+                label = { Text(tr("Timeout sn (--lifetime)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2731,7 +2736,7 @@ fun DnsreconBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -2788,7 +2793,7 @@ fun FeroxbusterBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = url,
             onValueChange = { url = it },
-            label = { Text("Hedef URL (-u https://...)") },
+            label = { Text(tr("Hedef URL (-u https://...)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -2797,7 +2802,7 @@ fun FeroxbusterBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = wordlist,
             onValueChange = { wordlist = it },
-            label = { Text("Kelime Listesi (-w)") },
+            label = { Text(tr("Kelime Listesi (-w)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -2806,20 +2811,20 @@ fun FeroxbusterBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = extensions,
             onValueChange = { extensions = it },
-            label = { Text("Dosya Uzantıları (-x php,html,txt,json)") },
+            label = { Text(tr("Dosya Uzantıları (-x php,html,txt,json)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "DURUM KODU VE BOYUT FİLTRELERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("DURUM KODU VE BOYUT FİLTRELERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = statusCodes,
                 onValueChange = { statusCodes = it },
-                label = { Text("Eşleşen Kodlar (-s)") },
+                label = { Text(tr("Eşleşen Kodlar (-s)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2827,7 +2832,7 @@ fun FeroxbusterBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = filterCodes,
                 onValueChange = { filterCodes = it },
-                label = { Text("Filtrelenen Kodlar (-C)") },
+                label = { Text(tr("Filtrelenen Kodlar (-C)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2838,7 +2843,7 @@ fun FeroxbusterBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = filterSize,
                 onValueChange = { filterSize = it },
-                label = { Text("Yanıt Boyutunu Ele (-S 1234)") },
+                label = { Text(tr("Yanıt Boyutunu Ele (-S 1234)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2846,7 +2851,7 @@ fun FeroxbusterBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÖZYİNELEME VE BAĞLANTI BAYRAKLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÖZYİNELEME VE BAĞLANTI BAYRAKLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-e HTML/JS Yanıtlarından Linkleri Çıkar (Extract Links)", checked = extractLinks, onCheckedChange = { extractLinks = it })
         ToggleOption(label = "-r HTTP Yönlendirmelerini Takip Et (Redirects)", checked = followRedirects, onCheckedChange = { followRedirects = it })
@@ -2857,13 +2862,13 @@ fun FeroxbusterBuilder(language: AppLanguage) {
         ToggleOption(label = "-q / --silent Sade Terminal Modu", checked = silent, onCheckedChange = { silent = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PERFORMANS VE PROXY", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PERFORMANS VE PROXY"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = threads,
                 onValueChange = { threads = it },
-                label = { Text("Threads (-t)") },
+                label = { Text(tr("Threads (-t)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2871,7 +2876,7 @@ fun FeroxbusterBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = depth,
                 onValueChange = { depth = it },
-                label = { Text("Derinlik (-d)") },
+                label = { Text(tr("Derinlik (-d)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2879,7 +2884,7 @@ fun FeroxbusterBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = rateLimit,
                 onValueChange = { rateLimit = it },
-                label = { Text("Rate Limit") },
+                label = { Text(tr("Rate Limit")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2891,7 +2896,7 @@ fun FeroxbusterBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = customHeaders,
             onValueChange = { customHeaders = it },
-            label = { Text("Özel Header (-H 'Authorization: Bearer ..') - Opsiyonel") },
+            label = { Text(tr("Özel Header (-H 'Authorization: Bearer ..') - Opsiyonel")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -2901,7 +2906,7 @@ fun FeroxbusterBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -2909,7 +2914,7 @@ fun FeroxbusterBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÇIKTI FORMATI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇIKTI FORMATI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("txt" to "Metin (-o)", "json" to "JSON (--json)", "none" to "Terminal").forEach { (fmt, lbl) ->
@@ -2924,7 +2929,7 @@ fun FeroxbusterBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -2979,7 +2984,7 @@ fun GobusterBuilder(language: AppLanguage) {
     var saveOutput by remember { mutableStateOf(true) }
 
     Column {
-        Text(text = "TARAMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("TARAMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("dir" to "Dizin (dir)", "dns" to "Subdomain (dns)", "vhost" to "Sanal Host (vhost)", "fuzz" to "Fuzzing (fuzz)", "s3" to "AWS S3").forEach { (m, lbl) ->
@@ -2994,7 +2999,7 @@ fun GobusterBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -3003,7 +3008,7 @@ fun GobusterBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text(if (mode == "dns") "Hedef Alan Adı (-d target.com)" else "Hedef URL (-u https://...)") },
+            label = { Text(tr(if (mode == "dns") "Hedef Alan Adı (-d target.com)" else "Hedef URL (-u https://...)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -3012,7 +3017,7 @@ fun GobusterBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = wordlist,
             onValueChange = { wordlist = it },
-            label = { Text("Wordlist (-w)") },
+            label = { Text(tr("Wordlist (-w)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -3023,7 +3028,7 @@ fun GobusterBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = extensions,
                 onValueChange = { extensions = it },
-                label = { Text("Dosya Uzantıları (-x php,html,txt,json)") },
+                label = { Text(tr("Dosya Uzantıları (-x php,html,txt,json)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3031,13 +3036,13 @@ fun GobusterBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "DURUM KODLARI VE PERFORMANS", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("DURUM KODLARI VE PERFORMANS"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = statusCodes,
                 onValueChange = { statusCodes = it },
-                label = { Text("Kabul Kodları (-s)") },
+                label = { Text(tr("Kabul Kodları (-s)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3045,7 +3050,7 @@ fun GobusterBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = excludeCodes,
                 onValueChange = { excludeCodes = it },
-                label = { Text("Dışlanan Kodlar (-b)") },
+                label = { Text(tr("Dışlanan Kodlar (-b)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3056,7 +3061,7 @@ fun GobusterBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = threads,
                 onValueChange = { threads = it },
-                label = { Text("Threads (-t)") },
+                label = { Text(tr("Threads (-t)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3064,7 +3069,7 @@ fun GobusterBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = timeout,
                 onValueChange = { timeout = it },
-                label = { Text("Timeout (--timeout)") },
+                label = { Text(tr("Timeout (--timeout)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3072,7 +3077,7 @@ fun GobusterBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "GELİŞMİŞ BAYRAKLAR", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("GELİŞMİŞ BAYRAKLAR"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-e Genişletilmiş Çıktı (Tam URL'leri Ekrana Bas)", checked = expanded, onCheckedChange = { expanded = it })
         ToggleOption(label = "-r HTTP Yönlendirmelerini Takip Et", checked = followRedirect, onCheckedChange = { followRedirect = it })
@@ -3135,7 +3140,7 @@ fun DirsearchBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = url,
             onValueChange = { url = it },
-            label = { Text("Hedef URL (-u) veya Liste (-l)") },
+            label = { Text(tr("Hedef URL (-u) veya Liste (-l)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -3144,7 +3149,7 @@ fun DirsearchBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = wordlist,
             onValueChange = { wordlist = it },
-            label = { Text("Wordlist (-w)") },
+            label = { Text(tr("Wordlist (-w)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -3153,20 +3158,20 @@ fun DirsearchBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = extensions,
             onValueChange = { extensions = it },
-            label = { Text("Uzantılar (-e php,html,js,json)") },
+            label = { Text(tr("Uzantılar (-e php,html,js,json)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "KOD VE BOYUT FİLTRELERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KOD VE BOYUT FİLTRELERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = includeCodes,
                 onValueChange = { includeCodes = it },
-                label = { Text("Dahil Kodlar (-i)") },
+                label = { Text(tr("Dahil Kodlar (-i)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3174,7 +3179,7 @@ fun DirsearchBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = excludeCodes,
                 onValueChange = { excludeCodes = it },
-                label = { Text("Hariç Kodlar (-x)") },
+                label = { Text(tr("Hariç Kodlar (-x)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3182,7 +3187,7 @@ fun DirsearchBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = excludeSizes,
                 onValueChange = { excludeSizes = it },
-                label = { Text("Hariç Boyut") },
+                label = { Text(tr("Hariç Boyut")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3190,14 +3195,14 @@ fun DirsearchBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÖZYİNELEME VE TARAMA SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÖZYİNELEME VE TARAMA SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-r Özyinelemeli (Recursive) Alt Dizin Keşfi", checked = recursive, onCheckedChange = { recursive = it })
         if (recursive) {
             OutlinedTextField(
                 value = maxDepth,
                 onValueChange = { maxDepth = it },
-                label = { Text("Maksimum Özyineleme Derinliği (-R)") },
+                label = { Text(tr("Maksimum Özyineleme Derinliği (-R)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3209,13 +3214,13 @@ fun DirsearchBuilder(language: AppLanguage) {
         ToggleOption(label = "--random-agent Rastgele User-Agent Rotasyonu", checked = randomAgent, onCheckedChange = { randomAgent = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PERFORMANS VE ÇIKTI FORMATI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PERFORMANS VE ÇIKTI FORMATI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = threads,
                 onValueChange = { threads = it },
-                label = { Text("Threads (-t)") },
+                label = { Text(tr("Threads (-t)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3223,7 +3228,7 @@ fun DirsearchBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = delay,
                 onValueChange = { delay = it },
-                label = { Text("Gecikme sn (-s)") },
+                label = { Text(tr("Gecikme sn (-s)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3243,7 +3248,7 @@ fun DirsearchBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -3295,7 +3300,7 @@ fun DirbBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = url,
             onValueChange = { url = it },
-            label = { Text("Hedef Web URL (http://10.10.10.100/)") },
+            label = { Text(tr("Hedef Web URL (http://10.10.10.100/)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -3304,14 +3309,14 @@ fun DirbBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = wordlist,
             onValueChange = { wordlist = it },
-            label = { Text("Wordlist Yolu") },
+            label = { Text(tr("Wordlist Yolu")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "TARAMA BAYRAKLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("TARAMA BAYRAKLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-r Özyinelemeli Taramayı Durdur (Non-recursive)", checked = nonRecursive, onCheckedChange = { nonRecursive = it })
         ToggleOption(label = "-i Büyük/Küçük Harf Duyarsız Tarama (Case-insensitive)", checked = caseInsensitive, onCheckedChange = { caseInsensitive = it })
@@ -3321,7 +3326,7 @@ fun DirbBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customExtensions,
                 onValueChange = { customExtensions = it },
-                label = { Text("Uzantılar (-X .php,.html,.txt)") },
+                label = { Text(tr("Uzantılar (-X .php,.html,.txt)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3330,13 +3335,13 @@ fun DirbBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "BAĞLANTI VE GECİKME", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("BAĞLANTI VE GECİKME"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = delayMs,
                 onValueChange = { delayMs = it },
-                label = { Text("Gecikme ms (-z)") },
+                label = { Text(tr("Gecikme ms (-z)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3344,7 +3349,7 @@ fun DirbBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = ignoreCode,
                 onValueChange = { ignoreCode = it },
-                label = { Text("Yoksay Kod (-N)") },
+                label = { Text(tr("Yoksay Kod (-N)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3355,7 +3360,7 @@ fun DirbBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = authUserPass,
                 onValueChange = { authUserPass = it },
-                label = { Text("HTTP Auth (-u user:pass)") },
+                label = { Text(tr("HTTP Auth (-u user:pass)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3363,7 +3368,7 @@ fun DirbBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxy,
                 onValueChange = { proxy = it },
-                label = { Text("Proxy (-p 127.0.0.1:8080)") },
+                label = { Text(tr("Proxy (-p 127.0.0.1:8080)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3374,7 +3379,7 @@ fun DirbBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = userAgent,
                 onValueChange = { userAgent = it },
-                label = { Text("User-Agent (-a)") },
+                label = { Text(tr("User-Agent (-a)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3382,7 +3387,7 @@ fun DirbBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = cookie,
                 onValueChange = { cookie = it },
-                label = { Text("Cookie (-c)") },
+                label = { Text(tr("Cookie (-c)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3445,14 +3450,14 @@ fun FfufBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { fuzzMode = m }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = if (fuzzMode == "vhost") vhostDomain else url,
             onValueChange = { if (fuzzMode == "vhost") vhostDomain = it else url = it },
-            label = { Text(if (fuzzMode == "vhost") "Domain (örn: target.com)" else "Hedef URL (-u .../FUZZ)") },
+            label = { Text(tr(if (fuzzMode == "vhost") "Domain (örn: target.com)" else "Hedef URL (-u .../FUZZ)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -3461,7 +3466,7 @@ fun FfufBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = wordlist,
             onValueChange = { wordlist = it },
-            label = { Text("Wordlist (-w)") },
+            label = { Text(tr("Wordlist (-w)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -3482,7 +3487,7 @@ fun FfufBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = postData,
                 onValueChange = { postData = it },
-                label = { Text("POST Verisi (-d 'user=FUZZ&pass=test')") },
+                label = { Text(tr("POST Verisi (-d 'user=FUZZ&pass=test')")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3490,13 +3495,13 @@ fun FfufBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "FİLTRELER VE EŞLEŞMELER", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("FİLTRELER VE EŞLEŞMELER"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = filterCodes,
                 onValueChange = { filterCodes = it },
-                label = { Text("Filtrele (-fc)") },
+                label = { Text(tr("Filtrele (-fc)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3504,7 +3509,7 @@ fun FfufBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = filterSize,
                 onValueChange = { filterSize = it },
-                label = { Text("Boyut Ele (-fs)") },
+                label = { Text(tr("Boyut Ele (-fs)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3512,7 +3517,7 @@ fun FfufBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = filterWords,
                 onValueChange = { filterWords = it },
-                label = { Text("Kelime Ele (-fw)") },
+                label = { Text(tr("Kelime Ele (-fw)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3530,7 +3535,7 @@ fun FfufBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = customHeader,
             onValueChange = { customHeader = it },
-            label = { Text("Özel Header (-H 'Authorization: Bearer ..') - Opsiyonel") },
+            label = { Text(tr("Özel Header (-H 'Authorization: Bearer ..') - Opsiyonel")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -3594,7 +3599,7 @@ fun ArjunBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = url,
             onValueChange = { url = it },
-            label = { Text("Hedef URL (-u) veya Liste (-i urls.txt)") },
+            label = { Text(tr("Hedef URL (-u) veya Liste (-i urls.txt)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -3614,7 +3619,7 @@ fun ArjunBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = wordlist,
                 onValueChange = { wordlist = it },
-                label = { Text("Özel Parametre Listesi (-w) - Opsiyonel") },
+                label = { Text(tr("Özel Parametre Listesi (-w) - Opsiyonel")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3622,7 +3627,7 @@ fun ArjunBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = includeParams,
                 onValueChange = { includeParams = it },
-                label = { Text("Dahil Parametreler (--include id=1)") },
+                label = { Text(tr("Dahil Parametreler (--include id=1)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3632,14 +3637,14 @@ fun ArjunBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = customHeaders,
             onValueChange = { customHeaders = it },
-            label = { Text("Özel Header (--headers 'X: Y') - Opsiyonel") },
+            label = { Text(tr("Özel Header (--headers 'X: Y') - Opsiyonel")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ANALİZ VE ATLATMA BAYRAKLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ANALİZ VE ATLATMA BAYRAKLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "--stable Sunucu Kararlılığını Analiz Et (Hata Azaltıcı)", checked = stable, onCheckedChange = { stable = it })
         ToggleOption(label = "--passive Wayback/CommonCrawl Pasif Parametre Toplama", checked = passive, onCheckedChange = { passive = it })
@@ -3648,7 +3653,7 @@ fun ArjunBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3656,13 +3661,13 @@ fun ArjunBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PERFORMANS VE ÇIKTI FORMATI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PERFORMANS VE ÇIKTI FORMATI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = threads,
                 onValueChange = { threads = it },
-                label = { Text("Threads (-t)") },
+                label = { Text(tr("Threads (-t)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3670,7 +3675,7 @@ fun ArjunBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = delay,
                 onValueChange = { delay = it },
-                label = { Text("Gecikme sn (-d)") },
+                label = { Text(tr("Gecikme sn (-d)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3678,7 +3683,7 @@ fun ArjunBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = timeout,
                 onValueChange = { timeout = it },
-                label = { Text("Timeout (-T)") },
+                label = { Text(tr("Timeout (-T)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3698,7 +3703,7 @@ fun ArjunBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -3764,7 +3769,7 @@ fun DalfoxBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -3772,7 +3777,7 @@ fun DalfoxBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text(if (mode == "file") "Dosya Yolu (targets.txt)" else "Hedef URL (https://target.com/page?id=1)") },
+            label = { Text(tr(if (mode == "file") "Dosya Yolu (targets.txt)" else "Hedef URL (https://target.com/page?id=1)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -3781,14 +3786,14 @@ fun DalfoxBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = blindUrl,
             onValueChange = { blindUrl = it },
-            label = { Text("Blind XSS Callback URL (-b: örn: https://your.xss.ht) - Opsiyonel") },
+            label = { Text(tr("Blind XSS Callback URL (-b: örn: https://your.xss.ht) - Opsiyonel")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "XSS TESPİT VE ATLATMA BAYRAKLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("XSS TESPİT VE ATLATMA BAYRAKLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "--deep-domxss Headless Chromium ile Derin DOM XSS Analizi", checked = deepDom, onCheckedChange = { deepDom = it })
         ToggleOption(label = "--waf-evasion WAF Filtre Atlama Payloadları", checked = wafEvasion, onCheckedChange = { wafEvasion = it })
@@ -3800,7 +3805,7 @@ fun DalfoxBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3810,20 +3815,20 @@ fun DalfoxBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = customPayloads,
             onValueChange = { customPayloads = it },
-            label = { Text("Özel Payload Dosyası (--custom-payload) - Opsiyonel") },
+            label = { Text(tr("Özel Payload Dosyası (--custom-payload) - Opsiyonel")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PERFORMANS VE ÇIKTI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PERFORMANS VE ÇIKTI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = workers,
                 onValueChange = { workers = it },
-                label = { Text("Workers (-w)") },
+                label = { Text(tr("Workers (-w)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3831,7 +3836,7 @@ fun DalfoxBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = delayMs,
                 onValueChange = { delayMs = it },
-                label = { Text("Gecikme ms") },
+                label = { Text(tr("Gecikme ms")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3839,7 +3844,7 @@ fun DalfoxBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = timeout,
                 onValueChange = { timeout = it },
-                label = { Text("Timeout sn") },
+                label = { Text(tr("Timeout sn")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3859,7 +3864,7 @@ fun DalfoxBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -3912,14 +3917,14 @@ fun GauBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = domain,
             onValueChange = { domain = it },
-            label = { Text("Hedef Domain (target.com)") },
+            label = { Text(tr("Hedef Domain (target.com)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ARŞİV VE KAYNAK SAĞLAYICILARI (--providers)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ARŞİV VE KAYNAK SAĞLAYICILARI (--providers)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             ToggleChip("Wayback", provWayback, modifier = Modifier.weight(1f)) { provWayback = !provWayback }
@@ -3929,7 +3934,7 @@ fun GauBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "FİLTRELER VE AYARLAR", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("FİLTRELER VE AYARLAR"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "--subs Tüm Alt Alan Adlarını (Subdomains) Dahil Et", checked = includeSubs, onCheckedChange = { includeSubs = it })
         ToggleOption(label = "--fp URL Parametrelerini Filtrele (Yalnızca Yolları Al)", checked = filterParams, onCheckedChange = { filterParams = it })
@@ -3937,7 +3942,7 @@ fun GauBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = blacklistExt,
             onValueChange = { blacklistExt = it },
-            label = { Text("Kara Liste Uzantıları (--blacklist)") },
+            label = { Text(tr("Kara Liste Uzantıları (--blacklist)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -3948,7 +3953,7 @@ fun GauBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3956,13 +3961,13 @@ fun GauBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "AĞ VE PERFORMANS", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("AĞ VE PERFORMANS"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = threads,
                 onValueChange = { threads = it },
-                label = { Text("Threads (--threads)") },
+                label = { Text(tr("Threads (--threads)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3970,7 +3975,7 @@ fun GauBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = retries,
                 onValueChange = { retries = it },
-                label = { Text("Retries (--retries)") },
+                label = { Text(tr("Retries (--retries)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3978,7 +3983,7 @@ fun GauBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = filterCodes,
                 onValueChange = { filterCodes = it },
-                label = { Text("Filtre Kod (--fc)") },
+                label = { Text(tr("Filtre Kod (--fc)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -3998,7 +4003,7 @@ fun GauBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -4064,14 +4069,14 @@ fun KatanaBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text("Hedef URL (-u) veya Liste (-list targets.txt)") },
+            label = { Text(tr("Hedef URL (-u) veya Liste (-list targets.txt)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "CRAWL STRATEJİLERİ VE MOTOR SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("CRAWL STRATEJİLERİ VE MOTOR SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-jc JavaScript Dosyalarını ve Endpointleri Çıkar", checked = jsCrawl, onCheckedChange = { jsCrawl = it })
         ToggleOption(label = "-hl Headless Chromium Tarayıcısı Kullan (Dinamik JS)", checked = headless, onCheckedChange = { headless = it })
@@ -4082,13 +4087,13 @@ fun KatanaBuilder(language: AppLanguage) {
         ToggleOption(label = "-silent Sade Çıktı Modu", checked = silent, onCheckedChange = { silent = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "DERİNLİK VE PERFORMANS AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("DERİNLİK VE PERFORMANS AYARLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = depth,
                 onValueChange = { depth = it },
-                label = { Text("Derinlik (-d)") },
+                label = { Text(tr("Derinlik (-d)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4096,7 +4101,7 @@ fun KatanaBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = concurrency,
                 onValueChange = { concurrency = it },
-                label = { Text("Eşzamanlılık (-c)") },
+                label = { Text(tr("Eşzamanlılık (-c)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4104,7 +4109,7 @@ fun KatanaBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = parallelism,
                 onValueChange = { parallelism = it },
-                label = { Text("Paralellik (-p)") },
+                label = { Text(tr("Paralellik (-p)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4115,7 +4120,7 @@ fun KatanaBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = rateLimit,
                 onValueChange = { rateLimit = it },
-                label = { Text("Rate Limit (-rl)") },
+                label = { Text(tr("Rate Limit (-rl)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4123,7 +4128,7 @@ fun KatanaBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = crawlTimeout,
                 onValueChange = { crawlTimeout = it },
-                label = { Text("Azami Süre (-ct)") },
+                label = { Text(tr("Azami Süre (-ct)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4131,12 +4136,12 @@ fun KatanaBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "FİLTRELER VE PROXY", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("FİLTRELER VE PROXY"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         OutlinedTextField(
             value = extensionFilter,
             onValueChange = { extensionFilter = it },
-            label = { Text("Filtrelenecek Uzantılar (-extension-filter)") },
+            label = { Text(tr("Filtrelenecek Uzantılar (-extension-filter)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -4147,7 +4152,7 @@ fun KatanaBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4155,7 +4160,7 @@ fun KatanaBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÇIKTI FORMATI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇIKTI FORMATI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("txt" to "Metin (-o)", "json" to "JSON (-json)", "none" to "Terminal").forEach { (fmt, lbl) ->
@@ -4170,7 +4175,7 @@ fun KatanaBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -4248,14 +4253,14 @@ fun HttpxBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text("Hedef Liste (-l hosts.txt) veya Tek URL (-u https://...)") },
+            label = { Text(tr("Hedef Liste (-l hosts.txt) veya Tek URL (-u https://...)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PROBE VE TESPİT SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PROBE VE TESPİT SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             ToggleChip("Title", showTitle, modifier = Modifier.weight(1f)) { showTitle = !showTitle }
@@ -4283,13 +4288,13 @@ fun HttpxBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÖZEL PORTLAR VE YOLLAR", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÖZEL PORTLAR VE YOLLAR"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = customPorts,
                 onValueChange = { customPorts = it },
-                label = { Text("Portlar (-ports 80,443,8080)") },
+                label = { Text(tr("Portlar (-ports 80,443,8080)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4297,7 +4302,7 @@ fun HttpxBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customPaths,
                 onValueChange = { customPaths = it },
-                label = { Text("Yollar (-path /admin,/robots.txt)") },
+                label = { Text(tr("Yollar (-path /admin,/robots.txt)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4305,13 +4310,13 @@ fun HttpxBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "DURUM KODU VE İÇERİK FİLTRELERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("DURUM KODU VE İÇERİK FİLTRELERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = matchCodes,
                 onValueChange = { matchCodes = it },
-                label = { Text("Eşleşen Kodlar (-mc 200,301)") },
+                label = { Text(tr("Eşleşen Kodlar (-mc 200,301)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4319,7 +4324,7 @@ fun HttpxBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = filterCodes,
                 onValueChange = { filterCodes = it },
-                label = { Text("Filtrelenen Kodlar (-fc 404,500)") },
+                label = { Text(tr("Filtrelenen Kodlar (-fc 404,500)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4329,20 +4334,20 @@ fun HttpxBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = matchString,
             onValueChange = { matchString = it },
-            label = { Text("İçerikte Metin Ara (-ms 'Dashboard') - Opsiyonel") },
+            label = { Text(tr("İçerikte Metin Ara (-ms 'Dashboard') - Opsiyonel")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "AĞ VE PERFORMANS", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("AĞ VE PERFORMANS"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = threads,
                 onValueChange = { threads = it },
-                label = { Text("Threads (-threads)") },
+                label = { Text(tr("Threads (-threads)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4350,7 +4355,7 @@ fun HttpxBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = rateLimit,
                 onValueChange = { rateLimit = it },
-                label = { Text("Rate (-rate-limit)") },
+                label = { Text(tr("Rate (-rate-limit)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4358,7 +4363,7 @@ fun HttpxBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = timeout,
                 onValueChange = { timeout = it },
-                label = { Text("Timeout sn") },
+                label = { Text(tr("Timeout sn")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4373,7 +4378,7 @@ fun HttpxBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4381,7 +4386,7 @@ fun HttpxBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÇIKTI FORMATI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇIKTI FORMATI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("txt" to "Metin (.txt)", "json" to "JSON (-json)", "csv" to "CSV (-csv)", "none" to "Terminal").forEach { (fmt, lbl) ->
@@ -4396,7 +4401,7 @@ fun HttpxBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -4490,7 +4495,7 @@ fun NiktoBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = host,
                 onValueChange = { host = it },
-                label = { Text("Hedef Host (-h IP/Domain/URL)") },
+                label = { Text(tr("Hedef Host (-h IP/Domain/URL)")) },
                 modifier = Modifier.weight(2f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4498,7 +4503,7 @@ fun NiktoBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = port,
                 onValueChange = { port = it },
-                label = { Text("Port (-p)") },
+                label = { Text(tr("Port (-p)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4509,7 +4514,7 @@ fun NiktoBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = vhost,
                 onValueChange = { vhost = it },
-                label = { Text("Sanal Host (-vhost domain.com)") },
+                label = { Text(tr("Sanal Host (-vhost domain.com)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4517,7 +4522,7 @@ fun NiktoBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = httpAuth,
                 onValueChange = { httpAuth = it },
-                label = { Text("HTTP Auth (-id user:pass)") },
+                label = { Text(tr("HTTP Auth (-id user:pass)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4527,14 +4532,14 @@ fun NiktoBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = userAgent,
             onValueChange = { userAgent = it },
-            label = { Text("Özel User-Agent (-useragent: opsiyonel)") },
+            label = { Text(tr("Özel User-Agent (-useragent: opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "TEST KATEGORİLERİ (-Tuning)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("TEST KATEGORİLERİ (-Tuning)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             ToggleChip("Misconfig (2)", tuneMisconfig, modifier = Modifier.weight(1f)) { tuneMisconfig = !tuneMisconfig }
@@ -4554,7 +4559,7 @@ fun NiktoBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "IDS / WAF ATLATMA (-evasion)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("IDS / WAF ATLATMA (-evasion)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             ToggleChip("Random URI (1)", evadeRandomUri, modifier = Modifier.weight(1f)) { evadeRandomUri = !evadeRandomUri }
@@ -4568,7 +4573,7 @@ fun NiktoBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "BAĞLANTI VE TARAMA SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("BAĞLANTI VE TARAMA SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-ssl HTTPS / SSL Bağlantısını Zorla", checked = useSsl, onCheckedChange = { useSsl = it })
         ToggleOption(label = "-nointeractive Etkileşimsiz Mod (Otomasyon için)", checked = noInteractive, onCheckedChange = { noInteractive = it })
@@ -4577,7 +4582,7 @@ fun NiktoBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4588,7 +4593,7 @@ fun NiktoBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = pauseDelay,
                 onValueChange = { pauseDelay = it },
-                label = { Text("Gecikme sn (-Pause 1)") },
+                label = { Text(tr("Gecikme sn (-Pause 1)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4596,7 +4601,7 @@ fun NiktoBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = maxTime,
                 onValueChange = { maxTime = it },
-                label = { Text("Azami Süre (-maxtime 1h)") },
+                label = { Text(tr("Azami Süre (-maxtime 1h)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4604,7 +4609,7 @@ fun NiktoBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "RAPOR FORMATI (-Format)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("RAPOR FORMATI (-Format)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("htm" to "HTML (.htm)", "txt" to "Metin (.txt)", "csv" to "CSV (.csv)", "json" to "JSON (.json)", "none" to "Terminal").forEach { (fmt, lbl) ->
@@ -4619,7 +4624,7 @@ fun NiktoBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -4628,7 +4633,7 @@ fun NiktoBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = outputFile,
                 onValueChange = { outputFile = it },
-                label = { Text("Rapor Dosyası Adı") },
+                label = { Text(tr("Rapor Dosyası Adı")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4708,14 +4713,14 @@ fun WhatWebBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text(if (isInputFile) "Hedefler Dosyası (-i targets.txt)" else "Hedef URL (http://...)") },
+            label = { Text(tr(if (isInputFile) "Hedefler Dosyası (-i targets.txt)" else "Hedef URL (http://...)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "AGRESİFLİK SEVİYESİ (-a)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("AGRESİFLİK SEVİYESİ (-a)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("1" to "Pasif (1)", "3" to "Agresif (3)", "4" to "Ağır / Brute (4)").forEach { (lvl, lbl) ->
@@ -4730,18 +4735,18 @@ fun WhatWebBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "EKLENTİ VE BAŞLIK AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("EKLENTİ VE BAŞLIK AYARLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         OutlinedTextField(
             value = plugins,
             onValueChange = { plugins = it },
-            label = { Text("Özel Eklentiler (-p Apache,PHP,WordPress,jQuery)") },
+            label = { Text(tr("Özel Eklentiler (-p Apache,PHP,WordPress,jQuery)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -4751,7 +4756,7 @@ fun WhatWebBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customHeader,
                 onValueChange = { customHeader = it },
-                label = { Text("Özel Header (--header 'X: Y')") },
+                label = { Text(tr("Özel Header (--header 'X: Y')")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4759,7 +4764,7 @@ fun WhatWebBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = cookie,
                 onValueChange = { cookie = it },
-                label = { Text("Cookie (--cookie 'sess=1')") },
+                label = { Text(tr("Cookie (--cookie 'sess=1')")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4767,13 +4772,13 @@ fun WhatWebBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "AĞ VE PROXY AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("AĞ VE PROXY AYARLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = maxThreads,
                 onValueChange = { maxThreads = it },
-                label = { Text("İş Parçacığı (--max-threads)") },
+                label = { Text(tr("İş Parçacığı (--max-threads)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4781,7 +4786,7 @@ fun WhatWebBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = userAgent,
                 onValueChange = { userAgent = it },
-                label = { Text("User-Agent (--user-agent)") },
+                label = { Text(tr("User-Agent (--user-agent)")) },
                 modifier = Modifier.weight(1.5f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4793,7 +4798,7 @@ fun WhatWebBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy URL") },
+                label = { Text(tr("Proxy URL")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4806,7 +4811,7 @@ fun WhatWebBuilder(language: AppLanguage) {
         ToggleOption(label = "--color=never Terminal Renklerini Kapat", checked = colorNever, onCheckedChange = { colorNever = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "RAPOR VE ÇIKTI FORMATI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("RAPOR VE ÇIKTI FORMATI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("json" to "JSON (--log-json)", "xml" to "XML (--log-xml)", "brief" to "Kısa (--log-brief)", "none" to "Terminal").forEach { (fmt, lbl) ->
@@ -4821,7 +4826,7 @@ fun WhatWebBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -4897,7 +4902,7 @@ fun NucleiBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text(if (isTargetList) "Hedefler Dosyası (urls.txt)" else "Hedef URL (https://target.com)") },
+            label = { Text(tr(if (isTargetList) "Hedefler Dosyası (urls.txt)" else "Hedef URL (https://target.com)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -4906,7 +4911,7 @@ fun NucleiBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = customTags,
             onValueChange = { customTags = it },
-            label = { Text("Zafiyet Etiketleri (-tags cve,rce,sqli,lfi,ssrf..)") },
+            label = { Text(tr("Zafiyet Etiketleri (-tags cve,rce,sqli,lfi,ssrf..)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -4915,14 +4920,14 @@ fun NucleiBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = customHeaders,
             onValueChange = { customHeaders = it },
-            label = { Text("Özel HTTP Header (-H 'Authorization: Bearer...' - Opsiyonel)") },
+            label = { Text(tr("Özel HTTP Header (-H 'Authorization: Bearer...' - Opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "KRİTİKLİK DERECESİ (-s)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KRİTİKLİK DERECESİ (-s)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             ToggleChip("Critical", sevCritical, modifier = Modifier.weight(1f)) { sevCritical = !sevCritical }
@@ -4933,7 +4938,7 @@ fun NucleiBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ŞABLON VE MOTOR MODLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ŞABLON VE MOTOR MODLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-as Tespit Edilen Teknolojilere Göre Şablon Seç (Auto-detect)", checked = autoTech, onCheckedChange = { autoTech = it })
         ToggleOption(label = "-dast Yalnızca Dinamik Uygulama Güvenlik Şablonlarını Çalıştır", checked = dastOnly, onCheckedChange = { dastOnly = it })
@@ -4943,13 +4948,13 @@ fun NucleiBuilder(language: AppLanguage) {
         ToggleOption(label = "-silent Yalnızca Tespit Edilen Zafiyetleri Ekrana Bas", checked = silent, onCheckedChange = { silent = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PERFORMANS VE AĞ YAPILANDIRMASI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PERFORMANS VE AĞ YAPILANDIRMASI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = rateLimit,
                 onValueChange = { rateLimit = it },
-                label = { Text("Rate (-rl)") },
+                label = { Text(tr("Rate (-rl)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4957,7 +4962,7 @@ fun NucleiBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = concurrency,
                 onValueChange = { concurrency = it },
-                label = { Text("Concurrency (-c)") },
+                label = { Text(tr("Concurrency (-c)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4965,7 +4970,7 @@ fun NucleiBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = bulkSize,
                 onValueChange = { bulkSize = it },
-                label = { Text("Bulk Size (-bs)") },
+                label = { Text(tr("Bulk Size (-bs)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4977,7 +4982,7 @@ fun NucleiBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -4987,14 +4992,14 @@ fun NucleiBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = customTemplatePath,
             onValueChange = { customTemplatePath = it },
-            label = { Text("Özel Şablon / Dizin Yolu (-t cves/..)") },
+            label = { Text(tr("Özel Şablon / Dizin Yolu (-t cves/..)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÇIKTI FORMATI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇIKTI FORMATI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("txt" to "Metin (-o)", "jsonl" to "JSONL (-j)", "markdown" to "Markdown (-me)").forEach { (fmt, lbl) ->
@@ -5009,7 +5014,7 @@ fun NucleiBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -5091,7 +5096,7 @@ fun SqlmapBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text(if (isRequestFile) "Raw HTTP İstek Dosyası (request.txt)" else "Hedef URL (-u http://.../page.php?id=1)") },
+            label = { Text(tr(if (isRequestFile) "Raw HTTP İstek Dosyası (request.txt)" else "Hedef URL (-u http://.../page.php?id=1)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -5101,7 +5106,7 @@ fun SqlmapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = testParam,
                 onValueChange = { testParam = it },
-                label = { Text("Hedef Parametre (-p id: opsiyonel)") },
+                label = { Text(tr("Hedef Parametre (-p id: opsiyonel)")) },
                 modifier = Modifier.weight(1.5f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5109,7 +5114,7 @@ fun SqlmapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = threads,
                 onValueChange = { threads = it },
-                label = { Text("Threads (--threads)") },
+                label = { Text(tr("Threads (--threads)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5117,7 +5122,7 @@ fun SqlmapBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "VERİ ÇEKME & İSTİSMAR HEDEFİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("VERİ ÇEKME & İSTİSMAR HEDEFİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("--dbs" to "DB'ler", "--tables" to "Tablolar", "--columns" to "Kolonlar", "--dump" to "Dump", "--os-shell" to "OS Shell").forEach { (act, lbl) ->
@@ -5132,7 +5137,7 @@ fun SqlmapBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -5149,7 +5154,7 @@ fun SqlmapBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -5160,7 +5165,7 @@ fun SqlmapBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = dbName,
                     onValueChange = { dbName = it },
-                    label = { Text("DB Adı (-D)") },
+                    label = { Text(tr("DB Adı (-D)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -5169,7 +5174,7 @@ fun SqlmapBuilder(language: AppLanguage) {
                     OutlinedTextField(
                         value = tableName,
                         onValueChange = { tableName = it },
-                        label = { Text("Tablo (-T)") },
+                        label = { Text(tr("Tablo (-T)")) },
                         modifier = Modifier.weight(1f),
                         colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                         singleLine = true
@@ -5181,7 +5186,7 @@ fun SqlmapBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = columnName,
                     onValueChange = { columnName = it },
-                    label = { Text("Hedef Kolonlar (-C id,user,pass - Opsiyonel)") },
+                    label = { Text(tr("Hedef Kolonlar (-C id,user,pass - Opsiyonel)")) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -5192,14 +5197,14 @@ fun SqlmapBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = dbms,
             onValueChange = { dbms = it },
-            label = { Text("Hedef Veritabanı Türü (--dbms: all, MySQL, PostgreSQL, MSSQL, Oracle)") },
+            label = { Text(tr("Hedef Veritabanı Türü (--dbms: all, MySQL, PostgreSQL, MSSQL, Oracle)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ENJEKSİYON TEKNİKLERİ (--technique)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ENJEKSİYON TEKNİKLERİ (--technique)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             ToggleChip("B (Boolean)", techB, modifier = Modifier.weight(1f)) { techB = !techB }
@@ -5210,13 +5215,13 @@ fun SqlmapBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "RİSK, SEVİYE VE ATLATMA (EVASION)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("RİSK, SEVİYE VE ATLATMA (EVASION)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = level,
                 onValueChange = { level = it },
-                label = { Text("Level (1-5)") },
+                label = { Text(tr("Level (1-5)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5224,7 +5229,7 @@ fun SqlmapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = riskLevel,
                 onValueChange = { riskLevel = it },
-                label = { Text("Risk (1-3)") },
+                label = { Text(tr("Risk (1-3)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5236,7 +5241,7 @@ fun SqlmapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = tamperScript,
                 onValueChange = { tamperScript = it },
-                label = { Text("Tamper Scripti (space2comment, between, charencode)") },
+                label = { Text(tr("Tamper Scripti (space2comment, between, charencode)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5252,7 +5257,7 @@ fun SqlmapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5307,7 +5312,7 @@ fun BurpSuiteBuilder(language: AppLanguage) {
     var unthrottled by remember { mutableStateOf(true) }
 
     Column {
-        Text(text = "ÇALIŞTIRMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇALIŞTIRMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("gui" to "Grafik Arayüz (GUI)", "headless" to "Başsız / Headless", "collaborator" to "Özel Collaborator").forEach { (m, lbl) ->
@@ -5322,7 +5327,7 @@ fun BurpSuiteBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -5332,7 +5337,7 @@ fun BurpSuiteBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = projectFile,
                 onValueChange = { projectFile = it },
-                label = { Text("Proje Dosyası (--project-file)") },
+                label = { Text(tr("Proje Dosyası (--project-file)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5342,7 +5347,7 @@ fun BurpSuiteBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = configFile,
                     onValueChange = { configFile = it },
-                    label = { Text("Proje Ayarları (--config-file)") },
+                    label = { Text(tr("Proje Ayarları (--config-file)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -5350,7 +5355,7 @@ fun BurpSuiteBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = maxMemory,
                     onValueChange = { maxMemory = it },
-                    label = { Text("Bellek Sınırı (-Xmx4g)") },
+                    label = { Text(tr("Bellek Sınırı (-Xmx4g)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -5360,7 +5365,7 @@ fun BurpSuiteBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = collaboratorConfig,
                 onValueChange = { collaboratorConfig = it },
-                label = { Text("Collaborator Konfigürasyon Dosyası") },
+                label = { Text(tr("Collaborator Konfigürasyon Dosyası")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5368,13 +5373,13 @@ fun BurpSuiteBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "DİNLENEN ARAYÜZ VE GÜVENLİK", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("DİNLENEN ARAYÜZ VE GÜVENLİK"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = listenInterface,
                 onValueChange = { listenInterface = it },
-                label = { Text("Arayüz (127.0.0.1)") },
+                label = { Text(tr("Arayüz (127.0.0.1)")) },
                 modifier = Modifier.weight(1.2f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5382,7 +5387,7 @@ fun BurpSuiteBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = listenPort,
                 onValueChange = { listenPort = it },
-                label = { Text("Port (8080)") },
+                label = { Text(tr("Port (8080)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5427,7 +5432,7 @@ fun OwaspZapBuilder(language: AppLanguage) {
     var daemonPort by remember { mutableStateOf("8080") }
 
     Column {
-        Text(text = "ZAP OTOMASYON VE TARAMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ZAP OTOMASYON VE TARAMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("baseline" to "Temel (Baseline)", "full" to "Tam Aktif (Full)", "api" to "API Test (OpenAPI)", "daemon" to "Arka Plan (Daemon)").forEach { (st, lbl) ->
@@ -5442,7 +5447,7 @@ fun OwaspZapBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -5451,7 +5456,7 @@ fun OwaspZapBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = targetUrl,
             onValueChange = { targetUrl = it },
-            label = { Text("Hedef URL (-t https://target.com)") },
+            label = { Text(tr("Hedef URL (-t https://target.com)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -5472,7 +5477,7 @@ fun OwaspZapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = apiSpecUrl,
                 onValueChange = { apiSpecUrl = it },
-                label = { Text("API Tanım Dosyası URL / Dosya Yolu") },
+                label = { Text(tr("API Tanım Dosyası URL / Dosya Yolu")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5480,13 +5485,13 @@ fun OwaspZapBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "TARAYICI VE KURAL SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("TARAYICI VE KURAL SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-j AJAX Spider ile JavaScript Render Et (SPA Siteleri)", checked = ajaxSpider, onCheckedChange = { ajaxSpider = it })
         ToggleOption(label = "-a Deneysel / Alpha Aktif Tarama Kurallarını Dahil Et", checked = alphaRules, onCheckedChange = { alphaRules = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "RAPORLAMA FORMATI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("RAPORLAMA FORMATI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("html" to "HTML (-r)", "md" to "Markdown (-w)", "xml" to "XML (-x)", "json" to "JSON (-J)").forEach { (f, lbl) ->
@@ -5501,7 +5506,7 @@ fun OwaspZapBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -5576,7 +5581,7 @@ fun WfuzzBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = url,
             onValueChange = { url = it },
-            label = { Text("Hedef URL (FUZZ enjeksiyon noktası ile)") },
+            label = { Text(tr("Hedef URL (FUZZ enjeksiyon noktası ile)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -5585,7 +5590,7 @@ fun WfuzzBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = wordlist,
             onValueChange = { wordlist = it },
-            label = { Text("Wordlist Yolu") },
+            label = { Text(tr("Wordlist Yolu")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -5606,7 +5611,7 @@ fun WfuzzBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = postData,
                 onValueChange = { postData = it },
-                label = { Text("POST Verisi (-d 'user=FUZZ&pass=test')") },
+                label = { Text(tr("POST Verisi (-d 'user=FUZZ&pass=test')")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5614,13 +5619,13 @@ fun WfuzzBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "FİLTRELER VE GİZLEME (--hc / --sc)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("FİLTRELER VE GİZLEME (--hc / --sc)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = hideCode,
                 onValueChange = { hideCode = it },
-                label = { Text("Gizle Kod (--hc)") },
+                label = { Text(tr("Gizle Kod (--hc)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5628,7 +5633,7 @@ fun WfuzzBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = showCode,
                 onValueChange = { showCode = it },
-                label = { Text("Göster Kod (--sc)") },
+                label = { Text(tr("Göster Kod (--sc)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5636,7 +5641,7 @@ fun WfuzzBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = hideChars,
                 onValueChange = { hideChars = it },
-                label = { Text("Karakter (--hh)") },
+                label = { Text(tr("Karakter (--hh)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5644,7 +5649,7 @@ fun WfuzzBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "AĞ VE PROXY AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("AĞ VE PROXY AYARLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-c Renkli Terminal Çıktısı", checked = colorize, onCheckedChange = { colorize = it })
         ToggleOption(label = "-L Yönlendirmeleri Takip Et (Follow Redirects)", checked = followRedirects, onCheckedChange = { followRedirects = it })
@@ -5653,7 +5658,7 @@ fun WfuzzBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5716,7 +5721,7 @@ fun WPScanBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = url,
             onValueChange = { url = it },
-            label = { Text("WordPress Hedef URL (--url https://...)") },
+            label = { Text(tr("WordPress Hedef URL (--url https://...)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -5725,13 +5730,13 @@ fun WPScanBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = apiToken,
             onValueChange = { apiToken = it },
-            label = { Text("WPVulnerability API Token (--api-token: opsiyonel)") },
+            label = { Text(tr("WPVulnerability API Token (--api-token: opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "TESPİT MODU (--detection-mode)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("TESPİT MODU (--detection-mode)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("mixed" to "Karma (Mixed)", "passive" to "Pasif (Passive)", "aggressive" to "Agresif (Aggressive)").forEach { (dm, lbl) ->
@@ -5746,13 +5751,13 @@ fun WPScanBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "NUMARALANDIRMA SEÇENEKLERİ (-e)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("NUMARALANDIRMA SEÇENEKLERİ (-e)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             ToggleChip("Vuln Plugins (vp)", enumVulnPlugins, modifier = Modifier.weight(1f)) { enumVulnPlugins = !enumVulnPlugins }
@@ -5766,7 +5771,7 @@ fun WPScanBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "KULLANICI PAROLA KABA KUVVETİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KULLANICI PAROLA KABA KUVVETİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "Parola Sözlük Saldırısı Yap (--passwords)", checked = enableBruteForce, onCheckedChange = { enableBruteForce = it })
         if (enableBruteForce) {
@@ -5774,7 +5779,7 @@ fun WPScanBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = usernames,
                     onValueChange = { usernames = it },
-                    label = { Text("Kullanıcılar (-U)") },
+                    label = { Text(tr("Kullanıcılar (-U)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -5782,7 +5787,7 @@ fun WPScanBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = wordlist,
                     onValueChange = { wordlist = it },
-                    label = { Text("Wordlist (-P)") },
+                    label = { Text(tr("Wordlist (-P)")) },
                     modifier = Modifier.weight(1.5f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -5792,7 +5797,7 @@ fun WPScanBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "BAYRAKLAR VE GİZLİLİK", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("BAYRAKLAR VE GİZLİLİK"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "--random-user-agent Rastgele Tarayıcı Kimliği Kullan", checked = randomAgent, onCheckedChange = { randomAgent = it })
         ToggleOption(label = "--stealthy Sessiz ve Yavaş İstek Gönder", checked = stealthy, onCheckedChange = { stealthy = it })
@@ -5802,7 +5807,7 @@ fun WPScanBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5852,7 +5857,7 @@ fun MitmproxyBuilder(language: AppLanguage) {
     var anticomp by remember { mutableStateOf(true) }
 
     Column {
-        Text(text = "ÇALIŞTIRMA ARACI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇALIŞTIRMA ARACI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("mitmweb" to "Web Arayüzü (mitmweb)", "mitmproxy" to "Terminal UI (mitmproxy)", "mitmdump" to "Komut Satırı (mitmdump)").forEach { (m, lbl) ->
@@ -5867,7 +5872,7 @@ fun MitmproxyBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -5877,7 +5882,7 @@ fun MitmproxyBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = listenHost,
                 onValueChange = { listenHost = it },
-                label = { Text("Dinleme Hostu (--listen-host)") },
+                label = { Text(tr("Dinleme Hostu (--listen-host)")) },
                 modifier = Modifier.weight(1.2f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5885,7 +5890,7 @@ fun MitmproxyBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = listenPort,
                 onValueChange = { listenPort = it },
-                label = { Text("Port (-p)") },
+                label = { Text(tr("Port (-p)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5893,7 +5898,7 @@ fun MitmproxyBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PROXY ÇALIŞMA MODU (--mode)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PROXY ÇALIŞMA MODU (--mode)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("regular" to "Normal (Forward)", "reverse" to "Ters Proxy (Reverse)", "transparent" to "Şeffaf (Transparent)", "socks5" to "SOCKS5").forEach { (pm, lbl) ->
@@ -5908,7 +5913,7 @@ fun MitmproxyBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -5917,7 +5922,7 @@ fun MitmproxyBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = reverseTarget,
                 onValueChange = { reverseTarget = it },
-                label = { Text("Yönlendirilecek Hedef (https://target.com)") },
+                label = { Text(tr("Yönlendirilecek Hedef (https://target.com)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -5925,12 +5930,12 @@ fun MitmproxyBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "FİLTRELER VE EKLENTİLER", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("FİLTRELER VE EKLENTİLER"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         OutlinedTextField(
             value = flowFilter,
             onValueChange = { flowFilter = it },
-            label = { Text("Trafik Filtresi (~m post & ~u login & ~c 200)") },
+            label = { Text(tr("Trafik Filtresi (~m post & ~u login & ~c 200)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -5939,7 +5944,7 @@ fun MitmproxyBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = addonScript,
             onValueChange = { addonScript = it },
-            label = { Text("Özel Python Script Eklentisi (-s script.py) - Opsiyonel") },
+            label = { Text(tr("Özel Python Script Eklentisi (-s script.py) - Opsiyonel")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -6003,14 +6008,14 @@ fun KiterunnerBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = targetUrl,
             onValueChange = { targetUrl = it },
-            label = { Text(if (isHostList) "Hedefler Dosyası (-A hosts.txt)" else "API Hedef URL (https://api.target.com)") },
+            label = { Text(tr(if (isHostList) "Hedefler Dosyası (-A hosts.txt)" else "API Hedef URL (https://api.target.com)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ROTA VE VERİ SETİ (KITE DATASET)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ROTA VE VERİ SETİ (KITE DATASET)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("routes-large.kite" to "Büyük Set (large)", "routes-small.kite" to "Küçük Set (small)", "custom" to "Özel").forEach { (ds, lbl) ->
@@ -6025,7 +6030,7 @@ fun KiterunnerBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -6034,7 +6039,7 @@ fun KiterunnerBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customWordlist,
                 onValueChange = { customWordlist = it },
-                label = { Text("Özel Kelime Listesi / Swagger Spec Yolu") },
+                label = { Text(tr("Özel Kelime Listesi / Swagger Spec Yolu")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6042,13 +6047,13 @@ fun KiterunnerBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "FİLTRELER VE DURUM KODLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("FİLTRELER VE DURUM KODLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = filterApiCodes,
                 onValueChange = { filterApiCodes = it },
-                label = { Text("Eşleşen Kodlar (--filter-api)") },
+                label = { Text(tr("Eşleşen Kodlar (--filter-api)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6056,7 +6061,7 @@ fun KiterunnerBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = failStatusCodes,
                 onValueChange = { failStatusCodes = it },
-                label = { Text("Hata Kodları (--fail-status-codes)") },
+                label = { Text(tr("Hata Kodları (--fail-status-codes)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6066,7 +6071,7 @@ fun KiterunnerBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = customAuthHeader,
             onValueChange = { customAuthHeader = it },
-            label = { Text("Yetkilendirme Başlığı (-H 'Authorization: Bearer ..')") },
+            label = { Text(tr("Yetkilendirme Başlığı (-H 'Authorization: Bearer ..')")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -6078,7 +6083,7 @@ fun KiterunnerBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6124,7 +6129,7 @@ fun JwtToolBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = jwtToken,
             onValueChange = { jwtToken = it },
-            label = { Text("Hedef JWT Token (header.payload.signature)") },
+            label = { Text(tr("Hedef JWT Token (header.payload.signature)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -6133,7 +6138,7 @@ fun JwtToolBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = targetUrl,
             onValueChange = { targetUrl = it },
-            label = { Text("Hedef API Endpoint (-t https://...) - Opsiyonel") },
+            label = { Text(tr("Hedef API Endpoint (-t https://...) - Opsiyonel")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -6142,14 +6147,14 @@ fun JwtToolBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = customAuthHeader,
             onValueChange = { customAuthHeader = it },
-            label = { Text("İstek Başlığı (-rh 'Authorization: Bearer')") },
+            label = { Text(tr("İstek Başlığı (-rh 'Authorization: Bearer')")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "SALDIRI VE TEST MODU (-X)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SALDIRI VE TEST MODU (-X)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("alg_none" to "Alg:None (-X a)", "key_conf" to "Key Confusion (-X k)", "null_sig" to "Null Sig (-X n)").forEach { (m, lbl) ->
@@ -6164,7 +6169,7 @@ fun JwtToolBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -6181,7 +6186,7 @@ fun JwtToolBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -6192,7 +6197,7 @@ fun JwtToolBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = tamperClaimKey,
                     onValueChange = { tamperClaimKey = it },
-                    label = { Text("Claim Anahtarı (-pc)") },
+                    label = { Text(tr("Claim Anahtarı (-pc)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -6200,7 +6205,7 @@ fun JwtToolBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = tamperClaimValue,
                     onValueChange = { tamperClaimValue = it },
-                    label = { Text("Claim Değeri (-pv)") },
+                    label = { Text(tr("Claim Değeri (-pv)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -6211,7 +6216,7 @@ fun JwtToolBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = wordlist,
                 onValueChange = { wordlist = it },
-                label = { Text("HMAC Parola Listesi (-d)") },
+                label = { Text(tr("HMAC Parola Listesi (-d)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6219,7 +6224,7 @@ fun JwtToolBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "OTOMASYON VE ENTEGRASYON", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("OTOMASYON VE ENTEGRASYON"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-M pb İstekleri Burp Suite (127.0.0.1:8080) Üzerinden Yönlendir", checked = proxyBurp, onCheckedChange = { proxyBurp = it })
 
@@ -6272,7 +6277,7 @@ fun CommixBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = targetUrl,
             onValueChange = { targetUrl = it },
-            label = { Text(if (isRequestFile) "Raw HTTP İstek Dosyası (-r request.txt)" else "Hedef URL (--url)") },
+            label = { Text(tr(if (isRequestFile) "Raw HTTP İstek Dosyası (-r request.txt)" else "Hedef URL (--url)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -6282,7 +6287,7 @@ fun CommixBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = targetParam,
                 onValueChange = { targetParam = it },
-                label = { Text("Hedef Parametre (-p cmd: opsiyonel)") },
+                label = { Text(tr("Hedef Parametre (-p cmd: opsiyonel)")) },
                 modifier = Modifier.weight(1.2f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6290,7 +6295,7 @@ fun CommixBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = level,
                 onValueChange = { level = it },
-                label = { Text("Level (1-3)") },
+                label = { Text(tr("Level (1-3)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6298,7 +6303,7 @@ fun CommixBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ENJEKSİYON TEKNİĞİ (--tech)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ENJEKSİYON TEKNİĞİ (--tech)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("all" to "Tümü", "classic" to "Classic", "eval-based" to "Eval", "time-based" to "Time", "file-based" to "File").forEach { (tech, lbl) ->
@@ -6313,7 +6318,7 @@ fun CommixBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -6321,14 +6326,14 @@ fun CommixBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = tamperScript,
             onValueChange = { tamperScript = it },
-            label = { Text("Tamper Scripti (--tamper: space2comment, base64encode vb. - 'none' pasif)") },
+            label = { Text(tr("Tamper Scripti (--tamper: space2comment, base64encode vb. - 'none' pasif)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "HEDEF İŞLETİM SİSTEMİ (--os)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HEDEF İŞLETİM SİSTEMİ (--os)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("Unix" to "Linux / Unix", "Windows" to "Microsoft Windows").forEach { (os, lbl) ->
@@ -6343,13 +6348,13 @@ fun CommixBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "İSTİSMAR VE SHELL SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("İSTİSMAR VE SHELL SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("os_shell" to "İnteraktif Kabuk (--os-shell)", "os_cmd" to "Tek Komut (--os-cmd)", "rev_shell" to "Reverse Shell").forEach { (act, lbl) ->
@@ -6364,7 +6369,7 @@ fun CommixBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -6373,7 +6378,7 @@ fun CommixBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customCommand,
                 onValueChange = { customCommand = it },
-                label = { Text("Çalıştırılacak Komut (--os-cmd)") },
+                label = { Text(tr("Çalıştırılacak Komut (--os-cmd)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6383,7 +6388,7 @@ fun CommixBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = reverseShellTarget,
                 onValueChange = { reverseShellTarget = it },
-                label = { Text("Reverse Shell Hedefi (LHOST=.. LPORT=..)") },
+                label = { Text(tr("Reverse Shell Hedefi (LHOST=.. LPORT=..)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6391,7 +6396,7 @@ fun CommixBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "WAF ATLATMA VE BAĞLANTI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("WAF ATLATMA VE BAĞLANTI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "--batch Sorulara Otomatik Varsayılan Cevap Ver", checked = batchMode, onCheckedChange = { batchMode = it })
         ToggleOption(label = "--random-agent Rastgele User-Agent Rotasyonu", checked = randomAgent, onCheckedChange = { randomAgent = it })
@@ -6400,7 +6405,7 @@ fun CommixBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6458,7 +6463,7 @@ fun TplmapBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = targetUrl,
             onValueChange = { targetUrl = it },
-            label = { Text("Hedef URL (-u) - Enjeksiyon noktası için '*' kullanın") },
+            label = { Text(tr("Hedef URL (-u) - Enjeksiyon noktası için '*' kullanın")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -6473,7 +6478,7 @@ fun TplmapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = postData,
                 onValueChange = { postData = it },
-                label = { Text("POST Verisi (-d 'param=*&other=1')") },
+                label = { Text(tr("POST Verisi (-d 'param=*&other=1')")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6481,7 +6486,7 @@ fun TplmapBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "İSTİSMAR VE SHELL SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("İSTİSMAR VE SHELL SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("check" to "Zafiyet Testi", "os_shell" to "OS Shell", "os_cmd" to "OS Komut", "rev_shell" to "Reverse Shell").forEach { (act, lbl) ->
@@ -6496,7 +6501,7 @@ fun TplmapBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -6513,7 +6518,7 @@ fun TplmapBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -6523,7 +6528,7 @@ fun TplmapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customCommand,
                 onValueChange = { customCommand = it },
-                label = { Text("Çalıştırılacak Sistem Komutu (--os-cmd)") },
+                label = { Text(tr("Çalıştırılacak Sistem Komutu (--os-cmd)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6533,7 +6538,7 @@ fun TplmapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = reverseTarget,
                 onValueChange = { reverseTarget = it },
-                label = { Text("Reverse Shell (--reverse-shell LHOST LPORT)") },
+                label = { Text(tr("Reverse Shell (--reverse-shell LHOST LPORT)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6543,7 +6548,7 @@ fun TplmapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = bindPort,
                 onValueChange = { bindPort = it },
-                label = { Text("Bind Shell Portu (--bind-shell PORT)") },
+                label = { Text(tr("Bind Shell Portu (--bind-shell PORT)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6554,7 +6559,7 @@ fun TplmapBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = localFile,
                     onValueChange = { localFile = it },
-                    label = { Text("Yerel Dosya") },
+                    label = { Text(tr("Yerel Dosya")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -6562,7 +6567,7 @@ fun TplmapBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = remoteFile,
                     onValueChange = { remoteFile = it },
-                    label = { Text("Hedef Yol") },
+                    label = { Text(tr("Hedef Yol")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -6574,7 +6579,7 @@ fun TplmapBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = remoteFile,
                     onValueChange = { remoteFile = it },
-                    label = { Text("Hedef Dosya") },
+                    label = { Text(tr("Hedef Dosya")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -6582,7 +6587,7 @@ fun TplmapBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = localFile,
                     onValueChange = { localFile = it },
-                    label = { Text("Kaydedilecek Yol") },
+                    label = { Text(tr("Kaydedilecek Yol")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -6591,7 +6596,7 @@ fun TplmapBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ŞABLON MOTORU SEÇİMİ (-e)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ŞABLON MOTORU SEÇİMİ (-e)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("all" to "Otomatik", "jinja2" to "Jinja2 (Python)", "mako" to "Mako (Python)", "twig" to "Twig (PHP)", "smarty" to "Smarty (PHP)", "freemarker" to "FreeMarker (Java)", "velocity" to "Velocity (Java)", "pug" to "Pug (Node.js)", "erb" to "ERB (Ruby)").forEach { (eng, lbl) ->
@@ -6604,19 +6609,19 @@ fun TplmapBuilder(language: AppLanguage) {
                         .clickable { templateEngine = eng }
                         .padding(horizontal = 10.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "GELİŞMİŞ AYARLAR VE EVASION", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("GELİŞMİŞ AYARLAR VE EVASION"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = level,
                 onValueChange = { level = it },
-                label = { Text("Derinlik Seviyesi (--level 1-5)") },
+                label = { Text(tr("Derinlik Seviyesi (--level 1-5)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6624,7 +6629,7 @@ fun TplmapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = tamperScript,
                 onValueChange = { tamperScript = it },
-                label = { Text("Tamper Scripti (--tamper)") },
+                label = { Text(tr("Tamper Scripti (--tamper)")) },
                 modifier = Modifier.weight(1.2f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6634,7 +6639,7 @@ fun TplmapBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = customHeaders,
             onValueChange = { customHeaders = it },
-            label = { Text("Özel Header (-H 'Cookie: session=xyz' - Opsiyonel)") },
+            label = { Text(tr("Özel Header (-H 'Cookie: session=xyz' - Opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -6643,7 +6648,7 @@ fun TplmapBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = userAgent,
             onValueChange = { userAgent = it },
-            label = { Text("Özel User-Agent (-A Mozilla/... - Opsiyonel)") },
+            label = { Text(tr("Özel User-Agent (-A Mozilla/... - Opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -6654,7 +6659,7 @@ fun TplmapBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6708,20 +6713,20 @@ fun Wafw00fBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text(if (isTargetList) "Hedefler Dosyası (-i targets.txt)" else "Hedef URL (https://target.com)") },
+            label = { Text(tr(if (isTargetList) "Hedefler Dosyası (-i targets.txt)" else "Hedef URL (https://target.com)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "TARAMA DERİNLİĞİ VE YÖNLENDİRME", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("TARAMA DERİNLİĞİ VE YÖNLENDİRME"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-a Eşleşen Tüm WAF'ları Bul (İlk tespitte durma)", checked = findAll, onCheckedChange = { findAll = it })
         ToggleOption(label = "-r HTTP 3xx Yönlendirmelerini Takip Etme", checked = disableRedirect, onCheckedChange = { disableRedirect = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "DETAY SEVİYESİ (Verbosity)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("DETAY SEVİYESİ (Verbosity)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("none" to "Standart", "v" to "Detaylı (-v)", "vv" to "Çok Detaylı (-vv)").forEach { (v, lbl) ->
@@ -6736,20 +6741,20 @@ fun Wafw00fBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "AĞ VE PROXY AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("AĞ VE PROXY AYARLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "Proxy Kullan (-p $proxyUrl)", checked = useProxy, onCheckedChange = { useProxy = it })
         if (useProxy) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi (HTTP veya SOCKS5)") },
+                label = { Text(tr("Proxy Adresi (HTTP veya SOCKS5)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6759,14 +6764,14 @@ fun Wafw00fBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = customHeadersFile,
             onValueChange = { customHeadersFile = it },
-            label = { Text("Özel Header Dosyası (-H headers.txt - Opsiyonel)") },
+            label = { Text(tr("Özel Header Dosyası (-H headers.txt - Opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "RAPOR VE ÇIKTI FORMATI (-o)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("RAPOR VE ÇIKTI FORMATI (-o)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("terminal" to "Terminal", "json" to "JSON", "csv" to "CSV").forEach { (fmt, lbl) ->
@@ -6781,7 +6786,7 @@ fun Wafw00fBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -6790,7 +6795,7 @@ fun Wafw00fBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = outputFile,
                 onValueChange = { outputFile = it },
-                label = { Text("Çıktı Dosyası Adı (-o)") },
+                label = { Text(tr("Çıktı Dosyası Adı (-o)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6838,7 +6843,7 @@ fun CorsyBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text(if (isTargetList) "Endpoint Listesi (-i endpoints.txt)" else "Hedef API Endpoint (-u https://...)") },
+            label = { Text(tr(if (isTargetList) "Endpoint Listesi (-i endpoints.txt)" else "Hedef API Endpoint (-u https://...)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -6848,7 +6853,7 @@ fun CorsyBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = threads,
                 onValueChange = { threads = it },
-                label = { Text("Threads (-t)") },
+                label = { Text(tr("Threads (-t)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6856,7 +6861,7 @@ fun CorsyBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = timeout,
                 onValueChange = { timeout = it },
-                label = { Text("Timeout sn (--timeout)") },
+                label = { Text(tr("Timeout sn (--timeout)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6864,7 +6869,7 @@ fun CorsyBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = delay,
                 onValueChange = { delay = it },
-                label = { Text("Gecikme sn (-d: opsiyonel)") },
+                label = { Text(tr("Gecikme sn (-d: opsiyonel)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6874,7 +6879,7 @@ fun CorsyBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = customHeaders,
             onValueChange = { customHeaders = it },
-            label = { Text("Özel Headers (-headers 'Authorization: Bearer...' - Opsiyonel)") },
+            label = { Text(tr("Özel Headers (-headers 'Authorization: Bearer...' - Opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -6883,7 +6888,7 @@ fun CorsyBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = postData,
             onValueChange = { postData = it },
-            label = { Text("POST Verisi (--data 'param=val' - Opsiyonel)") },
+            label = { Text(tr("POST Verisi (--data 'param=val' - Opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -6894,7 +6899,7 @@ fun CorsyBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6904,7 +6909,7 @@ fun CorsyBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = outputFile,
             onValueChange = { outputFile = it },
-            label = { Text("Çıktı JSON Dosyası (-o: boş bırakılırsa terminale basar)") },
+            label = { Text(tr("Çıktı JSON Dosyası (-o: boş bırakılırsa terminale basar)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -6949,7 +6954,7 @@ fun InqlBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = targetUrl,
                 onValueChange = { targetUrl = it },
-                label = { Text("GraphQL API Endpoint (-t https://...)") },
+                label = { Text(tr("GraphQL API Endpoint (-t https://...)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6958,7 +6963,7 @@ fun InqlBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = schemaFile,
                 onValueChange = { schemaFile = it },
-                label = { Text("JSON Şema Dosyası (-f schema.json)") },
+                label = { Text(tr("JSON Şema Dosyası (-f schema.json)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6966,19 +6971,19 @@ fun InqlBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÜRETİM VE ANALİZ SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÜRETİM VE ANALİZ SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "--generate-sdl GraphQL Şema Tanım Dilini (SDL) Çıkar", checked = generateSdl, onCheckedChange = { generateSdl = it })
         ToggleOption(label = "--generate-html Standalone HTML Dokümantasyonu Oluştur", checked = generateHtml, onCheckedChange = { generateHtml = it })
         ToggleOption(label = "--cycles Döngüsel İlişkileri ve DoS Vektörlerini Tespit Et", checked = detectCycles, onCheckedChange = { detectCycles = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "KİMLİK DOĞRULAMA VE BAĞLANTI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KİMLİK DOĞRULAMA VE BAĞLANTI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         OutlinedTextField(
             value = customHeader,
             onValueChange = { customHeader = it },
-            label = { Text("Özel İstek Başlığı (-H 'Authorization: Bearer...' - Opsiyonel)") },
+            label = { Text(tr("Özel İstek Başlığı (-H 'Authorization: Bearer...' - Opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -6989,7 +6994,7 @@ fun InqlBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -6999,7 +7004,7 @@ fun InqlBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = outputDir,
             onValueChange = { outputDir = it },
-            label = { Text("Çıktı Dizin Yolu (-o)") },
+            label = { Text(tr("Çıktı Dizin Yolu (-o)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -7046,14 +7051,14 @@ fun SmugglerBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text(if (isTargetList) "Hedefler Dosyası (-f live_hosts.txt)" else "Hedef URL (-u https://target.com/)") },
+            label = { Text(tr(if (isTargetList) "Hedefler Dosyası (-f live_hosts.txt)" else "Hedef URL (-u https://target.com/)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "MUTASYON VE SMUGGLING PROFİLİ (-c)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("MUTASYON VE SMUGGLING PROFİLİ (-c)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("default" to "Standart", "exhaustive" to "Tüm Mutasyonlar", "clte" to "CL.TE Öncelikli", "tecl" to "TE.CL Öncelikli", "doublesmuggling" to "Double TE").forEach { (prof, lbl) ->
@@ -7068,13 +7073,13 @@ fun SmugglerBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "İSTEK AYARLARI VE PERFORMANS", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("İSTEK AYARLARI VE PERFORMANS"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("POST" to "POST", "GET" to "GET").forEach { (m, lbl) ->
@@ -7089,13 +7094,13 @@ fun SmugglerBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
             OutlinedTextField(
                 value = threads,
                 onValueChange = { threads = it },
-                label = { Text("Threads (-t)") },
+                label = { Text(tr("Threads (-t)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7103,7 +7108,7 @@ fun SmugglerBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = timeout,
                 onValueChange = { timeout = it },
-                label = { Text("Timeout (--timeout)") },
+                label = { Text(tr("Timeout (--timeout)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7113,7 +7118,7 @@ fun SmugglerBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = customHeader,
             onValueChange = { customHeader = it },
-            label = { Text("Özel Header (-H 'Cookie: session=xyz' - Opsiyonel)") },
+            label = { Text(tr("Özel Header (-H 'Cookie: session=xyz' - Opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -7124,7 +7129,7 @@ fun SmugglerBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = proxyUrl,
                 onValueChange = { proxyUrl = it },
-                label = { Text("Proxy Adresi") },
+                label = { Text(tr("Proxy Adresi")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7161,7 +7166,7 @@ fun CrackMapExecBuilder(language: AppLanguage) {
     var module by remember { mutableStateOf("none") }
 
     Column {
-        Text(text = "HEDEF PROTOKOL", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HEDEF PROTOKOL"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("smb" to "SMB", "winrm" to "WinRM", "ldap" to "LDAP", "mssql" to "MSSQL", "ssh" to "SSH", "rdp" to "RDP").forEach { (proto, lbl) ->
@@ -7176,7 +7181,7 @@ fun CrackMapExecBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -7185,7 +7190,7 @@ fun CrackMapExecBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text("Hedef IP / CIDR / Hostname (10.10.10.0/24)") },
+            label = { Text(tr("Hedef IP / CIDR / Hostname (10.10.10.0/24)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -7195,7 +7200,7 @@ fun CrackMapExecBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
-                label = { Text("Kullanıcı (-u: 'guest' veya dosya)") },
+                label = { Text(tr("Kullanıcı (-u: 'guest' veya dosya)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7203,7 +7208,7 @@ fun CrackMapExecBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = domain,
                 onValueChange = { domain = it },
-                label = { Text("Domain (-d: opsiyonel)") },
+                label = { Text(tr("Domain (-d: opsiyonel)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7214,7 +7219,7 @@ fun CrackMapExecBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Parola (-p: '' veya dosya)") },
+                label = { Text(tr("Parola (-p: '' veya dosya)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7222,7 +7227,7 @@ fun CrackMapExecBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = ntlmHash,
                 onValueChange = { ntlmHash = it },
-                label = { Text("Pass-The-Hash (-H: NTLM)") },
+                label = { Text(tr("Pass-The-Hash (-H: NTLM)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7230,7 +7235,7 @@ fun CrackMapExecBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "EYLEM VE VERİ TOPLAMA", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("EYLEM VE VERİ TOPLAMA"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -7256,7 +7261,7 @@ fun CrackMapExecBuilder(language: AppLanguage) {
                         .clickable { action = act }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -7266,7 +7271,7 @@ fun CrackMapExecBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customCmd,
                 onValueChange = { customCmd = it },
-                label = { Text("Çalıştırılacak Komut ($action)") },
+                label = { Text(tr("Çalıştırılacak Komut ($action)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7274,7 +7279,7 @@ fun CrackMapExecBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÖZEL CME MODÜLÜ (-M)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÖZEL CME MODÜLÜ (-M)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("none" to "Yok (Modülsüz)", "spider_plus" to "spider_plus (Hassas Dosya)", "mimikatz" to "mimikatz", "zerologon" to "zerologon", "gpp_password" to "gpp_password").forEach { (mod, lbl) ->
@@ -7287,13 +7292,13 @@ fun CrackMapExecBuilder(language: AppLanguage) {
                         .clickable { module = mod }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "KİMLİK DOĞRULAMA AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KİMLİK DOĞRULAMA AYARLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "--local-auth Yerel Hesap Doğrulaması (Domain dışı)", checked = localAuth, onCheckedChange = { localAuth = it })
         ToggleOption(label = "-k Kerberos Kimlik Doğrulaması Kullan", checked = kerberos, onCheckedChange = { kerberos = it })
@@ -7339,7 +7344,7 @@ fun NetExecBuilder(language: AppLanguage) {
     var module by remember { mutableStateOf("none") }
 
     Column {
-        Text(text = "HEDEF PROTOKOL", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HEDEF PROTOKOL"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("smb" to "SMB", "winrm" to "WinRM", "ldap" to "LDAP", "mssql" to "MSSQL", "ssh" to "SSH", "rdp" to "RDP", "wmi" to "WMI", "vnc" to "VNC", "ftp" to "FTP").forEach { (proto, lbl) ->
@@ -7352,7 +7357,7 @@ fun NetExecBuilder(language: AppLanguage) {
                         .clickable { protocol = proto }
                         .padding(horizontal = 10.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -7361,7 +7366,7 @@ fun NetExecBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = target,
             onValueChange = { target = it },
-            label = { Text("Hedef IP / CIDR (10.10.10.0/24)") },
+            label = { Text(tr("Hedef IP / CIDR (10.10.10.0/24)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -7371,7 +7376,7 @@ fun NetExecBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
-                label = { Text("Kullanıcı (-u)") },
+                label = { Text(tr("Kullanıcı (-u)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7379,7 +7384,7 @@ fun NetExecBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = domain,
                 onValueChange = { domain = it },
-                label = { Text("Domain (-d)") },
+                label = { Text(tr("Domain (-d)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7390,7 +7395,7 @@ fun NetExecBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Parola (-p)") },
+                label = { Text(tr("Parola (-p)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7398,7 +7403,7 @@ fun NetExecBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = ntlmHash,
                 onValueChange = { ntlmHash = it },
-                label = { Text("NTLM Hash (-H)") },
+                label = { Text(tr("NTLM Hash (-H)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7406,7 +7411,7 @@ fun NetExecBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "NUMARALANDIRMA VE DÖKÜM SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("NUMARALANDIRMA VE DÖKÜM SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -7430,7 +7435,7 @@ fun NetExecBuilder(language: AppLanguage) {
                         .clickable { action = act }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -7440,7 +7445,7 @@ fun NetExecBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customCmd,
                 onValueChange = { customCmd = it },
-                label = { Text("Çalıştırılacak Komut ($action)") },
+                label = { Text(tr("Çalıştırılacak Komut ($action)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7448,7 +7453,7 @@ fun NetExecBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "NETEXEC EKLENTİ MODÜLÜ (-M)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("NETEXEC EKLENTİ MODÜLÜ (-M)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("none" to "Yok", "spider_plus" to "spider_plus", "sccm" to "sccm", "bloodhound" to "bloodhound", "coerce_plus" to "coerce_plus", "nanodump" to "nanodump", "zerologon" to "zerologon").forEach { (mod, lbl) ->
@@ -7461,13 +7466,13 @@ fun NetExecBuilder(language: AppLanguage) {
                         .clickable { module = mod }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "KİMLİK DOĞRULAMA VE TARAMA BAYRAKLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KİMLİK DOĞRULAMA VE TARAMA BAYRAKLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "--local-auth Yerel Hesap Denetimi", checked = localAuth, onCheckedChange = { localAuth = it })
         ToggleOption(label = "-k Kerberos Bileti ile Giriş", checked = kerberos, onCheckedChange = { kerberos = it })
@@ -7519,7 +7524,7 @@ fun ImpacketBuilder(language: AppLanguage) {
     var socksRelay by remember { mutableStateOf(true) }
 
     Column {
-        Text(text = "IMPACKET ARACI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("IMPACKET ARACI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -7540,7 +7545,7 @@ fun ImpacketBuilder(language: AppLanguage) {
                         .clickable { subTool = tool }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -7551,7 +7556,7 @@ fun ImpacketBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = domain,
                     onValueChange = { domain = it },
-                    label = { Text("Domain (corp.local)") },
+                    label = { Text(tr("Domain (corp.local)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -7559,7 +7564,7 @@ fun ImpacketBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = username,
                     onValueChange = { username = it },
-                    label = { Text("Kullanıcı") },
+                    label = { Text(tr("Kullanıcı")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -7579,7 +7584,7 @@ fun ImpacketBuilder(language: AppLanguage) {
                             .padding(vertical = 6.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                        Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                     }
                 }
             }
@@ -7588,7 +7593,7 @@ fun ImpacketBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Parola") },
+                    label = { Text(tr("Parola")) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -7597,7 +7602,7 @@ fun ImpacketBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = ntlmHash,
                     onValueChange = { ntlmHash = it },
-                    label = { Text("NTLM Hash (:aad3b435...:31d6cfe0... veya :31d6cfe0...)") },
+                    label = { Text(tr("NTLM Hash (:aad3b435...:31d6cfe0... veya :31d6cfe0...)")) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -7608,7 +7613,7 @@ fun ImpacketBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = targetHost,
                     onValueChange = { targetHost = it },
-                    label = { Text("Hedef Host/IP (@10.10.10.10)") },
+                    label = { Text(tr("Hedef Host/IP (@10.10.10.10)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -7616,7 +7621,7 @@ fun ImpacketBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = dcIp,
                     onValueChange = { dcIp = it },
-                    label = { Text("DC IP (-dc-ip 10.10.10.1)") },
+                    label = { Text(tr("DC IP (-dc-ip 10.10.10.1)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -7627,7 +7632,7 @@ fun ImpacketBuilder(language: AppLanguage) {
         // Subtool specific inputs
         if (subTool == "secretsdump") {
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "SECRETSDUMP SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("SECRETSDUMP SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf("vss" to "NTDS (-ntds vss)", "drsuapi" to "NTDS (-ntds drsuapi)", "sam_only" to "Sadece SAM & LSA").forEach { (n, lbl) ->
@@ -7642,7 +7647,7 @@ fun ImpacketBuilder(language: AppLanguage) {
                             .padding(vertical = 6.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                        Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                     }
                 }
             }
@@ -7653,7 +7658,7 @@ fun ImpacketBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = outputFile,
                 onValueChange = { outputFile = it },
-                label = { Text("Hash Kayıt Dosyası (-outputfile)") },
+                label = { Text(tr("Hash Kayıt Dosyası (-outputfile)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7663,7 +7668,7 @@ fun ImpacketBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = customCommand,
                 onValueChange = { customCommand = it },
-                label = { Text("Çalıştırılacak Komut (boş bırakılırsa interaktif kabuk)") },
+                label = { Text(tr("Çalıştırılacak Komut (boş bırakılırsa interaktif kabuk)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7673,7 +7678,7 @@ fun ImpacketBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = relayTarget,
                 onValueChange = { relayTarget = it },
-                label = { Text("Hedef Relay URL/SMB (-t smb://... veya http://...)") },
+                label = { Text(tr("Hedef Relay URL/SMB (-t smb://... veya http://...)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7744,7 +7749,7 @@ fun BloodHoundBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = domain,
             onValueChange = { domain = it },
-            label = { Text("Hedef Active Directory Domain (-d corp.local)") },
+            label = { Text(tr("Hedef Active Directory Domain (-d corp.local)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -7754,7 +7759,7 @@ fun BloodHoundBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = dcFqdn,
                 onValueChange = { dcFqdn = it },
-                label = { Text("Domain Controller FQDN (-dc)") },
+                label = { Text(tr("Domain Controller FQDN (-dc)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7762,7 +7767,7 @@ fun BloodHoundBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = dcIp,
                 onValueChange = { dcIp = it },
-                label = { Text("DNS / DC IP (-ns)") },
+                label = { Text(tr("DNS / DC IP (-ns)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7773,7 +7778,7 @@ fun BloodHoundBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
-                label = { Text("Kullanıcı (-u)") },
+                label = { Text(tr("Kullanıcı (-u)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7781,7 +7786,7 @@ fun BloodHoundBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Parola (-p)") },
+                label = { Text(tr("Parola (-p)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7791,14 +7796,14 @@ fun BloodHoundBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = ntlmHash,
             onValueChange = { ntlmHash = it },
-            label = { Text("Pass-The-Hash (--hashes :NTLM: opsiyonel)") },
+            label = { Text(tr("Pass-The-Hash (--hashes :NTLM: opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "VERİ TOPLAMA METODU (-c)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("VERİ TOPLAMA METODU (-c)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("All" to "Tümü (All)", "Default" to "Varsayılan", "DCOnly" to "Sadece DC (Hızlı)", "ComputerOnly" to "Bilgisayarlar", "Session" to "Oturumlar", "LoggedOn" to "Aktif Girişler", "Group" to "Gruplar", "LocalAdmin" to "Local Adminler").forEach { (m, lbl) ->
@@ -7811,13 +7816,13 @@ fun BloodHoundBuilder(language: AppLanguage) {
                         .clickable { collectionMethod = m }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PAKETLEME VE GİZLİLİK", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PAKETLEME VE GİZLİLİK"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "--zip Sonuçları Tek Bir Zip Arşivine Sıkıştır", checked = zipOutput, onCheckedChange = { zipOutput = it })
         ToggleOption(label = "--stealth Gizli Mod (Gürültülü oturum taramasını kıs)", checked = stealthMode, onCheckedChange = { stealthMode = it })
@@ -7826,7 +7831,7 @@ fun BloodHoundBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = outputDir,
             onValueChange = { outputDir = it },
-            label = { Text("Çıktı Dizini (-o: opsiyonel)") },
+            label = { Text(tr("Çıktı Dizini (-o: opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -7878,14 +7883,14 @@ fun ResponderBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = networkInterface,
             onValueChange = { networkInterface = it },
-            label = { Text("Dinlenecek Ağ Arayüzü (-I eth0, tun0, ens33)") },
+            label = { Text(tr("Dinlenecek Ağ Arayüzü (-I eth0, tun0, ens33)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ZEHİRLEME VE SALDIRI SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ZEHİRLEME VE SALDIRI SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-A Pasif Analiz Modu (Zehirleme yapmadan ağı dinle)", checked = analyzeOnly, onCheckedChange = { analyzeOnly = it })
         if (!analyzeOnly) {
@@ -7898,13 +7903,13 @@ fun ResponderBuilder(language: AppLanguage) {
         ToggleOption(label = "-v Ayrıntılı Paket ve İstek Çıktısı (Verbose)", checked = verbose, onCheckedChange = { verbose = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "GELİŞMİŞ AĞ YAPILANDIRMASI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("GELİŞMİŞ AĞ YAPILANDIRMASI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = customIp,
                 onValueChange = { customIp = it },
-                label = { Text("Özel Yanıt IP'si (--interface-ip: opsiyonel)") },
+                label = { Text(tr("Özel Yanıt IP'si (--interface-ip: opsiyonel)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7912,7 +7917,7 @@ fun ResponderBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = upstreamProxy,
                 onValueChange = { upstreamProxy = it },
-                label = { Text("Üst Proxy (--upstream-proxy: opsiyonel)") },
+                label = { Text(tr("Üst Proxy (--upstream-proxy: opsiyonel)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7964,7 +7969,7 @@ fun EvilWinrmBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = targetIp,
                 onValueChange = { targetIp = it },
-                label = { Text("Hedef Host/IP (-i)") },
+                label = { Text(tr("Hedef Host/IP (-i)")) },
                 modifier = Modifier.weight(2f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7972,7 +7977,7 @@ fun EvilWinrmBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = port,
                 onValueChange = { port = it },
-                label = { Text("Port (-P)") },
+                label = { Text(tr("Port (-P)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -7982,14 +7987,14 @@ fun EvilWinrmBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text("Kullanıcı (-u: Administrator vb.)") },
+            label = { Text(tr("Kullanıcı (-u: Administrator vb.)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "KİMLİK DOĞRULAMA TÜRÜ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KİMLİK DOĞRULAMA TÜRÜ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("password" to "Parola (-p)", "hash" to "NTLM Hash (-H)", "kerberos" to "Kerberos (-r)", "cert" to "SSL Sertifika (-c/-k)").forEach { (m, lbl) ->
@@ -8010,7 +8015,7 @@ fun EvilWinrmBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -8021,7 +8026,7 @@ fun EvilWinrmBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Parola (-p)") },
+                    label = { Text(tr("Parola (-p)")) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -8031,7 +8036,7 @@ fun EvilWinrmBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = ntlmHash,
                     onValueChange = { ntlmHash = it },
-                    label = { Text("Pass-The-Hash (-H: 31d6cfe0d16ae931b73c59d7e0c089c0)") },
+                    label = { Text(tr("Pass-The-Hash (-H: 31d6cfe0d16ae931b73c59d7e0c089c0)")) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -8041,7 +8046,7 @@ fun EvilWinrmBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = realmDomain,
                     onValueChange = { realmDomain = it },
-                    label = { Text("Kerberos Realm / Domain (-r corp.local)") },
+                    label = { Text(tr("Kerberos Realm / Domain (-r corp.local)")) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -8052,7 +8057,7 @@ fun EvilWinrmBuilder(language: AppLanguage) {
                     OutlinedTextField(
                         value = certFile,
                         onValueChange = { certFile = it },
-                        label = { Text("Cert PEM (-c)") },
+                        label = { Text(tr("Cert PEM (-c)")) },
                         modifier = Modifier.weight(1f),
                         colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                         singleLine = true
@@ -8060,7 +8065,7 @@ fun EvilWinrmBuilder(language: AppLanguage) {
                     OutlinedTextField(
                         value = keyFile,
                         onValueChange = { keyFile = it },
-                        label = { Text("Key PEM (-k)") },
+                        label = { Text(tr("Key PEM (-k)")) },
                         modifier = Modifier.weight(1f),
                         colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                         singleLine = true
@@ -8070,13 +8075,13 @@ fun EvilWinrmBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "DİNAMİK SCRİPT & ÇALIŞTIRMA SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("DİNAMİK SCRİPT & ÇALIŞTIRMA SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = scriptsFolder,
                 onValueChange = { scriptsFolder = it },
-                label = { Text("PS Script Dizini (-s: opsiyonel)") },
+                label = { Text(tr("PS Script Dizini (-s: opsiyonel)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8084,7 +8089,7 @@ fun EvilWinrmBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = execFolder,
                 onValueChange = { execFolder = it },
-                label = { Text("Exe/C# Dizini (-e: opsiyonel)") },
+                label = { Text(tr("Exe/C# Dizini (-e: opsiyonel)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8094,7 +8099,7 @@ fun EvilWinrmBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = singleCommand,
             onValueChange = { singleCommand = it },
-            label = { Text("Tek Komut Çalıştır ve Çık (--cmd: opsiyonel)") },
+            label = { Text(tr("Tek Komut Çalıştır ve Çık (--cmd: opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -8148,7 +8153,7 @@ fun RubeusBuilder(language: AppLanguage) {
     var pttDirect by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "RUBEUS EYLEM MODÜLÜ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("RUBEUS EYLEM MODÜLÜ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -8170,7 +8175,7 @@ fun RubeusBuilder(language: AppLanguage) {
                         .clickable { action = act }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -8180,7 +8185,7 @@ fun RubeusBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = domain,
                 onValueChange = { domain = it },
-                label = { Text("Domain (/domain:corp.local)") },
+                label = { Text(tr("Domain (/domain:corp.local)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8188,7 +8193,7 @@ fun RubeusBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = dcFqdn,
                 onValueChange = { dcFqdn = it },
-                label = { Text("DC Hostname (/dc:dc01..)") },
+                label = { Text(tr("DC Hostname (/dc:dc01..)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8201,7 +8206,7 @@ fun RubeusBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = username,
                     onValueChange = { username = it },
-                    label = { Text("Kullanıcı (/user:admin)") },
+                    label = { Text(tr("Kullanıcı (/user:admin)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -8209,7 +8214,7 @@ fun RubeusBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Parola (/password:...)") },
+                    label = { Text(tr("Parola (/password:...)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -8219,7 +8224,7 @@ fun RubeusBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = rc4Hash,
                 onValueChange = { rc4Hash = it },
-                label = { Text("NTLM / RC4 Hash (/rc4:NTLM - Opsiyonel)") },
+                label = { Text(tr("NTLM / RC4 Hash (/rc4:NTLM - Opsiyonel)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8232,7 +8237,7 @@ fun RubeusBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = impersonateUser,
                     onValueChange = { impersonateUser = it },
-                    label = { Text("Taklit Edilecek (/impersonateuser)") },
+                    label = { Text(tr("Taklit Edilecek (/impersonateuser)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -8240,7 +8245,7 @@ fun RubeusBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = msdsSpn,
                     onValueChange = { msdsSpn = it },
-                    label = { Text("Hedef SPN (/msdsspn:cifs/..)") },
+                    label = { Text(tr("Hedef SPN (/msdsspn:cifs/..)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -8253,7 +8258,7 @@ fun RubeusBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = targetSpn,
                 onValueChange = { targetSpn = it },
-                label = { Text("Özel SPN Filtresi (/spn:MSSQL... - boş ise tümü)") },
+                label = { Text(tr("Özel SPN Filtresi (/spn:MSSQL... - boş ise tümü)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8265,7 +8270,7 @@ fun RubeusBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = ticketData,
                 onValueChange = { ticketData = it },
-                label = { Text("Bilet Dosyası veya Base64 (/ticket:ticket.kirbi)") },
+                label = { Text(tr("Bilet Dosyası veya Base64 (/ticket:ticket.kirbi)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8277,7 +8282,7 @@ fun RubeusBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = outFile,
                 onValueChange = { outFile = it },
-                label = { Text("Hash Kayıt Dosyası (/outfile:hashes.txt)") },
+                label = { Text(tr("Hash Kayıt Dosyası (/outfile:hashes.txt)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8285,7 +8290,7 @@ fun RubeusBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "GİZLİLİK VE BELLEK AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("GİZLİLİK VE BELLEK AYARLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         if (action == "kerberoast") {
             ToggleOption(label = "/opsec Yalnızca RC4 Destekli Hesapları İste (AES log gürültüsünü önle)", checked = opsecFilter, onCheckedChange = { opsecFilter = it })
@@ -8341,7 +8346,7 @@ fun PowerViewBuilder(language: AppLanguage) {
     var wrapBypass by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "POWERVIEW SORGUSU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("POWERVIEW SORGUSU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -8365,7 +8370,7 @@ fun PowerViewBuilder(language: AppLanguage) {
                         .clickable { cmdFunction = fn }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -8375,7 +8380,7 @@ fun PowerViewBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = domain,
                 onValueChange = { domain = it },
-                label = { Text("Hedef Domain (-Domain corp.local)") },
+                label = { Text(tr("Hedef Domain (-Domain corp.local)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8383,7 +8388,7 @@ fun PowerViewBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = identityFilter,
                 onValueChange = { identityFilter = it },
-                label = { Text("Kimlik / Nesne Filtresi (-Identity: opsiyonel)") },
+                label = { Text(tr("Kimlik / Nesne Filtresi (-Identity: opsiyonel)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8393,7 +8398,7 @@ fun PowerViewBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = properties,
             onValueChange = { properties = it },
-            label = { Text("Öznitelikler (-Properties: samaccountname,mail,memberof vb.)") },
+            label = { Text(tr("Öznitelikler (-Properties: samaccountname,mail,memberof vb.)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -8402,14 +8407,14 @@ fun PowerViewBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = ldapFilter,
             onValueChange = { ldapFilter = it },
-            label = { Text("Özel LDAP Filtresi (-LDAPFilter: '(&(adminCount=1))' - Opsiyonel)") },
+            label = { Text(tr("Özel LDAP Filtresi (-LDAPFilter: '(&(adminCount=1))' - Opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "SEÇENEKLER VE POWERSHELL SARMALAYICI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SEÇENEKLER VE POWERSHELL SARMALAYICI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-ResolveGUIDs ACL/Object GUID İsimlerini Açık Metne Çöz", checked = resolveGuids, onCheckedChange = { resolveGuids = it })
         ToggleOption(label = "PowerShell ExecutionPolicy Bypass Komutu Olarak Sarmala", checked = wrapBypass, onCheckedChange = { wrapBypass = it })
@@ -8451,7 +8456,7 @@ fun KerbruteBuilder(language: AppLanguage) {
     var outputFile by remember { mutableStateOf("valid_users.txt") }
 
     Column {
-        Text(text = "KERBRUTE SALDIRI MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KERBRUTE SALDIRI MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("userenum" to "Kullanıcı Keşfi", "passwordspray" to "Parola Püskürtme", "bruteforce" to "User:Pass Kaba Kuvvet", "bruteuser" to "Tek Kullanıcı").forEach { (m, lbl) ->
@@ -8469,7 +8474,7 @@ fun KerbruteBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -8479,7 +8484,7 @@ fun KerbruteBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = domain,
                 onValueChange = { domain = it },
-                label = { Text("Hedef Domain (-d corp.local)") },
+                label = { Text(tr("Hedef Domain (-d corp.local)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8487,7 +8492,7 @@ fun KerbruteBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = dcIp,
                 onValueChange = { dcIp = it },
-                label = { Text("DC IP / FQDN (--dc 10.10.10.1)") },
+                label = { Text(tr("DC IP / FQDN (--dc 10.10.10.1)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8499,7 +8504,7 @@ fun KerbruteBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = userlist,
                 onValueChange = { userlist = it },
-                label = { Text("Kullanıcı Listesi (users.txt)") },
+                label = { Text(tr("Kullanıcı Listesi (users.txt)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8511,7 +8516,7 @@ fun KerbruteBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Püskürtülecek Parola ('Welcome2026!')") },
+                label = { Text(tr("Püskürtülecek Parola ('Welcome2026!')")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8524,7 +8529,7 @@ fun KerbruteBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = singleUser,
                     onValueChange = { singleUser = it },
-                    label = { Text("Hedef Kullanıcı") },
+                    label = { Text(tr("Hedef Kullanıcı")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -8532,7 +8537,7 @@ fun KerbruteBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = passlist,
                     onValueChange = { passlist = it },
-                    label = { Text("Parola Wordlist") },
+                    label = { Text(tr("Parola Wordlist")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -8545,7 +8550,7 @@ fun KerbruteBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = passlist,
                 onValueChange = { passlist = it },
-                label = { Text("Parola Listesi (passwords.txt)") },
+                label = { Text(tr("Parola Listesi (passwords.txt)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8553,13 +8558,13 @@ fun KerbruteBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "HIZ VE GÜVENLİK AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HIZ VE GÜVENLİK AYARLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = threads,
                 onValueChange = { threads = it },
-                label = { Text("Threads (-t)") },
+                label = { Text(tr("Threads (-t)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8567,7 +8572,7 @@ fun KerbruteBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = delayMs,
                 onValueChange = { delayMs = it },
-                label = { Text("Gecikme ms (--delay 100 - Opsiyonel)") },
+                label = { Text(tr("Gecikme ms (--delay 100 - Opsiyonel)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8577,7 +8582,7 @@ fun KerbruteBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = outputFile,
             onValueChange = { outputFile = it },
-            label = { Text("Sonuç Kayıt Dosyası (-o)") },
+            label = { Text(tr("Sonuç Kayıt Dosyası (-o)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -8625,7 +8630,7 @@ fun CertipyBuilder(language: AppLanguage) {
     var stdoutOutput by remember { mutableStateOf(true) }
 
     Column {
-        Text(text = "CERTIPY EYLEM MODÜLÜ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("CERTIPY EYLEM MODÜLÜ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -8645,7 +8650,7 @@ fun CertipyBuilder(language: AppLanguage) {
                         .clickable { action = act }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -8655,7 +8660,7 @@ fun CertipyBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
-                label = { Text("Kullanıcı (-u user@corp.local)") },
+                label = { Text(tr("Kullanıcı (-u user@corp.local)")) },
                 modifier = Modifier.weight(1.2f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8663,7 +8668,7 @@ fun CertipyBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = dcIp,
                 onValueChange = { dcIp = it },
-                label = { Text("DC IP (-dc-ip)") },
+                label = { Text(tr("DC IP (-dc-ip)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8674,7 +8679,7 @@ fun CertipyBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Parola (-p)") },
+                label = { Text(tr("Parola (-p)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8682,7 +8687,7 @@ fun CertipyBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = ntlmHash,
                 onValueChange = { ntlmHash = it },
-                label = { Text("NTLM Hash (-hashes: opsiyonel)") },
+                label = { Text(tr("NTLM Hash (-hashes: opsiyonel)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8691,13 +8696,13 @@ fun CertipyBuilder(language: AppLanguage) {
 
         if (action == "req") {
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "SERTİFİKA TALEP DETAYLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("SERTİFİKA TALEP DETAYLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(
                     value = caName,
                     onValueChange = { caName = it },
-                    label = { Text("CA Adı (-ca)") },
+                    label = { Text(tr("CA Adı (-ca)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -8705,7 +8710,7 @@ fun CertipyBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = templateName,
                     onValueChange = { templateName = it },
-                    label = { Text("Şablon (-template: ESC1)") },
+                    label = { Text(tr("Şablon (-template: ESC1)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -8715,7 +8720,7 @@ fun CertipyBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = sanAltName,
                 onValueChange = { sanAltName = it },
-                label = { Text("Taklit Edilecek UPN / SAN (-upn: administrator@corp.local)") },
+                label = { Text(tr("Taklit Edilecek UPN / SAN (-upn: administrator@corp.local)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8727,7 +8732,7 @@ fun CertipyBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = pfxFile,
                 onValueChange = { pfxFile = it },
-                label = { Text("Alınan PFX Dosyası (-pfx cert.pfx)") },
+                label = { Text(tr("Alınan PFX Dosyası (-pfx cert.pfx)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8736,7 +8741,7 @@ fun CertipyBuilder(language: AppLanguage) {
 
         if (action == "find") {
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "KEŞİF VE ÇIKTI FİLTRELERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("KEŞİF VE ÇIKTI FİLTRELERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             ToggleOption(label = "-vulnerable Yalnızca İstismar Edilebilir Şablonları Listele (ESC1-ESC13)", checked = vulnerableOnly, onCheckedChange = { vulnerableOnly = it })
             ToggleOption(label = "-stdout Sonuçları Ekrana Ayrıntılı Olarak Bas", checked = stdoutOutput, onCheckedChange = { stdoutOutput = it })
@@ -8792,7 +8797,7 @@ fun AdidnsdumpBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = dcTarget,
             onValueChange = { dcTarget = it },
-            label = { Text("Hedef Domain Controller IP / Hostname") },
+            label = { Text(tr("Hedef Domain Controller IP / Hostname")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -8802,7 +8807,7 @@ fun AdidnsdumpBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
-                label = { Text("Kullanıcı (-u 'DOMAIN\\user')") },
+                label = { Text(tr("Kullanıcı (-u 'DOMAIN\\user')")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8810,7 +8815,7 @@ fun AdidnsdumpBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Parola (-p)") },
+                label = { Text(tr("Parola (-p)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8820,7 +8825,7 @@ fun AdidnsdumpBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = ntlmHash,
             onValueChange = { ntlmHash = it },
-            label = { Text("Pass-The-Hash (--hashes :NTLM: opsiyonel)") },
+            label = { Text(tr("Pass-The-Hash (--hashes :NTLM: opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -8829,14 +8834,14 @@ fun AdidnsdumpBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = targetZone,
             onValueChange = { targetZone = it },
-            label = { Text("Özel DNS Bölgesi (-z corp.local: opsiyonel)") },
+            label = { Text(tr("Özel DNS Bölgesi (-z corp.local: opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "DÖKÜM SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("DÖKÜM SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "--dns-tombstoned Silinmiş / Tombstoned DNS Kayıtlarını Dahil Et", checked = dumpTombstoned, onCheckedChange = { dumpTombstoned = it })
         ToggleOption(label = "-r Tespit Edilen Kayıtları DNS Sorgusu ile Doğrula (Resolve)", checked = resolveRecords, onCheckedChange = { resolveRecords = it })
@@ -8883,7 +8888,7 @@ fun CoercerBuilder(language: AppLanguage) {
     var verbose by remember { mutableStateOf(true) }
 
     Column {
-        Text(text = "COERCER ÇALIŞMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("COERCER ÇALIŞMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("coerce" to "Tetikle (Coerce)", "scan" to "Tarama (Scan)", "fuzz" to "Bulanıklaştırma (Fuzz)").forEach { (m, lbl) ->
@@ -8898,7 +8903,7 @@ fun CoercerBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -8908,7 +8913,7 @@ fun CoercerBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = target,
                 onValueChange = { target = it },
-                label = { Text("Hedef Host/IP (-t 10.10.10.1)") },
+                label = { Text(tr("Hedef Host/IP (-t 10.10.10.1)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8917,7 +8922,7 @@ fun CoercerBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = listenerIp,
                     onValueChange = { listenerIp = it },
-                    label = { Text("Listener IP (-l Responder/Relay)") },
+                    label = { Text(tr("Listener IP (-l Responder/Relay)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -8930,7 +8935,7 @@ fun CoercerBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
-                label = { Text("Kullanıcı (-u)") },
+                label = { Text(tr("Kullanıcı (-u)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8938,7 +8943,7 @@ fun CoercerBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = domain,
                 onValueChange = { domain = it },
-                label = { Text("Domain (-d)") },
+                label = { Text(tr("Domain (-d)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8949,7 +8954,7 @@ fun CoercerBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Parola (-p)") },
+                label = { Text(tr("Parola (-p)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8957,7 +8962,7 @@ fun CoercerBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = ntlmHash,
                 onValueChange = { ntlmHash = it },
-                label = { Text("NTLM Hash (--hashes: opsiyonel)") },
+                label = { Text(tr("NTLM Hash (--hashes: opsiyonel)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -8965,7 +8970,7 @@ fun CoercerBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "HEDEF RPC PROTOKOL FİLTRESİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HEDEF RPC PROTOKOL FİLTRESİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("all" to "Tümü (All)", "MS-RPRN" to "PrintSpooler (MS-RPRN)", "MS-EFSR" to "PetitPotam (MS-EFSR)", "MS-FSRVP" to "ShadowCoerce (MS-FSRVP)", "MS-DFSNM" to "DFSNMC (MS-DFSNM)").forEach { (p, lbl) ->
@@ -8978,13 +8983,13 @@ fun CoercerBuilder(language: AppLanguage) {
                         .clickable { protoFilter = p }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "SEÇENEKLER", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SEÇENEKLER"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "--always-continue Başarılı İstek Sonrası Diğer Metotları Denemeye Devam Et", checked = alwaysContinue, onCheckedChange = { alwaysContinue = it })
         ToggleOption(label = "-v Ayrıntılı Çıktı (Verbose)", checked = verbose, onCheckedChange = { verbose = it })
@@ -9024,7 +9029,7 @@ fun SnafflerBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = domain,
             onValueChange = { domain = it },
-            label = { Text("Hedef Domain (-d corp.local)") },
+            label = { Text(tr("Hedef Domain (-d corp.local)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -9033,14 +9038,14 @@ fun SnafflerBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = singleComputer,
             onValueChange = { singleComputer = it },
-            label = { Text("Hedef Tek Bilgisayar (-c fs01.corp.local: opsiyonel)") },
+            label = { Text(tr("Hedef Tek Bilgisayar (-c fs01.corp.local: opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "HASSAS VERİ TRİYAJ SEVİYESİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HASSAS VERİ TRİYAJ SEVİYESİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("black" to "Black (Sadece Key/Pass)", "red" to "Red (Parolalar & Gizli)", "yellow" to "Yellow (Konfigler)", "green" to "Green (Tüm Dosyalar)").forEach { (lvl, lbl) ->
@@ -9055,19 +9060,19 @@ fun SnafflerBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "PERFORMANS VE ÇIKTI AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PERFORMANS VE ÇIKTI AYARLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = maxFileSizeMb,
                 onValueChange = { maxFileSizeMb = it },
-                label = { Text("Azami Dosya Boyutu MB (-m)") },
+                label = { Text(tr("Azami Dosya Boyutu MB (-m)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9075,7 +9080,7 @@ fun SnafflerBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = maxThreads,
                 onValueChange = { maxThreads = it },
-                label = { Text("Thread Sayısı (-t)") },
+                label = { Text(tr("Thread Sayısı (-t)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9085,7 +9090,7 @@ fun SnafflerBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = outputFile,
             onValueChange = { outputFile = it },
-            label = { Text("Sonuç Dosyası (-o C:\\Temp\\loot.txt)") },
+            label = { Text(tr("Sonuç Dosyası (-o C:\\Temp\\loot.txt)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -9135,7 +9140,7 @@ fun Enum4linuxNgBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = targetHost,
             onValueChange = { targetHost = it },
-            label = { Text("Hedef Host/IP") },
+            label = { Text(tr("Hedef Host/IP")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -9152,7 +9157,7 @@ fun Enum4linuxNgBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = username,
                     onValueChange = { username = it },
-                    label = { Text("Kullanıcı (-u)") },
+                    label = { Text(tr("Kullanıcı (-u)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -9160,7 +9165,7 @@ fun Enum4linuxNgBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = domain,
                     onValueChange = { domain = it },
-                    label = { Text("Domain (-d: opsiyonel)") },
+                    label = { Text(tr("Domain (-d: opsiyonel)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -9170,7 +9175,7 @@ fun Enum4linuxNgBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Parola (-p)") },
+                label = { Text(tr("Parola (-p)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9178,7 +9183,7 @@ fun Enum4linuxNgBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "NUMARALANDIRMA MODÜLLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("NUMARALANDIRMA MODÜLLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-A Tüm Kontrolleri Çalıştır (Kapsamlı Analiz)", checked = runAll, onCheckedChange = { runAll = it })
         if (!runAll) {
@@ -9197,7 +9202,7 @@ fun Enum4linuxNgBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = outputPrefix,
             onValueChange = { outputPrefix = it },
-            label = { Text("Rapor Çıktı Dosyaları Ön Adı (-oA: txt, yaml, json)") },
+            label = { Text(tr("Rapor Çıktı Dosyaları Ön Adı (-oA: txt, yaml, json)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -9242,7 +9247,7 @@ fun PkinittoolsBuilder(language: AppLanguage) {
     var asrepKeyHash by remember { mutableStateOf("") }
 
     Column {
-        Text(text = "PKINITTOOLS ARACI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PKINITTOOLS ARACI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -9260,7 +9265,7 @@ fun PkinittoolsBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -9269,7 +9274,7 @@ fun PkinittoolsBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = domainUser,
             onValueChange = { domainUser = it },
-            label = { Text("Hedef Hesap (domain.local/username)") },
+            label = { Text(tr("Hedef Hesap (domain.local/username)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -9279,7 +9284,7 @@ fun PkinittoolsBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = dcIp,
                 onValueChange = { dcIp = it },
-                label = { Text("DC IP (-dc-ip)") },
+                label = { Text(tr("DC IP (-dc-ip)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9287,7 +9292,7 @@ fun PkinittoolsBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = ccacheOutput,
                 onValueChange = { ccacheOutput = it },
-                label = { Text("CCACHE Dosyası") },
+                label = { Text(tr("CCACHE Dosyası")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9300,7 +9305,7 @@ fun PkinittoolsBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = certPfx,
                     onValueChange = { certPfx = it },
-                    label = { Text("Sertifika PFX (-cert-pfx)") },
+                    label = { Text(tr("Sertifika PFX (-cert-pfx)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -9308,7 +9313,7 @@ fun PkinittoolsBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = pfxPassword,
                     onValueChange = { pfxPassword = it },
-                    label = { Text("PFX Parolası (-pfx-pass)") },
+                    label = { Text(tr("PFX Parolası (-pfx-pass)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -9318,7 +9323,7 @@ fun PkinittoolsBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = asrepKeyHash,
                 onValueChange = { asrepKeyHash = it },
-                label = { Text("AS-REP Key Hash (-hashes :hash)") },
+                label = { Text(tr("AS-REP Key Hash (-hashes :hash)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9363,14 +9368,14 @@ fun JohnTheRipperBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = hashFile,
             onValueChange = { hashFile = it },
-            label = { Text("Hedef Hash Dosyası (hashes.txt / shadow)") },
+            label = { Text(tr("Hedef Hash Dosyası (hashes.txt / shadow)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "SALDIRI VE ÇALIŞMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SALDIRI VE ÇALIŞMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("wordlist" to "Sözlük (--wordlist)", "single" to "Single (--single)", "incremental" to "Brute (--incremental)", "mask" to "Maske (--mask)").forEach { (m, lbl) ->
@@ -9385,7 +9390,7 @@ fun JohnTheRipperBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -9395,7 +9400,7 @@ fun JohnTheRipperBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = wordlistPath,
                 onValueChange = { wordlistPath = it },
-                label = { Text("Wordlist Yolu (--wordlist)") },
+                label = { Text(tr("Wordlist Yolu (--wordlist)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9404,7 +9409,7 @@ fun JohnTheRipperBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = maskPattern,
                 onValueChange = { maskPattern = it },
-                label = { Text("Maske Deseni (--mask=?u?l?l?d?d)") },
+                label = { Text(tr("Maske Deseni (--mask=?u?l?l?d?d)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9412,7 +9417,7 @@ fun JohnTheRipperBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "HASH FORMATI (--format)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HASH FORMATI (--format)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("auto" to "Otomatik", "NT" to "NTLM (NT)", "raw-md5" to "MD5", "raw-sha256" to "SHA-256", "sha512crypt" to "Linux SHA512", "bcrypt" to "bcrypt", "krb5tgs" to "Kerberos TGS", "pkzip" to "PKZIP").forEach { (fmt, lbl) ->
@@ -9425,13 +9430,13 @@ fun JohnTheRipperBuilder(language: AppLanguage) {
                         .clickable { hashFormat = fmt }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "KURALLAR VE OPTİMİZASYON", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KURALLAR VE OPTİMİZASYON"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("none" to "Kuralsız", "default" to "Varsayılan (--rules)", "KoreLogic" to "KoreLogic", "Jumbo" to "Jumbo").forEach { (r, lbl) ->
@@ -9446,7 +9451,7 @@ fun JohnTheRipperBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -9456,7 +9461,7 @@ fun JohnTheRipperBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = forkCores,
                 onValueChange = { forkCores = it },
-                label = { Text("Çoklu Çekirdek (--fork=4: opsiyonel)") },
+                label = { Text(tr("Çoklu Çekirdek (--fork=4: opsiyonel)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9464,7 +9469,7 @@ fun JohnTheRipperBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = targetUsers,
                 onValueChange = { targetUsers = it },
-                label = { Text("Kullanıcı Filtresi (--users=root: opsiyonel)") },
+                label = { Text(tr("Kullanıcı Filtresi (--users=root: opsiyonel)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9530,7 +9535,7 @@ fun HashcatBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -9539,14 +9544,14 @@ fun HashcatBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = hashFile,
             onValueChange = { hashFile = it },
-            label = { Text("Hedef Hash / Dosya Yolu (hashes.txt)") },
+            label = { Text(tr("Hedef Hash / Dosya Yolu (hashes.txt)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "HASH TÜRÜ (-m)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HASH TÜRÜ (-m)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -9568,7 +9573,7 @@ fun HashcatBuilder(language: AppLanguage) {
                         .clickable { hashType = m }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -9578,7 +9583,7 @@ fun HashcatBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = wordlist,
                 onValueChange = { wordlist = it },
-                label = { Text("Wordlist Yolu") },
+                label = { Text(tr("Wordlist Yolu")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9589,7 +9594,7 @@ fun HashcatBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = maskPattern,
                 onValueChange = { maskPattern = it },
-                label = { Text("Maske Deseni (?u?l?l?l?d?d?s)") },
+                label = { Text(tr("Maske Deseni (?u?l?l?l?d?d?s)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9597,7 +9602,7 @@ fun HashcatBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "MUTASYON KURALI (-r)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("MUTASYON KURALI (-r)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("none" to "Kuralsız", "best64" to "best64.rule", "rockyou" to "rockyou-30000", "onrule" to "OneRule").forEach { (r, lbl) ->
@@ -9612,19 +9617,19 @@ fun HashcatBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "DONANIM VE PERFORMANS AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("DONANIM VE PERFORMANS AYARLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = workloadProfile,
                 onValueChange = { workloadProfile = it },
-                label = { Text("İş Yükü (-w 1-4: 3 varsayılan)") },
+                label = { Text(tr("İş Yükü (-w 1-4: 3 varsayılan)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9632,7 +9637,7 @@ fun HashcatBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = outputFile,
                 onValueChange = { outputFile = it },
-                label = { Text("Kırılanları Kaydet (-o)") },
+                label = { Text(tr("Kırılanları Kaydet (-o)")) },
                 modifier = Modifier.weight(1.2f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9695,7 +9700,7 @@ fun HydraBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = targetHost,
                 onValueChange = { targetHost = it },
-                label = { Text("Hedef Host/IP") },
+                label = { Text(tr("Hedef Host/IP")) },
                 modifier = Modifier.weight(2f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9703,7 +9708,7 @@ fun HydraBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = port,
                 onValueChange = { port = it },
-                label = { Text("Port (-s)") },
+                label = { Text(tr("Port (-s)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9711,7 +9716,7 @@ fun HydraBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "HEDEF SERVİS PROTOKOLÜ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HEDEF SERVİS PROTOKOLÜ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -9748,7 +9753,7 @@ fun HydraBuilder(language: AppLanguage) {
                         }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -9758,7 +9763,7 @@ fun HydraBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = httpPostForm,
                 onValueChange = { httpPostForm = it },
-                label = { Text("Form Şablonu (path:request_body:fail_condition)") },
+                label = { Text(tr("Form Şablonu (path:request_body:fail_condition)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9766,7 +9771,7 @@ fun HydraBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "KULLANICI VE PAROLA HEDEFLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KULLANICI VE PAROLA HEDEFLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             ToggleChip("Tek Kullanıcı (-l)", userMode == "single", modifier = Modifier.weight(1f)) { userMode = "single" }
@@ -9777,7 +9782,7 @@ fun HydraBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = singleUser,
                 onValueChange = { singleUser = it },
-                label = { Text("Kullanıcı Adı (-l)") },
+                label = { Text(tr("Kullanıcı Adı (-l)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9786,7 +9791,7 @@ fun HydraBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = userList,
                 onValueChange = { userList = it },
-                label = { Text("Kullanıcı Listesi (-L users.txt)") },
+                label = { Text(tr("Kullanıcı Listesi (-L users.txt)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9803,7 +9808,7 @@ fun HydraBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = singlePass,
                 onValueChange = { singlePass = it },
-                label = { Text("Parola (-p)") },
+                label = { Text(tr("Parola (-p)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9812,7 +9817,7 @@ fun HydraBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = passList,
                 onValueChange = { passList = it },
-                label = { Text("Parola Listesi (-P rockyou.txt)") },
+                label = { Text(tr("Parola Listesi (-P rockyou.txt)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9820,13 +9825,13 @@ fun HydraBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "HIZ VE ÇIKTI SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HIZ VE ÇIKTI SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = threads,
                 onValueChange = { threads = it },
-                label = { Text("İş Parçacığı (-t: 16)") },
+                label = { Text(tr("İş Parçacığı (-t: 16)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9834,7 +9839,7 @@ fun HydraBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = outputFile,
                 onValueChange = { outputFile = it },
-                label = { Text("Sonuç Dosyası (-o: opsiyonel)") },
+                label = { Text(tr("Sonuç Dosyası (-o: opsiyonel)")) },
                 modifier = Modifier.weight(1.5f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9874,7 +9879,7 @@ fun CuppBuilder(language: AppLanguage) {
     var quietMode by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "CUPP ÇALIŞMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("CUPP ÇALIŞMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("interactive" to "İnteraktif Soru-Cevap (-i)", "improve" to "Mevcut Listeyi Geliştir (-w)", "download" to "Depodan Sözlük İndir (-l)").forEach { (m, lbl) ->
@@ -9889,7 +9894,7 @@ fun CuppBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -9899,7 +9904,7 @@ fun CuppBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = baseWordlist,
                 onValueChange = { baseWordlist = it },
-                label = { Text("Temel Kelime Listesi Dosyası (-w)") },
+                label = { Text(tr("Temel Kelime Listesi Dosyası (-w)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9938,7 +9943,7 @@ fun CrunchBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = minLen,
                 onValueChange = { minLen = it },
-                label = { Text("Minimum Uzunluk") },
+                label = { Text(tr("Minimum Uzunluk")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9946,7 +9951,7 @@ fun CrunchBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = maxLen,
                 onValueChange = { maxLen = it },
-                label = { Text("Maksimum Uzunluk") },
+                label = { Text(tr("Maksimum Uzunluk")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -9954,7 +9959,7 @@ fun CrunchBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "KARAKTER SETİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KARAKTER SETİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -9984,7 +9989,7 @@ fun CrunchBuilder(language: AppLanguage) {
                         }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -9993,14 +9998,14 @@ fun CrunchBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = customCharset,
             onValueChange = { customCharset = it },
-            label = { Text("Karakter Dizisi / Charset") },
+            label = { Text(tr("Karakter Dizisi / Charset")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "DESEN VE MASKE (-t)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("DESEN VE MASKE (-t)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-t Maske Deseni Kullan (@ küçük, , büyük, % sayı, ^ sembol)", checked = usePattern, onCheckedChange = { usePattern = it })
         if (usePattern) {
@@ -10008,7 +10013,7 @@ fun CrunchBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = patternMask,
                 onValueChange = { patternMask = it },
-                label = { Text("Maske Deseni (-t: Spring2026^ / 0532%%%%%%%)") },
+                label = { Text(tr("Maske Deseni (-t: Spring2026^ / 0532%%%%%%%)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10019,7 +10024,7 @@ fun CrunchBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = outputFile,
             onValueChange = { outputFile = it },
-            label = { Text("Çıktı Dosyası (-o wordlist.txt)") },
+            label = { Text(tr("Çıktı Dosyası (-o wordlist.txt)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -10053,7 +10058,7 @@ fun CewlBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = targetUrl,
             onValueChange = { targetUrl = it },
-            label = { Text("Hedef Web Sitesi URL'si") },
+            label = { Text(tr("Hedef Web Sitesi URL'si")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -10063,7 +10068,7 @@ fun CewlBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = depth,
                 onValueChange = { depth = it },
-                label = { Text("Örümcek Derinliği (-d)") },
+                label = { Text(tr("Örümcek Derinliği (-d)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10071,7 +10076,7 @@ fun CewlBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = minWordLen,
                 onValueChange = { minWordLen = it },
-                label = { Text("Asgari Kelime Uzunluğu (-m)") },
+                label = { Text(tr("Asgari Kelime Uzunluğu (-m)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10079,7 +10084,7 @@ fun CewlBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "AYIKLAMA SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("AYIKLAMA SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "--with-numbers Kelimelere Rakamları da Dahil Et", checked = withNumbers, onCheckedChange = { withNumbers = it })
         ToggleOption(label = "--lowercase Tüm Kelimeleri Küçük Harfe Dönüştür", checked = lowercase, onCheckedChange = { lowercase = it })
@@ -10089,7 +10094,7 @@ fun CewlBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = emailFile,
                 onValueChange = { emailFile = it },
-                label = { Text("E-posta Kayıt Dosyası (--email_file)") },
+                label = { Text(tr("E-posta Kayıt Dosyası (--email_file)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10102,7 +10107,7 @@ fun CewlBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = metaFile,
                 onValueChange = { metaFile = it },
-                label = { Text("Metadata Kayıt Dosyası (--meta_file)") },
+                label = { Text(tr("Metadata Kayıt Dosyası (--meta_file)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10113,7 +10118,7 @@ fun CewlBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = outputFile,
             onValueChange = { outputFile = it },
-            label = { Text("Kelime Listesi Kayıt Yolu (-w)") },
+            label = { Text(tr("Kelime Listesi Kayıt Yolu (-w)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -10160,7 +10165,7 @@ fun NameThatHashBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = hashInput,
                 onValueChange = { hashInput = it },
-                label = { Text("Analiz Edilecek Hash (-t)") },
+                label = { Text(tr("Analiz Edilecek Hash (-t)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10169,7 +10174,7 @@ fun NameThatHashBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = hashFile,
                 onValueChange = { hashFile = it },
-                label = { Text("Hash Dosyası Yolu (-f)") },
+                label = { Text(tr("Hash Dosyası Yolu (-f)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10177,7 +10182,7 @@ fun NameThatHashBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "EŞLEŞTİRME VE ENTEGRASYON", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("EŞLEŞTİRME VE ENTEGRASYON"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "--hashcat Hashcat Mod Numarasını (-m) Göster", checked = includeHashcat, onCheckedChange = { includeHashcat = it })
         ToggleOption(label = "--john John the Ripper Formatını (--format) Göster", checked = includeJohn, onCheckedChange = { includeJohn = it })
@@ -10187,7 +10192,7 @@ fun NameThatHashBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = popularityLevel,
             onValueChange = { popularityLevel = it },
-            label = { Text("Popülerlik Seviyesi Filtresi (--popularity 1: en popüler, 3: tümü)") },
+            label = { Text(tr("Popülerlik Seviyesi Filtresi (--popularity 1: en popüler, 3: tümü)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -10221,14 +10226,14 @@ fun FcrackzipBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = zipFile,
             onValueChange = { zipFile = it },
-            label = { Text("Parolalı ZIP Arşivi Dosya Yolu") },
+            label = { Text(tr("Parolalı ZIP Arşivi Dosya Yolu")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "SALDIRI MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SALDIRI MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             ToggleChip("Sözlük Saldırısı (-D)", attackMode == "dictionary", modifier = Modifier.weight(1f)) { attackMode = "dictionary" }
@@ -10240,7 +10245,7 @@ fun FcrackzipBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = wordlistPath,
                 onValueChange = { wordlistPath = it },
-                label = { Text("Wordlist Yolu (-p /usr/share/wordlists/...)") },
+                label = { Text(tr("Wordlist Yolu (-p /usr/share/wordlists/...)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10250,7 +10255,7 @@ fun FcrackzipBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = minLen,
                     onValueChange = { minLen = it },
-                    label = { Text("Min Uzunluk (-l)") },
+                    label = { Text(tr("Min Uzunluk (-l)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -10258,7 +10263,7 @@ fun FcrackzipBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = maxLen,
                     onValueChange = { maxLen = it },
-                    label = { Text("Max Uzunluk") },
+                    label = { Text(tr("Max Uzunluk")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -10266,7 +10271,7 @@ fun FcrackzipBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = charsetOpt,
                     onValueChange = { charsetOpt = it },
-                    label = { Text("Karakterler (-c a1!)") },
+                    label = { Text(tr("Karakterler (-c a1!)")) },
                     modifier = Modifier.weight(1.2f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -10275,7 +10280,7 @@ fun FcrackzipBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "DOĞRULAMA VE ÇIKTI SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("DOĞRULAMA VE ÇIKTI SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-u Unzip ile Yanlış Pozitifleri Ele (Kesin Doğrulama)", checked = useUnzipCheck, onCheckedChange = { useUnzipCheck = it })
         ToggleOption(label = "-v Detaylı İlerleme Çıktısı (Verbose)", checked = verbose, onCheckedChange = { verbose = it })
@@ -10311,7 +10316,7 @@ fun MetasploitBuilder(language: AppLanguage) {
     var quietMode by remember { mutableStateOf(true) }
 
     Column {
-        Text(text = "MSFCONSOLE ÇALIŞTIRMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("MSFCONSOLE ÇALIŞTIRMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("script" to "Tek Komut (-x)", "resource" to "Resource Dosyası (-r)", "interactive" to "İnteraktif Konsol").forEach { (m, lbl) ->
@@ -10326,7 +10331,7 @@ fun MetasploitBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -10336,7 +10341,7 @@ fun MetasploitBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = exploitModule,
                 onValueChange = { exploitModule = it },
-                label = { Text("Hedef İstismar Modülü (use exploit/...)") },
+                label = { Text(tr("Hedef İstismar Modülü (use exploit/...)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10345,7 +10350,7 @@ fun MetasploitBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = payloadType,
                 onValueChange = { payloadType = it },
-                label = { Text("Payload (set payload ...)") },
+                label = { Text(tr("Payload (set payload ...)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10355,7 +10360,7 @@ fun MetasploitBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = rhosts,
                     onValueChange = { rhosts = it },
-                    label = { Text("RHOSTS") },
+                    label = { Text(tr("RHOSTS")) },
                     modifier = Modifier.weight(1.5f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -10363,7 +10368,7 @@ fun MetasploitBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = rport,
                     onValueChange = { rport = it },
-                    label = { Text("RPORT") },
+                    label = { Text(tr("RPORT")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -10374,7 +10379,7 @@ fun MetasploitBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = lhost,
                     onValueChange = { lhost = it },
-                    label = { Text("LHOST") },
+                    label = { Text(tr("LHOST")) },
                     modifier = Modifier.weight(1.5f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -10382,7 +10387,7 @@ fun MetasploitBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = lport,
                     onValueChange = { lport = it },
-                    label = { Text("LPORT") },
+                    label = { Text(tr("LPORT")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -10392,7 +10397,7 @@ fun MetasploitBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = resourceScript,
                 onValueChange = { resourceScript = it },
-                label = { Text("Resource Dosyası Yolu (-r script.rc)") },
+                label = { Text(tr("Resource Dosyası Yolu (-r script.rc)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10437,7 +10442,7 @@ fun MeterpreterBuilder(language: AppLanguage) {
     var param3 by remember { mutableStateOf("") }
 
     Column {
-        Text(text = "METERPRETER KOMUT KATEGORİSİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("METERPRETER KOMUT KATEGORİSİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("system" to "Sistem & Yetki", "network" to "Ağ & Tünelleme", "privesc" to "Kimlik & Mimikatz", "stealth" to "Gizlilik").forEach { (c, lbl) ->
@@ -10474,13 +10479,13 @@ fun MeterpreterBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "EYLEM VE OPERASYON SEÇİMİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("EYLEM VE OPERASYON SEÇİMİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         when (category) {
             "system" -> {
@@ -10489,7 +10494,7 @@ fun MeterpreterBuilder(language: AppLanguage) {
                         val isSelected = selectedAction == act
                         Box(
                             modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (isSelected) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (isSelected) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { selectedAction = act }.padding(horizontal = 8.dp, vertical = 6.dp)
-                        ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary) }
+                        ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary) }
                     }
                 }
             }
@@ -10500,19 +10505,19 @@ fun MeterpreterBuilder(language: AppLanguage) {
                         Box(
                             modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (isSelected) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (isSelected) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { selectedAction = act }.padding(vertical = 6.dp),
                             contentAlignment = Alignment.Center
-                        ) { Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary) }
+                        ) { Text(text = tr(lbl), fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary) }
                     }
                 }
                 if (selectedAction == "portfwd") {
                     Spacer(modifier = Modifier.height(6.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        OutlinedTextField(value = param1, onValueChange = { param1 = it }, label = { Text("Yerel Dinleme Portu (-l)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                        OutlinedTextField(value = param2, onValueChange = { param2 = it }, label = { Text("Hedef Host (-r)") }, modifier = Modifier.weight(1.2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                        OutlinedTextField(value = param3, onValueChange = { param3 = it }, label = { Text("Hedef Port (-p)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                        OutlinedTextField(value = param1, onValueChange = { param1 = it }, label = { Text(tr("Yerel Dinleme Portu (-l)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                        OutlinedTextField(value = param2, onValueChange = { param2 = it }, label = { Text(tr("Hedef Host (-r)")) }, modifier = Modifier.weight(1.2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                        OutlinedTextField(value = param3, onValueChange = { param3 = it }, label = { Text(tr("Hedef Port (-p)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                     }
                 } else if (selectedAction == "route") {
                     Spacer(modifier = Modifier.height(6.dp))
-                    OutlinedTextField(value = param1, onValueChange = { param1 = it }, label = { Text("Eklenecek Ağ Bloğu (10.10.10.0/24)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = param1, onValueChange = { param1 = it }, label = { Text(tr("Eklenecek Ağ Bloğu (10.10.10.0/24)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
             }
             "privesc" -> {
@@ -10521,7 +10526,7 @@ fun MeterpreterBuilder(language: AppLanguage) {
                         val isSelected = selectedAction == act
                         Box(
                             modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (isSelected) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (isSelected) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { selectedAction = act }.padding(horizontal = 8.dp, vertical = 6.dp)
-                        ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary) }
+                        ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary) }
                     }
                 }
             }
@@ -10532,12 +10537,12 @@ fun MeterpreterBuilder(language: AppLanguage) {
                         Box(
                             modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (isSelected) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (isSelected) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { selectedAction = act }.padding(vertical = 6.dp),
                             contentAlignment = Alignment.Center
-                        ) { Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary) }
+                        ) { Text(text = tr(lbl), fontSize = 9.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary) }
                     }
                 }
                 if (selectedAction == "migrate") {
                     Spacer(modifier = Modifier.height(6.dp))
-                    OutlinedTextField(value = param1, onValueChange = { param1 = it }, label = { Text("Hedef Süreç Adı veya PID (explorer.exe / 1234)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = param1, onValueChange = { param1 = it }, label = { Text(tr("Hedef Süreç Adı veya PID (explorer.exe / 1234)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
             }
         }
@@ -10588,7 +10593,7 @@ fun MsfvenomBuilder(language: AppLanguage) {
     var templateBinary by remember { mutableStateOf("") }
 
     Column {
-        Text(text = "HEDEF PLATFORM & MİMARİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HEDEF PLATFORM & MİMARİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -10624,7 +10629,7 @@ fun MsfvenomBuilder(language: AppLanguage) {
                         }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -10634,7 +10639,7 @@ fun MsfvenomBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = lhost,
                 onValueChange = { lhost = it },
-                label = { Text("Dinleyici IP (LHOST)") },
+                label = { Text(tr("Dinleyici IP (LHOST)")) },
                 modifier = Modifier.weight(1.5f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10642,7 +10647,7 @@ fun MsfvenomBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = lport,
                 onValueChange = { lport = it },
-                label = { Text("Port (LPORT)") },
+                label = { Text(tr("Port (LPORT)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10653,7 +10658,7 @@ fun MsfvenomBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = format,
                 onValueChange = { format = it },
-                label = { Text("Format (-f exe, elf, raw vb.)") },
+                label = { Text(tr("Format (-f exe, elf, raw vb.)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10661,7 +10666,7 @@ fun MsfvenomBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = outputFile,
                 onValueChange = { outputFile = it },
-                label = { Text("Çıktı Dosyası (-o)") },
+                label = { Text(tr("Çıktı Dosyası (-o)")) },
                 modifier = Modifier.weight(1.2f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10669,7 +10674,7 @@ fun MsfvenomBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ŞİFRELEME (ENCODER) VE EVASION", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ŞİFRELEME (ENCODER) VE EVASION"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "Encoder Kullan (-e $encoder)", checked = enableEncoder, onCheckedChange = { enableEncoder = it })
         if (enableEncoder) {
@@ -10678,7 +10683,7 @@ fun MsfvenomBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = encoder,
                     onValueChange = { encoder = it },
-                    label = { Text("Encoder Adı (-e)") },
+                    label = { Text(tr("Encoder Adı (-e)")) },
                     modifier = Modifier.weight(1.5f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -10686,7 +10691,7 @@ fun MsfvenomBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = iterations,
                     onValueChange = { iterations = it },
-                    label = { Text("Tur (-i)") },
+                    label = { Text(tr("Tur (-i)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -10700,7 +10705,7 @@ fun MsfvenomBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = badChars,
                 onValueChange = { badChars = it },
-                label = { Text("Hatalı Baytlar (-b: \\x00\\x0a\\x0d)") },
+                label = { Text(tr("Hatalı Baytlar (-b: \\x00\\x0a\\x0d)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10710,7 +10715,7 @@ fun MsfvenomBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = templateBinary,
             onValueChange = { templateBinary = it },
-            label = { Text("Şablon Uygulama Enjeksiyonu (-x putty.exe -k: opsiyonel)") },
+            label = { Text(tr("Şablon Uygulama Enjeksiyonu (-x putty.exe -k: opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -10752,7 +10757,7 @@ fun SearchsploitBuilder(language: AppLanguage) {
     var showFullPath by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "SEARCHSPLOIT EYLEMİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SEARCHSPLOIT EYLEMİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("search" to "Ara (Search)", "mirror" to "Kopyala (-m)", "examine" to "Kodu İncele (-x)", "cve" to "CVE Ara (--cve)").forEach { (act, lbl) ->
@@ -10767,7 +10772,7 @@ fun SearchsploitBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -10777,7 +10782,7 @@ fun SearchsploitBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
-                label = { Text(if (searchAction == "cve") "CVE Numarası (2021-41773)" else "Arama Terimi (Yazılım, Sürüm veya Servis)") },
+                label = { Text(tr(if (searchAction == "cve") "CVE Numarası (2021-41773)" else "Arama Terimi (Yazılım, Sürüm veya Servis)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10786,7 +10791,7 @@ fun SearchsploitBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = excludeTerm,
                 onValueChange = { excludeTerm = it },
-                label = { Text("Sonuçlardan Hariç Tut (--exclude: dos vb. - Opsiyonel)") },
+                label = { Text(tr("Sonuçlardan Hariç Tut (--exclude: dos vb. - Opsiyonel)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10799,7 +10804,7 @@ fun SearchsploitBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = edbId,
                 onValueChange = { edbId = it },
-                label = { Text("Exploit-DB ID Numarası (EDB-ID: 50383 vb.)") },
+                label = { Text(tr("Exploit-DB ID Numarası (EDB-ID: 50383 vb.)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -10841,7 +10846,7 @@ fun SliverBuilder(language: AppLanguage) {
     var enableCanaries by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "SLIVER C2 OPERASYONU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SLIVER C2 OPERASYONU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("generate" to "İmplant Üret (generate)", "listener" to "Dinleyici Başlat (mtls/http)", "sessions" to "Oturumlar (sessions)").forEach { (m, lbl) ->
@@ -10856,7 +10861,7 @@ fun SliverBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -10880,7 +10885,7 @@ fun SliverBuilder(language: AppLanguage) {
                             .padding(vertical = 6.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                        Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                     }
                 }
             }
@@ -10898,7 +10903,7 @@ fun SliverBuilder(language: AppLanguage) {
                             .padding(vertical = 6.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                        Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                     }
                 }
             }
@@ -10907,7 +10912,7 @@ fun SliverBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = c2Address,
                     onValueChange = { c2Address = it },
-                    label = { Text("C2 Sunucu Adresi (IP:PORT)") },
+                    label = { Text(tr("C2 Sunucu Adresi (IP:PORT)")) },
                     modifier = Modifier.weight(1.5f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -10915,7 +10920,7 @@ fun SliverBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = outputName,
                     onValueChange = { outputName = it },
-                    label = { Text("Çıktı Dosyası") },
+                    label = { Text(tr("Çıktı Dosyası")) },
                     modifier = Modifier.weight(1.2f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -10938,7 +10943,7 @@ fun SliverBuilder(language: AppLanguage) {
                             .padding(vertical = 6.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                        Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                     }
                 }
             }
@@ -10984,7 +10989,7 @@ fun NetcatBuilder(language: AppLanguage) {
     var zeroIoScan by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "NETCAT ÇALIŞMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("NETCAT ÇALIŞMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("listen" to "Dinle (Listener)", "connect" to "Bağlan (Connect)", "scan" to "Port Tara (-z)").forEach { (m, lbl) ->
@@ -11002,7 +11007,7 @@ fun NetcatBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -11013,7 +11018,7 @@ fun NetcatBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = host,
                     onValueChange = { host = it },
-                    label = { Text("Hedef Host/IP") },
+                    label = { Text(tr("Hedef Host/IP")) },
                     modifier = Modifier.weight(2f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -11022,7 +11027,7 @@ fun NetcatBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = port,
                 onValueChange = { port = it },
-                label = { Text("Port (4444 / 20-100)") },
+                label = { Text(tr("Port (4444 / 20-100)")) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -11030,7 +11035,7 @@ fun NetcatBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "KABUK VE ÇALIŞTIRMA SEÇENEKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KABUK VE ÇALIŞTIRMA SEÇENEKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-e Bağlantı Kurulduğunda Program Çalıştır (Bind/Reverse Shell)", checked = enableExec, onCheckedChange = { enableExec = it })
         if (enableExec) {
@@ -11038,7 +11043,7 @@ fun NetcatBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = execBinary,
                 onValueChange = { execBinary = it },
-                label = { Text("Çalıştırılacak Kabuk (-e /bin/bash / cmd.exe)") },
+                label = { Text(tr("Çalıştırılacak Kabuk (-e /bin/bash / cmd.exe)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -11088,7 +11093,7 @@ fun SocatBuilder(language: AppLanguage) {
     var forwardTarget by remember { mutableStateOf("192.168.1.50:80") }
 
     Column {
-        Text(text = "SOCAT KULLANIM AMACI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SOCAT KULLANIM AMACI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -11107,7 +11112,7 @@ fun SocatBuilder(language: AppLanguage) {
                         .clickable { mode = m }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -11117,7 +11122,7 @@ fun SocatBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = listenPort,
                 onValueChange = { listenPort = it },
-                label = { Text("Dinleme Portu (TCP/SSL-LISTEN)") },
+                label = { Text(tr("Dinleme Portu (TCP/SSL-LISTEN)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -11129,7 +11134,7 @@ fun SocatBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = certFile,
                 onValueChange = { certFile = it },
-                label = { Text("SSL Sertifika Dosyası (cert=cert.pem)") },
+                label = { Text(tr("SSL Sertifika Dosyası (cert=cert.pem)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -11140,7 +11145,7 @@ fun SocatBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = connectTarget,
                 onValueChange = { connectTarget = it },
-                label = { Text("Hedef Dinleyici (OPENSSL:10.10.14.5:4443)") },
+                label = { Text(tr("Hedef Dinleyici (OPENSSL:10.10.14.5:4443)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -11152,7 +11157,7 @@ fun SocatBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = listenPort,
                     onValueChange = { listenPort = it },
-                    label = { Text("Yerel Port") },
+                    label = { Text(tr("Yerel Port")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -11160,7 +11165,7 @@ fun SocatBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = forwardTarget,
                     onValueChange = { forwardTarget = it },
-                    label = { Text("Yönlendirilecek Hedef (IP:PORT)") },
+                    label = { Text(tr("Yönlendirilecek Hedef (IP:PORT)")) },
                     modifier = Modifier.weight(1.5f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -11195,7 +11200,7 @@ fun RlwrapBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = wrappedCommand,
             onValueChange = { wrappedCommand = it },
-            label = { Text("Sarmalanacak Komut (nc -lvnp 4444, python3, sqlplus)") },
+            label = { Text(tr("Sarmalanacak Komut (nc -lvnp 4444, python3, sqlplus)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -11204,14 +11209,14 @@ fun RlwrapBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = historyFile,
             onValueChange = { historyFile = it },
-            label = { Text("Geçmiş Komut Dosyası (-H: opsiyonel)") },
+            label = { Text(tr("Geçmiş Komut Dosyası (-H: opsiyonel)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "READLINE ÖZELLİKLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("READLINE ÖZELLİKLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-c Dosya Adlarını Sekme (Tab) ile Otomatik Tamamla", checked = completeFilenames, onCheckedChange = { completeFilenames = it })
         ToggleOption(label = "-r Yazılan Parolaları ve Girdileri Geçmişe Hatırla", checked = rememberPasswords, onCheckedChange = { rememberPasswords = it })
@@ -11246,7 +11251,7 @@ fun GhidraBuilder(language: AppLanguage) {
     var maxCpu by remember { mutableStateOf("4") }
 
     Column {
-        Text(text = "GHIDRA ÇALIŞTIRMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("GHIDRA ÇALIŞTIRMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             ToggleChip("Headless Otomasyon (CLI)", mode == "headless", modifier = Modifier.weight(1f)) { mode = "headless" }
@@ -11259,7 +11264,7 @@ fun GhidraBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = projectDir,
                     onValueChange = { projectDir = it },
-                    label = { Text("Proje Dizini") },
+                    label = { Text(tr("Proje Dizini")) },
                     modifier = Modifier.weight(1.5f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -11267,7 +11272,7 @@ fun GhidraBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = projectName,
                     onValueChange = { projectName = it },
-                    label = { Text("Proje Adı") },
+                    label = { Text(tr("Proje Adı")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -11277,7 +11282,7 @@ fun GhidraBuilder(language: AppLanguage) {
             OutlinedTextField(
                 value = targetBinary,
                 onValueChange = { targetBinary = it },
-                label = { Text("İçe Aktarılacak Binary (-import sample.bin)") },
+                label = { Text(tr("İçe Aktarılacak Binary (-import sample.bin)")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -11287,7 +11292,7 @@ fun GhidraBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = postScript,
                     onValueChange = { postScript = it },
-                    label = { Text("Decompile / Java Scripti (-postScript)") },
+                    label = { Text(tr("Decompile / Java Scripti (-postScript)")) },
                     modifier = Modifier.weight(1.5f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -11295,7 +11300,7 @@ fun GhidraBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = maxCpu,
                     onValueChange = { maxCpu = it },
-                    label = { Text("Azami CPU (-max-cpu)") },
+                    label = { Text(tr("Azami CPU (-max-cpu)")) },
                     modifier = Modifier.weight(1f),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -11334,7 +11339,7 @@ fun Radare2Builder(language: AppLanguage) {
         OutlinedTextField(
             value = targetBinary,
             onValueChange = { targetBinary = it },
-            label = { Text("Analiz Edilecek İkili Dosya (sample.elf / .exe)") },
+            label = { Text(tr("Analiz Edilecek İkili Dosya (sample.elf / .exe)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -11343,14 +11348,14 @@ fun Radare2Builder(language: AppLanguage) {
         OutlinedTextField(
             value = startupCommands,
             onValueChange = { startupCommands = it },
-            label = { Text("Açılışta Çalıştırılacak r2 Komutları (-c 'afl; pdf @main')") },
+            label = { Text(tr("Açılışta Çalıştırılacak r2 Komutları (-c 'afl; pdf @main')")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "R2 BAŞLATMA BAYRAKLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("R2 BAŞLATMA BAYRAKLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "-A Açılışta Otomatik Derinlemesine Analiz Yap (aaa)", checked = autoAnalyze, onCheckedChange = { autoAnalyze = it })
         ToggleOption(label = "-d Dinamik Hata Ayıklayıcı Modunda Başlat (Debugger)", checked = debugMode, onCheckedChange = { debugMode = it })
@@ -11384,7 +11389,7 @@ fun GdbBuilder(language: AppLanguage) {
     var quietMode by remember { mutableStateOf(true) }
 
     Column {
-        Text(text = "GDB HATA AYIKLAMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("GDB HATA AYIKLAMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("local" to "Yerel Binary", "remote" to "Uzak Hedef (-ex remote)", "attach" to "Sürece Bağlan (-p)", "core" to "Core Dump").forEach { (m, lbl) ->
@@ -11399,7 +11404,7 @@ fun GdbBuilder(language: AppLanguage) {
                         .padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = lbl, fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 9.5.sp, fontFamily = FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -11408,7 +11413,7 @@ fun GdbBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = targetBinary,
             onValueChange = { targetBinary = it },
-            label = { Text("Hedef İkili Dosya (ELF)") },
+            label = { Text(tr("Hedef İkili Dosya (ELF)")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
@@ -11420,7 +11425,7 @@ fun GdbBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = remoteTarget,
                     onValueChange = { remoteTarget = it },
-                    label = { Text("Uzak GDB Sunucusu (IP:PORT)") },
+                    label = { Text(tr("Uzak GDB Sunucusu (IP:PORT)")) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -11430,7 +11435,7 @@ fun GdbBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = attachPid,
                     onValueChange = { attachPid = it },
-                    label = { Text("Bağlanılacak PID (-p)") },
+                    label = { Text(tr("Bağlanılacak PID (-p)")) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -11440,7 +11445,7 @@ fun GdbBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = coreFile,
                     onValueChange = { coreFile = it },
-                    label = { Text("Core Dump Dosyası") },
+                    label = { Text(tr("Core Dump Dosyası")) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -11450,7 +11455,7 @@ fun GdbBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = breakFunction,
                     onValueChange = { breakFunction = it },
-                    label = { Text("Kesme Noktası Fonksiyonu (-ex 'break main')") },
+                    label = { Text(tr("Kesme Noktası Fonksiyonu (-ex 'break main')")) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -11459,7 +11464,7 @@ fun GdbBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "KOMUTLAR VE BAŞLANGIÇ AYARLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KOMUTLAR VE BAŞLANGIÇ AYARLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         ToggleOption(label = "set disassembly-flavor intel (Intel Sözdizimi)", checked = setIntelSyntax, onCheckedChange = { setIntelSyntax = it })
         if (debugMode == "local") {
@@ -11506,14 +11511,14 @@ fun PwndbgGefBuilder(language: AppLanguage) {
         OutlinedTextField(
             value = targetBinary,
             onValueChange = { targetBinary = it },
-            label = { Text("Hedef ELF Dosyası") },
+            label = { Text(tr("Hedef ELF Dosyası")) },
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
             singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "BAŞLANGIÇ VE ZAFİYET FONKSİYONU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("BAŞLANGIÇ VE ZAFİYET FONKSİYONU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -11532,7 +11537,7 @@ fun PwndbgGefBuilder(language: AppLanguage) {
                         .clickable { initAction = act }
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
-                    Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
+                    Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (isSelected) CyberGreen else TextSecondary)
                 }
             }
         }
@@ -11582,7 +11587,7 @@ fun AircrackNgBuilder(language: AppLanguage) {
     var airmonIface by remember { mutableStateOf("wlan0") }
 
     Column {
-        Text(text = "AIRCRACK-NG ARAÇ TAKIMI BİLEŞENİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("AIRCRACK-NG ARAÇ TAKIMI BİLEŞENİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -11594,25 +11599,25 @@ fun AircrackNgBuilder(language: AppLanguage) {
                 val sel = subtool == st
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { subtool = st }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
         if (subtool == "aircrack") {
-            OutlinedTextField(value = capFile, onValueChange = { capFile = it }, label = { Text("Yakalama Dosyası (.cap / .pcap)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = capFile, onValueChange = { capFile = it }, label = { Text(tr("Yakalama Dosyası (.cap / .pcap)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = wordlist, onValueChange = { wordlist = it }, label = { Text("Parola Listesi (-w)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = wordlist, onValueChange = { wordlist = it }, label = { Text(tr("Parola Listesi (-w)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = bssid, onValueChange = { bssid = it }, label = { Text("Hedef AP BSSID (-b)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = essid, onValueChange = { essid = it }, label = { Text("ESSID (-e: opsiyonel)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = bssid, onValueChange = { bssid = it }, label = { Text(tr("Hedef AP BSSID (-b)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = essid, onValueChange = { essid = it }, label = { Text(tr("ESSID (-e: opsiyonel)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             Spacer(modifier = Modifier.height(6.dp))
             ToggleOption(label = "-K KoreK WEP Saldırısı Modu", checked = korek, onCheckedChange = { korek = it })
             ToggleOption(label = "-q Sessiz Mod", checked = quiet, onCheckedChange = { quiet = it })
             Spacer(modifier = Modifier.height(4.dp))
-            OutlinedTextField(value = threads, onValueChange = { threads = it }, label = { Text("CPU İş Parçacığı Sayısı (-p)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = threads, onValueChange = { threads = it }, label = { Text(tr("CPU İş Parçacığı Sayısı (-p)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
             val parts = mutableListOf("aircrack-ng", "-w", wordlist.trim())
             if (bssid.isNotBlank()) parts.addAll(listOf("-b", bssid.trim()))
@@ -11624,14 +11629,14 @@ fun AircrackNgBuilder(language: AppLanguage) {
             GeneratedCommandCard(command = parts.joinToString(" "), language = language)
 
         } else if (subtool == "airodump") {
-            OutlinedTextField(value = airodumpIface, onValueChange = { airodumpIface = it }, label = { Text("Monitör Modu Arayüzü (wlan0mon)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = airodumpIface, onValueChange = { airodumpIface = it }, label = { Text(tr("Monitör Modu Arayüzü (wlan0mon)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = bssid, onValueChange = { bssid = it }, label = { Text("Hedef BSSID (--bssid)") }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = airodumpChannel, onValueChange = { airodumpChannel = it }, label = { Text("Kanal (-c)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = bssid, onValueChange = { bssid = it }, label = { Text(tr("Hedef BSSID (--bssid)")) }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = airodumpChannel, onValueChange = { airodumpChannel = it }, label = { Text(tr("Kanal (-c)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = writePrefix, onValueChange = { writePrefix = it }, label = { Text("Kayıt Dosyası Ön Eki (-w)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = writePrefix, onValueChange = { writePrefix = it }, label = { Text(tr("Kayıt Dosyası Ön Eki (-w)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(6.dp))
             ToggleOption(label = "--wps WPS Bilgisini ve Kilit Durumunu Göster", checked = wpsInfo, onCheckedChange = { wpsInfo = it })
             ToggleOption(label = "--manufacturer Cihaz Üreticisini Çözümle", checked = showManufacturer, onCheckedChange = { showManufacturer = it })
@@ -11646,7 +11651,7 @@ fun AircrackNgBuilder(language: AppLanguage) {
             GeneratedCommandCard(command = parts.joinToString(" "), language = language)
 
         } else if (subtool == "aireplay") {
-            Text(text = "ENJEKSİYON SALDIRI TÜRÜ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("ENJEKSİYON SALDIRI TÜRÜ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf("0" to "Deauth (-0)", "1" to "Fake Auth (-1)", "3" to "ARP Replay (-3)").forEach { (atk, lbl) ->
@@ -11654,18 +11659,18 @@ fun AircrackNgBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { aireplayAttack = atk }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = bssid, onValueChange = { bssid = it }, label = { Text("Hedef AP BSSID (-a)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = clientMac, onValueChange = { clientMac = it }, label = { Text("İstemci MAC (-c: opsiyonel)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = bssid, onValueChange = { bssid = it }, label = { Text(tr("Hedef AP BSSID (-a)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = clientMac, onValueChange = { clientMac = it }, label = { Text(tr("İstemci MAC (-c: opsiyonel)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = deauthCount, onValueChange = { deauthCount = it }, label = { Text("Paket Adedi (0: Sürekli)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = aireplayIface, onValueChange = { aireplayIface = it }, label = { Text("Arayüz") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = deauthCount, onValueChange = { deauthCount = it }, label = { Text(tr("Paket Adedi (0: Sürekli)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = aireplayIface, onValueChange = { aireplayIface = it }, label = { Text(tr("Arayüz")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
 
             val parts = mutableListOf("sudo aireplay-ng", "-$aireplayAttack", deauthCount.trim(), "-a", bssid.trim())
@@ -11681,11 +11686,11 @@ fun AircrackNgBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { airmonAction = act }.padding(vertical = 6.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = airmonIface, onValueChange = { airmonIface = it }, label = { Text("Kablosuz Arayüz (wlan0)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = airmonIface, onValueChange = { airmonIface = it }, label = { Text(tr("Kablosuz Arayüz (wlan0)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
             val cmd = if (airmonAction == "check kill") "sudo airmon-ng check kill" else "sudo airmon-ng $airmonAction ${airmonIface.trim()}"
             GeneratedCommandCard(command = cmd, language = language)
@@ -11708,7 +11713,7 @@ fun BettercapBuilder(language: AppLanguage) {
     var selectedModules by remember { mutableStateOf(setOf("net.recon", "net.sniff", "arp.spoof")) }
 
     Column {
-        Text(text = "ÇALIŞTIRMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇALIŞTIRMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("eval" to "Tek Satır Komut (-eval)", "interactive" to "İnteraktif Kabuk", "caplet" to "Caplet Dosyası", "ui" to "Web UI").forEach { (m, lbl) ->
@@ -11716,15 +11721,15 @@ fun BettercapBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mode = m }.padding(vertical = 5.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Ağ Arayüzü (-iface: wlan0, eth0)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text(tr("Ağ Arayüzü (-iface: wlan0, eth0)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         if (mode == "eval") {
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "OTOMATİK ÇALIŞTIRILACAK MODÜLLER", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("OTOMATİK ÇALIŞTIRILACAK MODÜLLER"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             LazyVerticalGrid(columns = GridCells.Fixed(3), modifier = Modifier.height(95.dp), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 items(availableModules) { mod ->
@@ -11737,15 +11742,15 @@ fun BettercapBuilder(language: AppLanguage) {
 
             if (selectedModules.contains("arp.spoof")) {
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = targetIp, onValueChange = { targetIp = it }, label = { Text("ARP Zehirleme Hedefi (set arp.spoof.targets)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = targetIp, onValueChange = { targetIp = it }, label = { Text(tr("ARP Zehirleme Hedefi (set arp.spoof.targets)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
         } else if (mode == "caplet") {
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = capletFile, onValueChange = { capletFile = it }, label = { Text("Caplet Dosya Yolu (-caplet)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = capletFile, onValueChange = { capletFile = it }, label = { Text(tr("Caplet Dosya Yolu (-caplet)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = gatewayOverride, onValueChange = { gatewayOverride = it }, label = { Text("Gateway Override (Opsiyonel: -gateway-override 192.168.1.1)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = gatewayOverride, onValueChange = { gatewayOverride = it }, label = { Text(tr("Gateway Override (Opsiyonel: -gateway-override 192.168.1.1)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(6.dp))
         ToggleOption(label = "-silent Sessiz Başlangıç", checked = quiet, onCheckedChange = { quiet = it })
@@ -11793,7 +11798,7 @@ fun HcxdumptoolBuilder(language: AppLanguage) {
     var enableRule by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "HCXDUMPTOOL İŞLEM AŞAMASI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HCXDUMPTOOL İŞLEM AŞAMASI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -11805,21 +11810,21 @@ fun HcxdumptoolBuilder(language: AppLanguage) {
                 val sel = mode == m
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mode = m }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
         if (mode == "all" || mode == "target") {
-            OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Monitör Modu Kablosuz Arayüz (-i: wlan0)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text(tr("Monitör Modu Kablosuz Arayüz (-i: wlan0)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = outputPcap, onValueChange = { outputPcap = it }, label = { Text("Çıktı PCAPNG Dosyası (-w)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = outputPcap, onValueChange = { outputPcap = it }, label = { Text(tr("Çıktı PCAPNG Dosyası (-w)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
             if (mode == "target") {
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = bssid, onValueChange = { bssid = it }, label = { Text("Hedef BSSID (İki Noktasız)") }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = channel, onValueChange = { channel = it }, label = { Text("Kanal (-c)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = bssid, onValueChange = { bssid = it }, label = { Text(tr("Hedef BSSID (İki Noktasız)")) }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = channel, onValueChange = { channel = it }, label = { Text(tr("Kanal (-c)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
             }
 
@@ -11840,11 +11845,11 @@ fun HcxdumptoolBuilder(language: AppLanguage) {
             GeneratedCommandCard(command = parts.joinToString(" "), language = language)
 
         } else if (mode == "convert") {
-            OutlinedTextField(value = outputPcap, onValueChange = { outputPcap = it }, label = { Text("Kaynak Yakalama Dosyası (.pcapng)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = outputPcap, onValueChange = { outputPcap = it }, label = { Text(tr("Kaynak Yakalama Dosyası (.pcapng)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = hashFile, onValueChange = { hashFile = it }, label = { Text("Hash Dosyası (-o .hc22000)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = essidList, onValueChange = { essidList = it }, label = { Text("ESSID Sözlüğü (-E)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = hashFile, onValueChange = { hashFile = it }, label = { Text(tr("Hash Dosyası (-o .hc22000)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = essidList, onValueChange = { essidList = it }, label = { Text(tr("ESSID Sözlüğü (-E)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
 
             val cmd = "hcxpcapngtool -o ${hashFile.trim()} -E ${essidList.trim()} ${outputPcap.trim()}"
@@ -11852,14 +11857,14 @@ fun HcxdumptoolBuilder(language: AppLanguage) {
 
         } else {
             // crack
-            OutlinedTextField(value = hashFile, onValueChange = { hashFile = it }, label = { Text("Hashcat 22000 Hash Dosyası") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = hashFile, onValueChange = { hashFile = it }, label = { Text(tr("Hashcat 22000 Hash Dosyası")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = wordlist, onValueChange = { wordlist = it }, label = { Text("Parola Sözlüğü") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = wordlist, onValueChange = { wordlist = it }, label = { Text(tr("Parola Sözlüğü")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(6.dp))
             ToggleOption(label = "-r Kural Dosyası Kullan (Rules Mutation)", checked = enableRule, onCheckedChange = { enableRule = it })
             if (enableRule) {
                 Spacer(modifier = Modifier.height(4.dp))
-                OutlinedTextField(value = rule, onValueChange = { rule = it }, label = { Text("Kural Dosyası Yolu (-r)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = rule, onValueChange = { rule = it }, label = { Text(tr("Kural Dosyası Yolu (-r)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
 
             val parts = mutableListOf("hashcat", "-m", "22000", hashFile.trim(), wordlist.trim())
@@ -11888,7 +11893,7 @@ fun ReaverBuilder(language: AppLanguage) {
     var ignoreFcs by remember { mutableStateOf(true) }
 
     Column {
-        Text(text = "WPS SALDIRI ARACI SEÇİMİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("WPS SALDIRI ARACI SEÇİMİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("reaver" to "Reaver (WPS Kırıcı)", "wash" to "Wash (WPS Tarayıcı)", "bully" to "Bully (C Motoru)").forEach { (tm, lbl) ->
@@ -11896,20 +11901,20 @@ fun ReaverBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { toolMode = tm }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Monitör Modu Arayüzü (-i: wlan0mon)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text(tr("Monitör Modu Arayüzü (-i: wlan0mon)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         if (toolMode == "reaver") {
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = bssid, onValueChange = { bssid = it }, label = { Text("Hedef BSSID (-b)") }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = channel, onValueChange = { channel = it }, label = { Text("Kanal (-c)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = bssid, onValueChange = { bssid = it }, label = { Text(tr("Hedef BSSID (-b)")) }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = channel, onValueChange = { channel = it }, label = { Text(tr("Kanal (-c)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = pin, onValueChange = { pin = it }, label = { Text("Bilinen Belirli PIN Denemesi (-p 12345670: opsiyonel)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = pin, onValueChange = { pin = it }, label = { Text(tr("Bilinen Belirli PIN Denemesi (-p 12345670: opsiyonel)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
             Spacer(modifier = Modifier.height(6.dp))
             ToggleOption(label = "-K 1 Otomatik Pixie Dust Saldırısı (Saniyeler İçinde Çözüm)", checked = pixieDust, onCheckedChange = { pixieDust = it })
@@ -11919,8 +11924,8 @@ fun ReaverBuilder(language: AppLanguage) {
 
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = delay, onValueChange = { delay = it }, label = { Text("Deneme Gecikmesi (-d sn)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = lockDelay, onValueChange = { lockDelay = it }, label = { Text("Kilit Bekleme Süresi (--lock-delay)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = delay, onValueChange = { delay = it }, label = { Text(tr("Deneme Gecikmesi (-d sn)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = lockDelay, onValueChange = { lockDelay = it }, label = { Text(tr("Kilit Bekleme Süresi (--lock-delay)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
 
             val parts = mutableListOf("sudo reaver", "-i", iface.trim(), "-b", bssid.trim(), "-c", channel.trim())
@@ -11948,8 +11953,8 @@ fun ReaverBuilder(language: AppLanguage) {
             // bully
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = bssid, onValueChange = { bssid = it }, label = { Text("Hedef BSSID (-b)") }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = channel, onValueChange = { channel = it }, label = { Text("Kanal (-c)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = bssid, onValueChange = { bssid = it }, label = { Text(tr("Hedef BSSID (-b)")) }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = channel, onValueChange = { channel = it }, label = { Text(tr("Kanal (-c)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             val cmd = "sudo bully -b ${bssid.trim()} -c ${channel.trim()} --pixiewps ${iface.trim()}"
             GeneratedCommandCard(command = cmd, language = language)
@@ -11977,7 +11982,7 @@ fun WifiteBuilder(language: AppLanguage) {
     var scanTime by remember { mutableStateOf("30") }
 
     Column {
-        Text(text = "DENETİM KAPSAMI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("DENETİM KAPSAMI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("auto" to "Tüm Ağlar Otomatik Denetim", "target" to "Hedef BSSID / ESSID Filtresi").forEach { (m, lbl) ->
@@ -11985,28 +11990,28 @@ fun WifiteBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mode = m }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Kablosuz Kart Arayüzü (-i: wlan0)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text(tr("Kablosuz Kart Arayüzü (-i: wlan0)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         if (mode == "target") {
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = bssid, onValueChange = { bssid = it }, label = { Text("Hedef BSSID (-b)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = essid, onValueChange = { essid = it }, label = { Text("Hedef ESSID (-e)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = bssid, onValueChange = { bssid = it }, label = { Text(tr("Hedef BSSID (-b)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = essid, onValueChange = { essid = it }, label = { Text(tr("Hedef ESSID (-e)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = channels, onValueChange = { channels = it }, label = { Text("Taranacak Kanallar (-c: 1,6,11)") }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = scanTime, onValueChange = { scanTime = it }, label = { Text("Tarama Süresi (-p sn)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = channels, onValueChange = { channels = it }, label = { Text(tr("Taranacak Kanallar (-c: 1,6,11)")) }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = scanTime, onValueChange = { scanTime = it }, label = { Text(tr("Tarama Süresi (-p sn)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "SALDIRI FİLTRELERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SALDIRI FİLTRELERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(6.dp))
         ToggleOption(label = "--wpa Sadece WPA / WPA2 Ağlarına Saldır", checked = wpaOnly, onCheckedChange = { wpaOnly = it })
         ToggleOption(label = "--pmkid Sadece PMKID İstemcisiz Yakalama Yap", checked = pmkidOnly, onCheckedChange = { pmkidOnly = it })
@@ -12018,7 +12023,7 @@ fun WifiteBuilder(language: AppLanguage) {
         ToggleOption(label = "--mac Saldırı Öncesi Rastgele Sahte MAC Adresi Al", checked = randomizeMac, onCheckedChange = { randomizeMac = it })
 
         Spacer(modifier = Modifier.height(6.dp))
-        OutlinedTextField(value = customDict, onValueChange = { customDict = it }, label = { Text("Özel Parola Sözlüğü (--dict)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = customDict, onValueChange = { customDict = it }, label = { Text(tr("Özel Parola Sözlüğü (--dict)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         val parts = mutableListOf("sudo wifite", "-i", iface.trim())
         if (mode == "target") {
@@ -12064,7 +12069,7 @@ fun WiresharkBuilder(language: AppLanguage) {
     var luaScript by remember { mutableStateOf("") }
 
     Column {
-        Text(text = "YAKALAMA KAYNAĞI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("YAKALAMA KAYNAĞI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("live" to "Canlı Ağ Arayüzü (-i)", "file" to "Kayıtlı PCAP Dosyası (-r)").forEach { (m, lbl) ->
@@ -12072,18 +12077,18 @@ fun WiresharkBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mode = m }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
         if (mode == "live") {
-            OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Ağ Arayüzü (-i: eth0, wlan0, any, tun0)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text(tr("Ağ Arayüzü (-i: eth0, wlan0, any, tun0)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         } else {
-            OutlinedTextField(value = pcapFile, onValueChange = { pcapFile = it }, label = { Text("Açılacak PCAP Dosyası (-r)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = pcapFile, onValueChange = { pcapFile = it }, label = { Text(tr("Açılacak PCAP Dosyası (-r)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "BPF YAKALAMA FİLTRESİ HAZIR ŞABLONLARI (-f)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("BPF YAKALAMA FİLTRESİ HAZIR ŞABLONLARI (-f)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -12097,14 +12102,14 @@ fun WiresharkBuilder(language: AppLanguage) {
                 val sel = bpfFilter == f
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { bpfFilter = f }.padding(horizontal = 8.dp, vertical = 5.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
         Spacer(modifier = Modifier.height(6.dp))
-        OutlinedTextField(value = bpfFilter, onValueChange = { bpfFilter = it }, label = { Text("Özel BPF Yakalama Filtresi (-f)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = bpfFilter, onValueChange = { bpfFilter = it }, label = { Text(tr("Özel BPF Yakalama Filtresi (-f)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "EKRAN GÖRÜNTÜLEME FİLTRESİ ŞABLONLARI (-Y)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("EKRAN GÖRÜNTÜLEME FİLTRESİ ŞABLONLARI (-Y)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -12118,18 +12123,18 @@ fun WiresharkBuilder(language: AppLanguage) {
                 val sel = displayFilter == f
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { displayFilter = f }.padding(horizontal = 8.dp, vertical = 5.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
         Spacer(modifier = Modifier.height(6.dp))
-        OutlinedTextField(value = displayFilter, onValueChange = { displayFilter = it }, label = { Text("Wireshark Ekran Filtresi (-Y)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = displayFilter, onValueChange = { displayFilter = it }, label = { Text(tr("Wireshark Ekran Filtresi (-Y)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "GELİŞMİŞ ŞİFRE ÇÖZME & SEÇENEKLER", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("GELİŞMİŞ ŞİFRE ÇÖZME & SEÇENEKLER"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(6.dp))
-        OutlinedTextField(value = tlsKeylog, onValueChange = { tlsKeylog = it }, label = { Text("TLS Anahtar Günlüğü Dosyası (-o tls.keylog_file:...)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = tlsKeylog, onValueChange = { tlsKeylog = it }, label = { Text(tr("TLS Anahtar Günlüğü Dosyası (-o tls.keylog_file:...)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         Spacer(modifier = Modifier.height(6.dp))
-        OutlinedTextField(value = luaScript, onValueChange = { luaScript = it }, label = { Text("Özel Lua Eklentisi (-X lua_script:...)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = luaScript, onValueChange = { luaScript = it }, label = { Text(tr("Özel Lua Eklentisi (-X lua_script:...)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(6.dp))
         if (mode == "live") {
@@ -12137,12 +12142,12 @@ fun WiresharkBuilder(language: AppLanguage) {
             ToggleOption(label = "-w $saveFile Dosyaya Kaydet", checked = enableSave, onCheckedChange = { enableSave = it })
             if (enableSave) {
                 Spacer(modifier = Modifier.height(4.dp))
-                OutlinedTextField(value = saveFile, onValueChange = { saveFile = it }, label = { Text("Kayıt Dosyası Adı") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = saveFile, onValueChange = { saveFile = it }, label = { Text(tr("Kayıt Dosyası Adı")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             ToggleOption(label = "-c $packetCount Paket Sonra Durdur", checked = enableCount, onCheckedChange = { enableCount = it })
             if (enableCount) {
                 Spacer(modifier = Modifier.height(4.dp))
-                OutlinedTextField(value = packetCount, onValueChange = { packetCount = it }, label = { Text("Paket Sınırı") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = packetCount, onValueChange = { packetCount = it }, label = { Text(tr("Paket Sınırı")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             ToggleOption(label = "-b files:$ringFiles Halka Tampon (Ring Buffer)", checked = enableRing, onCheckedChange = { enableRing = it })
         }
@@ -12190,7 +12195,7 @@ fun TsharkBuilder(language: AppLanguage) {
     var tlsKeylog by remember { mutableStateOf("") }
 
     Column {
-        Text(text = "İŞLEM MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("İŞLEM MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("live" to "Canlı (-i)", "file" to "Dosyadan Oku (-r)", "stats" to "İstatistik (-z)").forEach { (m, lbl) ->
@@ -12198,18 +12203,18 @@ fun TsharkBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mode = m }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
         if (mode == "live") {
-            OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Arayüz (-i)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text(tr("Arayüz (-i)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         } else {
-            OutlinedTextField(value = pcapFile, onValueChange = { pcapFile = it }, label = { Text("PCAP Dosya Yolu (-r)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = pcapFile, onValueChange = { pcapFile = it }, label = { Text(tr("PCAP Dosya Yolu (-r)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "EKRAN FİLTRESİ (-Y) ŞABLONLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("EKRAN FİLTRESİ (-Y) ŞABLONLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -12224,14 +12229,14 @@ fun TsharkBuilder(language: AppLanguage) {
                 val sel = displayFilter == f
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { displayFilter = f }.padding(horizontal = 8.dp, vertical = 5.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
         Spacer(modifier = Modifier.height(6.dp))
-        OutlinedTextField(value = displayFilter, onValueChange = { displayFilter = it }, label = { Text("Wireshark Ekran Filtresi (-Y)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = displayFilter, onValueChange = { displayFilter = it }, label = { Text(tr("Wireshark Ekran Filtresi (-Y)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÇIKTI FORMATI (-T)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇIKTI FORMATI (-T)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("fields" to "Alanlar (-T fields)", "text" to "Metin", "json" to "JSON", "ek" to "Elasticsearch").forEach { (f, lbl) ->
@@ -12239,13 +12244,13 @@ fun TsharkBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { outputFormat = f }.padding(vertical = 5.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         if (outputFormat == "fields") {
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "AYRIŞTIRILACAK ALANLAR (-e)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("AYRIŞTIRILACAK ALANLAR (-e)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             LazyVerticalGrid(columns = GridCells.Fixed(3), modifier = Modifier.height(110.dp), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 items(availableFields) { fld ->
@@ -12256,12 +12261,12 @@ fun TsharkBuilder(language: AppLanguage) {
                 }
             }
             Spacer(modifier = Modifier.height(4.dp))
-            OutlinedTextField(value = customField, onValueChange = { customField = it }, label = { Text("İlave Özel Alan (-e: örn. tcp.stream)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = customField, onValueChange = { customField = it }, label = { Text(tr("İlave Özel Alan (-e: örn. tcp.stream)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         if (mode == "stats") {
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "İSTATİSTİK MODÜLÜ (-z)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("İSTATİSTİK MODÜLÜ (-z)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf(
@@ -12274,24 +12279,24 @@ fun TsharkBuilder(language: AppLanguage) {
                     val sel = statsType == st
                     Box(
                         modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { statsType = st }.padding(horizontal = 8.dp, vertical = 5.dp)
-                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "SEÇENEKLER & SINIRLAMALAR", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SEÇENEKLER & SINIRLAMALAR"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(6.dp))
         ToggleOption(label = "-n DNS İsim Çözümlemeyi Kapat (Hızlı)", checked = noDns, onCheckedChange = { noDns = it })
         ToggleOption(label = "-c $packetCount Paket Sonra Dur", checked = enableCount, onCheckedChange = { enableCount = it })
         if (enableCount) {
             Spacer(modifier = Modifier.height(4.dp))
-            OutlinedTextField(value = packetCount, onValueChange = { packetCount = it }, label = { Text("Paket Sayısı") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = packetCount, onValueChange = { packetCount = it }, label = { Text(tr("Paket Sayısı")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
         Spacer(modifier = Modifier.height(6.dp))
-        OutlinedTextField(value = savePcap, onValueChange = { savePcap = it }, label = { Text("Filtrelenenleri PCAP Olarak Kaydet (-w dosya.pcap)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = savePcap, onValueChange = { savePcap = it }, label = { Text(tr("Filtrelenenleri PCAP Olarak Kaydet (-w dosya.pcap)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         Spacer(modifier = Modifier.height(6.dp))
-        OutlinedTextField(value = tlsKeylog, onValueChange = { tlsKeylog = it }, label = { Text("TLS Keylog Dosyası (-o tls.keylog_file:...)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = tlsKeylog, onValueChange = { tlsKeylog = it }, label = { Text(tr("TLS Keylog Dosyası (-o tls.keylog_file:...)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         val parts = mutableListOf("tshark")
         if (mode == "live") {
@@ -12347,7 +12352,7 @@ fun TcpdumpBuilder(language: AppLanguage) {
     var quiet by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "YAKALAMA KAYNAĞI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("YAKALAMA KAYNAĞI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("live" to "Canlı Arayüz (-i)", "file" to "PCAP Oku (-r)").forEach { (s, lbl) ->
@@ -12355,18 +12360,18 @@ fun TcpdumpBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { source = s }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
         if (source == "live") {
-            OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Arayüz (-i: eth0, any, tun0, wlan0)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text(tr("Arayüz (-i: eth0, any, tun0, wlan0)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         } else {
-            OutlinedTextField(value = pcapFile, onValueChange = { pcapFile = it }, label = { Text("Okunacak PCAP Dosyası (-r)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = pcapFile, onValueChange = { pcapFile = it }, label = { Text(tr("Okunacak PCAP Dosyası (-r)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "BPF FİLTRE HAZIR ŞABLONLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("BPF FİLTRE HAZIR ŞABLONLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -12383,14 +12388,14 @@ fun TcpdumpBuilder(language: AppLanguage) {
                 val sel = bpfFilter == f
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { bpfFilter = f }.padding(horizontal = 8.dp, vertical = 5.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
         Spacer(modifier = Modifier.height(6.dp))
-        OutlinedTextField(value = bpfFilter, onValueChange = { bpfFilter = it }, label = { Text("Özel BPF Filtre İfadesi") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = bpfFilter, onValueChange = { bpfFilter = it }, label = { Text(tr("Özel BPF Filtre İfadesi")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "AYRINTI VE VERİ ÇIKTI MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("AYRINTI VE VERİ ÇIKTI MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("none" to "Normal", "-X" to "Hex & ASCII (-X)", "-XX" to "Başlık Dahil (-XX)", "-A" to "Metin (-A)").forEach { (fmt, lbl) ->
@@ -12398,12 +12403,12 @@ fun TcpdumpBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { payloadFormat = fmt }.padding(vertical = 5.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "AYRINTI SEVİYESİ (VERBOSITY)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("AYRINTI SEVİYESİ (VERBOSITY)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("standard" to "Standart", "-v" to "-v (Detay)", "-vv" to "-vv (Protokol)", "-vvv" to "-vvv (Tam)").forEach { (vb, lbl) ->
@@ -12411,12 +12416,12 @@ fun TcpdumpBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { verbosity = vb }.padding(vertical = 5.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "SEÇENEKLER & FİLTRELEME", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SEÇENEKLER & FİLTRELEME"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(6.dp))
         ToggleOption(label = "-nn IP ve Port İsim Çözümlemeyi Kapat (No DNS/Ports)", checked = noDns, onCheckedChange = { noDns = it })
         ToggleOption(label = "-s 0 Tam Paket Uzunluğu Yakala (Snaplen 0)", checked = snaplenZero, onCheckedChange = { snaplenZero = it })
@@ -12428,13 +12433,13 @@ fun TcpdumpBuilder(language: AppLanguage) {
             ToggleOption(label = "-c $countLimit Paket Yakala ve Dur", checked = enableCount, onCheckedChange = { enableCount = it })
             if (enableCount) {
                 Spacer(modifier = Modifier.height(4.dp))
-                OutlinedTextField(value = countLimit, onValueChange = { countLimit = it }, label = { Text("Paket Sınırı") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = countLimit, onValueChange = { countLimit = it }, label = { Text(tr("Paket Sınırı")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
 
             ToggleOption(label = "-w $saveFile PCAP Dosyasına Kaydet", checked = enableSave, onCheckedChange = { enableSave = it })
             if (enableSave) {
                 Spacer(modifier = Modifier.height(4.dp))
-                OutlinedTextField(value = saveFile, onValueChange = { saveFile = it }, label = { Text("Dosya Adı (.pcap)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = saveFile, onValueChange = { saveFile = it }, label = { Text(tr("Dosya Adı (.pcap)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 Spacer(modifier = Modifier.height(4.dp))
                 ToggleOption(label = "-C $ringSizeMb MB & -W $ringCount Dosya Boyutuyla Halka Rotasyonu", checked = ringRotate, onCheckedChange = { ringRotate = it })
             }
@@ -12482,7 +12487,7 @@ fun EttercapBuilder(language: AppLanguage) {
     var quiet by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "ÇALIŞTIRMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇALIŞTIRMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("-T" to "Metin (-T)", "-C" to "Curses UI (-C)", "-G" to "Grafik GTK (-G)", "-D" to "Daemon (-D)").forEach { (m, lbl) ->
@@ -12490,14 +12495,14 @@ fun EttercapBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { uiMode = m }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Ağ Arayüzü (-i: eth0, wlan0)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text(tr("Ağ Arayüzü (-i: eth0, wlan0)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "MITM SALDIRI TÜRÜ (-M)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("MITM SALDIRI TÜRÜ (-M)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -12510,12 +12515,12 @@ fun EttercapBuilder(language: AppLanguage) {
                 val sel = mitmType == m
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mitmType = m }.padding(horizontal = 8.dp, vertical = 5.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "HEDEF SEÇİMİ HAZIR ŞABLONLARI (/MAC/IP/IPv6/PORT/)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HEDEF SEÇİMİ HAZIR ŞABLONLARI (/MAC/IP/IPv6/PORT/)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -12529,34 +12534,34 @@ fun EttercapBuilder(language: AppLanguage) {
                         target1 = targets.first
                         target2 = targets.second
                     }.padding(horizontal = 8.dp, vertical = 5.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = CyberGreen) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = CyberGreen) }
             }
         }
 
         Spacer(modifier = Modifier.height(6.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = target1, onValueChange = { target1 = it }, label = { Text("Hedef 1 (Target 1: Kurban)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = target2, onValueChange = { target2 = it }, label = { Text("Hedef 2 (Target 2: Ağ Geçidi)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = target1, onValueChange = { target1 = it }, label = { Text(tr("Hedef 1 (Target 1: Kurban)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = target2, onValueChange = { target2 = it }, label = { Text(tr("Hedef 2 (Target 2: Ağ Geçidi)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "EKLENTİLER & SALDIRI MODÜLLERİ (-P)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("EKLENTİLER & SALDIRI MODÜLLERİ (-P)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(6.dp))
         ToggleOption(label = "-P dns_spoof Sahte DNS Cevapları Enjekte Et (/etc/ettercap/etter.dns)", checked = dnsSpoof, onCheckedChange = { dnsSpoof = it })
         ToggleOption(label = "-P repoison_arp ARP Tablolarını Sürekli Zehirle (Anti-Reset)", checked = repoison, onCheckedChange = { repoison = it })
         ToggleOption(label = "-P autoadd Ağa Katılan Yeni Cihazları Otomatik Hedefe Ekle", checked = autoadd, onCheckedChange = { autoadd = it })
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "KAYIT VE FİLTRELEME", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KAYIT VE FİLTRELEME"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(6.dp))
-        OutlinedTextField(value = filterFile, onValueChange = { filterFile = it }, label = { Text("Derlenmiş Özel Filtre Dosyası (-F dosya.ef)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = filterFile, onValueChange = { filterFile = it }, label = { Text(tr("Derlenmiş Özel Filtre Dosyası (-F dosya.ef)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         Spacer(modifier = Modifier.height(6.dp))
-        OutlinedTextField(value = logFile, onValueChange = { logFile = it }, label = { Text("Log Dosyası (-L dosya.txt)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = logFile, onValueChange = { logFile = it }, label = { Text(tr("Log Dosyası (-L dosya.txt)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         Spacer(modifier = Modifier.height(6.dp))
         ToggleOption(label = "-w $savePcap Trafiği PCAP Formatında Kaydet", checked = enablePcap, onCheckedChange = { enablePcap = it })
         if (enablePcap) {
             Spacer(modifier = Modifier.height(4.dp))
-            OutlinedTextField(value = savePcap, onValueChange = { savePcap = it }, label = { Text("PCAP Kayıt Dosyası") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = savePcap, onValueChange = { savePcap = it }, label = { Text(tr("PCAP Kayıt Dosyası")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
         ToggleOption(label = "-q Sessiz Mod", checked = quiet, onCheckedChange = { quiet = it })
 
@@ -12591,7 +12596,7 @@ fun ScapyBuilder(language: AppLanguage) {
     var payload by remember { mutableStateOf("GET / HTTP/1.1\\r\\nHost: target\\r\\n\\r\\n") }
 
     Column {
-        Text(text = "KULLANIM TARZI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KULLANIM TARZI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("script" to "Tek Satır Python Komutu (CLI)", "cli" to "Scapy Etkileşimli Kabuk (Interactive)").forEach { (st, lbl) ->
@@ -12599,12 +12604,12 @@ fun ScapyBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { style = st }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "SALDIRI / PROTOKOL SENARYOSU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SALDIRI / PROTOKOL SENARYOSU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -12618,25 +12623,25 @@ fun ScapyBuilder(language: AppLanguage) {
                 val sel = scenario == sc
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { scenario = sc }.padding(horizontal = 8.dp, vertical = 5.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "HEDEF VE AĞ BİLGİLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HEDEF VE AĞ BİLGİLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(6.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = dstIp, onValueChange = { dstIp = it }, label = { Text("Hedef IP (dst)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = dstPort, onValueChange = { dstPort = it }, label = { Text("Hedef Port (dport)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = dstIp, onValueChange = { dstIp = it }, label = { Text(tr("Hedef IP (dst)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = dstPort, onValueChange = { dstPort = it }, label = { Text(tr("Hedef Port (dport)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
         Spacer(modifier = Modifier.height(6.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = srcIp, onValueChange = { srcIp = it }, label = { Text("Sahte Kaynak IP (Opsiyonel Spoof)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Ağ Arayüzü (iface)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = srcIp, onValueChange = { srcIp = it }, label = { Text(tr("Sahte Kaynak IP (Opsiyonel Spoof)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text(tr("Ağ Arayüzü (iface)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "TCP BAYRAKLARI (FLAGS)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("TCP BAYRAKLARI (FLAGS)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("S" to "SYN (S)", "SA" to "SYN-ACK (SA)", "F" to "FIN (F)", "R" to "RST (R)", "PA" to "PUSH-ACK (PA)").forEach { (flg, lbl) ->
@@ -12644,21 +12649,21 @@ fun ScapyBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { tcpFlags = flg }.padding(vertical = 5.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 9.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         if (scenario == "tcp_flood" || scenario == "arp_poison") {
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = packetCount, onValueChange = { packetCount = it }, label = { Text("Paket Adedi (count)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = interval, onValueChange = { interval = it }, label = { Text("Gönderim Aralığı (sn)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = packetCount, onValueChange = { packetCount = it }, label = { Text(tr("Paket Adedi (count)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = interval, onValueChange = { interval = it }, label = { Text(tr("Gönderim Aralığı (sn)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
         }
 
         if (scenario == "custom") {
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = payload, onValueChange = { payload = it }, label = { Text("Özel Veri Yükü (Raw Payload)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = payload, onValueChange = { payload = it }, label = { Text(tr("Özel Veri Yükü (Raw Payload)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         val generatedCmd = if (style == "cli") {
@@ -12726,7 +12731,7 @@ fun YersiniaBuilder(language: AppLanguage) {
     }
 
     Column {
-        Text(text = "HEDEF KATMAN-2 PROTOKOLÜ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HEDEF KATMAN-2 PROTOKOLÜ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -12743,12 +12748,12 @@ fun YersiniaBuilder(language: AppLanguage) {
                         protocol = p
                         attackId = 0
                     }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÇALIŞTIRMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇALIŞTIRMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("cli" to "Doğrudan Komut Satırı", "-I" to "Curses UI (-I)", "-G" to "Grafik GTK (-G)", "-D" to "Daemon Sunucu (-D)").forEach { (m, lbl) ->
@@ -12756,16 +12761,16 @@ fun YersiniaBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { execMode = m }.padding(vertical = 5.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text("Ağ Arayüzü (-i: eth0)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = iface, onValueChange = { iface = it }, label = { Text(tr("Ağ Arayüzü (-i: eth0)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         if (execMode == "cli") {
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "PROTOKOL SALDIRI SEÇENEĞİ (-attack)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("PROTOKOL SALDIRI SEÇENEĞİ (-attack)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             attacksForProtocol.forEach { (aid, desc) ->
                 val sel = attackId == aid
@@ -12776,12 +12781,12 @@ fun YersiniaBuilder(language: AppLanguage) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "SEÇENEKLER", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SEÇENEKLER"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(6.dp))
         ToggleOption(label = "-M MAC Adres Sahteciliğini Kapat (Disable MAC Spoof)", checked = disableMacSpoof, onCheckedChange = { disableMacSpoof = it })
         ToggleOption(label = "-v Ayrıntılı Çıktı (Verbose)", checked = verbose, onCheckedChange = { verbose = it })
         Spacer(modifier = Modifier.height(4.dp))
-        OutlinedTextField(value = logFile, onValueChange = { logFile = it }, label = { Text("Log Dosyası (-l dosya.log)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = logFile, onValueChange = { logFile = it }, label = { Text(tr("Log Dosyası (-l dosya.log)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         val parts = mutableListOf("sudo yersinia")
         if (execMode == "cli") {
@@ -12826,7 +12831,7 @@ fun ChiselBuilder(language: AppLanguage) {
     var keepalive by remember { mutableStateOf("25s") }
 
     Column {
-        Text(text = "CHISEL ROLÜ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("CHISEL ROLÜ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("client" to "İstemci (Kurban / Client)", "server" to "Sunucu (Saldırgan / Server)").forEach { (m, lbl) ->
@@ -12834,17 +12839,17 @@ fun ChiselBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mode = m }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
         if (mode == "server") {
-            OutlinedTextField(value = serverPort, onValueChange = { serverPort = it }, label = { Text("Dinleme Portu (-p)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = serverPort, onValueChange = { serverPort = it }, label = { Text(tr("Dinleme Portu (-p)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = auth, onValueChange = { auth = it }, label = { Text("Kimlik Doğrulama (--auth \"kullanıcı:parola\")") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = auth, onValueChange = { auth = it }, label = { Text(tr("Kimlik Doğrulama (--auth \"kullanıcı:parola\")")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = keyFile, onValueChange = { keyFile = it }, label = { Text("Özel Anahtar Dosyası (--key anahtar: opsiyonel)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = keyFile, onValueChange = { keyFile = it }, label = { Text(tr("Özel Anahtar Dosyası (--key anahtar: opsiyonel)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
             Spacer(modifier = Modifier.height(6.dp))
             ToggleOption(label = "--reverse Ters Tünellemeye İzin Ver (Önerilen)", checked = reverse, onCheckedChange = { reverse = it })
@@ -12862,9 +12867,9 @@ fun ChiselBuilder(language: AppLanguage) {
 
         } else {
             // Client
-            OutlinedTextField(value = serverHost, onValueChange = { serverHost = it }, label = { Text("Saldırgan Chisel Sunucu Adresi (IP:PORT)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = serverHost, onValueChange = { serverHost = it }, label = { Text(tr("Saldırgan Chisel Sunucu Adresi (IP:PORT)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "TÜNEL TÜRLERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("TÜNEL TÜRLERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf(
@@ -12876,25 +12881,25 @@ fun ChiselBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { tunnelType = tt }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
             if (tunnelType != "socks") {
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = localPort, onValueChange = { localPort = it }, label = { Text("Dinleme Portu") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = remoteHost, onValueChange = { remoteHost = it }, label = { Text("Hedef Host IP") }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = remotePort, onValueChange = { remotePort = it }, label = { Text("Hedef Port") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = localPort, onValueChange = { localPort = it }, label = { Text(tr("Dinleme Portu")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = remoteHost, onValueChange = { remoteHost = it }, label = { Text(tr("Hedef Host IP")) }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = remotePort, onValueChange = { remotePort = it }, label = { Text(tr("Hedef Port")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = auth, onValueChange = { auth = it }, label = { Text("Sunucu Kimlik Doğrulama (--auth \"kullanıcı:parola\")") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = auth, onValueChange = { auth = it }, label = { Text(tr("Sunucu Kimlik Doğrulama (--auth \"kullanıcı:parola\")")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = egressProxy, onValueChange = { egressProxy = it }, label = { Text("Kurumsal Egress HTTP Proxy (--proxy \"http://proxy:8080\")") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = egressProxy, onValueChange = { egressProxy = it }, label = { Text(tr("Kurumsal Egress HTTP Proxy (--proxy \"http://proxy:8080\")")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = fingerprint, onValueChange = { fingerprint = it }, label = { Text("Sunucu Parmak İzi Doğrulama (--fingerprint \"...\")") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = fingerprint, onValueChange = { fingerprint = it }, label = { Text(tr("Sunucu Parmak İzi Doğrulama (--fingerprint \"...\")")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
             val parts = mutableListOf("chisel", "client")
             if (fingerprint.isNotBlank()) parts.addAll(listOf("--fingerprint", "\"${fingerprint.trim()}\""))
@@ -12927,7 +12932,7 @@ fun LigoloBuilder(language: AppLanguage) {
     var selfcert by remember { mutableStateOf(true) }
 
     Column {
-        Text(text = "LIGOLO-NG ADIM ADIM PIVOT İŞLEMİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("LIGOLO-NG ADIM ADIM PIVOT İŞLEMİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -12940,33 +12945,33 @@ fun LigoloBuilder(language: AppLanguage) {
                 val sel = step == s
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { step = s }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
         when (step) {
             "1_tun" -> {
-                Text(text = "Saldırgan makinesinde Ligolo için sanal TUN ağı oluşturun (VPN tarzı doğrudan IP erişimi sağlar).", fontSize = 11.sp, color = TextSecondary)
+                Text(text = tr("Saldırgan makinesinde Ligolo için sanal TUN ağı oluşturun (VPN tarzı doğrudan IP erişimi sağlar)."), fontSize = 11.sp, color = TextSecondary)
             }
             "2_proxy" -> {
-                OutlinedTextField(value = port, onValueChange = { port = it }, label = { Text("Proxy Dinleme Portu (-laddr)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = port, onValueChange = { port = it }, label = { Text(tr("Proxy Dinleme Portu (-laddr)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 Spacer(modifier = Modifier.height(6.dp))
                 ToggleOption(label = "-selfcert Otomatik Kendinden İmzalı TLS Sertifikası Üret", checked = selfcert, onCheckedChange = { selfcert = it })
             }
             "3_route" -> {
-                OutlinedTextField(value = targetSubnet, onValueChange = { targetSubnet = it }, label = { Text("Tünellenecek Hedef Alt Ağ (CIDR: 172.16.1.0/24)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = targetSubnet, onValueChange = { targetSubnet = it }, label = { Text(tr("Tünellenecek Hedef Alt Ağ (CIDR: 172.16.1.0/24)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             "4_agent" -> {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = attackerIp, onValueChange = { attackerIp = it }, label = { Text("Saldırgan Makine IP") }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = port, onValueChange = { port = it }, label = { Text("Port") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = attackerIp, onValueChange = { attackerIp = it }, label = { Text(tr("Saldırgan Makine IP")) }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = port, onValueChange = { port = it }, label = { Text(tr("Port")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
             }
             "5_listener" -> {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = listenPort, onValueChange = { listenPort = it }, label = { Text("Kurbanda Açılacak Dinleme Portu (--addr)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = forwardPort, onValueChange = { forwardPort = it }, label = { Text("Saldırgana İletilecek Port (--to)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = listenPort, onValueChange = { listenPort = it }, label = { Text(tr("Kurbanda Açılacak Dinleme Portu (--addr)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = forwardPort, onValueChange = { forwardPort = it }, label = { Text(tr("Saldırgana İletilecek Port (--to)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
             }
         }
@@ -12993,7 +12998,7 @@ fun ProxychainsBuilder(language: AppLanguage) {
     var chainType by remember { mutableStateOf("dynamic") }
 
     Column {
-        Text(text = "ZİNCİRLEME MODU (CONFIG SEÇENEĞİ)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ZİNCİRLEME MODU (CONFIG SEÇENEĞİ)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("dynamic" to "Dinamik (dynamic_chain)", "strict" to "Katı (strict_chain)", "random" to "Rastgele (random_chain)").forEach { (ct, lbl) ->
@@ -13001,12 +13006,12 @@ fun ProxychainsBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { chainType = ct }.padding(vertical = 5.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "ÖRNEK KOMUT ŞABLONLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÖRNEK KOMUT ŞABLONLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -13018,14 +13023,14 @@ fun ProxychainsBuilder(language: AppLanguage) {
             ).forEach { (cmdPreset, lbl) ->
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(SurfaceDark).border(1.dp, BorderDark, RoundedCornerShape(6.dp)).clickable { cmdToRun = cmdPreset }.padding(horizontal = 8.dp, vertical = 5.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = CyberGreen) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = CyberGreen) }
             }
         }
         Spacer(modifier = Modifier.height(6.dp))
-        OutlinedTextField(value = cmdToRun, onValueChange = { cmdToRun = it }, label = { Text("Proxy Üzerinden Çalıştırılacak Komut") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = cmdToRun, onValueChange = { cmdToRun = it }, label = { Text(tr("Proxy Üzerinden Çalıştırılacak Komut")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = customConf, onValueChange = { customConf = it }, label = { Text("Özel Yapılandırma Dosyası (-f /path/to/proxychains.conf: opsiyonel)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = customConf, onValueChange = { customConf = it }, label = { Text(tr("Özel Yapılandırma Dosyası (-f /path/to/proxychains.conf: opsiyonel)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(6.dp))
         ToggleOption(label = "-q Sessiz Mod (Proxychains kütüphane bağlama çıktılarını gizle)", checked = quiet, onCheckedChange = { quiet = it })
@@ -13052,13 +13057,13 @@ fun SshuttleBuilder(language: AppLanguage) {
     var verbose by remember { mutableStateOf(true) }
 
     Column {
-        OutlinedTextField(value = sshServer, onValueChange = { sshServer = it }, label = { Text("Uzak SSH Sunucu Adresi (kullanıcı@hedef_ip)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = sshServer, onValueChange = { sshServer = it }, label = { Text(tr("Uzak SSH Sunucu Adresi (kullanıcı@hedef_ip)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = subnet, onValueChange = { subnet = it }, label = { Text("Tünellenecek Alt Ağlar (örn: 172.16.1.0/24 veya 0/0)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = subnet, onValueChange = { subnet = it }, label = { Text(tr("Tünellenecek Alt Ağlar (örn: 172.16.1.0/24 veya 0/0)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = excludeSubnet, onValueChange = { excludeSubnet = it }, label = { Text("Hariç Tutulacak Alt Ağ (-x 172.16.1.5/32: opsiyonel)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = excludeSubnet, onValueChange = { excludeSubnet = it }, label = { Text(tr("Hariç Tutulacak Alt Ağ (-x 172.16.1.5/32: opsiyonel)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = sshKey, onValueChange = { sshKey = it }, label = { Text("Özel SSH Anahtarı / Port (-e 'ssh -i id_rsa -p 2222')") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = sshKey, onValueChange = { sshKey = it }, label = { Text(tr("Özel SSH Anahtarı / Port (-e 'ssh -i id_rsa -p 2222')")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(6.dp))
         ToggleOption(label = "--dns Tüm DNS Sorgularını da SSH Üzerinden Yönlendir", checked = dnsForward, onCheckedChange = { dnsForward = it })
@@ -13100,7 +13105,7 @@ fun PeassNgBuilder(language: AppLanguage) {
     var selectedWinModules by remember { mutableStateOf(setOf("cmd", "systeminfo", "userinfo", "windowscreds")) }
 
     Column {
-        Text(text = "HEDEF İŞLETİM SİSTEMİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HEDEF İŞLETİM SİSTEMİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("linux" to "Linux (LinPEAS)", "windows" to "Windows (WinPEAS)").forEach { (os, lbl) ->
@@ -13108,13 +13113,13 @@ fun PeassNgBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { targetOs = os }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
         if (targetOs == "linux") {
-            Text(text = "ÇALIŞTIRMA YÖNTEMİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("ÇALIŞTIRMA YÖNTEMİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf(
@@ -13126,12 +13131,12 @@ fun PeassNgBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { linuxExecMode = em }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                     }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = sudoPassword, onValueChange = { sudoPassword = it }, label = { Text("Bilinen Kullanıcı Parolası (-P parola: sudo kontrolleri için)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = sudoPassword, onValueChange = { sudoPassword = it }, label = { Text(tr("Bilinen Kullanıcı Parolası (-P parola: sudo kontrolleri için)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
             Spacer(modifier = Modifier.height(6.dp))
             ToggleOption(label = "-a Tüm Kapsamlı Testleri Çalıştır (Zaman Alabilir)", checked = thorough, onCheckedChange = { thorough = it })
@@ -13155,7 +13160,7 @@ fun PeassNgBuilder(language: AppLanguage) {
 
         } else {
             // Windows WinPEAS
-            Text(text = "ÇALIŞTIRMA FORMATI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("ÇALIŞTIRMA FORMATI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf(
@@ -13167,12 +13172,12 @@ fun PeassNgBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { winExecMode = wem }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "DENETLENECEK MODÜLLER", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("DENETLENECEK MODÜLLER"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             LazyVerticalGrid(columns = GridCells.Fixed(3), modifier = Modifier.height(100.dp), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 items(winModules) { mod ->
@@ -13184,7 +13189,7 @@ fun PeassNgBuilder(language: AppLanguage) {
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = winOutputFile, onValueChange = { winOutputFile = it }, label = { Text("Log Dosyası Çıktısı (log=...)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = winOutputFile, onValueChange = { winOutputFile = it }, label = { Text(tr("Log Dosyası Çıktısı (log=...)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
             val moduleArgs = selectedWinModules.joinToString(" ")
             val logArg = if (winOutputFile.isNotBlank()) " log=${winOutputFile.trim()}" else ""
@@ -13241,7 +13246,7 @@ fun MimikatzBuilder(language: AppLanguage) {
     var minidumpPath by remember { mutableStateOf("C:\\lsass.dmp") }
 
     Column {
-        Text(text = "ÇALIŞTIRMA ORTAMI / YÖNTEMİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇALIŞTIRMA ORTAMI / YÖNTEMİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -13253,12 +13258,12 @@ fun MimikatzBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { execMode = em }.padding(vertical = 5.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "MIMIKATZ SALDIRI / İŞLEM MODÜLÜ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("MIMIKATZ SALDIRI / İŞLEM MODÜLÜ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -13275,7 +13280,7 @@ fun MimikatzBuilder(language: AppLanguage) {
                 val sel = action == act
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { action = act }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
@@ -13283,35 +13288,35 @@ fun MimikatzBuilder(language: AppLanguage) {
         when (action) {
             "dcsync" -> {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = dcDomain, onValueChange = { dcDomain = it }, label = { Text("Hedef Domain (/domain)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = dcUser, onValueChange = { dcUser = it }, label = { Text("Hedef Kullanıcı (/user)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = dcDomain, onValueChange = { dcDomain = it }, label = { Text(tr("Hedef Domain (/domain)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = dcUser, onValueChange = { dcUser = it }, label = { Text(tr("Hedef Kullanıcı (/user)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = dcServer, onValueChange = { dcServer = it }, label = { Text("Belirli Domain Controller (/dc:dc01.corp.local - opsiyonel)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = dcServer, onValueChange = { dcServer = it }, label = { Text(tr("Belirli Domain Controller (/dc:dc01.corp.local - opsiyonel)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 Spacer(modifier = Modifier.height(6.dp))
                 ToggleOption(label = "/all Tüm Etki Alanı Kullanıcılarını ve Hashlerini Dump Et", checked = dcAll, onCheckedChange = { dcAll = it })
             }
             "golden" -> {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = ticketDomain, onValueChange = { ticketDomain = it }, label = { Text("Domain (/domain)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = ticketUser, onValueChange = { ticketUser = it }, label = { Text("Kullanıcı (/user)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = ticketDomain, onValueChange = { ticketDomain = it }, label = { Text(tr("Domain (/domain)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = ticketUser, onValueChange = { ticketUser = it }, label = { Text(tr("Kullanıcı (/user)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = ticketSid, onValueChange = { ticketSid = it }, label = { Text("Domain SID (/sid: S-1-5-21-...)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = ticketSid, onValueChange = { ticketSid = it }, label = { Text(tr("Domain SID (/sid: S-1-5-21-...)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = ticketKrbtgtHash, onValueChange = { ticketKrbtgtHash = it }, label = { Text("KRBTGT NTLM Hash (/krbtgt)") }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = ticketId, onValueChange = { ticketId = it }, label = { Text("User ID (/id)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = ticketKrbtgtHash, onValueChange = { ticketKrbtgtHash = it }, label = { Text(tr("KRBTGT NTLM Hash (/krbtgt)")) }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = ticketId, onValueChange = { ticketId = it }, label = { Text(tr("User ID (/id)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = ticketFile, onValueChange = { ticketFile = it }, label = { Text("Bilet Dosyası (/ticket:ticket.kirbi)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = ticketFile, onValueChange = { ticketFile = it }, label = { Text(tr("Bilet Dosyası (/ticket:ticket.kirbi)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 Spacer(modifier = Modifier.height(6.dp))
                 ToggleOption(label = "/ptt Üretilen Bileti Anında Geçerli Oturuma Enjekte Et (Pass-The-Ticket)", checked = ticketPtt, onCheckedChange = { ticketPtt = it })
             }
             "silver" -> {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = silverTarget, onValueChange = { silverTarget = it }, label = { Text("Hedef Sunucu (/target: FQDN)") }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = silverService, onValueChange = { silverService = it }, label = { Text("Servis Türü (/service)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = silverTarget, onValueChange = { silverTarget = it }, label = { Text(tr("Hedef Sunucu (/target: FQDN)")) }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = silverService, onValueChange = { silverService = it }, label = { Text(tr("Servis Türü (/service)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
                 Spacer(modifier = Modifier.height(6.dp))
                 Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -13324,28 +13329,28 @@ fun MimikatzBuilder(language: AppLanguage) {
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = ticketDomain, onValueChange = { ticketDomain = it }, label = { Text("Domain (/domain)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = ticketUser, onValueChange = { ticketUser = it }, label = { Text("Kullanıcı (/user)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = ticketDomain, onValueChange = { ticketDomain = it }, label = { Text(tr("Domain (/domain)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = ticketUser, onValueChange = { ticketUser = it }, label = { Text(tr("Kullanıcı (/user)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = ticketSid, onValueChange = { ticketSid = it }, label = { Text("Domain SID (/sid)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = ticketSid, onValueChange = { ticketSid = it }, label = { Text(tr("Domain SID (/sid)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = silverRc4, onValueChange = { silverRc4 = it }, label = { Text("Servis Hesabı NTLM / RC4 Anahtarı (/rc4)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = silverRc4, onValueChange = { silverRc4 = it }, label = { Text(tr("Servis Hesabı NTLM / RC4 Anahtarı (/rc4)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 Spacer(modifier = Modifier.height(6.dp))
                 ToggleOption(label = "/ptt Bileti Anında Oturuma Enjekte Et", checked = ticketPtt, onCheckedChange = { ticketPtt = it })
             }
             "pth" -> {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = pthUser, onValueChange = { pthUser = it }, label = { Text("Kullanıcı Adı (/user)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = pthDomain, onValueChange = { pthDomain = it }, label = { Text("Domain (/domain)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = pthUser, onValueChange = { pthUser = it }, label = { Text(tr("Kullanıcı Adı (/user)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = pthDomain, onValueChange = { pthDomain = it }, label = { Text(tr("Domain (/domain)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = pthNtlm, onValueChange = { pthNtlm = it }, label = { Text("NTLM Parola Hashi (/ntlm)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = pthNtlm, onValueChange = { pthNtlm = it }, label = { Text(tr("NTLM Parola Hashi (/ntlm)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = pthRun, onValueChange = { pthRun = it }, label = { Text("Başlatılacak Uygulama (/run)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = pthRun, onValueChange = { pthRun = it }, label = { Text(tr("Başlatılacak Uygulama (/run)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             "logonpasswords" -> {
-                OutlinedTextField(value = minidumpPath, onValueChange = { minidumpPath = it }, label = { Text("Çevrimdışı Bellek Dökümü Dosyası (İsteğe Bağlı: Canlı ise boş bırakın)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = minidumpPath, onValueChange = { minidumpPath = it }, label = { Text(tr("Çevrimdışı Bellek Dökümü Dosyası (İsteğe Bağlı: Canlı ise boş bırakın)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
         }
 
@@ -13440,7 +13445,7 @@ fun LazagneBuilder(language: AppLanguage) {
     )
 
     Column {
-        Text(text = "HEDEF PLATFORM", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HEDEF PLATFORM"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("windows" to "Windows (lazagne.exe)", "linux" to "Linux (laZagne.py)").forEach { (p, lbl) ->
@@ -13448,29 +13453,29 @@ fun LazagneBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { platform = p }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "KURTARILACAK HEDEF KATEGORİ / MODÜL", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("KURTARILACAK HEDEF KATEGORİ / MODÜL"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             modules.forEach { (mod, lbl) ->
                 val sel = selectedModule == mod
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { selectedModule = mod }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text(if (platform == "windows") "Belirli Kullanıcı Dizini (-path \"C:\\Users\\User\\AppData\")" else "Belirli Kullanıcı Dizini (-path /home/user)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text(tr(if (platform == "windows") "Belirli Kullanıcı Dizini (-path \"C:\\Users\\User\\AppData\")" else "Belirli Kullanıcı Dizini (-path /home/user)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = masterPassword, onValueChange = { masterPassword = it }, label = { Text("Ana Parola Çözme Girişimi (-password \"Secret\": opsiyonel)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = masterPassword, onValueChange = { masterPassword = it }, label = { Text(tr("Ana Parola Çözme Girişimi (-password \"Secret\": opsiyonel)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "ÇIKTI FORMATI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇIKTI FORMATI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("none" to "Standart Konsol", "oN" to "Normal Metin (-oN)", "oJ" to "JSON (-oJ)", "oA" to "Tüm Formatlar (-oA)").forEach { (of, lbl) ->
@@ -13478,13 +13483,13 @@ fun LazagneBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { outputFormat = of }.padding(vertical = 5.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         if (outputFormat != "none") {
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = outputDir, onValueChange = { outputDir = it }, label = { Text("Çıktı Dizin Yolu (-output)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = outputDir, onValueChange = { outputDir = it }, label = { Text(tr("Çıktı Dizin Yolu (-output)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(6.dp))
@@ -13528,7 +13533,7 @@ fun PypykatzBuilder(language: AppLanguage) {
     var verbose by remember { mutableStateOf(true) }
 
     Column {
-        Text(text = "PYPYKATZ ANALİZ VE DÖKÜM MODÜLÜ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PYPYKATZ ANALİZ VE DÖKÜM MODÜLÜ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -13542,44 +13547,44 @@ fun PypykatzBuilder(language: AppLanguage) {
                 val sel = mode == m
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mode = m }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
         when (mode) {
             "minidump" -> {
-                OutlinedTextField(value = dumpFile, onValueChange = { dumpFile = it }, label = { Text("LSASS Dump Dosyası veya Klasörü") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = dumpFile, onValueChange = { dumpFile = it }, label = { Text(tr("LSASS Dump Dosyası veya Klasörü")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 Spacer(modifier = Modifier.height(6.dp))
                 ToggleOption(label = "-r Klasördeki Tüm Dump Dosyalarını Özyinelemeli Tara", checked = recursive, onCheckedChange = { recursive = it })
                 ToggleOption(label = "-e / --kerberos-keys Kerberos Şifreleme Anahtarlarını Çöz", checked = kerberosKeys, onCheckedChange = { kerberosKeys = it })
             }
             "sam" -> {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = systemHive, onValueChange = { systemHive = it }, label = { Text("SYSTEM Kovanı Yolu") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = samHive, onValueChange = { samHive = it }, label = { Text("SAM Kovanı Yolu") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = systemHive, onValueChange = { systemHive = it }, label = { Text(tr("SYSTEM Kovanı Yolu")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = samHive, onValueChange = { samHive = it }, label = { Text(tr("SAM Kovanı Yolu")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
             }
             "security" -> {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = systemHive, onValueChange = { systemHive = it }, label = { Text("SYSTEM Kovanı Yolu") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = securityHive, onValueChange = { securityHive = it }, label = { Text("SECURITY Kovanı Yolu") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = systemHive, onValueChange = { systemHive = it }, label = { Text(tr("SYSTEM Kovanı Yolu")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = securityHive, onValueChange = { securityHive = it }, label = { Text(tr("SECURITY Kovanı Yolu")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
             }
             "dpapi" -> {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = systemHive, onValueChange = { systemHive = it }, label = { Text("SYSTEM Kovanı Yolu") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = masterkeyFile, onValueChange = { masterkeyFile = it }, label = { Text("Masterkey Dosyası") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = systemHive, onValueChange = { systemHive = it }, label = { Text(tr("SYSTEM Kovanı Yolu")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = masterkeyFile, onValueChange = { masterkeyFile = it }, label = { Text(tr("Masterkey Dosyası")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
             }
             else -> {
-                Text(text = "Windows üzerinde Administrator / SYSTEM yetkileriyle çalışan çekirdek sürücüsü veya canlı bellek API'leri kullanılır.", fontSize = 11.sp, color = TextSecondary)
+                Text(text = tr("Windows üzerinde Administrator / SYSTEM yetkileriyle çalışan çekirdek sürücüsü veya canlı bellek API'leri kullanılır."), fontSize = 11.sp, color = TextSecondary)
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = outputFile, onValueChange = { outputFile = it }, label = { Text("Çıktı Dosyası (-o loot.json: opsiyonel)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = outputFile, onValueChange = { outputFile = it }, label = { Text(tr("Çıktı Dosyası (-o loot.json: opsiyonel)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(6.dp))
@@ -13661,7 +13666,7 @@ fun VolatilityBuilder(language: AppLanguage) {
     )
 
     Column {
-        Text(text = "VOLATILITY SÜRÜMÜ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("VOLATILITY SÜRÜMÜ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("vol3" to "Volatility 3 (Modern: python3 vol.py)", "vol2" to "Volatility 2 (Legacy: vol.py)").forEach { (v, lbl) ->
@@ -13669,12 +13674,12 @@ fun VolatilityBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { volVersion = v }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = dumpFile, onValueChange = { dumpFile = it }, label = { Text("Bellek İmajı Dosya Yolu (-f: .raw, .dmp, .vmem)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = dumpFile, onValueChange = { dumpFile = it }, label = { Text(tr("Bellek İmajı Dosya Yolu (-f: .raw, .dmp, .vmem)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         if (volVersion == "vol3") {
             Spacer(modifier = Modifier.height(8.dp))
@@ -13687,12 +13692,12 @@ fun VolatilityBuilder(language: AppLanguage) {
                             selectedPlugin = if (os == "windows") "windows.pslist.PsList" else "linux.pslist.PsList"
                         }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "VOLATILITY 3 EKLENTİSİ (PLUGIN)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("VOLATILITY 3 EKLENTİSİ (PLUGIN)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             val currentPlugins = if (targetOs == "windows") winPlugins else linuxPlugins
             Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -13700,25 +13705,25 @@ fun VolatilityBuilder(language: AppLanguage) {
                     val sel = selectedPlugin == plg
                     Box(
                         modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { selectedPlugin = plg }.padding(horizontal = 8.dp, vertical = 6.dp)
-                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
         } else {
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = vol2Profile, onValueChange = { vol2Profile = it }, label = { Text("Hedef Profil (--profile: Win7SP1x64, Win10x64...)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = vol2Profile, onValueChange = { vol2Profile = it }, label = { Text(tr("Hedef Profil (--profile: Win7SP1x64, Win10x64...)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = selectedPlugin, onValueChange = { selectedPlugin = it }, label = { Text("Plugin (pslist, psscan, malfind, hashdump, netscan)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = selectedPlugin, onValueChange = { selectedPlugin = it }, label = { Text(tr("Plugin (pslist, psscan, malfind, hashdump, netscan)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = pidFilter, onValueChange = { pidFilter = it }, label = { Text("PID Filtresi (--pid: opsiyonel)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = outputDir, onValueChange = { outputDir = it }, label = { Text("Çıktı Klasörü (-o /loot: opsiyonel)") }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = pidFilter, onValueChange = { pidFilter = it }, label = { Text(tr("PID Filtresi (--pid: opsiyonel)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = outputDir, onValueChange = { outputDir = it }, label = { Text(tr("Çıktı Klasörü (-o /loot: opsiyonel)")) }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         if (volVersion == "vol3") {
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "TABLO FORMATI (--render)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("TABLO FORMATI (--render)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf("pretty" to "Tablo (Varsayılan)", "csv" to "CSV Format", "json" to "JSON Format").forEach { (rf, lbl) ->
@@ -13726,7 +13731,7 @@ fun VolatilityBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { renderFormat = rf }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
         }
@@ -13774,7 +13779,7 @@ fun BinwalkBuilder(language: AppLanguage) {
     var verbose by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "BINWALK ANALİZ VE İŞLEM MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("BINWALK ANALİZ VE İŞLEM MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -13788,19 +13793,19 @@ fun BinwalkBuilder(language: AppLanguage) {
                 val sel = action == act
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { action = act }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = filePath, onValueChange = { filePath = it }, label = { Text("Firmware / İkili Dosya Yolu") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = filePath, onValueChange = { filePath = it }, label = { Text(tr("Firmware / İkili Dosya Yolu")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(8.dp))
         when (action) {
             "extract" -> {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = extractDepth, onValueChange = { extractDepth = it }, label = { Text("Özyineleme Derinliği (-d)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = targetDir, onValueChange = { targetDir = it }, label = { Text("Hedef Klasör (-C /loot: opsiyonel)") }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = extractDepth, onValueChange = { extractDepth = it }, label = { Text(tr("Özyineleme Derinliği (-d)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = targetDir, onValueChange = { targetDir = it }, label = { Text(tr("Hedef Klasör (-C /loot: opsiyonel)")) }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
                 Spacer(modifier = Modifier.height(6.dp))
                 ToggleOption(label = "-M Özyinelemeli İç İçe Çıkart (Matryoshka)", checked = matryoshka, onCheckedChange = { matryoshka = it })
@@ -13811,21 +13816,21 @@ fun BinwalkBuilder(language: AppLanguage) {
                 ToggleOption(label = "-N X11 Grafik Penceresini Gösterme (Sadece terminal/dosya)", checked = entropyChart, onCheckedChange = { entropyChart = it })
             }
             "search" -> {
-                OutlinedTextField(value = customSignature, onValueChange = { customSignature = it }, label = { Text("Aranacak String veya Bayt Deseni (-R \"password\" veya -R \"\\x89PNG\")") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = customSignature, onValueChange = { customSignature = it }, label = { Text(tr("Aranacak String veya Bayt Deseni (-R \"password\" veya -R \"\\x89PNG\")")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             "carve" -> {
-                OutlinedTextField(value = customSignature, onValueChange = { customSignature = it }, label = { Text("Carve Türü (-D \"png:png:dd ...\")") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = customSignature, onValueChange = { customSignature = it }, label = { Text(tr("Carve Türü (-D \"png:png:dd ...\")")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = includeFilter, onValueChange = { includeFilter = it }, label = { Text("Yalnızca Bu İmzayı Tara (-y squashfs)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = excludeFilter, onValueChange = { excludeFilter = it }, label = { Text("Bu İmzayı Hariç Tut (-x gzip)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = includeFilter, onValueChange = { includeFilter = it }, label = { Text(tr("Yalnızca Bu İmzayı Tara (-y squashfs)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = excludeFilter, onValueChange = { excludeFilter = it }, label = { Text(tr("Bu İmzayı Hariç Tut (-x gzip)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = logFile, onValueChange = { logFile = it }, label = { Text("Log Dosyası (--log=binwalk.log: opsiyonel)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = logFile, onValueChange = { logFile = it }, label = { Text(tr("Log Dosyası (--log=binwalk.log: opsiyonel)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(6.dp))
         ToggleOption(label = "--csv Raporu CSV Formatında Yapılandır", checked = csvOutput, onCheckedChange = { csvOutput = it })
@@ -13891,40 +13896,40 @@ fun AutopsyBuilder(language: AppLanguage) {
     )
 
     Column {
-        Text(text = "SLEUTH KIT (TSK) & AUTOPSY ARACI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SLEUTH KIT (TSK) & AUTOPSY ARACI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             tskTools.forEach { (tm, lbl) ->
                 val sel = toolMode == tm
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { toolMode = tm }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
         if (toolMode == "autopsy") {
-            OutlinedTextField(value = autopsyEvidenceDir, onValueChange = { autopsyEvidenceDir = it }, label = { Text("Vaka ve Kanıt Klasörü (-d)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = autopsyEvidenceDir, onValueChange = { autopsyEvidenceDir = it }, label = { Text(tr("Vaka ve Kanıt Klasörü (-d)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = autopsyPort, onValueChange = { autopsyPort = it }, label = { Text("Web Dinleme Portu (-p)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = autopsyPort, onValueChange = { autopsyPort = it }, label = { Text(tr("Web Dinleme Portu (-p)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             val cmd = "autopsy -d \"${autopsyEvidenceDir.trim()}\" -p ${autopsyPort.trim()}"
             GeneratedCommandCard(command = cmd, language = language)
         } else if (toolMode == "mactime") {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = bodyFile, onValueChange = { bodyFile = it }, label = { Text("Girdi Body Dosyası (-b)") }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = timezone, onValueChange = { timezone = it }, label = { Text("Saat Dilimi (-z)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = bodyFile, onValueChange = { bodyFile = it }, label = { Text(tr("Girdi Body Dosyası (-b)")) }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = timezone, onValueChange = { timezone = it }, label = { Text(tr("Saat Dilimi (-z)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             val cmd = "mactime -b ${bodyFile.trim()} -d -z ${timezone.trim()} > timeline.csv"
             GeneratedCommandCard(command = cmd, language = language)
         } else {
-            OutlinedTextField(value = imagePath, onValueChange = { imagePath = it }, label = { Text("Adli Bilişim Disk İmajı (.dd, .raw, .001)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = imagePath, onValueChange = { imagePath = it }, label = { Text(tr("Adli Bilişim Disk İmajı (.dd, .raw, .001)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             if (toolMode != "mmls" && toolMode != "srch_strings") {
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = sectorOffset, onValueChange = { sectorOffset = it }, label = { Text("Bölüm Sektör Ofseti (-o: örn. 2048, 65536)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = sectorOffset, onValueChange = { sectorOffset = it }, label = { Text(tr("Bölüm Sektör Ofseti (-o: örn. 2048, 65536)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             if (toolMode == "icat" || toolMode == "istat") {
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = inodeNumber, onValueChange = { inodeNumber = it }, label = { Text("Hedef Inode / MFT Numarası") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = inodeNumber, onValueChange = { inodeNumber = it }, label = { Text(tr("Hedef Inode / MFT Numarası")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             if (toolMode == "fls") {
                 Spacer(modifier = Modifier.height(6.dp))
@@ -13976,30 +13981,30 @@ fun ExifToolBuilder(language: AppLanguage) {
     )
 
     Column {
-        Text(text = "EXIFTOOL İŞLEM AMACI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("EXIFTOOL İŞLEM AMACI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             modes.forEach { (m, lbl) ->
                 val sel = action == m
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { action = m }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = filePath, onValueChange = { filePath = it }, label = { Text("Hedef Dosya veya Dizin Yolu (Resim, PDF, Video, Office)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = filePath, onValueChange = { filePath = it }, label = { Text(tr("Hedef Dosya veya Dizin Yolu (Resim, PDF, Video, Office)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         if (action == "write") {
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = writeTag, onValueChange = { writeTag = it }, label = { Text("Etiket Adı (Örn: Artist, Copyright)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = writeValue, onValueChange = { writeValue = it }, label = { Text("Yazılacak Değer") }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = writeTag, onValueChange = { writeTag = it }, label = { Text(tr("Etiket Adı (Örn: Artist, Copyright)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = writeValue, onValueChange = { writeValue = it }, label = { Text(tr("Yazılacak Değer")) }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = extFilter, onValueChange = { extFilter = it }, label = { Text("Uzantı Filtresi (-ext jpg -ext pdf: opsiyonel)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = extFilter, onValueChange = { extFilter = it }, label = { Text(tr("Uzantı Filtresi (-ext jpg -ext pdf: opsiyonel)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(6.dp))
         ToggleOption(label = "-overwrite_original Orijinal Dosya Yedeği (_original) Oluşturma", checked = overwriteOriginal, onCheckedChange = { overwriteOriginal = it })
@@ -14059,34 +14064,34 @@ fun TheHarvesterBuilder(language: AppLanguage) {
     )
 
     Column {
-        OutlinedTextField(value = domain, onValueChange = { domain = it }, label = { Text("Hedef Etki Alanı (-d: example.com)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = domain, onValueChange = { domain = it }, label = { Text(tr("Hedef Etki Alanı (-d: example.com)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "İSTİHBARAT KAYNAKLARI (-b)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("İSTİHBARAT KAYNAKLARI (-b)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             sourcePresets.forEach { (src, lbl) ->
                 val sel = sources == src
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { sources = src }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = sources, onValueChange = { sources = it }, label = { Text("Özel Kaynaklar (-b)") }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = limit, onValueChange = { limit = it }, label = { Text("Limit (-l)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = sources, onValueChange = { sources = it }, label = { Text(tr("Özel Kaynaklar (-b)")) }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = limit, onValueChange = { limit = it }, label = { Text(tr("Limit (-l)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = customDns, onValueChange = { customDns = it }, label = { Text("Özel DNS Sunucusu (-e 1.1.1.1: opsiyonel)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = proxy, onValueChange = { proxy = it }, label = { Text("Proxy (--proxy http://...: opsiyonel)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = customDns, onValueChange = { customDns = it }, label = { Text(tr("Özel DNS Sunucusu (-e 1.1.1.1: opsiyonel)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = proxy, onValueChange = { proxy = it }, label = { Text(tr("Proxy (--proxy http://...: opsiyonel)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = reportName, onValueChange = { reportName = it }, label = { Text("Rapor Dosya İsmi (-f: .html ve .xml üretir)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = reportName, onValueChange = { reportName = it }, label = { Text(tr("Rapor Dosya İsmi (-f: .html ve .xml üretir)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(6.dp))
         ToggleOption(label = "-n Keşfedilen Tüm Hostlar İçin DNS Çözümlemesi Yap", checked = dnsLookup, onCheckedChange = { dnsLookup = it })
@@ -14128,10 +14133,10 @@ fun SherlockBuilder(language: AppLanguage) {
     var includeNsfw by remember { mutableStateOf(false) }
 
     Column {
-        OutlinedTextField(value = username, onValueChange = { username = it }, label = { Text("Hedef Kullanıcı Adı (Birden çok ise boşlukla ayırın)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = username, onValueChange = { username = it }, label = { Text(tr("Hedef Kullanıcı Adı (Birden çok ise boşlukla ayırın)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "HEDEF PLATFORM FİLTRESİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HEDEF PLATFORM FİLTRESİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -14144,27 +14149,27 @@ fun SherlockBuilder(language: AppLanguage) {
                 val sel = targetPreset == tp
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { targetPreset = tp }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         if (targetPreset == "custom") {
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = customSites, onValueChange = { customSites = it }, label = { Text("Taranacak Siteler (--site github --site twitter)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = customSites, onValueChange = { customSites = it }, label = { Text(tr("Taranacak Siteler (--site github --site twitter)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = siteListFile, onValueChange = { siteListFile = it }, label = { Text("Site Listesi Dosyası (--site-list targets.txt: opsiyonel)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = siteListFile, onValueChange = { siteListFile = it }, label = { Text(tr("Site Listesi Dosyası (--site-list targets.txt: opsiyonel)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = timeout, onValueChange = { timeout = it }, label = { Text("Zaman Aşımı Saniye (--timeout)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = customProxy, onValueChange = { customProxy = it }, label = { Text("Özel Proxy (--proxy socks5://...)") }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = timeout, onValueChange = { timeout = it }, label = { Text(tr("Zaman Aşımı Saniye (--timeout)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = customProxy, onValueChange = { customProxy = it }, label = { Text(tr("Özel Proxy (--proxy socks5://...)")) }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = folderOutput, onValueChange = { folderOutput = it }, label = { Text("Klasör Çıktısı (--folderoutput: opsiyonel)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = outputFile, onValueChange = { outputFile = it }, label = { Text("Metin Dosyası (--output: opsiyonel)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = folderOutput, onValueChange = { folderOutput = it }, label = { Text(tr("Klasör Çıktısı (--folderoutput: opsiyonel)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = outputFile, onValueChange = { outputFile = it }, label = { Text(tr("Metin Dosyası (--output: opsiyonel)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(6.dp))
@@ -14235,7 +14240,7 @@ fun ShodanBuilder(language: AppLanguage) {
     )
 
     Column {
-        Text(text = "SHODAN CLI ALT KOMUTU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("SHODAN CLI ALT KOMUTU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -14252,13 +14257,13 @@ fun ShodanBuilder(language: AppLanguage) {
                 val sel = subcommand == cmd
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { subcommand = cmd }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
         if (subcommand in listOf("search", "stats", "count", "download")) {
-            Text(text = "HIZLI FİLTRE VE DORK ŞABLONLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("HIZLI FİLTRE VE DORK ŞABLONLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 filterChips.forEach { (chip, lbl) ->
@@ -14266,39 +14271,39 @@ fun ShodanBuilder(language: AppLanguage) {
                         modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(SurfaceDark).border(1.dp, BorderDark, RoundedCornerShape(6.dp)).clickable {
                             targetQuery = if (targetQuery.isBlank()) chip else "$targetQuery $chip"
                         }.padding(horizontal = 8.dp, vertical = 5.dp)
-                    ) { Text(text = "+ $lbl", fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = CyberGreen) }
+                    ) { Text(text = "+ ${tr(lbl)}", fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = CyberGreen) }
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = targetQuery, onValueChange = { targetQuery = it }, label = { Text("Shodan Arama Sorgusu (Query)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = targetQuery, onValueChange = { targetQuery = it }, label = { Text(tr("Shodan Arama Sorgusu (Query)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
             if (subcommand == "download") {
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = downloadFile, onValueChange = { downloadFile = it }, label = { Text("Kaydedilecek Dosya Adı (.json.gz eklenir)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = downloadFile, onValueChange = { downloadFile = it }, label = { Text(tr("Kaydedilecek Dosya Adı (.json.gz eklenir)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
         } else if (subcommand == "host") {
-            OutlinedTextField(value = targetIp, onValueChange = { targetIp = it }, label = { Text("Hedef IP Adresi") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = targetIp, onValueChange = { targetIp = it }, label = { Text(tr("Hedef IP Adresi")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(6.dp))
             ToggleOption(label = "--history IP Adresinin Geçmiş Taramalarını da Göster", checked = history, onCheckedChange = { history = it })
         } else if (subcommand == "parse") {
-            OutlinedTextField(value = parseFile, onValueChange = { parseFile = it }, label = { Text("Ayrıştırılacak Dosya (.json.gz)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = parseFile, onValueChange = { parseFile = it }, label = { Text(tr("Ayrıştırılacak Dosya (.json.gz)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         } else if (subcommand == "init") {
-            OutlinedTextField(value = apiKey, onValueChange = { apiKey = it }, label = { Text("Shodan API Key") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = apiKey, onValueChange = { apiKey = it }, label = { Text(tr("Shodan API Key")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         if (subcommand == "search" || subcommand == "parse") {
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = fields, onValueChange = { fields = it }, label = { Text("Ekrana Yazdırılacak Alanlar (--fields)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = fields, onValueChange = { fields = it }, label = { Text(tr("Ekrana Yazdırılacak Alanlar (--fields)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         if (subcommand == "stats") {
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = facets, onValueChange = { facets = it }, label = { Text("Özet Fasetleri (--facets: örn. country:10,org:10,port:10)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = facets, onValueChange = { facets = it }, label = { Text(tr("Özet Fasetleri (--facets: örn. country:10,org:10,port:10)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         if (subcommand == "search" || subcommand == "download") {
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = limit, onValueChange = { limit = it }, label = { Text("Sonuç Limiti (--limit)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = limit, onValueChange = { limit = it }, label = { Text(tr("Sonuç Limiti (--limit)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(6.dp))
@@ -14368,7 +14373,7 @@ fun GitleaksBuilder(language: AppLanguage) {
     var noGit by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "GITLEAKS ÇALIŞMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("GITLEAKS ÇALIŞMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -14380,28 +14385,28 @@ fun GitleaksBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { subcommand = sc }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = sourcePath, onValueChange = { sourcePath = it }, label = { Text("Hedef Git Repo veya Dizin Yolu (--source)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = sourcePath, onValueChange = { sourcePath = it }, label = { Text(tr("Hedef Git Repo veya Dizin Yolu (--source)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         if (subcommand == "detect") {
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = logOpts, onValueChange = { logOpts = it }, label = { Text("Commit Aralığı (--log-opts=\"--since='2 weeks ago'\" veya HEAD~10..HEAD)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = logOpts, onValueChange = { logOpts = it }, label = { Text(tr("Commit Aralığı (--log-opts=\"--since='2 weeks ago'\" veya HEAD~10..HEAD)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = configFile, onValueChange = { configFile = it }, label = { Text("Özel Kural (--config .gitleaks.toml)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = baselinePath, onValueChange = { baselinePath = it }, label = { Text("Baseline Dosyası (--baseline-path)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = configFile, onValueChange = { configFile = it }, label = { Text(tr("Özel Kural (--config .gitleaks.toml)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = baselinePath, onValueChange = { baselinePath = it }, label = { Text(tr("Baseline Dosyası (--baseline-path)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = reportPath, onValueChange = { reportPath = it }, label = { Text("Rapor Dosyası (--report-path)") }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = reportFormat, onValueChange = { reportFormat = it }, label = { Text("Format (json, csv, sarif)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = reportPath, onValueChange = { reportPath = it }, label = { Text(tr("Rapor Dosyası (--report-path)")) }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = reportFormat, onValueChange = { reportFormat = it }, label = { Text(tr("Format (json, csv, sarif)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(6.dp))
@@ -14446,7 +14451,7 @@ fun TruffleHogBuilder(language: AppLanguage) {
     var debugLog by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "TARAMA HEDEF TÜRÜ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("TARAMA HEDEF TÜRÜ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -14469,22 +14474,22 @@ fun TruffleHogBuilder(language: AppLanguage) {
                             else -> ""
                         }
                     }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = target, onValueChange = { target = it }, label = { Text(if (targetType == "git") "Git Repo URL veya Yerel file://./" else if (targetType == "filesystem") "Dizin Yolu" else "Hedef Parametre") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = target, onValueChange = { target = it }, label = { Text(tr(if (targetType == "git") "Git Repo URL veya Yerel file://./" else if (targetType == "filesystem") "Dizin Yolu" else "Hedef Parametre")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         if (targetType == "git") {
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = sinceCommit, onValueChange = { sinceCommit = it }, label = { Text("Belirli Commit Sonrası (--since-commit HEAD~5: opsiyonel)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = sinceCommit, onValueChange = { sinceCommit = it }, label = { Text(tr("Belirli Commit Sonrası (--since-commit HEAD~5: opsiyonel)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = excludePaths, onValueChange = { excludePaths = it }, label = { Text("Hariç Tutulacak Yollar (--exclude-paths)") }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = concurrency, onValueChange = { concurrency = it }, label = { Text("Eşzamanlılık (--concurrency)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = excludePaths, onValueChange = { excludePaths = it }, label = { Text(tr("Hariç Tutulacak Yollar (--exclude-paths)")) }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = concurrency, onValueChange = { concurrency = it }, label = { Text(tr("Eşzamanlılık (--concurrency)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(6.dp))
@@ -14519,7 +14524,7 @@ fun GittoolsBuilder(language: AppLanguage) {
     var threads by remember { mutableStateOf("10") }
 
     Column {
-        Text(text = "GITTOOLS MODÜLÜ SEÇİN", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("GITTOOLS MODÜLÜ SEÇİN"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -14531,40 +14536,40 @@ fun GittoolsBuilder(language: AppLanguage) {
                 val sel = toolModule == m
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { toolModule = m }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
         when (toolModule) {
             "dumper" -> {
-                OutlinedTextField(value = gitUrl, onValueChange = { gitUrl = it }, label = { Text("Hedef Açıkta Kalan .git URL Adresi") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = gitUrl, onValueChange = { gitUrl = it }, label = { Text(tr("Hedef Açıkta Kalan .git URL Adresi")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = destDir, onValueChange = { destDir = it }, label = { Text("İndirilecek Yerel Dizin") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = destDir, onValueChange = { destDir = it }, label = { Text(tr("İndirilecek Yerel Dizin")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 val cmd = "./Dumper/gitdumper.sh ${gitUrl.trim()} ${destDir.trim()}"
                 GeneratedCommandCard(command = cmd, language = language)
             }
             "extractor" -> {
-                OutlinedTextField(value = destDir, onValueChange = { destDir = it }, label = { Text("İndirilmiş .git Dizini (Kaynak)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = destDir, onValueChange = { destDir = it }, label = { Text(tr("İndirilmiş .git Dizini (Kaynak)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = outputDir, onValueChange = { outputDir = it }, label = { Text("Kurtarılacak Kaynak Kod Klasörü") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = outputDir, onValueChange = { outputDir = it }, label = { Text(tr("Kurtarılacak Kaynak Kod Klasörü")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 val cmd = "./Extractor/extractor.sh ${destDir.trim()} ${outputDir.trim()}"
                 GeneratedCommandCard(command = cmd, language = language)
             }
             "finder" -> {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = targetsFile, onValueChange = { targetsFile = it }, label = { Text("Hedef Listesi Dosyası (-i)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = foundFile, onValueChange = { foundFile = it }, label = { Text("Bulunanları Kaydet (-o)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = targetsFile, onValueChange = { targetsFile = it }, label = { Text(tr("Hedef Listesi Dosyası (-i)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = foundFile, onValueChange = { foundFile = it }, label = { Text(tr("Bulunanları Kaydet (-o)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
                 val cmd = "./Finder/finder.sh -i ${targetsFile.trim()} -o ${foundFile.trim()}"
                 GeneratedCommandCard(command = cmd, language = language)
             }
             "python" -> {
-                OutlinedTextField(value = gitUrl, onValueChange = { gitUrl = it }, label = { Text("Hedef .git URL Adresi") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = gitUrl, onValueChange = { gitUrl = it }, label = { Text(tr("Hedef .git URL Adresi")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = destDir, onValueChange = { destDir = it }, label = { Text("Hedef Klasör") }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                    OutlinedTextField(value = threads, onValueChange = { threads = it }, label = { Text("İş Parçacığı (-j)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = destDir, onValueChange = { destDir = it }, label = { Text(tr("Hedef Klasör")) }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                    OutlinedTextField(value = threads, onValueChange = { threads = it }, label = { Text(tr("İş Parçacığı (-j)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 }
                 val cmd = "git-dumper -j ${threads.trim()} ${gitUrl.trim()} ${destDir.trim()}"
                 GeneratedCommandCard(command = cmd, language = language)
@@ -14605,7 +14610,7 @@ fun PacuBuilder(language: AppLanguage) {
     )
 
     Column {
-        Text(text = "PACU ÇALIŞTIRMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PACU ÇALIŞTIRMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -14617,22 +14622,22 @@ fun PacuBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { execMode = em }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        OutlinedTextField(value = sessionName, onValueChange = { sessionName = it }, label = { Text("Pacu Oturum Adı (--session)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = sessionName, onValueChange = { sessionName = it }, label = { Text(tr("Pacu Oturum Adı (--session)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         if (execMode == "keys") {
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = accessKey, onValueChange = { accessKey = it }, label = { Text("AWS Access Key ID") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = accessKey, onValueChange = { accessKey = it }, label = { Text(tr("AWS Access Key ID")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = secretKey, onValueChange = { secretKey = it }, label = { Text("AWS Secret Access Key") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = secretKey, onValueChange = { secretKey = it }, label = { Text(tr("AWS Secret Access Key")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = region, onValueChange = { region = it }, label = { Text("Bölge (Region)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = sessionToken, onValueChange = { sessionToken = it }, label = { Text("Session Token (Opsiyonel)") }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = region, onValueChange = { region = it }, label = { Text(tr("Bölge (Region)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = sessionToken, onValueChange = { sessionToken = it }, label = { Text(tr("Session Token (Opsiyonel)")) }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
 
             val cmd = "# Pacu Konsolu İçinde veya Script:\nset_keys --key-alias ${sessionName.trim()} --access-key-id ${accessKey.trim()} --secret-key ${secretKey.trim()}" + (if (sessionToken.isNotBlank()) " --session-token ${sessionToken.trim()}" else "")
@@ -14640,7 +14645,7 @@ fun PacuBuilder(language: AppLanguage) {
 
         } else {
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "PACU SALDIRI KATEGORİSİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("PACU SALDIRI KATEGORİSİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf(
@@ -14659,12 +14664,12 @@ fun PacuBuilder(language: AppLanguage) {
                             }
                         }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "ÇALIŞTIRILACAK MODÜL", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("ÇALIŞTIRILACAK MODÜL"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             val currentModList = when (selectedCategory) {
                 "recon" -> reconModules
@@ -14676,7 +14681,7 @@ fun PacuBuilder(language: AppLanguage) {
                     val sel = selectedModule == mod
                     Box(
                         modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { selectedModule = mod }.padding(horizontal = 8.dp, vertical = 6.dp)
-                    ) { Text(text = "$mod ($lbl)", fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = "$mod (${tr(lbl)})", fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
@@ -14714,7 +14719,7 @@ fun ProwlerBuilder(language: AppLanguage) {
     )
 
     Column {
-        Text(text = "BULUT PLATFORMU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("BULUT PLATFORMU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("aws" to "Amazon AWS", "azure" to "MS Azure", "gcp" to "Google Cloud", "kubernetes" to "Kubernetes").forEach { (prv, lbl) ->
@@ -14722,43 +14727,43 @@ fun ProwlerBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { provider = prv }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
         if (provider == "aws") {
-            Text(text = "UYUMLULUK STANDARDI (--compliance)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("UYUMLULUK STANDARDI (--compliance)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 compliances.forEach { (cmp, lbl) ->
                     val sel = compliance == cmp
                     Box(
                         modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { compliance = cmp }.padding(horizontal = 8.dp, vertical = 6.dp)
-                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
             if (compliance == "none") {
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = services, onValueChange = { services = it }, label = { Text("Taranacak Servisler (--services: s3,iam,ec2,cloudtrail,kms)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = services, onValueChange = { services = it }, label = { Text(tr("Taranacak Servisler (--services: s3,iam,ec2,cloudtrail,kms)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = regions, onValueChange = { regions = it }, label = { Text("Hedef Bölgeler (--region us-east-1,eu-west-1)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = regions, onValueChange = { regions = it }, label = { Text(tr("Hedef Bölgeler (--region us-east-1,eu-west-1)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = roleArn, onValueChange = { roleArn = it }, label = { Text("Assume Role ARN (--sp-role-arn: opsiyonel)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = roleArn, onValueChange = { roleArn = it }, label = { Text(tr("Assume Role ARN (--sp-role-arn: opsiyonel)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = severity, onValueChange = { severity = it }, label = { Text("Kritiklik (--severity: critical,high)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = outputFormats, onValueChange = { outputFormats = it }, label = { Text("Çıktı (-M csv,html,json)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = severity, onValueChange = { severity = it }, label = { Text(tr("Kritiklik (--severity: critical,high)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = outputFormats, onValueChange = { outputFormats = it }, label = { Text(tr("Çıktı (-M csv,html,json)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = outputDir, onValueChange = { outputDir = it }, label = { Text("Rapor Klasörü (-o /loot: opsiyonel)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = outputDir, onValueChange = { outputDir = it }, label = { Text(tr("Rapor Klasörü (-o /loot: opsiyonel)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(6.dp))
         ToggleOption(label = "-q Yalnızca Başarısız (FAIL) Olan Kontrolleri Göster", checked = quietFailedOnly, onCheckedChange = { quietFailedOnly = it })
@@ -14797,7 +14802,7 @@ fun TrivyBuilder(language: AppLanguage) {
     var offlineScan by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "TRIVY TARAMA HEDEFİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("TRIVY TARAMA HEDEFİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -14822,21 +14827,21 @@ fun TrivyBuilder(language: AppLanguage) {
                             else -> ""
                         }
                     }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text("Hedef İmaj / Dizin / Repo URL") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text(tr("Hedef İmaj / Dizin / Repo URL")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = severity, onValueChange = { severity = it }, label = { Text("Kritiklik Filtresi (--severity)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = scanners, onValueChange = { scanners = it }, label = { Text("Tarayıcılar (--scanners)") }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = severity, onValueChange = { severity = it }, label = { Text(tr("Kritiklik Filtresi (--severity)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = scanners, onValueChange = { scanners = it }, label = { Text(tr("Tarayıcılar (--scanners)")) }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "ÇIKTI FORMATI (--format)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇIKTI FORMATI (--format)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("table" to "Tablo (Konsol)", "json" to "JSON", "sarif" to "SARIF (GitHub/GitLab)").forEach { (fmt, lbl) ->
@@ -14844,12 +14849,12 @@ fun TrivyBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { outputFormat = fmt }.padding(vertical = 5.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = outputFile, onValueChange = { outputFile = it }, label = { Text("Rapor Dosyası Çıktısı (-o results.json: opsiyonel)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = outputFile, onValueChange = { outputFile = it }, label = { Text(tr("Rapor Dosyası Çıktısı (-o results.json: opsiyonel)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         Spacer(modifier = Modifier.height(6.dp))
         ToggleOption(label = "--ignore-unfixed Yalnızca Yaması (Fix) Yayınlanmış Açıkları Göster", checked = ignoreUnfixed, onCheckedChange = { ignoreUnfixed = it })
@@ -14881,7 +14886,7 @@ fun KubeBenchBuilder(language: AppLanguage) {
     var jsonOutput by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "ÇALIŞTIRMA VE DAĞITIM YÖNTEMİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ÇALIŞTIRMA VE DAĞITIM YÖNTEMİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -14893,12 +14898,12 @@ fun KubeBenchBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { deployMode = dm }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "HEDEF BİLEŞEN (--targets)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HEDEF BİLEŞEN (--targets)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -14911,14 +14916,14 @@ fun KubeBenchBuilder(language: AppLanguage) {
                 val sel = targets == tgt
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { targets = tgt }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = benchmark, onValueChange = { benchmark = it }, label = { Text("Benchmark (--benchmark: eks-1.4.0, gke-1.4.0, cis-1.8)") }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-            OutlinedTextField(value = specificCheck, onValueChange = { specificCheck = it }, label = { Text("Belirli Kontrol (--check 1.2.1)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = benchmark, onValueChange = { benchmark = it }, label = { Text(tr("Benchmark (--benchmark: eks-1.4.0, gke-1.4.0, cis-1.8)")) }, modifier = Modifier.weight(1.5f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = specificCheck, onValueChange = { specificCheck = it }, label = { Text(tr("Belirli Kontrol (--check 1.2.1)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
         }
 
         Spacer(modifier = Modifier.height(6.dp))
@@ -14967,7 +14972,7 @@ fun JadxBuilder(language: AppLanguage) {
     var noSmaliResourcesOnly by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "TERSİNE MÜHENDİSLİK ARACI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("TERSİNE MÜHENDİSLİK ARACI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("jadx" to "JADX (Java Kaynak Koduna Çevir)", "apktool" to "Apktool (Smali & Resource Ayrıştır)").forEach { (tc, lbl) ->
@@ -14975,17 +14980,17 @@ fun JadxBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { toolChoice = tc }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
         if (toolChoice == "jadx") {
-            OutlinedTextField(value = apkPath, onValueChange = { apkPath = it }, label = { Text("Hedef APK / DEX / AAR Dosyası") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = apkPath, onValueChange = { apkPath = it }, label = { Text(tr("Hedef APK / DEX / AAR Dosyası")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = outputDir, onValueChange = { outputDir = it }, label = { Text("Kaynak Kod Çıktı Dizini (-d)") }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = threads, onValueChange = { threads = it }, label = { Text("İş Parçacığı (-j)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = outputDir, onValueChange = { outputDir = it }, label = { Text(tr("Kaynak Kod Çıktı Dizini (-d)")) }, modifier = Modifier.weight(2f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = threads, onValueChange = { threads = it }, label = { Text(tr("İş Parçacığı (-j)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
 
             Spacer(modifier = Modifier.height(6.dp))
@@ -15011,14 +15016,14 @@ fun JadxBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { apktoolMode = m }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
             if (apktoolMode == "d") {
-                OutlinedTextField(value = apkPath, onValueChange = { apkPath = it }, label = { Text("Ayrıştırılacak APK Dosyası") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = apkPath, onValueChange = { apkPath = it }, label = { Text(tr("Ayrıştırılacak APK Dosyası")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = apktoolWorkDir, onValueChange = { apktoolWorkDir = it }, label = { Text("Hedef Çıktı Klasörü (-o)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = apktoolWorkDir, onValueChange = { apktoolWorkDir = it }, label = { Text(tr("Hedef Çıktı Klasörü (-o)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 Spacer(modifier = Modifier.height(6.dp))
                 ToggleOption(label = "-r Kaynakları Ayrıştırma (-r: do not decode resources)", checked = noResourcesSmaliOnly, onCheckedChange = { noResourcesSmaliOnly = it })
                 ToggleOption(label = "-s Smali Kodunu Ayrıştırma (-s: do not decode sources)", checked = noSmaliResourcesOnly, onCheckedChange = { noSmaliResourcesOnly = it })
@@ -15028,9 +15033,9 @@ fun JadxBuilder(language: AppLanguage) {
                 if (noSmaliResourcesOnly) parts.add("-s")
                 GeneratedCommandCard(command = parts.joinToString(" "), language = language)
             } else {
-                OutlinedTextField(value = apktoolWorkDir, onValueChange = { apktoolWorkDir = it }, label = { Text("Düzenlenmiş Kaynak Klasörü") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = apktoolWorkDir, onValueChange = { apktoolWorkDir = it }, label = { Text(tr("Düzenlenmiş Kaynak Klasörü")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = "modified_app.apk", onValueChange = {}, label = { Text("Üretilecek Yeni APK Dosyası (-o)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = "modified_app.apk", onValueChange = {}, label = { Text(tr("Üretilecek Yeni APK Dosyası (-o)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
                 val cmd = "apktool b ${apktoolWorkDir.trim()} -o modified_app.apk"
                 GeneratedCommandCard(command = cmd, language = language)
             }
@@ -15065,7 +15070,7 @@ fun FridaBuilder(language: AppLanguage) {
     )
 
     Column {
-        Text(text = "FRIDA / OBJECTION ARACI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("FRIDA / OBJECTION ARACI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -15077,7 +15082,7 @@ fun FridaBuilder(language: AppLanguage) {
                 val sel = toolMode == tm
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { toolMode = tm }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
@@ -15088,9 +15093,9 @@ fun FridaBuilder(language: AppLanguage) {
             GeneratedCommandCard(command = cmd, language = language)
 
         } else if (toolMode == "frida") {
-            OutlinedTextField(value = packageName, onValueChange = { packageName = it }, label = { Text("Hedef Paket Adı (Örn: com.target.app)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = packageName, onValueChange = { packageName = it }, label = { Text(tr("Hedef Paket Adı (Örn: com.target.app)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "HAZIR KANCA (HOOK) SENARYOLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("HAZIR KANCA (HOOK) SENARYOLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 scriptPresets.forEach { (sp, lbl) ->
@@ -15098,13 +15103,13 @@ fun FridaBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { scriptPreset = sp }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
             if (scriptPreset == "custom") {
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = scriptFile, onValueChange = { scriptFile = it }, label = { Text("Özel Frida JavaScript Dosyası (-l hook.js)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = scriptFile, onValueChange = { scriptFile = it }, label = { Text(tr("Özel Frida JavaScript Dosyası (-l hook.js)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
 
             Spacer(modifier = Modifier.height(6.dp))
@@ -15125,24 +15130,24 @@ fun FridaBuilder(language: AppLanguage) {
             GeneratedCommandCard(command = parts.joinToString(" "), language = language)
 
         } else if (toolMode == "trace") {
-            OutlinedTextField(value = packageName, onValueChange = { packageName = it }, label = { Text("Hedef Paket Adı") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = packageName, onValueChange = { packageName = it }, label = { Text(tr("Hedef Paket Adı")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = traceApi, onValueChange = { traceApi = it }, label = { Text("İzlenecek C/Java API Fonksiyonu (-i open* veya -m \"*[* crypto*]\")") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = traceApi, onValueChange = { traceApi = it }, label = { Text(tr("İzlenecek C/Java API Fonksiyonu (-i open* veya -m \"*[* crypto*]\")")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
             val cmd = "frida-trace -U -f ${packageName.trim()} -i \"${traceApi.trim()}\""
             GeneratedCommandCard(command = cmd, language = language)
 
         } else {
-            OutlinedTextField(value = packageName, onValueChange = { packageName = it }, label = { Text("Hedef Paket Adı") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = packageName, onValueChange = { packageName = it }, label = { Text(tr("Hedef Paket Adı")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "OBJECTION EYLEMİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("OBJECTION EYLEMİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 objectionShortcuts.forEach { (oa, lbl) ->
                     val sel = objectionAction == oa
                     Box(
                         modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { objectionAction = oa }.padding(horizontal = 8.dp, vertical = 6.dp)
-                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
@@ -15185,7 +15190,7 @@ fun ChecksecBuilder(language: AppLanguage) {
     var nmUndefinedOnly by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "ANALİZ ARACI SEÇİMİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ANALİZ ARACI SEÇİMİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("checksec" to "checksec", "readelf" to "readelf", "objdump" to "objdump", "nm" to "nm").forEach { (tm, lbl) ->
@@ -15193,13 +15198,13 @@ fun ChecksecBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { toolMode = tm }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
         if (toolMode == "checksec") {
-            Text(text = "DENETİM HEDEFİ MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("DENETİM HEDEFİ MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf(
@@ -15216,7 +15221,7 @@ fun ChecksecBuilder(language: AppLanguage) {
                             else if (m == "proc") targetPath = "1337"
                             else if (m == "file") targetPath = "./vuln_binary"
                         }.padding(horizontal = 8.dp, vertical = 5.dp)
-                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
             if (targetMode != "proc_all") {
@@ -15224,7 +15229,7 @@ fun ChecksecBuilder(language: AppLanguage) {
                 OutlinedTextField(
                     value = targetPath,
                     onValueChange = { targetPath = it },
-                    label = { Text(if (targetMode == "proc") "Hedef Süreç ID (PID)" else "Hedef İkili Dosya / Dizin Yolu") },
+                    label = { Text(tr(if (targetMode == "proc") "Hedef Süreç ID (PID)" else "Hedef İkili Dosya / Dizin Yolu")) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                     singleLine = true
@@ -15232,7 +15237,7 @@ fun ChecksecBuilder(language: AppLanguage) {
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "RAPOR FORMATI (--output)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("RAPOR FORMATI (--output)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf("standard" to "Konsol", "json" to "JSON", "xml" to "XML", "csv" to "CSV").forEach { (fmt, lbl) ->
@@ -15240,12 +15245,12 @@ fun ChecksecBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { outputFormat = fmt }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "SEÇENEKLER", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("SEÇENEKLER"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(6.dp))
             ToggleOption(label = "--extended Genişletilmiş Kontrol (Clang CFI, SafeStack, vb.)", checked = extended, onCheckedChange = { extended = it })
             ToggleOption(label = "--fortify Derleyici Güçlendirme (Fortify Source) Denetimi", checked = fortify, onCheckedChange = { fortify = it })
@@ -15263,9 +15268,9 @@ fun ChecksecBuilder(language: AppLanguage) {
             GeneratedCommandCard(command = parts.joinToString(" "), language = language)
 
         } else if (toolMode == "readelf") {
-            OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text("Hedef ELF Dosyası Yolu") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text(tr("Hedef ELF Dosyası Yolu")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "READELF BAŞLIK / BÖLÜM SEÇENEĞİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("READELF BAŞLIK / BÖLÜM SEÇENEĞİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf(
@@ -15280,7 +15285,7 @@ fun ChecksecBuilder(language: AppLanguage) {
                     val sel = readelfFlag == f
                     Box(
                         modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { readelfFlag = f }.padding(horizontal = 8.dp, vertical = 5.dp)
-                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
             Spacer(modifier = Modifier.height(6.dp))
@@ -15292,7 +15297,7 @@ fun ChecksecBuilder(language: AppLanguage) {
             GeneratedCommandCard(command = parts.joinToString(" "), language = language)
 
         } else if (toolMode == "objdump") {
-            OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text("Hedef İkili Dosya Yolu") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text(tr("Hedef İkili Dosya Yolu")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
             ToggleOption(label = "-d -M intel Intel Sözdizimi ile Disassemble Et", checked = objdumpIntel, onCheckedChange = { objdumpIntel = it })
             ToggleOption(label = "-R Dinamik Relocation Girişleri ve GOT Adresleri", checked = objdumpGot, onCheckedChange = { objdumpGot = it })
@@ -15307,7 +15312,7 @@ fun ChecksecBuilder(language: AppLanguage) {
 
         } else {
             // nm
-            OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text("Hedef Kütüphane / ELF Dosya Yolu") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text(tr("Hedef Kütüphane / ELF Dosya Yolu")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
             ToggleOption(label = "-D Dinamik Sembol Tablosunu Oku (.dynsym)", checked = nmDynamic, onCheckedChange = { nmDynamic = it })
             ToggleOption(label = "-C Sembolleri Çözümle (Demangle)", checked = nmDemangle, onCheckedChange = { nmDemangle = it })
@@ -15347,7 +15352,7 @@ fun RopperBuilder(language: AppLanguage) {
     var nosys by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "ROP MOTORU SEÇİMİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("ROP MOTORU SEÇİMİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("ropper" to "Ropper (Gelişmiş Filtre)", "ROPgadget" to "ROPgadget (Otomatik Zincir)").forEach { (eng, lbl) ->
@@ -15355,15 +15360,15 @@ fun RopperBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { engine = eng }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = binaryPath, onValueChange = { binaryPath = it }, label = { Text("Hedef İkili Dosya (Binary / libc.so)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = binaryPath, onValueChange = { binaryPath = it }, label = { Text(tr("Hedef İkili Dosya (Binary / libc.so)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         if (engine == "ropper") {
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "GADGET TÜRÜ (--type)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("GADGET TÜRÜ (--type)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf("all" to "Tümü", "rop" to "ROP (ret)", "jop" to "JOP (jmp)", "sys" to "Syscall").forEach { (tp, lbl) ->
@@ -15371,12 +15376,12 @@ fun RopperBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { gadgetType = tp }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "ARAMA ŞABLONLARI (--search)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("ARAMA ŞABLONLARI (--search)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf(
@@ -15393,14 +15398,14 @@ fun RopperBuilder(language: AppLanguage) {
                     val sel = searchQuery == qry
                     Box(
                         modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { searchQuery = qry }.padding(horizontal = 8.dp, vertical = 5.dp)
-                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
             Spacer(modifier = Modifier.height(6.dp))
-            OutlinedTextField(value = searchQuery, onValueChange = { searchQuery = it }, label = { Text("Özel Arama İfadesi (--search: örn: pop rdi%)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = searchQuery, onValueChange = { searchQuery = it }, label = { Text(tr("Özel Arama İfadesi (--search: örn: pop rdi%)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "OTOMATİK ZİNCİR ÜRETİCİ (--chain)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("OTOMATİK ZİNCİR ÜRETİCİ (--chain)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf("none" to "Yok (Manual)", "execve" to "execve(/bin/sh)", "mprotect" to "mprotect(RWX)").forEach { (ch, lbl) ->
@@ -15408,12 +15413,12 @@ fun RopperBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { chainType = ch }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "HEDEF MİMARİ (--arch)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("HEDEF MİMARİ (--arch)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf("auto" to "Otomatik", "x86" to "x86 (32-bit)", "x86_64" to "x86_64", "arm" to "ARM", "mips" to "MIPS").forEach { (a, lbl) ->
@@ -15421,21 +15426,21 @@ fun RopperBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { arch = a }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 9.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 9.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "KURAL VE SINIRLAMALAR", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("KURAL VE SINIRLAMALAR"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(6.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = instCount, onValueChange = { instCount = it }, label = { Text("Maksimum Komut Derinliği (--inst-count)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = instCount, onValueChange = { instCount = it }, label = { Text(tr("Maksimum Komut Derinliği (--inst-count)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             Spacer(modifier = Modifier.height(6.dp))
             ToggleOption(label = "--badbytes Kötü Baytları Filtrele ($badbytes)", checked = enableBadbytes, onCheckedChange = { enableBadbytes = it })
             if (enableBadbytes) {
                 Spacer(modifier = Modifier.height(4.dp))
-                OutlinedTextField(value = badbytes, onValueChange = { badbytes = it }, label = { Text("Kötü Baytlar (örn: 00,0a,0d)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = badbytes, onValueChange = { badbytes = it }, label = { Text(tr("Kötü Baytlar (örn: 00,0a,0d)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             ToggleOption(label = "--nocolor Renk Kodlarını Kapat (Script Dostu)", checked = noColor, onCheckedChange = { noColor = it })
             ToggleOption(label = "--detail Detaylı Gadget ve Hex Bilgisi Göster", checked = detail, onCheckedChange = { detail = it })
@@ -15457,22 +15462,22 @@ fun RopperBuilder(language: AppLanguage) {
         } else {
             // ROPgadget
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "ROPGADGET PARAMETRELERİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("ROPGADGET PARAMETRELERİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(6.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = depth, onValueChange = { depth = it }, label = { Text("Komut Derinliği (--depth)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = depth, onValueChange = { depth = it }, label = { Text(tr("Komut Derinliği (--depth)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             Spacer(modifier = Modifier.height(6.dp))
             ToggleOption(label = "--ropchain Otomatik Python ROP Zinciri Üret", checked = ropchain, onCheckedChange = { ropchain = it })
             ToggleOption(label = "--badbytes \"00|0a\" Kötü Karakterleri Engelle", checked = enableBadbytes, onCheckedChange = { enableBadbytes = it })
             if (enableBadbytes) {
                 Spacer(modifier = Modifier.height(4.dp))
-                OutlinedTextField(value = badbytes, onValueChange = { badbytes = it }, label = { Text("Kötü Karakterler (örn: 00|0a|0d)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = badbytes, onValueChange = { badbytes = it }, label = { Text(tr("Kötü Karakterler (örn: 00|0a|0d)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             ToggleOption(label = "--string Metin İfadesi Ara (/bin/sh)", checked = enableStringFilter, onCheckedChange = { enableStringFilter = it })
             if (enableStringFilter) {
                 Spacer(modifier = Modifier.height(4.dp))
-                OutlinedTextField(value = stringFilter, onValueChange = { stringFilter = it }, label = { Text("Aranacak Metin") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = stringFilter, onValueChange = { stringFilter = it }, label = { Text(tr("Aranacak Metin")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             ToggleOption(label = "--nosys Syscall Gadget'larını Hariç Tut", checked = nosys, onCheckedChange = { nosys = it })
 
@@ -15514,7 +15519,7 @@ fun PwntoolsBuilder(language: AppLanguage) {
     var templateQuiet by remember { mutableStateOf(false) }
 
     Column {
-        Text(text = "PWNTOOLS CLI ALT KOMUTU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("PWNTOOLS CLI ALT KOMUTU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -15528,7 +15533,7 @@ fun PwntoolsBuilder(language: AppLanguage) {
                 val sel = subcommand == cmd
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { subcommand = cmd }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
@@ -15540,14 +15545,14 @@ fun PwntoolsBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { cyclicMode = m }.padding(vertical = 6.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
             if (cyclicMode == "generate") {
-                OutlinedTextField(value = cyclicLength, onValueChange = { cyclicLength = it }, label = { Text("Kalıp Uzunluğu (Byte Cinsinden: örn. 200, 500)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = cyclicLength, onValueChange = { cyclicLength = it }, label = { Text(tr("Kalıp Uzunluğu (Byte Cinsinden: örn. 200, 500)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             } else {
-                OutlinedTextField(value = cyclicLookup, onValueChange = { cyclicLookup = it }, label = { Text("Çökme Değeri (Hex 0x6161616c veya laaa)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = cyclicLookup, onValueChange = { cyclicLookup = it }, label = { Text(tr("Çökme Değeri (Hex 0x6161616c veya laaa)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -15556,7 +15561,7 @@ fun PwntoolsBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { cyclicWidth = w }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
@@ -15570,9 +15575,9 @@ fun PwntoolsBuilder(language: AppLanguage) {
             GeneratedCommandCard(command = parts.joinToString(" "), language = language)
 
         } else if (subcommand == "asm") {
-            OutlinedTextField(value = asmCode, onValueChange = { asmCode = it }, label = { Text("Assembly Talimatı (Örn: xor rax, rax; push rax)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = asmCode, onValueChange = { asmCode = it }, label = { Text(tr("Assembly Talimatı (Örn: xor rax, rax; push rax)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "HEDEF MİMARİ (-c)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("HEDEF MİMARİ (-c)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf("amd64" to "x86_64 (amd64)", "i386" to "x86 (i386)", "arm" to "ARM 32", "aarch64" to "ARM 64").forEach { (a, lbl) ->
@@ -15580,11 +15585,11 @@ fun PwntoolsBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { arch = a }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "ÇIKTI FORMATI (-f)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("ÇIKTI FORMATI (-f)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf("hex" to "Hex", "raw" to "Raw Bayt", "string" to "Python String", "elf" to "ELF Dosyası").forEach { (fmt, lbl) ->
@@ -15592,7 +15597,7 @@ fun PwntoolsBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { asmFormat = fmt }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
@@ -15600,9 +15605,9 @@ fun PwntoolsBuilder(language: AppLanguage) {
             GeneratedCommandCard(command = parts.joinToString(" "), language = language)
 
         } else if (subcommand == "disasm") {
-            OutlinedTextField(value = disasmHex, onValueChange = { disasmHex = it }, label = { Text("Disassemble Edilecek Hex Dizisi") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = disasmHex, onValueChange = { disasmHex = it }, label = { Text(tr("Disassemble Edilecek Hex Dizisi")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "HEDEF MİMARİ (-c)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("HEDEF MİMARİ (-c)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf("amd64" to "amd64", "i386" to "i386", "arm" to "ARM").forEach { (a, lbl) ->
@@ -15610,7 +15615,7 @@ fun PwntoolsBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { arch = a }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
@@ -15618,7 +15623,7 @@ fun PwntoolsBuilder(language: AppLanguage) {
             GeneratedCommandCard(command = parts.joinToString(" "), language = language)
 
         } else if (subcommand == "shellcraft") {
-            Text(text = "HAZIR SHELLCRAFT ŞABLONLARI", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("HAZIR SHELLCRAFT ŞABLONLARI"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf(
@@ -15631,13 +15636,13 @@ fun PwntoolsBuilder(language: AppLanguage) {
                     val sel = shellcraftTemplate == tmpl
                     Box(
                         modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { shellcraftTemplate = tmpl }.padding(horizontal = 8.dp, vertical = 5.dp)
-                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
             Spacer(modifier = Modifier.height(6.dp))
-            OutlinedTextField(value = shellcraftTemplate, onValueChange = { shellcraftTemplate = it }, label = { Text("Shellcraft İfadesi") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = shellcraftTemplate, onValueChange = { shellcraftTemplate = it }, label = { Text(tr("Shellcraft İfadesi")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "ÇIKTI FORMATI (-f)", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("ÇIKTI FORMATI (-f)"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf("hex" to "Hex", "raw" to "Raw", "c" to "C Array", "elf" to "ELF Binary").forEach { (fmt, lbl) ->
@@ -15645,7 +15650,7 @@ fun PwntoolsBuilder(language: AppLanguage) {
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { shellcraftFormat = fmt }.padding(vertical = 5.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
 
@@ -15653,11 +15658,11 @@ fun PwntoolsBuilder(language: AppLanguage) {
             GeneratedCommandCard(command = parts.joinToString(" "), language = language)
 
         } else if (subcommand == "template") {
-            OutlinedTextField(value = templateBinary, onValueChange = { templateBinary = it }, label = { Text("Hedef İkili Dosya (Binary)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = templateBinary, onValueChange = { templateBinary = it }, label = { Text(tr("Hedef İkili Dosya (Binary)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = templateHost, onValueChange = { templateHost = it }, label = { Text("Uzak Sunucu (--host)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = templatePort, onValueChange = { templatePort = it }, label = { Text("Uzak Port (--port)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = templateHost, onValueChange = { templateHost = it }, label = { Text(tr("Uzak Sunucu (--host)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = templatePort, onValueChange = { templatePort = it }, label = { Text(tr("Uzak Port (--port)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             Spacer(modifier = Modifier.height(6.dp))
             ToggleOption(label = "--quiet Başlık Yorumlarını Azalt", checked = templateQuiet, onCheckedChange = { templateQuiet = it })
@@ -15669,7 +15674,7 @@ fun PwntoolsBuilder(language: AppLanguage) {
 
         } else {
             // checksec
-            OutlinedTextField(value = checksecBinary, onValueChange = { checksecBinary = it }, label = { Text("Hedef İkili Dosya Yolu") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = checksecBinary, onValueChange = { checksecBinary = it }, label = { Text(tr("Hedef İkili Dosya Yolu")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             val parts = mutableListOf("pwn", "checksec", checksecBinary.trim())
             GeneratedCommandCard(command = parts.joinToString(" "), language = language)
         }
@@ -15693,7 +15698,7 @@ fun X64dbgBuilder(language: AppLanguage) {
     var cmdParam by remember { mutableStateOf("eax=0") }
 
     Column {
-        Text(text = "HATA AYIKLAYICI ÇALIŞMA MODU", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("HATA AYIKLAYICI ÇALIŞMA MODU"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf("x64" to "x64dbg (64-bit)", "x32" to "x32dbg (32-bit)", "x96" to "x96dbg Başlatıcı", "cli" to "Konsol Komutları").forEach { (m, lbl) ->
@@ -15701,7 +15706,7 @@ fun X64dbgBuilder(language: AppLanguage) {
                 Box(
                     modifier = Modifier.weight(1f).clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { mode = m }.padding(vertical = 6.dp),
                     contentAlignment = Alignment.Center
-                ) { Text(text = lbl, fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
 
@@ -15712,16 +15717,16 @@ fun X64dbgBuilder(language: AppLanguage) {
                 "x32" -> "x32dbg.exe"
                 else -> "x96dbg.exe"
             }
-            OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text("Hedef Windows Program Yolu (.exe)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = targetPath, onValueChange = { targetPath = it }, label = { Text(tr("Hedef Windows Program Yolu (.exe)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = targetArgs, onValueChange = { targetArgs = it }, label = { Text("Programa Aktarılacak Argümanlar (-a \"arg1 arg2\")") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = targetArgs, onValueChange = { targetArgs = it }, label = { Text(tr("Programa Aktarılacak Argümanlar (-a \"arg1 arg2\")")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = attachPid, onValueChange = { attachPid = it }, label = { Text("Çalışan Sürece Bağlan (-p PID)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
-                OutlinedTextField(value = workingDir, onValueChange = { workingDir = it }, label = { Text("Çalışma Dizini (-cwd)") }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = attachPid, onValueChange = { attachPid = it }, label = { Text(tr("Çalışan Sürece Bağlan (-p PID)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+                OutlinedTextField(value = workingDir, onValueChange = { workingDir = it }, label = { Text(tr("Çalışma Dizini (-cwd)")) }, modifier = Modifier.weight(1f), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             }
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = initScript, onValueChange = { initScript = it }, label = { Text("Açılışta Koşulacak Script (-script \"C:\\init.txt\")") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = initScript, onValueChange = { initScript = it }, label = { Text(tr("Açılışta Koşulacak Script (-script \"C:\\init.txt\")")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(6.dp))
             ToggleOption(label = "-jit Varsayılan JIT (Just-In-Time) Hata Ayıklayıcısı Yap", checked = jit, onCheckedChange = { jit = it })
 
@@ -15737,7 +15742,7 @@ fun X64dbgBuilder(language: AppLanguage) {
 
         } else {
             // CLI commands reference
-            Text(text = "x64dbg KONSOL KOMUT KATEGORİSİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+            Text(text = tr("x64dbg KONSOL KOMUT KATEGORİSİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
             Spacer(modifier = Modifier.height(4.dp))
             Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf(
@@ -15756,16 +15761,16 @@ fun X64dbgBuilder(language: AppLanguage) {
                             else if (ct == "find") cmdParam = "\"8B ?? 89\""
                             else if (ct == "assemble") cmdParam = "nop"
                         }.padding(horizontal = 8.dp, vertical = 5.dp)
-                    ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                    ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(value = cmdAddress, onValueChange = { cmdAddress = it }, label = { Text("Hedef Adres / API Sembolü (Örn: 0x00401000 veya VirtualAlloc)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+            OutlinedTextField(value = cmdAddress, onValueChange = { cmdAddress = it }, label = { Text(tr("Hedef Adres / API Sembolü (Örn: 0x00401000 veya VirtualAlloc)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedTextField(
                 value = cmdParam,
                 onValueChange = { cmdParam = it },
-                label = { Text(if (cmdType == "find") "Aranacak Desen / String" else if (cmdType == "assemble") "Yeni Assembly Komutu" else "Parametre / Değer") },
+                label = { Text(tr(if (cmdType == "find") "Aranacak Desen / String" else if (cmdType == "assemble") "Yeni Assembly Komutu" else "Parametre / Değer")) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary),
                 singleLine = true
@@ -15792,7 +15797,7 @@ fun Rabin2Builder(language: AppLanguage) {
     var action by remember { mutableStateOf("-I") }
 
     Column {
-        Text(text = "RABIN2 ANALİZ BİLEŞENİ", fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
+        Text(text = tr("RABIN2 ANALİZ BİLEŞENİ"), fontSize = 10.sp, fontFamily = FontFamily.Monospace, color = TerminalCyan)
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             listOf(
@@ -15805,11 +15810,11 @@ fun Rabin2Builder(language: AppLanguage) {
                 val sel = action == act
                 Box(
                     modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(if (sel) CyberGreen.copy(alpha = 0.2f) else SurfaceDark).border(1.dp, if (sel) CyberGreen else BorderDark, RoundedCornerShape(6.dp)).clickable { action = act }.padding(horizontal = 8.dp, vertical = 6.dp)
-                ) { Text(text = lbl, fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
+                ) { Text(text = tr(lbl), fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = if (sel) CyberGreen else TextSecondary) }
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = binaryPath, onValueChange = { binaryPath = it }, label = { Text("İkili Dosya Yolu (Binary Path)") }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
+        OutlinedTextField(value = binaryPath, onValueChange = { binaryPath = it }, label = { Text(tr("İkili Dosya Yolu (Binary Path)")) }, modifier = Modifier.fillMaxWidth(), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = CyberGreen, unfocusedBorderColor = BorderDark, focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary), singleLine = true)
 
         val cmd = "rabin2 $action $binaryPath"
         GeneratedCommandCard(command = cmd, language = language)
