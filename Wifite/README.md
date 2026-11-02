@@ -1,5 +1,7 @@
 # 📶 Wifite - Automated WiFi Auditor Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
   ██╗    ██╗██╗███████╗██╗████████╗███████╗
   ██║    ██║██║██╔════╝██║╚══██╔══╝██╔════╝

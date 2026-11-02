@@ -1,5 +1,7 @@
 # 🔬 Forensics CTF Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/Forensics-CTF.tr.md)
+
 ---
 
 ## 📁 File Analysis

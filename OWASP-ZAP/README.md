@@ -1,5 +1,7 @@
 # ⚡ OWASP ZAP - Complete Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
    ____  _    _  ___   _____ _____    _____   ___  _____  
   / __ \| |  | |/ _ \ / ____|  __ \  |__  /  / _ \|  __ \ 

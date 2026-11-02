@@ -1,5 +1,7 @@
 # 📶 Aircrack-ng - WiFi Hacking Suite Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
    █████╗ ██╗██████╗  ██████╗██████╗  █████╗  ██████╗██╗  ██╗
   ██╔══██╗██║██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔════╝██║ ██╔╝

@@ -1,5 +1,7 @@
 # 🔄 Reverse Engineering CTF Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/Reverse-Engineering-CTF.tr.md)
+
 ---
 
 ## 🔍 Initial Analysis

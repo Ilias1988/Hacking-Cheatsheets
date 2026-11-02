@@ -23,7 +23,8 @@
 </p>
 
 <p align="center">
-  <b>🎯 Advanced Google Search Techniques for Security Researchers</b>
+  <b>🎯 Advanced Google Search Techniques for Security Researchers</b><br>
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
 </p>
 
 ---

@@ -1,5 +1,7 @@
 # 🔶 Burp Suite - Complete Cheatsheet
 
+[🇮🇹 Versione Italiana](translations/README.it.md) | [🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
     ____                      _____       _ __     
    / __ )__  ___________     / ___/__  __(_) /____

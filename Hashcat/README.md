@@ -1,5 +1,7 @@
 # ⚡ Hashcat - Complete Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
   _   _           _                _   
  | | | | __ _ ___| |__   ___ __ _| |_ 

@@ -1,5 +1,7 @@
 # 🐧 Linux Commands & Bash - Complete Pentesting Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
   ██╗     ██╗███╗   ██╗██╗   ██╗██╗  ██╗
   ██║     ██║████╗  ██║██║   ██║╚██╗██╔╝

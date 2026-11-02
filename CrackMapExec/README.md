@@ -1,5 +1,7 @@
 # 🗡️ CrackMapExec - AD Swiss Army Knife
 
+[🇮🇹 Versione Italiana](translations/README.it.md) | [🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
    ██████╗███╗   ███╗███████╗
   ██╔════╝████╗ ████║██╔════╝

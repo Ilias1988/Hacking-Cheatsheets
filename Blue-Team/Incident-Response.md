@@ -1,5 +1,7 @@
 # 🚨 Incident Response Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/Incident-Response.tr.md)
+
 ```
   ██╗███╗   ██╗ ██████╗██╗██████╗ ███████╗███╗   ██╗████████╗
   ██║████╗  ██║██╔════╝██║██╔══██╗██╔════╝████╗  ██║╚══██╔══╝

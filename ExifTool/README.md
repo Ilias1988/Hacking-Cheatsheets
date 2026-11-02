@@ -1,5 +1,7 @@
 # 📷 ExifTool - Metadata Extraction Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
   ███████╗██╗  ██╗██╗███████╗████████╗ ██████╗  ██████╗ ██╗     
   ██╔════╝╚██╗██╔╝██║██╔════╝╚══██╔══╝██╔═══██╗██╔═══██╗██║     

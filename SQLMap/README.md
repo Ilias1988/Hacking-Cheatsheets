@@ -1,5 +1,7 @@
 # 💉 SQLMap - Complete Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
    _____ ____    __    __  __           
   / ___// __ \  / /   /  |/  /___ _____ 

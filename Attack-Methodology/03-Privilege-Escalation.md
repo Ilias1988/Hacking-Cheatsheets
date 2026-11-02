@@ -1,5 +1,7 @@
 # ⬆️ Phase 3: Privilege Escalation
 
+[🇹🇷 Türkçe Sürüm](translations/03-Privilege-Escalation.tr.md)
+
 ```
   ██████╗ ██████╗ ██╗██╗   ██╗███████╗███████╗ ██████╗
   ██╔══██╗██╔══██╗██║██║   ██║██╔════╝██╔════╝██╔════╝

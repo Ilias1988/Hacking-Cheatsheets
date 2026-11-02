@@ -1,5 +1,7 @@
 # 🔍 Nmap - Complete Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
     _   __                      
    / | / /___ ___  ____ _____  

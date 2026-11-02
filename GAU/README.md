@@ -13,7 +13,8 @@
 <p align="center">
   <img src="https://img.shields.io/badge/GAU-URL_Discovery-blue?style=for-the-badge" alt="GAU">
   <img src="https://img.shields.io/badge/Wayback-green?style=for-the-badge" alt="Wayback">
-  <img src="https://img.shields.io/badge/Bug_Bounty-red?style=for-the-badge" alt="Bug Bounty">
+  <img src="https://img.shields.io/badge/Bug_Bounty-red?style=for-the-badge" alt="Bug Bounty"><br>
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
 </p>
 
 ---

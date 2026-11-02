@@ -1,5 +1,7 @@
 # 🎫 Rubeus - Kerberos Abuse Toolkit
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
   ██████╗ ██╗   ██╗██████╗ ███████╗██╗   ██╗███████╗
   ██╔══██╗██║   ██║██╔══██╗██╔════╝██║   ██║██╔════╝

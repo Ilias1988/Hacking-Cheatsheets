@@ -1,5 +1,7 @@
 # 🦈 Wireshark - Complete Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
  __        ___           ____  _                _    
  \ \      / (_)_ __ ___ / ___|| |__   __ _ _ __| | __

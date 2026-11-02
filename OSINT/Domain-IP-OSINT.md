@@ -1,5 +1,9 @@
 # 🌐 Domain & IP OSINT
 
+<p align="center">
+  <a href="translations/Domain-IP-OSINT.tr.md">🇹🇷 Türkçe Sürüm</a>
+</p>
+
 ---
 
 ## 🔍 Domain Reconnaissance Tools

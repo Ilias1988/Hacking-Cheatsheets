@@ -19,7 +19,8 @@
 </p>
 
 <p align="center">
-  <b>⚡ Fast and multi-purpose HTTP toolkit by ProjectDiscovery</b>
+  <b>⚡ Fast and multi-purpose HTTP toolkit by ProjectDiscovery</b><br>
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
 </p>
 
 ---

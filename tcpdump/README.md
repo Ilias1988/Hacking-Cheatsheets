@@ -1,5 +1,7 @@
 # 📡 tcpdump - Complete Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
   _             _                       
  | |_ ___ _ __ | |_ _ _ _____ _ __ _ __ 

@@ -13,7 +13,8 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Arjun-Parameter_Discovery-blue?style=for-the-badge" alt="Arjun">
   <img src="https://img.shields.io/badge/Hidden_Params-green?style=for-the-badge" alt="Hidden">
-  <img src="https://img.shields.io/badge/Bug_Bounty-red?style=for-the-badge" alt="Bug Bounty">
+  <img src="https://img.shields.io/badge/Bug_Bounty-red?style=for-the-badge" alt="Bug Bounty"><br>
+  <a href="translations/README.it.md">🇮🇹 Versione Italiana</a> | <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
 </p>
 
 ---

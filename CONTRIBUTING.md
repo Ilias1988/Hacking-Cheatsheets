@@ -1,5 +1,7 @@
 # 🤝 Contributing to Hacking Cheatsheets
 
+[🇹🇷 Türkçe Sürüm](CONTRIBUTING.tr.md)
+
 First off, thank you for considering contributing to Hacking Cheatsheets! 🎉
 
 This document provides guidelines for contributing to this repository.

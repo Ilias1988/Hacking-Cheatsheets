@@ -1,5 +1,9 @@
 # 📧 Email OSINT Cheatsheet
 
+<p align="center">
+  <a href="translations/Email-OSINT.tr.md">🇹🇷 Türkçe Sürüm</a>
+</p>
+
 ```
 ███████╗███╗   ███╗ █████╗ ██╗██╗     
 ██╔════╝████╗ ████║██╔══██╗██║██║     

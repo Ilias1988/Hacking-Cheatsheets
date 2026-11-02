@@ -1,5 +1,9 @@
 # 📱 Social Media OSINT
 
+<p align="center">
+  <a href="translations/Social-Media-OSINT.tr.md">🇹🇷 Türkçe Sürüm</a>
+</p>
+
 ---
 
 ## 🔍 Username Search Tools

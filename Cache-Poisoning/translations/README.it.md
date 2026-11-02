@@ -1,3 +1,5 @@
+[🇬🇧 English](../README.md) | [🇹🇷 Türkçe](README.tr.md)
+
 # 💾 Web Cache Poisoning Cheatsheet
 
 ```

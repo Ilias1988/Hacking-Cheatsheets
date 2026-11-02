@@ -1,5 +1,7 @@
 # 🔍 Ghidra - Reverse Engineering Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
    ██████╗ ██╗  ██╗██╗██████╗ ██████╗  █████╗ 
   ██╔════╝ ██║  ██║██║██╔══██╗██╔══██╗██╔══██╗

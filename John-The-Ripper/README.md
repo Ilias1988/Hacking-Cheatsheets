@@ -1,5 +1,7 @@
 # 🔨 John the Ripper - Complete Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
        __      __         
       / /___  / /_  ____  

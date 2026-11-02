@@ -1,5 +1,7 @@
 # 🔓 IDOR - Insecure Direct Object Reference
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
   ██╗██████╗  ██████╗ ██████╗ 
   ██║██╔══██╗██╔═══██╗██╔══██╗

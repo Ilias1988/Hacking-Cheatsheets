@@ -1,5 +1,7 @@
 # 🕷️ Nikto - Complete Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
     _   _ _ _    _        
    | \ | (_) | _| |_ ___  

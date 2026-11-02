@@ -1,5 +1,7 @@
 # 🩸 BloodHound - Active Directory Attack Path Visualization
 
+[🇮🇹 Versione Italiana](translations/README.it.md) | [🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
   ██████╗ ██╗      ██████╗  ██████╗ ██████╗ ██╗  ██╗ ██████╗ ██╗   ██╗███╗   ██╗██████╗ 
   ██╔══██╗██║     ██╔═══██╗██╔═══██╗██╔══██╗██║  ██║██╔═══██╗██║   ██║████╗  ██║██╔══██╗

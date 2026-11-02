@@ -1,5 +1,7 @@
 # 🌐 Web CTF Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/Web-CTF.tr.md)
+
 ---
 
 ## 💉 SQL Injection

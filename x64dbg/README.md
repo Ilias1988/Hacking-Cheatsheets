@@ -1,5 +1,7 @@
 # 🔧 x64dbg - Windows Debugger Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
   ██╗  ██╗ ██████╗ ██╗  ██╗██████╗ ██████╗  ██████╗ 
   ╚██╗██╔╝██╔════╝ ██║  ██║██╔══██╗██╔══██╗██╔════╝ 

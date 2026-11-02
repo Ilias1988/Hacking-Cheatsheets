@@ -19,7 +19,8 @@
 </p>
 
 <p align="center">
-  <b>🔍 Search engine for Internet-connected devices, servers, and infrastructure</b>
+  <b>🔍 Search engine for Internet-connected devices, servers, and infrastructure</b><br>
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
 </p>
 
 ---

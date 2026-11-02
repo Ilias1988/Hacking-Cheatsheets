@@ -1,5 +1,7 @@
 # 🩸 BloodHound - Visualizzazione dei percorsi di attacco Active Directory
 
+[🇬🇧 English](../README.md) | [🇹🇷 Türkçe Sürüm](README.tr.md)
+
 ```
   ██████╗ ██╗      ██████╗  ██████╗ ██████╗ ██╗  ██╗ ██████╗ ██╗   ██╗███╗   ██╗██████╗ 
   ██╔══██╗██║     ██╔═══██╗██╔═══██╗██╔══██╗██║  ██║██╔═══██╗██║   ██║████╗  ██║██╔══██╗

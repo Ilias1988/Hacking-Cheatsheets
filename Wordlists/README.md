@@ -17,7 +17,8 @@
 </p>
 
 <p align="center">
-  <b>📖 Complete reference for penetration testing wordlists</b>
+  <b>📖 Complete reference for penetration testing wordlists</b><br>
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
 </p>
 
 ---

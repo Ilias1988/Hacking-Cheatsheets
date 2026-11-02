@@ -18,7 +18,8 @@
 </p>
 
 <p align="center">
-  <b>🌐 Fast passive subdomain enumeration tool by ProjectDiscovery</b>
+  <b>🌐 Fast passive subdomain enumeration tool by ProjectDiscovery</b><br>
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
 </p>
 
 ---

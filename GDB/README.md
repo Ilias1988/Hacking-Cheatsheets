@@ -1,5 +1,7 @@
 # 🐛 GDB - GNU Debugger Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
    ██████╗ ██████╗ ██████╗ 
   ██╔════╝ ██╔══██╗██╔══██╗

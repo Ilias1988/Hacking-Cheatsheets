@@ -1,5 +1,7 @@
 # 🐉 Kali Linux Tools - Complete Reference (600+ Tools)
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
   ██╗  ██╗ █████╗ ██╗     ██╗    ██╗     ██╗███╗   ██╗██╗   ██╗██╗  ██╗
   ██║ ██╔╝██╔══██╗██║     ██║    ██║     ██║████╗  ██║██║   ██║╚██╗██╔╝

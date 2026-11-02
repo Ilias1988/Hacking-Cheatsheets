@@ -23,7 +23,8 @@
 </p>
 
 <p align="center">
-  <b>🔐 Find Exposed Secrets, API Keys, and Credentials in GitHub Repositories</b>
+  <b>🔐 Find Exposed Secrets, API Keys, and Credentials in GitHub Repositories</b><br>
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
 </p>
 
 ---

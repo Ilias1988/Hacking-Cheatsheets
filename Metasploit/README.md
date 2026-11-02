@@ -1,5 +1,7 @@
 # 🔴 Metasploit Framework - Complete Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
                                    ___          ____
                                ,-""   `.      < HACK >

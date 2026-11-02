@@ -1,5 +1,9 @@
 # 💾 Web Cache Poisoning Cheatsheet
 
+<p align="center">
+  <a href="translations/README.it.md">🇮🇹 Versione Italiana</a> | <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
+</p>
+
 ```
    ██████╗ █████╗  ██████╗██╗  ██╗███████╗    ██████╗  ██████╗ ██╗███████╗ ██████╗ ███╗   ██╗██╗███╗   ██╗ ██████╗ 
   ██╔════╝██╔══██╗██╔════╝██║  ██║██╔════╝    ██╔══██╗██╔═══██╗██║██╔════╝██╔═══██╗████╗  ██║██║████╗  ██║██╔════╝ 

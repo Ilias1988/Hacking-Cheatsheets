@@ -1,6 +1,6 @@
 # 🔴 Hacking Cheatsheets
 
-[🇮🇹 Versione Italiana](README.it.md)
+[🇮🇹 Versione Italiana](README.it.md) • [🇹🇷 Türkçe Sürüm](README.tr.md)
 
 ```
     ██╗  ██╗ █████╗  ██████╗██╗  ██╗██╗███╗   ██╗ ██████╗ 

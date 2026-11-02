@@ -1,5 +1,7 @@
 # 🎯 Nuclei - Complete Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
   _   _            _      _ 
  | \ | |_   _  ___| | ___(_)

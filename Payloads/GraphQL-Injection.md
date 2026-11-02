@@ -1,5 +1,7 @@
 # 📊 GraphQL Injection Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/GraphQL-Injection.tr.md)
+
 ```
  ██████╗ ██████╗  █████╗ ██████╗ ██╗  ██╗ ██████╗ ██╗     
 ██╔════╝ ██╔══██╗██╔══██╗██╔══██╗██║  ██║██╔═══██╗██║     

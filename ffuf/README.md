@@ -1,5 +1,7 @@
 # 🚀 ffuf - Complete Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
    __  __        __ 
   / _|/ _|_   _ / _|

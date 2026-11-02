@@ -1,5 +1,7 @@
 # 🔧 Hardware Hacking Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/Hardware-Hacking.tr.md)
+
 ---
 
 ## 🔌 UART (Serial Console)

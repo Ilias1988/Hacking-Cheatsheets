@@ -1,5 +1,9 @@
 # 🎯 Subdomain Takeover Cheatsheet
 
+<p align="center">
+  <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
+</p>
+
 ```
   ███████╗██╗   ██╗██████╗ ██████╗  ██████╗ ███╗   ███╗ █████╗ ██╗███╗   ██╗
   ██╔════╝██║   ██║██╔══██╗██╔══██╗██╔═══██╗████╗ ████║██╔══██╗██║████╗  ██║

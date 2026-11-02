@@ -1,5 +1,7 @@
 # ➡️ Phase 4: Lateral Movement
 
+[🇹🇷 Türkçe Sürüm](translations/04-Lateral-Movement.tr.md)
+
 ```
   ██╗      █████╗ ████████╗███████╗██████╗  █████╗ ██╗     
   ██║     ██╔══██╗╚══██╔══╝██╔════╝██╔══██╗██╔══██╗██║     

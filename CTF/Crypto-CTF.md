@@ -1,5 +1,7 @@
 # 🔐 Crypto CTF Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/Crypto-CTF.tr.md)
+
 ---
 
 ## 🔤 Encoding/Decoding

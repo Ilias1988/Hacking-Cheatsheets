@@ -1,5 +1,9 @@
 # 🖼️ Image OSINT
 
+<p align="center">
+  <a href="translations/Image-OSINT.tr.md">🇹🇷 Türkçe Sürüm</a>
+</p>
+
 ---
 
 ## 🔍 Reverse Image Search

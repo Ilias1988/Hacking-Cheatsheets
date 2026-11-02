@@ -1,5 +1,7 @@
 # 🔴 Hacking Cheatsheets
 
+[🇬🇧 Versione Inglese](README.md) • [🇹🇷 Versione Turca](README.tr.md)
+
 ```
 ██╗  ██╗ █████╗  ██████╗██╗  ██╗██╗███╗   ██╗ ██████╗ 
 ██║  ██║██╔══██╗██╔════╝██║ ██╔╝██║████╗  ██║██╔════╝ 

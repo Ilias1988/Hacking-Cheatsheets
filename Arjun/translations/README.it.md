@@ -1,3 +1,5 @@
+[🇬🇧 English](../README.md) | [🇹🇷 Türkçe](README.tr.md)
+
 # 🔍 Arjun - Hidden Parameter Discovery
 
 ```

@@ -1,5 +1,7 @@
 # 💾 Firmware Analysis Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/Firmware-Analysis.tr.md)
+
 ---
 
 ## 📥 Firmware Acquisition

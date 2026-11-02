@@ -1,5 +1,7 @@
 # 🐛 Bug Bounty Methodology
 
+[🇮🇹 Versione Italiana](translations/README.it.md) • [🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
   ██████╗ ██╗   ██╗ ██████╗     ██████╗  ██████╗ ██╗   ██╗███╗   ██╗████████╗██╗   ██╗
   ██╔══██╗██║   ██║██╔════╝     ██╔══██╗██╔═══██╗██║   ██║████╗  ██║╚══██╔══╝╚██╗ ██╔╝

@@ -1,5 +1,7 @@
 # 🏁 CTF Cheatsheets
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
  ██████╗████████╗███████╗
 ██╔════╝╚══██╔══╝██╔════╝

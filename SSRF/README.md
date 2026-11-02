@@ -1,5 +1,7 @@
 # 🌐 SSRF - Server-Side Request Forgery
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
   ███████╗███████╗██████╗ ███████╗
   ██╔════╝██╔════╝██╔══██╗██╔════╝

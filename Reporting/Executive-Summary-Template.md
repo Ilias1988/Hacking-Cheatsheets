@@ -1,5 +1,7 @@
 # 📊 Executive Summary Template
 
+[🇹🇷 Türkçe Sürüm](translations/Executive-Summary-Template.tr.md)
+
 ```
 ███████╗██╗  ██╗███████╗ ██████╗██╗   ██╗████████╗██╗██╗   ██╗███████╗
 ██╔════╝╚██╗██╔╝██╔════╝██╔════╝██║   ██║╚══██╔══╝██║██║   ██║██╔════╝

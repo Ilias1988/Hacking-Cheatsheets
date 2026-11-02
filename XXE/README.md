@@ -1,5 +1,7 @@
 # 📄 XXE - XML External Entity Injection
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
   ██╗  ██╗██╗  ██╗███████╗
   ╚██╗██╔╝╚██╗██╔╝██╔════╝

@@ -1,5 +1,9 @@
 # 👤 People Search OSINT
 
+<p align="center">
+  <a href="translations/People-Search.tr.md">🇹🇷 Türkçe Sürüm</a>
+</p>
+
 ```
 ██████╗ ███████╗ ██████╗ ██████╗ ██╗     ███████╗
 ██╔══██╗██╔════╝██╔═══██╗██╔══██╗██║     ██╔════╝

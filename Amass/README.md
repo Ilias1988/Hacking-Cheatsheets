@@ -13,7 +13,8 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Amass-OWASP-blue?style=for-the-badge" alt="Amass">
   <img src="https://img.shields.io/badge/Subdomain-Discovery-green?style=for-the-badge" alt="Subdomain">
-  <img src="https://img.shields.io/badge/ASN-Mapping-red?style=for-the-badge" alt="ASN">
+  <img src="https://img.shields.io/badge/ASN-Mapping-red?style=for-the-badge" alt="ASN"><br>
+  <a href="translations/README.it.md">🇮🇹 Versione Italiana</a> | <a href="translations/README.tr.md">🇹🇷 Türkçe Sürüm</a>
 </p>
 
 ---

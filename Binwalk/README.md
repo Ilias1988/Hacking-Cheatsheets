@@ -1,5 +1,7 @@
 # 🔧 Binwalk - Firmware Analysis Cheatsheet
 
+[🇹🇷 Türkçe Sürüm](translations/README.tr.md)
+
 ```
   ██████╗ ██╗███╗   ██╗██╗    ██╗ █████╗ ██╗     ██╗  ██╗
   ██╔══██╗██║████╗  ██║██║    ██║██╔══██╗██║     ██║ ██╔╝
