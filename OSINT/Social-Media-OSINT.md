@@ -18,6 +18,7 @@
 | **Namechk** | namechk.com | 100+ sites |
 | **KnowEm** | knowem.com | 500+ sites |
 | **WhatsMyName** | whatsmyname.app | Web-based |
+| **Opsis** | useopsis.com | 950+ sites, web-based |
 
 ### Sherlock
 ```bash
